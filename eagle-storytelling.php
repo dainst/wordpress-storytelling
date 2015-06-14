@@ -10,6 +10,7 @@ Description: Create your own EAGLE story!
 Author:	     Wolfgang Schmidle
 Author URI:	 http://www.dainst.org/
 Version:     0.6
+
 */
 
 
