@@ -1,0 +1,100 @@
+# Liveversion / Testversion
+
+* Ich habe auf der Startseite (http://195.37.232.186/eagle/stories/) z.B. bei "Search Stories" möglicherweise hardcoded links verwendet. Kann man das so ändern, dass eine Suche nicht zur Live-Version der Website führt (z.B. http://www.eagle-network.eu/?s=verminus&post_type=story), und wenn man die Änderungen am Storytelling-Plugin in die Live-Version schiebt, stimmen die Links aber auch, also zeigen dann auf die Live-Version? Also derselbe Code, und auf der Testversion führen die Such-Links zu Testversion und auf der Liveversion zur Liveversion. Da gibt es doch bestimmt eine WordPress-Variable, die man verwenden kann, so wie das "dirname" unten?
+
+> Erledigt.
+
+
+# Startseite
+
+Die Startseite muss voll funktional sein, also keine Mockups mehr.
+
+* Search Stories: Funktioniert eigentlich, aber die Ergebnisseite (http://www.eagle-network.eu/?s=verminus&post_type=story) hat die falsche Sidebar. Sie sollte die gleiche Sidebar haben wie die Startseite.
+
+Ich habe versucht, den gesamten Code im Plugin zu haben und zusätzlich nur einzelne WordPress-Seiten anzulegen, also Einträge in der MySQL-Datenbank. Und so sollte es, wenn möglich, auch bleiben. Deshalb sage ich in eagle-storytelling.php zum Beispiel:
+
+    if ( is_page( 'stories' ) ) {
+        $page_template = dirname( __FILE__ ) . '/template/page-stories.php';
+    }
+    return $page_template;
+
+und hänge das in den Filter "page_template" ein. Aber bei der Suchergebnisseite funktioniert das nicht. Das Problem ist wohl u.a., dass es überhaupt kein search.php im Theme gibt. Ich sehe nun zwei Möglichkeiten: 
+Einerseits search.php anlegen, und dort gibt es eine Weiche, entweder index.php oder ein Page-Template aus dem Plugin zu verwenden. Das würde aber bedeuten, dass man eine Datei anlegen muss, die nicht im Plugin ist.
+Andererseits könnte man gar nicht die normale Suche mit dem Parameter s in der URL verwenden, sondern einen eigenen Parameter wie "storysearch", der nicht mit der restlichen Website interferiert. Das wäre wohl aufwändiger, käme mir aber trotzdem besser vor. Am besten sollte die Suchergebnisseite auch die gleiche URL wie die Startseite haben, also in etwa
+http://www.eagle-network.eu/stories/?storysearch=caesar
+Vielleicht fällt dir aber auch noch eine bessere Lösung ein? 
+
+* Die Filter funktionieren noch nicht. Was sie tun sollen, ist im Deliverable beschrieben.
+
+keywords: Ich bin mir nicht sicher, ob ich Keywords für Stories überhaupt richtig implementiert habe. Bin mir auch nicht sicher, ob ich vielleicht mit tags und categories durcheinandergekommen bin. Das "posted in" auf den einzelnen Story-Seiten funktioniert dementsprechend auch nicht richtig. Könntest du das bitte klären?
+Im Deliverable ist auch eine word cloud für die Keywords erwähnt. Ich glaube, dafür gibt es einen einfachen Befehl (oder war es ein Plugin?), mit dem man das ohne großen Aufwand implementieren kann. Aber wenn es doch ein größerer Aufwand ist, würden wir es erstmal verschieben.
+
+author: Muss natürlich das Autor-Feld und nicht den Story-Volltext durchsuchen.
+Welche URL? Etwas wie "/stories/author/wolfgang"? Oder einen Parameter "storyauthor=wolfgang"?
+Zusätzlich zur Textsuche könnte auch eine popup-Liste der Autoren erscheinen, auf die man klicken kann. Denn sonst weiß man gar nicht, nach was man suchen soll.
+
+Wie Trismegistos-IDs aussehen, kann Francesco besser erklären als ich. Erstmal reicht eine Volltextsuche nach etwas wie "tm:1234567". (Später sollte das auf Shortcodes umgestellt werden.)
+
+
+# User Roles
+
+Wir brauchen zwei neue User Roles "Story Author" und "Story Contributor", analog zu "Author" und "Contributor". Die beiden Rollen sollen jeweils Stories schreiben können, aber keine normalen Blog-Einträge (die auf der EAGLE-Website als News items erscheinen). Will sagen, http://www.eagle-network.eu/wp-admin/post-new.php soll nicht funktionieren.
+
+Diese User Roles sollen am besten programmatisch im Plugin angelegt werden. Allerdings muss sichergestellt sein, dass man das Plugin zum Updaten mal kurz aus- und wieder anschalten kann, ohne dass die User Roles verschwinden. Wenn das bedeutet, dass die User Roles nicht im Plugin definiert werden können, müssen wir das Vorgehen nochmal besprechen.
+
+Wenn es die User Roles gibt, soll "Story Author" die default User Role für neu angelegte Accounts sein.
+
+
+# Suche in Datenquellen
+
+* Zuerst die Suche in EAGLE selbst: Ich stelle mir das so vor, dass man beim Story-Editor einen Knopf "search EAGLE inscriptions" anklicken kann, dann öffnet sich ein großes Modalfenster, ungefähr so wie das Fenster, wenn man auf "add media" klickt. Und in diesem Fenster ist einfach ein Klon von http://www.eagle-network.eu/basic-search/ etc. 
+Ist das realistisch? Der Punkt ist jedenfalls, dass wir die EAGLE-Inschriften-Suche nicht nachprogrammieren wollen, sondern nur den bestehenden Code einbinden.
+
+* Weitere Datenquellen im Prinzip auf die gleiche Weise. Siehe das Plugin 
+https://wordpress.org/plugins/ancient-world-linked-data-for-wordpress/
+
+
+# Shortcodes
+
+Wenn dann noch Zeit ist, wären Shortcodes dran. Dass also zum Beispiel eine Inschrift in der "text"-Ansicht des Editors nicht mehr vollständig dasteht, sondern nur noch ihr shortcode. 
+
+Der Inhalt der Inschrift muss aber in der "visual"-Ansicht des Editors vollständig dastehen. Und der Inhalt der Inschrift muss bei der Story-Volltextsuche berücksichtigt werden. 
+
+Das müssen wir vielleicht nochmal diskutieren.
+
+
+# Verbesserungsvorschläge
+
+Verbesserungsvorschläge für die Implementierung des Portals sammeln. Zum Beispiel:
+
+* In der Config-Datei die Salts eintragen
+
+
+# weitere TODOs, die aber nicht so dringend sind:
+
+## Startseite
+
+### main column:
+* Paginierung sollte mehr als 2 Stories pro Seite zulassen, glaube ich
+* Jede Story sollte ein thumbnail-Bild haben
+
+### sidebar:
+* Wenn man sich irgendwann auf der EAGLE-website registrieren kann, müssen wir prüfen, ob das auch von der Storytelling-Seite aus geht.
+* die vertikalen Abstände zwischen den Widgets sind zu groß
+* Bei 0 Suchergebnissen kommt eine unsinnige Fehlermeldung, die nicht sagt, was das Problem ist (eben dass es keine Treffer gibt)
+
+## single story pages
+
+### main column:
+* Excerpt sollte angezeigt werden (siehe Deliverable)
+* "posted in" funktioniert noch nicht
+* posted in / posted by sind nicht richtig eingerückt
+
+## Stories
+
+diverse Dinge bei den vorhandenen Stories nachtragen, sobald es geht:
+
+* Kategorien / Keywords: sobald das implementiert ist
+* genauso: Trismegistos-Nummern
+* einheitliches Design: Inschriften in Boxes
+* Überschrift nicht nochmal im Haupttext wiederholen
