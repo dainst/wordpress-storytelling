@@ -151,10 +151,14 @@ function esa_get_search_stories_page_template( $page_template )
     /*if ( is_page( 'search-stories' ) ) {
         $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
     }*/
-		
-
-   	if ( is_search() and ($_GET["post_type"] == "story") ) {
+	
+   	if ( get_query_var('post_type') == "story" ) {
         $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
+        
+        /*echo "<div style='background:yellow'>";
+       	echo "!!!!";
+        echo "</div>";*/
+        
     }
     return $page_template;
 }

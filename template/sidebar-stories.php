@@ -57,8 +57,9 @@ if ( is_user_logged_in() ) {
 		<h5>Filter by keywords</h5>
 		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
-        		<input type="text" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
-        		<input type="hidden" name="post_type" value="story" />
+        		<input type="text"   name="story_keyword"  		value="" 				class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="hidden" name="post_type" 			value="story" />
+      
     		</div>
 		</form>
 		<h5>Filter by author</h5>

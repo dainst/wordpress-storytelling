@@ -64,7 +64,20 @@ $et_ptemplate_blog_perpage = 2;
 						<div class="et_pt_blogentry clearfix">
 							<h2 class="et_pt_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 							
-							<p class="et_pt_blogmeta"><?php esc_html_e('Posted','Flexible'); ?> <?php esc_html_e('by','Flexible'); ?> <?php /*the_author_posts_link();*/ the_author(); ?> <?php esc_html_e('on','Flexible'); ?> <?php the_time(et_get_option('flexible_date_format')) ?> <?php /*esc_html_e('in','Flexible');*/ ?> <?php /*the_category(', ');*/ ?> <?php /*comments_popup_link(esc_html__('0 comments','Flexible'), esc_html__('1 comment','Flexible'), '% '.esc_html__('comments','Flexible'));*/ ?></p>
+							<p class="et_pt_blogmeta">
+								<?php esc_html_e('Posted','Flexible'); ?> 
+								<?php esc_html_e('by','Flexible'); ?> 
+								<?php /*the_author_posts_link();*/ the_author(); ?> 
+								<?php esc_html_e('on','Flexible'); ?> 
+								<?php the_time(et_get_option('flexible_date_format')) ?>
+								<?php /*esc_html_e('in','Flexible');*/ ?> 
+								<?php /*the_category(', ');*/ ?> 
+								<?php /*comments_popup_link(esc_html__('0 comments','Flexible'), esc_html__('1 comment','Flexible'), '% '.esc_html__('comments','Flexible'));*/ ?>			
+								<?php 
+									$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
+									echo (count($the_taxonomys['story_keyword'])) ? esc_html_e('in','Flexible') . ' ' . $the_taxonomys['story_keyword'] : '';
+								?>				
+							</p>
 							<?php $thumb = '';
 							$width = 480;
 							$height = 220;

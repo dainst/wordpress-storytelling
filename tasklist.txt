@@ -31,18 +31,26 @@ irgendeinem Grund eine neue Query ausgelöst, wehalb die Suchergbenisse verloren
 
 * Die Filter funktionieren noch nicht. Was sie tun sollen, ist im Deliverable beschrieben.
 
+> Die Suchformulare enthielten ein paar Fehler (doppelte Ids etc). Habe ich gefixed, musste dazu ein Plugin-Spezifische CSS anlegen (brauchen wir sicher eh irgendwann).
+
 keywords: Ich bin mir nicht sicher, ob ich Keywords für Stories überhaupt richtig implementiert habe. Bin mir auch nicht sicher, ob ich vielleicht mit tags und categories durcheinandergekommen bin. Das "posted in" auf den einzelnen Story-Seiten funktioniert dementsprechend auch nicht richtig. Könntest du das bitte klären?
 Im Deliverable ist auch eine word cloud für die Keywords erwähnt. Ich glaube, dafür gibt es einen einfachen Befehl (oder war es ein Plugin?), mit dem man das ohne großen Aufwand implementieren kann. Aber wenn es doch ein größerer Aufwand ist, würden wir es erstmal verschieben.
+
+Also. Was du offenbar gemacht hast, ist, für den post_type "story" zwei neue Taxonomien "story_keyword" und "story_category" anzulegen. Falls du nicht
+nicht irgendeinen besonderen Grund dafür gehabt hast, würde ich das ändern und "story" für die beiden Standart-Taxonomien von Wordpress "category" und 
+"tags" registrieren. Dann funktionieren auch die normalen Befehel wie "the_tags" oder die Tag-Cloud. 
+
+Habe die Suche über das keyword-Feld jetzt so eingerichtet, dass sie nur in "story_keyword" sucht. Bislang ist nur ein einziges Keyword vergeben, nämlich "test".
+
 
 author: Muss natürlich das Autor-Feld und nicht den Story-Volltext durchsuchen.
 Welche URL? Etwas wie "/stories/author/wolfgang"? Oder einen Parameter "storyauthor=wolfgang"?
 Zusätzlich zur Textsuche könnte auch eine popup-Liste der Autoren erscheinen, auf die man klicken kann. Denn sonst weiß man gar nicht, nach was man suchen soll.
 
+> Der Paramater lautet author_name, das gibt WP vor. Hübsche urls wie "/stories/author/wolfgang" kann man zusätzlich definieren. Dann müssen wir mit mod_rewrite und der permalink Struktur arbeiten, und aufpassen, dass wir nicht die Permalinks der ganzen Seite zerhauen. Würde ich erstmal zurückstellen.
+
+
 Wie Trismegistos-IDs aussehen, kann Francesco besser erklären als ich. Erstmal reicht eine Volltextsuche nach etwas wie "tm:1234567". (Später sollte das auf Shortcodes umgestellt werden.)
-
-> Die Suchformulare enthielten ein paar Fehler. Fixed.
-
-> 
 
 
 # User Roles
