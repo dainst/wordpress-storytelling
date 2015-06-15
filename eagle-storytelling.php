@@ -133,7 +133,8 @@ add_filter( 'single_template', 'esa_get_story_post_type_template' );
 
 function esa_get_stories_page_template( $page_template )
 {
-    if ( is_page( 'stories' ) ) {
+    
+	if ( is_page( 'stories' ) ) {
         $page_template = dirname( __FILE__ ) . '/template/page-stories.php';
     }
     return $page_template;
@@ -147,24 +148,26 @@ add_filter( 'page_template', 'esa_get_stories_page_template' );
 
 function esa_get_search_stories_page_template( $page_template )
 {
-//    if ( is_page( 'search-stories' ) ) {
-//        $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
-//    }
+    /*if ( is_page( 'search-stories' ) ) {
+        $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
+    }*/
+		
 
-//    if ( is_search() and ($_GET["post_type"] == "story") ) {
-//        $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
-//    }
+   	if ( is_search() and ($_GET["post_type"] == "story") ) {
+        $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
+    }
     return $page_template;
 }
 
-// add_filter( 'page_template', 'esa_get_search_stories_page_template' );
+add_filter( 'search_template', 'esa_get_search_stories_page_template' );
 
 
 function searchfilter($query) {
     if ($query->is_search && $query->post_type == "story") {
         $query->set('meta_key','_wp_page_template');
-        $query->set('meta_value', dirname( __FILE__ ) . '/template/search-stories.php');    }
-return $query;
+        $query->set('meta_value', dirname( __FILE__ ) . '/template/search-stories.php');    
+   	}
+	return $query;
 }
 
 //add_filter('pre_get_posts','searchfilter');

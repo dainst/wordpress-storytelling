@@ -4,7 +4,6 @@
 
 > Erledigt.
 
-
 # Startseite
 
 Die Startseite muss voll funktional sein, also keine Mockups mehr.
@@ -23,6 +22,11 @@ Einerseits search.php anlegen, und dort gibt es eine Weiche, entweder index.php 
 Andererseits könnte man gar nicht die normale Suche mit dem Parameter s in der URL verwenden, sondern einen eigenen Parameter wie "storysearch", der nicht mit der restlichen Website interferiert. Das wäre wohl aufwändiger, käme mir aber trotzdem besser vor. Am besten sollte die Suchergebnisseite auch die gleiche URL wie die Startseite haben, also in etwa
 http://www.eagle-network.eu/stories/?storysearch=caesar
 Vielleicht fällt dir aber auch noch eine bessere Lösung ein? 
+
+> Erldigt.
+
+Dein im Code auskommentierter Ansatz war schon richtig, es war nur der falsche Hook eingesetzt. 
+
 
 * Die Filter funktionieren noch nicht. Was sie tun sollen, ist im Deliverable beschrieben.
 
