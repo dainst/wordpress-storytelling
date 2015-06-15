@@ -6,8 +6,8 @@
 if ( is_user_logged_in() ) {
 ?>
 		<h3><?php echo 'Hello '.wp_get_current_user()->user_login.'!' ?></h3>
-		<a href="http://www.eagle-network.eu/wp-admin/post-new.php?post_type=story">Create new story</a><br>
-		<a href="http://www.eagle-network.eu/wp-admin/edit.php?post_type=story">Edit existing stories</a><br><br>
+		<a href="<?php echo site_url(); ?>/wp-admin/post-new.php?post_type=story">Create new story</a><br>
+		<a href="<?php echo site_url(); ?>/wp-admin/edit.php?post_type=story">Edit existing stories</a><br><br>
 		<a href="<?php echo wp_logout_url() ?>">Logout</a>
 <?php
 } else {
@@ -67,7 +67,7 @@ if ( is_user_logged_in() ) {
 
 	<div id="search-stories" class="widget widget_recent_entries">
 		<h4 class="widgettitle">Search Stories</h4>
-		<form role="search" method="get" id="searchform" action="http://www.eagle-network.eu/">
+		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>">
     		<div>
         		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
 				<input type="hidden" name="post_type" value="story" />
@@ -78,19 +78,19 @@ if ( is_user_logged_in() ) {
 	<div id="search-stories" class="widget widget_recent_entries">
 		<h4 class="widgettitle">Filters</h4>
 		<h5>Filter by keywords</h5>
-		<form role="search" method="get" id="searchform" action="http://www.eagle-network.eu/">
+		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>">
     		<div>
         		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
     		</div>
 		</form>
 		<h5>Filter by author</h5>
-		<form role="search" method="get" id="searchform" action="http://www.eagle-network.eu/">
+		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>">
     		<div>
         		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
     		</div>
 		</form>
 		<h5>Filter by TM ID</h5>
-		<form role="search" method="get" id="searchform" action="http://www.eagle-network.eu/">
+		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>">
     		<div>
         		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
     		</div>
