@@ -25,7 +25,8 @@ Vielleicht fällt dir aber auch noch eine bessere Lösung ein?
 
 > Erldigt.
 
-Dein im Code auskommentierter Ansatz war schon richtig, es war nur der falsche Hook eingesetzt. 
+Dein im Code auskommentierter Ansatz war schon richtig, es war nur der falsche Hook eingesetzt. Außerdem wurde im template "search-stories" aus 
+irgendeinem Grund eine neue Query ausgelöst, wehalb die Suchergbenisse verloren gingen.
 
 
 * Die Filter funktionieren noch nicht. Was sie tun sollen, ist im Deliverable beschrieben.
@@ -38,6 +39,10 @@ Welche URL? Etwas wie "/stories/author/wolfgang"? Oder einen Parameter "storyaut
 Zusätzlich zur Textsuche könnte auch eine popup-Liste der Autoren erscheinen, auf die man klicken kann. Denn sonst weiß man gar nicht, nach was man suchen soll.
 
 Wie Trismegistos-IDs aussehen, kann Francesco besser erklären als ich. Erstmal reicht eine Volltextsuche nach etwas wie "tm:1234567". (Später sollte das auf Shortcodes umgestellt werden.)
+
+> Die Suchformulare enthielten ein paar Fehler. Fixed.
+
+> 
 
 
 # User Roles

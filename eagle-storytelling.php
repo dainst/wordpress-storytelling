@@ -189,4 +189,14 @@ add_filter( 'page_template', 'esa_get_create_story_page_template' );
 
 /****************************************/
 
+
+// Register style sheet.
+
+
+function esa_register_plugin_styles() {
+	wp_register_style( 'eagle-storytelling', plugins_url( 'eagle-storytelling/eagle-storytelling.css' ) );
+	wp_enqueue_style( 'eagle-storytelling' );
+}
+
+add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
 ?>

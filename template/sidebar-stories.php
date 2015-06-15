@@ -44,9 +44,9 @@ if ( is_user_logged_in() ) {
 
 	<div id="search-stories" class="widget widget_recent_entries">
 		<h4 class="widgettitle">Search Stories</h4>
-		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>/">
+		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
-        		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
+        		<input type="text" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
 				<input type="hidden" name="post_type" value="story" />
     		</div>
 		</form>
@@ -55,21 +55,24 @@ if ( is_user_logged_in() ) {
 	<div id="search-stories" class="widget widget_recent_entries">
 		<h4 class="widgettitle">Filters</h4>
 		<h5>Filter by keywords</h5>
-		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>/">
+		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
-        		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
+        		<input type="text" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="hidden" name="post_type" value="story" />
     		</div>
 		</form>
 		<h5>Filter by author</h5>
-		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>/">
+		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
-        		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
+        		<input type="text" value="" name="author_name" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="hidden" name="post_type" value="story" /> 
     		</div>
 		</form>
 		<h5>Filter by TM ID</h5>
-		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>/">
+		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
-        		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
+        		<input type="text" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="hidden" name="post_type" value="story" />
     		</div>
 		</form>
 	</div>

@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+/*------------------------------------------------*/
+/*--------------------[SIDEBAR]-------------------*/
+/*------------------------------------------------*/
+
+.searchform .s { height: 24px; width: 199px; margin-right: 10px; }
+
+.searchform .searchsubmit {
+	text-indent: -9999px;
+	background: transparent url(images/search2.png) no-repeat top left;
+	width: 30px;
+	height: 24px;
+	border: none;
+}
