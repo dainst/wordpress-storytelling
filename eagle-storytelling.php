@@ -7,7 +7,7 @@
 Plugin Name: Eagle Storytelling Application
 Plugin URI:  http://wordpress.org/plugins/eagle-storytelling/
 Description: Create your own EAGLE story! 
-Author:	     Wolfgang Schmidle
+Author:	     Wolfgang Schmidle & Philipp Franck
 Author URI:	 http://www.dainst.org/
 Version:     0.6
 
@@ -228,11 +228,129 @@ function trismegistos_filter( $query ) {
 add_action( 'pre_get_posts', 'trismegistos_filter' );
 
 
+/****************************************/
+
+
+/** 
+ * add media submenu!
+ */
+
+
+// list of available data sources (must correspondent with files in /datasources)
+$esa_datasources = array(
+		'eagle' => __('search EAGLE inscriptions'),
+		'wiki' 	=> __('TEST Data-Engine: Wikipedia')
+);
+
+require_once('esa_datasource.class.php');
+require_once('esa_item.class.php');
+
+
+// add them to media menu
+
+
+add_filter('media_upload_tabs', function($tabs) {
+    return array_merge($tabs, array('esa' => 'EAGLE Storytelling Application'));
+});
+
+
+// create submenu
+
+add_action('media_upload_esa', function() {
+	
+	
+	add_action('admin_print_styles-media-upload-popup', function() {
+		$cssUrl = plugins_url() .'/eagle-storytelling/eagle-storytelling.css';
+		wp_enqueue_style('esa_mediamenu', $cssUrl);
+	});
+	
+	/*
+	add_action('admin_print_scripts-media-upload-popup', function() {
+		$jsUrl = plugins_url() .'/eagle-storytelling/esa_mediamenu.js';
+		wp_enqueue_script('jquery');
+		wp_enqueue_script('esa_mediamenu.js', $jsUrl, array('jquery'));
+	});
+	*/
+	
+	return wp_iframe('media_esa_dialogue'); 
+});
+
+/**
+ * this builds the iframe wich is in fact the add media dialogue of our plugin!
+ * 
+ */
+function media_esa_dialogue() {
+	
+		global $esa_datasources;
+	
+		// get search engine
+		$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'wiki';
+
+		// create serach engine menu
+		foreach ($esa_datasources as $source => $label) {
+			$sel = ($source == $engine) ? 'button-primary' : 'button-secondary';
+			echo "<a class='button $sel' href='?tab=esa&esa_source=$source'>$label</a>";
+		}
+	
+		echo "<h3>$engine</h3>";
+		
+		
+		echo "<div id='esa_media_frame_body'>";
+
+		// get engine interface		
+		if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
+			echo "Error: Search engine $engine not found!"; return;
+		}
+		
+		require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
+		$ed_class = "\\esa_datasource\\$engine";
+		$eds = new $ed_class;
+		$eds->dialogue();
+		$eds->search();
+		$eds->show_result();
+		
+		echo "</div>";
+}
 
 
 
+		
+		
 
 
 
 
 ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
