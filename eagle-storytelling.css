@@ -13,3 +13,22 @@
 	height: 24px;
 	border: none;
 }
+
+/* extends original style css l. 79 */ 
+input[type="number"],
+input[type="color"],
+input[type="date"],
+input[type="datetime"],
+input[type="email"],
+input[type="range"],
+input[type="search"],
+input[type="tel"],
+input[type="time"],
+input[type="url"],
+input[type="week"]
+{
+    background-color: #FFF;
+    border: 1px solid #BBB;
+    padding: 2px;
+    color: #4E4E4E;
+}

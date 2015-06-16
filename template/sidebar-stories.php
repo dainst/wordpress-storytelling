@@ -72,8 +72,9 @@ if ( is_user_logged_in() ) {
 		<h5>Filter by TM ID</h5>
 		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
-        		<input type="text" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="number" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
         		<input type="hidden" name="post_type" value="story" />
+        		<input type="hidden" name="trismegistos" value="1" />
     		</div>
 		</form>
 	</div>

@@ -19,7 +19,7 @@ Version:     0.6
 function esa_create_keywords_widget() {
 
     $labels = array(
-        'name' => _x('Keywords', 'taxonomy general name', 'Flexible'),
+        'name' => _x('Keywords', 'Keywords', 'Flexible'),
         'singular_name' => _x('Keyword', 'taxonomy singular name', 'Flexible'),
         'search_items' => __('Search Keywords', 'Flexible'),
         'all_items' => __('All Keywords', 'Flexible'),
@@ -33,11 +33,11 @@ function esa_create_keywords_widget() {
     );
 
     register_taxonomy('story_keyword', array('story'), array(
-        'hierarchical' => true,
+        'hierarchical' => false,
         'labels' => $labels,
         'show_ui' => true,
         'query_var' => true,
-        'rewrite' => apply_filters('et_portfolio_category_rewrite_args', array('slug' => 'portfolio'))
+        'rewrite' => array('slug' => 'keyword')
     ));
 }
 
@@ -45,7 +45,7 @@ add_action('init', 'esa_create_keywords_widget', 0);
 
 
 /****************************************/
-
+/*
 function esa_create_portfolio_taxonomies() {
 
     $labels = array(
@@ -67,12 +67,12 @@ function esa_create_portfolio_taxonomies() {
         'labels' => $labels,
         'show_ui' => true,
         'query_var' => true,
-        'rewrite' => apply_filters('et_portfolio_category_rewrite_args', array('slug' => 'portfolio'))
+        'rewrite' => apply_filters('et_portfolio_category_rewrite_args', array('slug' => 'story_category'))
     ));
 }
 
 add_action('init', 'esa_create_portfolio_taxonomies', 0);
-
+*/
 
 /****************************************/
 /* create editor page for stories */ 
@@ -155,15 +155,16 @@ function esa_get_search_stories_page_template( $page_template )
    	if ( get_query_var('post_type') == "story" ) {
         $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
         
-        /*echo "<div style='background:yellow'>";
-       	echo "!!!!";
-        echo "</div>";*/
+      //  echo "<div style='background:yellow'>";       	echo "!!!!";        echo "</div>";
         
     }
     return $page_template;
 }
 
 add_filter( 'search_template', 'esa_get_search_stories_page_template' );
+add_filter( 'archive_template', 'esa_get_search_stories_page_template' );
+add_filter( '404_template', 'esa_get_search_stories_page_template' );
+
 
 
 function searchfilter($query) {
@@ -194,8 +195,9 @@ add_filter( 'page_template', 'esa_get_create_story_page_template' );
 /****************************************/
 
 
-// Register style sheet.
-
+/**
+ * Register style sheet.
+ */
 
 function esa_register_plugin_styles() {
 	wp_register_style( 'eagle-storytelling', plugins_url( 'eagle-storytelling/eagle-storytelling.css' ) );
@@ -203,4 +205,34 @@ function esa_register_plugin_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
+
+
+/****************************************/
+
+/**
+ * provisional solution for serach for TRISMEGISTOS-ID
+ * 
+ * @param WP_Query $query
+ */
+
+function trismegistos_filter( $query ) {
+
+	if( $query->is_main_query() ) {
+		if(isset($_GET['trismegistos'])) {
+			//echo "<div style='background:yellow'>";       	echo "!!!!";        echo "</div>";
+			$query->set('s', "tm:{$_GET['s']}"); 
+		}
+	}
+	
+}
+add_action( 'pre_get_posts', 'trismegistos_filter' );
+
+
+
+
+
+
+
+
+
 ?>
