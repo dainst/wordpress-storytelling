@@ -27,7 +27,10 @@ class esa_item {
 	 * put out the html representation of this item
 	 */
 	public function html() {
-		if (!$html) {
+		
+		
+		if (!$this->html) {
+			$this->_error('generator');
 			$this->_generator();
 		}
 		//echo "<pre>"; print_r($this); "</pre>";
@@ -40,7 +43,7 @@ class esa_item {
 	 */
 	private function _generator() {
 		if (!$this->source or !$this->id) {
-			return $this->_error("id or source missing");
+			return $this->_error("id ($this->id) or source  ($this->source) missing!");
 		}
 		
 		// todo: check for cached data

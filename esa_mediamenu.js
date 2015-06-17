@@ -34,17 +34,17 @@ var esa_ds = {
 		jQuery('.esa_item').removeClass('selected');
 		if (this !== esa_ds.selected) {
 			jQuery(this).addClass('selected');
+			jQuery('#esa_item_preview').html(jQuery(this).html());
 			esa_ds.selected = this;			
 		} else {
 			esa_ds.selected = false;
+			jQuery('#esa_item_preview').html('');
 		}
 
 	},
+	
+	
 
-	prepare: function() {
-		
-		console.log(jQuery('#esa_ds-insert_form-shortcode'));
-	}
 	
 };
 

@@ -238,8 +238,9 @@ add_action( 'pre_get_posts', 'trismegistos_filter' );
 
 // list of available data sources (must correspondent with files in /datasources)
 $esa_datasources = array(
-		'eagle' => __('search EAGLE inscriptions'),
-		'wiki' 	=> __('TEST Data-Engine: Wikipedia')
+		'eagle' 		=> __('search EAGLE inscriptions'),
+		'europeana' 	=> __('search in Europeana'),
+		'wiki' 			=> __('TEST Data-Engine: Wikipedia')
 );
 
 require_once('esa_datasource.class.php');
@@ -284,18 +285,25 @@ function media_esa_dialogue() {
 	global $esa_datasources;
 	
 	media_upload_header();
+	
+	// get current search engine
+	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'europeana';
+	
+	//preview field
+	echo "<div id='esa_item_list_sidebar'>";
+	echo "<div id='esa_item_preview' class='esa_item_$engine'></div>";
+	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	echo "</div>";
+	echo "<div id='esa_item_list_main'>";
 
-	// get search engine
-	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'wiki';
-
-	// create serach engine menu
+	// create search engine menu
 	foreach ($esa_datasources as $source => $label) {
 		$sel = ($source == $engine) ? 'button-primary' : 'button-secondary';
 		echo "<a class='button $sel' href='?tab=esa&esa_source=$source'>$label</a>";
 	}
 
 	
-	echo "<h3 class='media-title'>$engine</h3>";
+	
 	
 	
 	//echo "<div id='esa_media_frame_body'>";
@@ -321,16 +329,19 @@ function media_esa_dialogue() {
 	}
 	
 
-	
-	echo '<div data-columns="7" class="media-frame-content"><div class="attachments-browser"><div id="media-items">';
+	echo "<h3 class='media-title'>{$eds->title}</h3>";
+	echo '<div id="media-items">';
 	// serach engine & results
 	$eds->search_form();
-	$eds->search();
-	$eds->show_result();
-
+	if ($eds->search()) {
+		$eds->show_result();
+	} else {
+		$eds->show_errors();
+	}
+	echo '</div>';
 	
+	echo "</div>";
 	
-	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
 	
 	/*
 	echo '

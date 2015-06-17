@@ -7,11 +7,15 @@ namespace esa_datasource {
 		public $api_single_url;
 		
 		// infotext to this data source
+		public $title;
 		public $info; 
 		
 		// array of esa_items containing the results of a performed search
 		public $results = array();
-				
+
+		//error collector
+		public $errors = array();
+		
 		/**
 		 * a generic search dialogue (can be overwitten) 	
 		 * - needs $this->apiurl to be set	
@@ -43,11 +47,18 @@ namespace esa_datasource {
 		 * 
 		 * @param string $query
 		 * 
-		 * @return array of result, wich has to be parsed by $this->parse_result_set
+		 * @return array of result, wich has to be parsed by $this->parse_result_set or false if error
 		 */
 		function search($query = null) {
-			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query; 
-			return $this->parse_result_set($this->_generic_api_call($this->api_search_url, $query));
+			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
+
+			try {
+				$response = $this->parse_result_set($this->_generic_api_call($this->api_search_url, $this->api_encode_fn($query, false)));
+			} catch (\Exception $e) {
+				$this->error($e->getMessage());
+			}
+			
+			return (!count($this->errors)) ?  : false;
 		}
 		
 		/**
@@ -62,7 +73,7 @@ namespace esa_datasource {
 		 */
 		function get($id) {
 			$id = (isset($_POST['esa_ds_id'])) ? $_POST['esa_ds_id'] : $id;
-			return $this->parse_result($this->_generic_api_call($this->api_single_url, $id));
+			return $this->parse_result($this->_generic_api_call($this->api_single_url, $this->api_encode_fn($id, true)));
 		}
 		
 		/**
@@ -74,22 +85,39 @@ namespace esa_datasource {
 		private function _generic_api_call($api, $param) {
 				
 			if (!$param) {
-				return $this->error('No Query');
+				throw new \Exception('No Query');
 			}
 			
 				
 			$url = sprintf($api, $param);
-			//echo $url;
+		
 				
 			$response = $this->_fetch_external_data($url);
-			/*
-			echo "<pre>";
+			
+			//*/
+			
+			echo "<pre class='esa_debug'>";
+			echo $url;
 			print_r((array) json_decode($response));
 			echo "</pre>";
-			*/
+			//*/
+			
 			return $response;
 		}
 		
+		/**
+		 * to use with api_search_url and api_single_url
+		 * overwrite in implementation with the encoding you need (warurlencode, urlencode etc.) 
+		 * 
+		 * the genereic version does exactly nothing.
+		 * 
+		 * @param string $string
+		 * @param boolean $is_single -> single api call or serach query
+		 * @return string
+		 */
+		function api_encode_fn($string, $is_single = false) {
+			return $string;
+		}
 		
 		/**
 		 * 
@@ -109,13 +137,13 @@ namespace esa_datasource {
 		 * 
 		 * @param string $error_text
 		 */
-		function error($error_text) {
-			echo "<div class='error'>$error_text</div>";
+		protected function error($error_text) {
+			$this->errors[] = $error_text;
 		}
 		
 
 		/**
-		 * shows the list of serach results to select one! 
+		 * shows the list of search results to select one! 
 		 * 
 		 */
 		function show_result() {
@@ -126,7 +154,17 @@ namespace esa_datasource {
 			echo "</div><div style='clear:both'></div>";
 		}
 		
-		
+		/**
+		 * shows the list of errors
+		 *
+		 */
+		function show_errors() {
+			echo "<div class='esa_error_list'>";
+			foreach ($this->errors as $error) {
+				echo "<div class='error'>$error</div>";
+			}
+			echo "</div>";
+		}
 		
 		/**
 		 * fetches $data from url, unsing curl if possible, if not it uses file_get_contents
@@ -144,6 +182,11 @@ namespace esa_datasource {
 			}
 		
 			//if (init_set('allow_url_fopen')) {
+			
+			if (!$url) {
+				throw new \Exception('no $url!');
+			}
+			
 			return file_get_contents($url); 
 		}
 	}
