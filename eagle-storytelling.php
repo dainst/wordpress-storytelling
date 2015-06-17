@@ -260,18 +260,18 @@ add_action('media_upload_esa', function() {
 	
 	
 	add_action('admin_print_styles-media-upload-popup', function() {
-		$cssUrl = plugins_url() .'/eagle-storytelling/eagle-storytelling.css';
-		wp_enqueue_style('esa_mediamenu', $cssUrl);
+		wp_enqueue_style('colors');
+		wp_enqueue_style('media');
+		wp_enqueue_style('esa_mediamenu', plugins_url() .'/eagle-storytelling/eagle-storytelling.css');
 	});
 	
-	/*
+	
 	add_action('admin_print_scripts-media-upload-popup', function() {
-		$jsUrl = plugins_url() .'/eagle-storytelling/esa_mediamenu.js';
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('esa_mediamenu.js', $jsUrl, array('jquery'));
+		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/esa_mediamenu.js', array('jquery'));
 	});
-	*/
 	
+		
 	return wp_iframe('media_esa_dialogue'); 
 });
 
@@ -281,37 +281,101 @@ add_action('media_upload_esa', function() {
  */
 function media_esa_dialogue() {
 	
-		global $esa_datasources;
+	global $esa_datasources;
 	
-		// get search engine
-		$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'wiki';
+	media_upload_header();
 
-		// create serach engine menu
-		foreach ($esa_datasources as $source => $label) {
-			$sel = ($source == $engine) ? 'button-primary' : 'button-secondary';
-			echo "<a class='button $sel' href='?tab=esa&esa_source=$source'>$label</a>";
-		}
+	// get search engine
+	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'wiki';
+
+	// create serach engine menu
+	foreach ($esa_datasources as $source => $label) {
+		$sel = ($source == $engine) ? 'button-primary' : 'button-secondary';
+		echo "<a class='button $sel' href='?tab=esa&esa_source=$source'>$label</a>";
+	}
+
 	
-		echo "<h3>$engine</h3>";
-		
-		
-		echo "<div id='esa_media_frame_body'>";
+	echo "<h3 class='media-title'>$engine</h3>";
+	
+	
+	//echo "<div id='esa_media_frame_body'>";
 
-		// get engine interface		
-		if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
-			echo "Error: Search engine $engine not found!"; return;
-		}
-		
-		require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
-		$ed_class = "\\esa_datasource\\$engine";
-		$eds = new $ed_class;
-		$eds->dialogue();
-		$eds->search();
-		$eds->show_result();
-		
-		echo "</div>";
+	// get engine interface		
+	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
+		echo "Error: Search engine $engine not found!"; return;
+	}
+	
+	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
+	$ed_class = "\\esa_datasource\\$engine";
+	$eds = new $ed_class;
+
+	
+
+	
+	$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
+	
+	
+	
+	if (get_user_setting('uploader')) { // todo: user-rights
+		$form_class .= ' html-uploader';
+	}
+	
+
+	
+	echo '<div data-columns="7" class="media-frame-content"><div class="attachments-browser"><div id="media-items">';
+	// serach engine & results
+	$eds->search_form();
+	$eds->search();
+	$eds->show_result();
+
+	
+	
+	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	
+	/*
+	echo '
+	<div class="media-sidebar visible">
+	<h3>Some Settings</h3>
+	
+	
+	<label class="setting" data-setting="url">
+	<span class="name">URL</span>
+	<input value="" readonly="" type="text">
+	</label>
+	</div>';
+	*/
+
+	
+	
 }
 
+
+
+/**
+ *  the shortcode 
+ *  
+ *  available codes:
+ *  id
+ *  source
+ *  
+ *  bsp: 
+ *  
+ *  [esa source="wiki" id="berlin"] 
+ *  
+ */
+
+
+add_shortcode( 'esa', function ( $atts ) {
+	if (!isset($atts['source']) or !isset($atts['id'])) {
+		return;
+	}
+	
+	$item = new esa_item($atts['source'], $atts['id']);
+	
+	
+	return $item->html();
+	
+});
 
 
 		

@@ -11,6 +11,7 @@
 }
 
 
+/* esa wiki */
 .esa_item_wiki img{
 	width:100%;
 	height:100%	
@@ -22,8 +23,24 @@
 }
 	
 
+/* esa result overview */
+.esa_item_list .esa_item {
+	border: 2px solid silver;
+	width: 130px;
+	height: 130px;
+	overflow: hidden;
+	float: left;
+	margin: 4px;
+	cursor: pointer
+}
 
+.esa_item_list .selected {
+	border: 2px solid blue;
+}
 
+.esa_item_list .esa_item:hover {
+	border: 2px solid black;
+}
 
 /* some fixes for main css */
 

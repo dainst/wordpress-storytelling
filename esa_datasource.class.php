@@ -3,7 +3,8 @@ namespace esa_datasource {
 	abstract class abstract_datasource {
 	
 		// url of the api, the source uses (important, if default search dialogue nad/or search functions are used)
-		public $apiurl;
+		public $api_search_url;
+		public $api_single_url;
 		
 		// infotext to this data source
 		public $info; 
@@ -15,7 +16,7 @@ namespace esa_datasource {
 		 * a generic search dialogue (can be overwitten) 	
 		 * - needs $this->apiurl to be set	
 		 */
-		function dialogue() {
+		function search_form() {
 			/*
 			echo "<pre>";
 			print_r($_POST);
@@ -32,53 +33,74 @@ namespace esa_datasource {
 		}
 		
 		/**
-		 * a generic search based on $this->apiurl 
-		 * - %1 in apiurl becomes replaced by search string
+		 * 
+		 * Serach given Data Source for Query
+		 * 
+		 * This is a generic function, it can be overwritten in some implementations
+		 * - based on $this->api_search_url 
+		 * - %s in apiurl becomes replaced by search string
 		 * - trys to use $_POST['esa_ds_query'] as search string, when $query is not given
 		 * 
-		 * @param string $searchString
+		 * @param string $query
 		 * 
-		 * @return array of result 
+		 * @return array of result, wich has to be parsed by $this->parse_result_set
 		 */
 		function search($query = null) {
 			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query; 
-			
-			if (!$query) {
-				return $this->error('No Query');
-			}
-
-			
-			$url = sprintf($this->apiurl, $query);
-			//echo $url;
-			
-			$response = $this->_fetch_external_data($url);
-
-			/*
-			echo "<pre>";
-			print_r($response);
-			echo "</pre>";
-			*/
-			$result = $this->interprete_result($response);
-				
-			
-			/*
-			echo "<pre>";
-			print_r($result);
-			echo "</pre>";
-			*/
-			$bad_json = '{ bar: "baz", }';
-			json_decode($bad_json); // null
-			
+			return $this->parse_result_set($this->_generic_api_call($this->api_search_url, $query));
 		}
 		
 		/**
 		 * 
-		 * This functions interpretes a result from a api and brings it in the needed form
+		 * get data from source for a specific unique identifier
+		 * 
+		 * This is generic function, it can be overwritten in some implementations
+		 * 
+		 * @param $id - unique identifier
+		 * 
+		 * @return array of result, wich has to be parsed by $this->parse_result
+		 */
+		function get($id) {
+			$id = (isset($_POST['esa_ds_id'])) ? $_POST['esa_ds_id'] : $id;
+			return $this->parse_result($this->_generic_api_call($this->api_single_url, $id));
+		}
+		
+		/**
+		 * used for the generic get and serach function only; 
+		 * 
+		 * @param string $api
+		 * @param string $param
+		 */
+		private function _generic_api_call($api, $param) {
+				
+			if (!$param) {
+				return $this->error('No Query');
+			}
+			
+				
+			$url = sprintf($api, $param);
+			//echo $url;
+				
+			$response = $this->_fetch_external_data($url);
+			/*
+			echo "<pre>";
+			print_r((array) json_decode($response));
+			echo "</pre>";
+			*/
+			return $response;
+		}
+		
+		
+		/**
+		 * 
+		 * This functions parses a result from a api and brings it in the needed form
 		 * it HAS to be implemented in every data source class
 		 * 
 		 * @param unknown $result
 		 */
-		abstract function interprete_result($result);
+		abstract function parse_result_set($result);
+		
+		abstract function parse_result($result);
 		
 		
 		/**
@@ -101,17 +123,17 @@ namespace esa_datasource {
 			foreach ($this->results as $result) {
 				$result->html();
 			}
-			echo "</div>";
+			echo "</div><div style='clear:both'></div>";
 		}
 		
-		abstract function insert();
+		
 		
 		/**
 		 * fetches $data from url, unsing curl if possible, if not it uses file_get_contents
 		 * 
 		 * (curl version never tested :D )
 		 */
-		private function _fetch_external_data($url) {
+		protected function _fetch_external_data($url) {
 			if(function_exists("curl_init") && function_exists("curl_setopt") && function_exists("curl_exec") && function_exists("curl_close") ) {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, "example.com");

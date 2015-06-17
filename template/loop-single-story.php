@@ -49,8 +49,11 @@
 			
 			<?php the_content(); ?>
 			<?php wp_link_pages(array('before' => '<p><strong>'.esc_attr__('Pages','Flexible').':</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
-			<?php edit_post_link(esc_attr__('Edit this page','Flexible')); ?>
-		</div> 	<!-- end .post-content -->
+			
+		</div>
+		<div style='clear:both'></div>
+		<?php edit_post_link(esc_attr__('Edit this page','Flexible')); ?>
+		 	<!-- end .post-content -->
 	</article> <!-- end .entry -->
 	
 	<?php if (et_get_option('flexible_integration_single_bottom') <> '' && et_get_option('flexible_integrate_singlebottom_enable') == 'on') echo(et_get_option('flexible_integration_single_bottom')); ?>

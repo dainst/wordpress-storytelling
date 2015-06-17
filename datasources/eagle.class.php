@@ -3,7 +3,7 @@ namespace esa_datasource {
 	class eagle extends abstract_datasource {
 		
 		
-			function dialogue() {
+			function search_form() {
 				echo "search dialgue";
 			}
 		
