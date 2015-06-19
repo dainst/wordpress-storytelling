@@ -284,14 +284,14 @@ function media_esa_dialogue() {
 	
 	global $esa_datasources;
 	
-	media_upload_header();
+	//media_upload_header();
 	
 	// get current search engine
 	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'europeana';
 	
 	//preview field
 	echo "<div id='esa_item_list_sidebar'>";
-	echo "<div id='esa_item_preview' class='esa_item_$engine'></div>";
+	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
 	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
 	echo "</div>";
 	echo "<div id='esa_item_list_main'>";

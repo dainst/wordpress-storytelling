@@ -14,13 +14,21 @@ class esa_item {
 	
 	public $id; // unique id from whatever datasource this item  is from
 	public $source; // itentifier of the datasource (correspondets with class names in esa_datasource namespace)
+	public $url; // URI / URL wich lead tro the orinigal dataset (diplayed in the original webspage)
 
 	public $html; //htm representation of the object
 
-	public function __construct($source, $id, $html = '') {
+	public function __construct($source, $id, $html = '', $url = '') {
 		$this->id = $id;
 		$this->source = $source;
 		$this->html = $html;
+		if ($url) {
+			if (filter_var($url, FILTER_VALIDATE_URL)) {
+				$this->url = $url;
+			} else {
+				$this->_error("$url considered as invalid");
+			} 
+		}
 	}
 	
 	/**
@@ -35,7 +43,15 @@ class esa_item {
 		}
 		//echo "<pre>"; print_r($this); "</pre>";
 				
-		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source}'>{$this->html}</div>";
+		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source}'>";
+
+		echo "<div class='esa_item_inner'>"; 
+		echo $this->html;
+		echo "</div>";
+		if ($this->url) {
+			echo "<div class='esa_item_tools'><a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>v</a></div>";
+		}
+		echo "</div>";
 	}
 	
 	/**

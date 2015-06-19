@@ -3,8 +3,8 @@ namespace esa_datasource {
 	abstract class abstract_datasource {
 	
 		// url of the api, the source uses (important, if default search dialogue nad/or search functions are used)
-		public $api_search_url;
-		public $api_single_url;
+		//public $api_search_url;
+		//public $api_single_url;
 		
 		// infotext to this data source
 		public $title;
@@ -13,6 +13,15 @@ namespace esa_datasource {
 		// array of esa_items containing the results of a performed search
 		public $results = array();
 
+
+		// saves current serach params
+		public $query;
+		
+		// pagination data
+		public $pagination = true; //is pagination possible / supported in the serach results
+		public $page = 1; //current page
+		public $pages = false; // number of pages. false means: unknown
+		
 		//error collector
 		public $errors = array();
 		
@@ -32,6 +41,9 @@ namespace esa_datasource {
 			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : '';
 			echo "<form method='post'>";
 			echo "<input type='text' name='esa_ds_query' value='{$query}'>";
+
+			echo "<input type='hidden' name='esa_ds_page' value='1'>";
+			
 			echo "<input type='submit' class='button button-primary' value='Search'>";
 			echo "</form>";
 		}
@@ -45,20 +57,44 @@ namespace esa_datasource {
 		 * - %s in apiurl becomes replaced by search string
 		 * - trys to use $_POST['esa_ds_query'] as search string, when $query is not given
 		 * 
-		 * @param string $query
 		 * 
 		 * @return array of result, wich has to be parsed by $this->parse_result_set or false if error
 		 */
-		function search($query = null) {
-			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
-
+		function search() {
 			try {
-				$response = $this->parse_result_set($this->_generic_api_call($this->api_search_url, $this->api_encode_fn($query, false)));
+				$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : null;
+				
+				if (!$query) {
+					return;
+				}
+				
+				// collect $_POST data
+				$this->page  = (isset($_POST['esa_ds_page'])) ? $_POST['esa_ds_page'] : null;
+				$this->pages  = (isset($_POST['esa_ds_pages'])) ? $_POST['esa_ds_pages'] : null;
+				$navi  = (isset($_POST['esa_ds_navigation'])) ? $_POST['esa_ds_navigation'] : '';
+				$this->query = $query;
+				
+				$fun = "api_search_url_$navi";
+				
+				if ($navi and method_exists($this, $fun)) {
+					$queryurl = $this->$fun($query);
+				} else {
+					$queryurl = $this->api_search_url($query);
+				}
+				echo $queryurl;
+				
+				$response = $this->parse_result_set($this->_generic_api_call($queryurl));
+				
+				
+
+				
 			} catch (\Exception $e) {
 				$this->error($e->getMessage());
 			}
 			
-			return (!count($this->errors)) ?  : false;
+			
+			
+			return (!count($this->errors));
 		}
 		
 		/**
@@ -73,7 +109,7 @@ namespace esa_datasource {
 		 */
 		function get($id) {
 			$id = (isset($_POST['esa_ds_id'])) ? $_POST['esa_ds_id'] : $id;
-			return $this->parse_result($this->_generic_api_call($this->api_single_url, $this->api_encode_fn($id, true)));
+			return $this->parse_result($this->_generic_api_call($this->api_single_url($id)));
 		}
 		
 		/**
@@ -82,22 +118,25 @@ namespace esa_datasource {
 		 * @param string $api
 		 * @param string $param
 		 */
-		private function _generic_api_call($api, $param) {
+		private function _generic_api_call($url) {
 				
-			if (!$param) {
+			if (!$url) {
 				throw new \Exception('No Query');
 			}
 			
 				
-			$url = sprintf($api, $param);
+			//$url = sprintf($api, $param);
 		
 				
 			$response = $this->_fetch_external_data($url);
 			
-			//*/
-			
+			//*/ debug
+			echo "<b>debug</b>";
 			echo "<pre class='esa_debug'>";
 			echo $url;
+			echo "\n";
+			print_r($_POST);
+			echo "\n";
 			print_r((array) json_decode($response));
 			echo "</pre>";
 			//*/
@@ -105,19 +144,6 @@ namespace esa_datasource {
 			return $response;
 		}
 		
-		/**
-		 * to use with api_search_url and api_single_url
-		 * overwrite in implementation with the encoding you need (warurlencode, urlencode etc.) 
-		 * 
-		 * the genereic version does exactly nothing.
-		 * 
-		 * @param string $string
-		 * @param boolean $is_single -> single api call or serach query
-		 * @return string
-		 */
-		function api_encode_fn($string, $is_single = false) {
-			return $string;
-		}
 		
 		/**
 		 * 
@@ -129,6 +155,10 @@ namespace esa_datasource {
 		abstract function parse_result_set($result);
 		
 		abstract function parse_result($result);
+		
+		abstract function api_single_url($query);
+		
+		abstract function api_search_url($id);
 		
 		
 		/**
@@ -147,11 +177,79 @@ namespace esa_datasource {
 		 * 
 		 */
 		function show_result() {
+			
+			$this->show_pagination();
+			
 			echo "<div class='esa_item_list'>";
 			foreach ($this->results as $result) {
 				$result->html();
 			}
 			echo "</div><div style='clear:both'></div>";
+		}
+		
+		/**
+		 * shows the pagination control of the results (next page etc.), when
+		 * $this->pagination contains data
+		 * it is a task of the specific implementation of this class, to fill the array,
+		 * because how pagination works strongly differs from datasource to datasource  
+		 * 
+		 * 
+		 */
+		function show_pagination() {
+			if ($this->pagination) {
+				
+				echo "<div class='esa_item_list_pagination'>";
+				
+				if (method_exists($this, "api_search_url_first")) {
+					$this->show_pagination_button('first');
+				}
+				
+				if (method_exists($this, "api_search_url_prev") and ($this->page > 1)) {
+					$this->show_pagination_button('prev');
+				}
+
+				echo "<div class='esa_item_list_pagination_current'>";
+				
+				if ($this->page) {
+					echo "Page " . $this->page;
+				}
+								
+				if ($this->pages) {
+					echo ($this->page) ? ' of ' : 'Pages: '; 
+					echo $this->pages;
+				}
+				
+				echo "</div>";
+				
+				if (method_exists($this, "api_search_url_next") and ($this->page < $this->pages)) {
+					$this->show_pagination_button('next');
+				}
+				
+				if (method_exists($this, "api_search_url_last") and $this->pages) {
+					$this->show_pagination_button('last');
+				}
+				
+				echo "</div>";
+			}
+		}
+		
+		function show_pagination_button($type) {
+			
+			$labels = array(
+					'prev' => "Previous",
+					'next' => "Next",
+					'first' => "First",
+					'last' => "Last"
+			);
+			
+		
+			echo "<form method='post' class='esa_item_list_pagination_button'>";
+			echo "<input type='hidden' name='esa_ds_query' value='{$this->query}'>";
+			echo "<input type='hidden' name='esa_ds_page' value='{$this->page}'>";
+			echo "<input type='hidden' name='esa_ds_pages' value='{$this->pages}'>";
+			echo "<input type='hidden' name='esa_ds_navigation' value='$type'>";
+			echo "<input type='submit' class='button button-secondary' value='{$labels[$type]}'>";
+			echo "</form>";
 		}
 		
 		/**

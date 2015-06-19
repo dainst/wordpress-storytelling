@@ -9,18 +9,58 @@ namespace esa_datasource {
 	 */
 	class europeana extends abstract_datasource {
 		
-			//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
-			public $api_search_url = "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=%s&start=1&rows=24&profile=standard";
-			public $api_single_url = "";
 
 			public $title = "Europeana Connection Alpha 0.1";
-			public $info = "Europeana Connection Alpha 0.1";    
+			public $info = "Europeana Connection Alpha 0.1"; 
+
+			private $_hits_per_page = 24;
+			
+			function api_search_url($query) {
+				$query = urlencode($query);
+				return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=1&rows={$this->_hits_per_page}&profile=standard";
+			}
+			
+			function api_single_url($id) {
+				return "";
+			}
+			
+			
+			function api_search_url_next($query) {
+				$query = urlencode($query);
+				$this->page += 1;
+				$start = 1 + ($this->page - 1) * $this->_hits_per_page;
+				return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=$start&rows={$this->_hits_per_page}&profile=standard";
+			} 
+			
+			function api_search_url_prev($query) {
+				$query = urlencode($query);
+				$this->page -= 1;
+				$start = 1 + ($this->page - 1) * $this->_hits_per_page;
+				return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=$start&rows={$this->_hits_per_page}&profile=standard";
+			} 
+			
+			function api_search_url_first($query) {
+				$query = urlencode($query);
+				$this->page = 1;
+				return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=1&rows={$this->_hits_per_page}&profile=standard";
+			}
+			
+			function api_search_url_last($query) {
+				$query = urlencode($query);
+				$this->page = $this->pages;
+				$last = 1 + ($this->pages - 1) * $this->_hits_per_page;
+				return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=$last&rows={$this->_hits_per_page}&profile=standard";
+			}
 			
 			function parse_result_set($response) {
 				$response = json_decode($response);
 				
 				if (!$response->success) {
 					throw new \Exception('Sussess = false'); // todo: better error message 
+				}
+				
+				if ($response->totalResults == 0) {
+					throw new \Exception('Zero results'); // todo: better error message
 				}
 				
 				
@@ -44,8 +84,13 @@ namespace esa_datasource {
 					$html .= "</table>";
 					$html .= "<img src='{$item->edmPreview[0]}'>";
 					$html .= "</div>";
-					$this->results[] = new \esa_item('europeana', $item->id, $html);
+					$this->results[] = new \esa_item('europeana', $item->id, $html, $item->guid);
 				}
+				
+				// set up pagination data
+				$this->pages = round($response->totalResults / $this->_hits_per_page);
+
+
 				return $this->results;
 			}
 
@@ -55,9 +100,7 @@ namespace esa_datasource {
 				return $res[0];
 			}
 			
-			function api_encode_fn($string, $is_single = false) {
-				return urlencode($string);
-			}
+
 		
 	}
 }

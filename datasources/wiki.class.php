@@ -11,9 +11,16 @@ namespace esa_datasource {
 	 */
 	class wiki extends abstract_datasource {
 		
+			public $pagination = false;
+		
 			//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
-			public $api_search_url = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=thumbnail&format=json&titles=%s";
-			public $api_single_url = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&piprop=thumbnail&format=json&pageids=%s";
+			function api_search_url($query) {
+				return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&titles=$query";
+			}
+			
+			function api_single_url($id) {
+				return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&pageids=$id";
+			}
 
 			public $info = "This is a simple data source wich searches the wikipedia for images to any keyword. <br>Is is not very useful.<br> I just designed it as example of how we will be able to use this engine to search and retrieve in various data sources in the future. <br> Just insert something and press 'search'. <br>-  philipp";    
 			public $title = 'Test Subplugin for Wikipedia';
@@ -22,7 +29,7 @@ namespace esa_datasource {
 				$response = json_decode($response);
 				$this->results = array(); 
 				foreach ($response->query->pages as $page) {
-					$this->results[] = new \esa_item('wiki', $page->pageid, "<div class='subtext'>{$page->title}</div><img src='{$page->thumbnail->source}'>");
+					$this->results[] = new \esa_item('wiki', $page->pageid, "<div class='subtext'>{$page->title}</div><img src='{$page->thumbnail->source}'>", $page->fullurl);
 				}
 				return $this->results;
 			}
