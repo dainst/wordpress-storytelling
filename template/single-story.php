@@ -12,4 +12,6 @@
 	<?php include ('sidebar-single-story.php'); ?>
 </div> 	<!-- end #content-area -->
 	
+
+	
 <?php get_footer(); ?>

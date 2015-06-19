@@ -375,14 +375,13 @@ function media_esa_dialogue() {
  *  
  */
 
+add_shortcode('esa', function ($atts, $context) {
 
-add_shortcode( 'esa', function ( $atts ) {
 	if (!isset($atts['source']) or !isset($atts['id'])) {
 		return;
 	}
 	
 	$item = new esa_item($atts['source'], $atts['id']);
-	
 	
 	return $item->html();
 	
@@ -392,8 +391,31 @@ add_shortcode( 'esa', function ( $atts ) {
 		
 		
 
+/* the caching mechanism for esa_items */
 
 
+function esa_install () {
+	global $wpdb;
+	
+	$table_name = $wpdb->prefix . "esa_item_cache";
+	
+	$charset_collate = $wpdb->get_charset_collate();
+	
+	$sql = 
+	"CREATE TABLE $table_name (
+  		source VARCHAR(12) NOT NULL,
+  		id VARCHAR(48) NOT NULL,
+  		content TEXT NULL,
+  		searchindex TEXT NULL,
+  		timestamp DATETIME NOT NULL,
+  		PRIMARY KEY  (source, id));
+	) $charset_collate;";
+	
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+	
+}
+register_activation_hook( __FILE__, 'esa_install' );
 
 ?>
 

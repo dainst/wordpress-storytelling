@@ -16,14 +16,9 @@ var esa_ds = {
 		if (!esa_ds.selected) {
 			return;
 		}
-		
-		
 			
 		var html = '[esa source="' + jQuery(esa_ds.selected).data("source") + '" id="' + jQuery(esa_ds.selected).data("id") + '"]';
 
-		//alert(html);
-		
-		
 		var win = window.dialogArguments || opener || parent || top;
 		win.send_to_editor(html);
 		return false;

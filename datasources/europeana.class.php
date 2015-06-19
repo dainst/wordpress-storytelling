@@ -95,8 +95,8 @@ namespace esa_datasource {
 			
 
 			private function _item2html($item, $id) {
-				$html  = "<div class='wrapper'>";
-				$html .= "<h1>{$item->title[0]}</h1>";
+				//$html  = "<div class='wrapper'>";
+				$html = "<h1>{$item->title[0]}</h1>";
 				$html .= "<table class='datatable'>";
 				$html .= "<tr><td>id</td><td>{$id}</td></tr>";
 				if (isset($item->year)) {
@@ -114,7 +114,7 @@ namespace esa_datasource {
 				}*/
 				$html .= "</table>";
 				$html .= "<img src='{$item->edmPreview[0]}'>";
-				$html .= "</div>";
+				//$html .= "</div>";
 				return $html;
 			}
 		
