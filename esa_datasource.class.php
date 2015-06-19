@@ -16,6 +16,7 @@ namespace esa_datasource {
 
 		// saves current serach params
 		public $query;
+		public $id;
 		
 		// pagination data
 		public $pagination = true; //is pagination possible / supported in the serach results
@@ -108,8 +109,8 @@ namespace esa_datasource {
 		 * @return array of result, wich has to be parsed by $this->parse_result
 		 */
 		function get($id) {
-			$id = (isset($_POST['esa_ds_id'])) ? $_POST['esa_ds_id'] : $id;
-			return $this->parse_result($this->_generic_api_call($this->api_single_url($id)));
+			$this->id = (isset($_POST['esa_ds_id'])) ? $_POST['esa_ds_id'] : $id;
+			return $this->parse_result($this->_generic_api_call($this->api_single_url($this->id)));
 		}
 		
 		/**
@@ -131,7 +132,6 @@ namespace esa_datasource {
 			$response = $this->_fetch_external_data($url);
 			
 			//*/ debug
-			echo "<b>debug</b>";
 			echo "<pre class='esa_debug'>";
 			echo $url;
 			echo "\n";

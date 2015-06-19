@@ -38,10 +38,8 @@ class esa_item {
 		
 		
 		if (!$this->html) {
-			$this->_error('generator');
 			$this->_generator();
 		}
-		//echo "<pre>"; print_r($this); "</pre>";
 				
 		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source}'>";
 
@@ -72,14 +70,18 @@ class esa_item {
 		require_once(plugin_dir_path(__FILE__) . "datasources/{$this->source}.class.php");
 		$ed_class = "\\esa_datasource\\{$this->source}";
 		$eds = new $ed_class;
-		
-		$this->html = $eds->get($this->id)->html;
-		
+		try {
+			$this->html = $eds->get($this->id)->html;
+		} catch (Exception $e) {
+			$this->_error($e->getMessage());
+		}
+
 	}
 	
 	private function _error($error) {
 		$this->errors[] = $error;
-		$this->html = "<div class='error'><ul><li>" . implode('</li><li>', $this->errors) . "</li></ul></div>";
+		echo $error;
+		$this->html = "<div class='error'>Some Errors: <ul><li>" . implode('</li><li>', $this->errors) . "</li></ul></div>";
 	}
 	
 }

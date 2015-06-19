@@ -4,6 +4,11 @@ namespace esa_datasource {
 	 * 
 	 * The Subplugin to retrieve Data from Europeana!
 	 * 
+	 * Todo
+	 * * implement some useful serach filters
+	 * * use a ddifferent API key.. ydRg6Ujho is registered for pfranck
+	 * * what shall be seen in the resulting Item
+	 * 
 	 * @author philipp franck
 	 *
 	 */
@@ -21,9 +26,8 @@ namespace esa_datasource {
 			}
 			
 			function api_single_url($id) {
-				return "";
+				return "http://www.europeana.eu/api/v2/record{$id}.json?wskey=ydRg6Ujho&profile=standard";
 			}
-			
 			
 			function api_search_url_next($query) {
 				$query = urlencode($query);
@@ -63,28 +67,9 @@ namespace esa_datasource {
 					throw new \Exception('Zero results'); // todo: better error message
 				}
 				
-				
 				$this->results = array(); 
 				foreach ($response->items as $item) {
-					$html  = "<div class='wrapper'>"; 
-					$html .= "<h1>{$item->title[0]}</h1>";
-					$html .= "<table class='datatable'>";
-					$html .= "<tr><td>id</td><td>{$item->id}</td></tr>";
-					$html .= "<tr><td>year</td><td>{$item->year}</td></tr>";
-					$html .= "<tr><td>type</td><td>{$item->type}</td></tr>";
-					if (count($item->title) > 1) {
-						$html .= "<tr><td>alternative titles</td><td>" . implode(',', array_slice($item->title, 1)) . "</td></tr>";
-					}
-					if (count($item->provider)) {
-						$html .= "<tr><td>provider</td><td>" . implode(',', $item->provider) . "</td></tr>";
-					}
-					if (count($item->dataProvider)) {
-						$html .= "<tr><td>data provider</td><td>" . implode(',', $item->dataProvider) . "</td></tr>";
-					}
-					$html .= "</table>";
-					$html .= "<img src='{$item->edmPreview[0]}'>";
-					$html .= "</div>";
-					$this->results[] = new \esa_item('europeana', $item->id, $html, $item->guid);
+					$this->results[] = new \esa_item('europeana', $item->id, $this->_item2html($item, $item->id), $item->guid);
 				}
 				
 				// set up pagination data
@@ -95,12 +80,43 @@ namespace esa_datasource {
 			}
 
 			function parse_result($response) {
-				// wikipedia always return a whole set
-				$res = $this->parse_result_set($response);
-				return $res[0];
+				$response = json_decode($response);
+				
+				if (!$response->success) {
+					throw new \Exception('Sussess = false'); // todo: better error message 
+				}
+				
+				$item = $response->object;
+				return new \esa_item('europeana', $response->object->id, $this->_item2html($response->object, $this->id));
+				
+				
+				
 			}
 			
 
+			private function _item2html($item, $id) {
+				$html  = "<div class='wrapper'>";
+				$html .= "<h1>{$item->title[0]}</h1>";
+				$html .= "<table class='datatable'>";
+				$html .= "<tr><td>id</td><td>{$id}</td></tr>";
+				if (isset($item->year)) {
+					$html .= "<tr><td>year</td><td>{$item->year}</td></tr>";
+				}
+				$html .= "<tr><td>type</td><td>{$item->type}</td></tr>";
+				if (count($item->title) > 1) {
+					$html .= "<tr><td>alternative titles</td><td>" . implode(',', array_slice($item->title, 1)) . "</td></tr>";
+				}
+				if (count($item->provider)) {
+					$html .= "<tr><td>provider</td><td>" . implode(',', $item->provider) . "</td></tr>";
+				}
+				/*if (count($item->dataProvider)) {
+					$html .= "<tr><td>data provider</td><td>" . implode(',', $item->dataProvider) . "</td></tr>";
+				}*/
+				$html .= "</table>";
+				$html .= "<img src='{$item->edmPreview[0]}'>";
+				$html .= "</div>";
+				return $html;
+			}
 		
 	}
 }
