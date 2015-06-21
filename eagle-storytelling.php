@@ -1,7 +1,7 @@
 <?php
 /**
  * @package eagle-storytelling
- * @version 0.6
+ * @version 0.7
  */
 /*
 Plugin Name: Eagle Storytelling Application
@@ -9,7 +9,7 @@ Plugin URI:  http://wordpress.org/plugins/eagle-storytelling/
 Description: Create your own EAGLE story! 
 Author:	     Wolfgang Schmidle & Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     0.6
+Version:     0.7
 
 */
 
@@ -200,8 +200,10 @@ add_filter( 'page_template', 'esa_get_create_story_page_template' );
  */
 
 function esa_register_plugin_styles() {
-	wp_register_style( 'eagle-storytelling', plugins_url( 'eagle-storytelling/eagle-storytelling.css' ) );
+	wp_register_style( 'eagle-storytelling', plugins_url( 'eagle-storytelling/css/eagle-storytelling.css' ) );
 	wp_enqueue_style( 'eagle-storytelling' );
+	wp_register_style( 'esa_item', plugins_url( 'eagle-storytelling/css/esa_item.css' ) );
+	wp_enqueue_style( 'esa_item' );
 }
 
 add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
@@ -263,13 +265,14 @@ add_action('media_upload_esa', function() {
 	add_action('admin_print_styles-media-upload-popup', function() {
 		wp_enqueue_style('colors');
 		wp_enqueue_style('media');
-		wp_enqueue_style('esa_mediamenu', plugins_url() .'/eagle-storytelling/eagle-storytelling.css');
+		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
+		wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
 	});
 	
 	
 	add_action('admin_print_scripts-media-upload-popup', function() {
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/esa_mediamenu.js', array('jquery'));
+		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
 	});
 	
 		
@@ -302,11 +305,6 @@ function media_esa_dialogue() {
 		echo "<a class='button $sel' href='?tab=esa&esa_source=$source'>$label</a>";
 	}
 
-	
-	
-	
-	
-	//echo "<div id='esa_media_frame_body'>";
 
 	// get engine interface		
 	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
@@ -316,13 +314,8 @@ function media_esa_dialogue() {
 	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
 	$ed_class = "\\esa_datasource\\$engine";
 	$eds = new $ed_class;
-
-	
-
 	
 	$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-	
-	
 	
 	if (get_user_setting('uploader')) { // todo: user-rights
 		$form_class .= ' html-uploader';
@@ -363,11 +356,15 @@ function media_esa_dialogue() {
 
 
 /**
- *  the shortcode 
+ *  the esa_item shortcode 
  *  
- *  available codes:
- *  id
- *  source
+ *  attribute
+ *  id (mandatory) - unique id of the datatset as used in the external data source 
+ *  source (mandatory) - name of the datasource as used in this plugin
+ *  
+ *  height - height of the item in px
+ *  width - width of the item in px
+ *  align (left|right|none) - align of the object in relation to the surrounding text (deafult is right)
  *  
  *  bsp: 
  *  
@@ -375,25 +372,65 @@ function media_esa_dialogue() {
  *  
  */
 
-add_shortcode('esa', function ($atts, $context) {
+
+function esa_shortcode($atts, $context) {
 
 	if (!isset($atts['source']) or !isset($atts['id'])) {
 		return;
 	}
 	
-	$item = new esa_item($atts['source'], $atts['id']);
+	$css = array();
+	$classes = array();
 	
+	if (isset($atts['height'])) {
+		$css['height'] = $atts['height'] . 'px';
+	}
+	if (isset($atts['width'])) {
+		$css['width'] = $atts['width'] . 'px';
+	}
+
+	if (isset($atts['align'])) {
+		if ($atts['align'] == 'right') {
+			$classes[] = 'esa_item_right';
+			//$css['float'] = 'left';
+		} elseif ($atts['align'] == 'left') {
+			$classes[] = 'esa_item_left';
+			//$css['float'] = 'right';
+		} else {
+			$classes[] = 'esa_item_none';
+			//$css['float'] = 'none';
+		}
+	}
+	
+	$item = new esa_item($atts['source'], $atts['id'], false, false, $classes, $css);
+
 	return $item->html();
-	
-});
+
+}
+
+add_shortcode('esa', 'esa_shortcode');
 
 
 		
 		
 
-/* the caching mechanism for esa_items */
+/** 
+ * the caching mechanism for esa_items 
+ * 
+ * how it works: everytime a esa_item get displayed, it look in the cache if there is a non expired cache of this item. if not,
+ * it fetches the contents from the corresponding api and caches it
+ * that has two reasons: 
+ * - we want to make the embedded esa_items searchable
+ * - page loading would be quite slow, if every items content had to be fetched again from the api
+ * 
+ * how long may content eb kept in cache? that has to be diskussed.
+ * 
+ * 
+ */
 
-
+/**
+ * need a special table for taht cache
+ */
 function esa_install () {
 	global $wpdb;
 	
@@ -417,37 +454,44 @@ function esa_install () {
 }
 register_activation_hook( __FILE__, 'esa_install' );
 
+
+
+
+/**
+ * tinyMCE with esa_objects 
+ * 
+ * -- experimental -- 
+ * 
+ */
+
+add_action( 'init', 'esa_mce' );
+function esa_mce() {
+	add_filter("mce_external_plugins", function($plugin_array) {
+		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling/js/esa_mce.js';
+		$plugin_array['noneditable'] = plugins_url() . '/eagle-storytelling/js/mce_noneditable.js';
+		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item.css');
+		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
+		return $plugin_array;
+	});
+	
+	add_filter('mce_buttons', function($buttons) {
+		array_push( $buttons, 'whatever' );
+		return $buttons;
+	});
+	
+};
+
+
+add_action('wp_ajax_esa_shortcode', function() {
+	if (isset($_POST['esa_shortcode'])) {
+		echo do_shortcode(str_replace('\\', '', rawurldecode($_POST['esa_shortcode'])));
+		wp_die();
+	}
+	echo "ERROR"; // todo: do something more useful
+	wp_die();
+});
+
+
+
+
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

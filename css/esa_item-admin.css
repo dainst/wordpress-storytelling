@@ -1,0 +1,85 @@
+@CHARSET "UTF-8";
+
+/* esa result overview (in admin "add media" - area) */
+.esa_item_list .esa_item {
+	border: 2px solid silver;
+	width: 130px;
+	height: 130px;
+	overflow: hidden;
+	float: left;
+	margin: 4px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.esa_item_list .selected {
+	border: 2px solid blue;
+}
+
+.esa_item_list .esa_item:hover {
+	border: 2px solid black;
+}
+
+.esa_debug {
+	background: #F2EF99;
+	max-height:300px; 
+	overflow: scroll;
+	display: none	
+}
+
+
+#esa_item_list_main {
+	padding: 6px;
+	height: 100%;
+	overflow: scroll-y;
+	margin-right: 362px;
+}
+
+#esa_item_list_sidebar {
+	padding: 6px;
+	border-left: 1px solid #CCC;
+	height: 100%;
+	overflow: scroll-y;
+	float: right;
+}
+
+#esa_item_preview {
+	height: 350px;
+	width: 350px;
+	overflow: hidden;	
+	margin-bottom: 6px;
+	border-bottom: 1px solid #CCC;
+}
+
+.esa_item_list_pagination {
+	
+}
+
+.esa_item_list_pagination_button {
+	display: inline;
+	margin : 0.5em
+}
+
+.esa_item_list_pagination_current {
+	height: 28px;
+	margin: 0px;
+	padding: 0px 10px 1px;
+	display: inline-block;
+	text-decoration: none;
+	font-size: 13px;
+	line-height: 26px;
+}
+
+
+/* esa_item @ mce */
+
+#tinymce .esa_item-selected  {
+	border: 2px solid blue;
+} 
+
+#tinymce .esa_item_wrapper  {
+	background: url('../images/loading.png') center center no-repeat;
+	min-width: 200px;
+	min-height: 200px;
+	display: inline-block;
+}

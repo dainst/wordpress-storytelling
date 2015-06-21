@@ -1,0 +1,123 @@
+@CHARSET "UTF-8";
+
+/* esa item is important! its the visual interpretation of our shortcuts */
+.esa_item {
+	border: 2px solid silver;
+	background-color: white !important;
+	min-width: 200px;
+	min-height: 200px;
+	overflow: hidden;
+	position: relative;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	
+	/* default is left? */
+	float: left;
+	margin-right: 3px;
+}
+
+.esa_item_right {
+	float: left;
+	margin-right: 3px;
+	margin-left: 0px;
+}
+
+.esa_item_left {
+	float: right;
+	margin-left: 3px;
+	margin-right: 0px;
+}
+
+.esa_item_inner {
+	position: absolute;
+	width:100%;
+	height:100%;
+	padding: 1px	
+}
+
+.esa_item_tools {
+	position: absolute;
+	padding: 4px;
+	width:100%;
+	display: none
+}
+
+.esa_item_tools a {
+	display: block;
+	background: silver;
+	border-radius: 5px;
+	/*border: 1px solid silver;*/
+	box-shadow: 0px 0px 3px 3px rgba(128, 128, 128, 0.8);
+	height: 33px;
+	width: 33px;
+	background: url('../images/eye.png') center center no-repeat white;
+	color: rgba(0,0,0,0);
+	opacity: 0.8
+}
+
+.esa_item_tools a:focus {
+	box-shadow: none
+}
+
+.esa_item_tools a:hover {
+	box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.8);
+	opacity: 1
+}
+
+
+.esa_item:hover .esa_item_tools {
+	display: block
+}
+
+/* special definitions for different types of esa_items ... todo: when it gets more, maybe just load the css we need not all */
+
+/* esa wiki */
+.esa_item_wiki img {
+	width:100%;
+	height:100%	
+}
+
+.esa_item_wiki .subtext {
+	background: rgba(255,255,255,0.3);
+
+}
+
+
+/* esa europeana */
+
+.esa_item_europeana {
+	background: url('../images/europeana-logo-2.png') bottom right no-repeat;
+}
+
+.esa_item_europeana .wrapper {
+	height: 100%;
+	width: 100%;
+	background-color: rgba(255,255,255,0.7)
+}
+
+.esa_item_europeana h1 {
+	font-weight: bold;
+	font-size: 10pt;
+	margin-top: 0px
+}
+
+.esa_item_europeana .datatable {
+	font-size: 7pt;
+	border-collapse: collapse; 
+	width: 100%
+}
+
+.esa_item_europeana .datatable td {
+	border: 1px solid silver;
+	background-color: rgba(255,255,255,0.7)
+}
+
+
+/* debug */
+
+.esa_debug {
+	background: #F2EF99;
+	max-height:300px; 
+	overflow: scroll;
+	display: none	
+}

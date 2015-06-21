@@ -14,13 +14,14 @@ class esa_item {
 	
 	public $id; // unique id from whatever datasource this item  is from
 	public $source; // itentifier of the datasource (correspondets with class names in esa_datasource namespace)
-	public $url; // URI / URL wich lead tro the orinigal dataset (diplayed in the original webspage)
+	public $url; // URI / URL wich lead to the original dataset (displayed in the original webpage)
 
 	public $html; //htm representation of the object
 
-	public $classes = array();
+	public $classes = array(); // additional classes of this item
+	public $css = array(); // additional css of this item
 	
-	public function __construct($source, $id, $html = '', $url = '') {
+	public function __construct($source, $id, $html = '', $url = '', $classes = array(), $css = array()) {
 		$this->id = $id;
 		$this->source = $source;
 		$this->html = $html;
@@ -31,6 +32,8 @@ class esa_item {
 				$this->_error("$url considered as invalid");
 			} 
 		}
+		$this->classes = $classes;
+		$this->css = $css;
 	}
 	
 	/**
@@ -45,7 +48,16 @@ class esa_item {
 				
 		$classes = implode(' ', $this->classes);
 		
-		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source} $classes'>";
+		$css_string = '';
+		if (count($this->css)) {
+			$css_string = "style='";
+			foreach ($this->css as $key=>$val) {
+				$css_string .= "$key: $val;";
+			}
+			$css_string .= "'";
+		}
+		
+		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source} $classes' $css_string>";
 
 		echo "<div class='esa_item_inner'>"; 
 		echo $this->html;
