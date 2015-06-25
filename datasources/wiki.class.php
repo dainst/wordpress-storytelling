@@ -6,7 +6,7 @@ namespace esa_datasource {
 	 * It is not very useful. 
 	 * I just designed as example of how we cwill beable to use this engine to serach and retrieve in various data sources in the future.
 	 * 
-	 * @author philipp franck
+	 * @author Philipp Franck
 	 *
 	 */
 	class wiki extends abstract_datasource {

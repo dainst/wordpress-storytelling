@@ -23,6 +23,9 @@ namespace esa_datasource {
 		public $page = 1; //current page
 		public $pages = false; // number of pages. false means: unknown
 		
+		// some classes, the user may add to the esa_item
+		public $optional_classes = array('test' => 'test');
+		
 		//error collector
 		public $errors = array();
 		
@@ -82,7 +85,9 @@ namespace esa_datasource {
 				} else {
 					$queryurl = $this->api_search_url($query);
 				}
-				echo $queryurl;
+				if (ESA_DEBUG) {
+					echo $queryurl;
+				}
 				
 				$response = $this->parse_result_set($this->_generic_api_call($queryurl));
 				
@@ -114,7 +119,7 @@ namespace esa_datasource {
 		}
 		
 		/**
-		 * used for the generic get and serach function only; 
+		 * used for the generic get and search function only; 
 		 * 
 		 * @param string $api
 		 * @param string $param
@@ -131,16 +136,18 @@ namespace esa_datasource {
 				
 			$response = $this->_fetch_external_data($url);
 			
-			//*/ debug
-			echo "<pre class='esa_debug'>";
-			echo $url;
-			echo "\n";
-			print_r($_POST);
-			echo "\n";
-			print_r((array) json_decode($response));
-			echo "</pre>";
-			//*/
-			
+			if (ESA_DEBUG) {
+				//*/ debug
+				echo "<pre class='esa_debug'>";
+				echo $url;
+				echo "\n";
+				print_r($_POST);
+				echo "\n";
+				print_r((array) json_decode($response));
+				echo "</pre>";
+				//*/
+			}
+				
 			return $response;
 		}
 		
@@ -272,7 +279,7 @@ namespace esa_datasource {
 		protected function _fetch_external_data($url) {
 			if(function_exists("curl_init") && function_exists("curl_setopt") && function_exists("curl_exec") && function_exists("curl_close") ) {
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, "example.com");
+				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				$response = curl_exec($ch);
 				curl_close($ch);

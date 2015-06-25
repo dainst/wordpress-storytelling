@@ -5,8 +5,8 @@ namespace esa_datasource {
 	 * The Subplugin to retrieve Data from Europeana!
 	 * 
 	 * Todo
-	 * * implement some useful serach filters
-	 * * use a ddifferent API key.. ydRg6Ujho is registered for pfranck
+	 * * implement some useful search filters
+	 * * use a different API key.. ydRg6Ujho is registered for pfranck
 	 * * what shall be seen in the resulting Item
 	 * 
 	 * @author philipp franck

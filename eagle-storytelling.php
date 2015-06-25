@@ -13,6 +13,8 @@ Version:     0.7
 
 */
 
+include('esa_settings.php');
+
 
 /****************************************/
 
@@ -238,12 +240,6 @@ add_action( 'pre_get_posts', 'trismegistos_filter' );
  */
 
 
-// list of available data sources (must correspondent with files in /datasources)
-$esa_datasources = array(
-		'eagle' 		=> __('search EAGLE inscriptions'),
-		'europeana' 	=> __('search in Europeana'),
-		'wiki' 			=> __('TEST Data-Engine: Wikipedia')
-);
 
 require_once('esa_datasource.class.php');
 require_once('esa_item.class.php');
@@ -287,16 +283,69 @@ function media_esa_dialogue() {
 	
 	global $esa_datasources;
 	
-	//media_upload_header();
-	
 	// get current search engine
 	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'europeana';
+	
+	// get engine interface
+	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
+		echo "Error: Search engine $engine not found!"; return;
+	}
+	
+	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
+	$ed_class = "\\esa_datasource\\$engine";
+	$eds = new $ed_class;
+	
+	$post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
+	
+	
+	//media_upload_header();
+	
+
 	
 	//preview field
 	echo "<div id='esa_item_list_sidebar'>";
 	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
-	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	
+	echo '<div id="esa_item_settings">';
+	
+	echo '<div class="esa_item_setting">';
+	echo '<label for="height">' . __('Height') . '</label>';
+	echo '<input type="number" name="height" value="">';
 	echo "</div>";
+	
+	echo '<div class="esa_item_setting">';
+	echo '<label for="width">' . __('Width') . '</label>';
+	echo '<input type="number" name="width" value="">';
+	echo "</div>";
+	
+	echo '<div class="esa_item_setting">';
+	echo '<label for="align">' . __('Align') . '</label>';
+	echo '<select height="1" name="align">
+			<option value="" selected>none</option>
+			<option value="left">Left</option>
+			<option value="right">Right</option>
+		</select>';
+	echo "</div>";
+	
+	if (count($eds->optional_classes)) {
+		echo '<div class="esa_item_setting">';
+		echo '<label for="mode">' . __('Modus') . '</label>';
+		echo '<select height="1" name="mode">
+				<option value="" selected>none</option>';
+		foreach ($eds->optional_classes as $key => $caption) {
+			echo "<option value='$key'>$caption</option>";
+		}
+		echo '</select>';
+		
+		echo "</div>";
+	}
+	
+	echo "</div>";
+	
+	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	
+	echo "</div>";
+	
 	echo "<div id='esa_item_list_main'>";
 
 	// create search engine menu
@@ -306,20 +355,10 @@ function media_esa_dialogue() {
 	}
 
 
-	// get engine interface		
-	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
-		echo "Error: Search engine $engine not found!"; return;
-	}
-	
-	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
-	$ed_class = "\\esa_datasource\\$engine";
-	$eds = new $ed_class;
-	
-	$post_id = isset( $_REQUEST['post_id'] ) ? intval( $_REQUEST['post_id'] ) : 0;
-	
+	/*
 	if (get_user_setting('uploader')) { // todo: user-rights
 		$form_class .= ' html-uploader';
-	}
+	}*/
 	
 
 	echo "<h3 class='media-title'>{$eds->title}</h3>";
@@ -336,18 +375,9 @@ function media_esa_dialogue() {
 	echo "</div>";
 	
 	
-	/*
-	echo '
-	<div class="media-sidebar visible">
-	<h3>Some Settings</h3>
 	
+
 	
-	<label class="setting" data-setting="url">
-	<span class="name">URL</span>
-	<input value="" readonly="" type="text">
-	</label>
-	</div>';
-	*/
 
 	
 	
@@ -429,7 +459,7 @@ add_shortcode('esa', 'esa_shortcode');
  */
 
 /**
- * need a special table for taht cache
+ * need a special table for that cache
  */
 function esa_install () {
 	global $wpdb;
@@ -453,6 +483,7 @@ function esa_install () {
 	
 }
 register_activation_hook( __FILE__, 'esa_install' );
+
 
 
 

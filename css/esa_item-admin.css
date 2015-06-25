@@ -49,6 +49,33 @@
 	overflow: hidden;	
 	margin-bottom: 6px;
 	border-bottom: 1px solid #CCC;
+	float: none
+}
+
+
+#esa_item_settings {
+	margin-bottom: 0.5em;
+}
+
+#esa_item_settings label {
+	width: 29.5%;
+	display: inline-block;
+	text-align: right;
+	padding-right: 0.5%;
+	line-height: 16px;
+	font-weight: 400;
+	font-size: 12px;
+	color: #666;
+}
+
+#esa_item_settings input,
+#esa_item_settings select {
+	width: 70%;
+	margin: 0px;
+}
+
+.esa_item_setting {
+	margin-bottom: 2px;
 }
 
 .esa_item_list_pagination {
