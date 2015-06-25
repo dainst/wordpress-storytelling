@@ -16,6 +16,24 @@ Version:     0.7
 include('esa_settings.php');
 
 
+function printQueries() {
+	global $wpdb;
+
+	if (defined('SAVEQUERIES') && SAVEQUERIES===true) {
+		echo 'SAVEQUERIES was set properly so we can get the queries.';
+		//foreach($wpdb->queries as $q) {
+			echo "<pre style='height:500px; width: 100%; background: silver>";
+			print_r($wpdb->queries);
+			echo "</pre>";
+		//}
+	}
+	else
+		echo 'SAVEQUERIES was not set. Please update your wp-config.php!';
+}
+
+add_action('wp_footer','printQueries',99999);
+
+
 /****************************************/
 
 function esa_create_keywords_widget() {
@@ -471,9 +489,10 @@ function esa_install () {
 	$sql = 
 	"CREATE TABLE $table_name (
   		source VARCHAR(12) NOT NULL,
-  		id VARCHAR(48) NOT NULL,
+  		id VARCHAR(96) NOT NULL,
   		content TEXT NULL,
   		searchindex TEXT NULL,
+  		url TEXT NULL,
   		timestamp DATETIME NOT NULL,
   		PRIMARY KEY  (source, id));
 	) $charset_collate;";

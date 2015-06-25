@@ -56,6 +56,10 @@ namespace esa_datasource {
 				return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=$last&rows={$this->_hits_per_page}&profile=standard";
 			}
 			
+			function api_record_url($id) {
+				return "http://www.europeana.eu/portal/record$id.html";
+			} 
+			
 			function parse_result_set($response) {
 				$response = json_decode($response);
 				
@@ -83,13 +87,11 @@ namespace esa_datasource {
 				$response = json_decode($response);
 				
 				if (!$response->success) {
-					throw new \Exception('Sussess = false'); // todo: better error message 
+					throw new \Exception('Success = false'); // todo: better error message 
 				}
 				
 				$item = $response->object;
-				return new \esa_item('europeana', $response->object->id, $this->_item2html($response->object, $this->id));
-				
-				
+				return new \esa_item('europeana', $response->object->id, $this->_item2html($response->object, $this->id), $this->api_record_url($this->id));
 				
 			}
 			

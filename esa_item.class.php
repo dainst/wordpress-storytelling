@@ -24,7 +24,7 @@ class esa_item {
 	public function __construct($source, $id, $html = '', $url = '', $classes = array(), $css = array()) {
 		$this->id = $id;
 		$this->source = $source;
-		$this->html = $html;
+		$this->html = $html;	
 		if ($url) {
 			if (filter_var($url, FILTER_VALIDATE_URL)) {
 				$this->url = $url;
@@ -40,8 +40,7 @@ class esa_item {
 	 * put out the html representation of this item
 	 */
 	public function html() {
-		
-		
+				
 		if (!$this->html) {
 			$this->_generator();
 		}
@@ -58,7 +57,6 @@ class esa_item {
 		}
 		
 		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source} $classes' $css_string>";
-
 		echo "<div class='esa_item_inner'>"; 
 		echo $this->html;
 		echo "</div>";
@@ -77,7 +75,6 @@ class esa_item {
 			return $this->_error("id ($this->id) or source  ($this->source) missing!");
 		}
 		
-		
 		// check: is data allready in cache?
 		global $wpdb;
 		$expiring_time = "2 week"; // what is a reasonable expiring time?!
@@ -86,6 +83,7 @@ class esa_item {
 			//echo "restored from cache ({$cached->expired})";
 			$this->classes[] = 'esa_item_cached';
 			$this->html = $cached->content;
+			$this->url = $cached->url;
 			if (!$cached->expired) {
 				return;
 			}
@@ -100,7 +98,9 @@ class esa_item {
 		$ed_class = "\\esa_datasource\\{$this->source}";
 		$eds = new $ed_class;
 		try {
-			$this->html = $eds->get($this->id)->html;
+			$generated = $eds->get($this->id);
+			$this->url = $generated->url;
+			$this->html = $generated->html;
 			$this->store($cached);
 		} catch (Exception $e) {
 			$this->_error($e->getMessage());
@@ -122,7 +122,8 @@ class esa_item {
 				array(
 					'content' => $this->html, 
 					'searchindex' => strip_tags($this->html), 
-					'timestamp' => current_time('mysql')
+					'timestamp' => current_time('mysql'),
+					'url' => $this->url,
 				),
 				array(
 					"source" => $this->source,
@@ -131,14 +132,15 @@ class esa_item {
 			);
 		} else {
 			$proceed = $wpdb->insert(
-					$wpdb->prefix . 'esa_item_cache',
-					array(
-							"source" => $this->source,
-							"id" => $this->id,
-							'content' => $this->html,
-							'searchindex' => $this->html,
-							'timestamp' => current_time('mysql')
-					)
+				$wpdb->prefix . 'esa_item_cache',
+				array(
+					"source" => $this->source,
+					"id" => $this->id,
+					'content' => $this->html,
+					'searchindex' => $this->html,
+					'timestamp' => current_time('mysql'),
+					'url' => $this->url
+				)
 	
 			);
 		}
@@ -149,10 +151,10 @@ class esa_item {
 			//echo "..successfull";
 			return true;
 		} else {
-
 			$this->_error('insertion impossible!');
 			$this->_error($wpdb->last_error);
-			$this->_error('<textarea>' . print_r($wpdb->last_query,1) . '</textarea>');
+			$this->_error('<textarea>' . print_r($wpdb->last_query,1) . '</textarea>'); 
+			
 			return false;
 		}
 

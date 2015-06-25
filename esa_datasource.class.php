@@ -167,6 +167,7 @@ namespace esa_datasource {
 		
 		abstract function api_search_url($id);
 		
+		abstract function api_record_url($id);
 		
 		/**
 		 * 
