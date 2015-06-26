@@ -17,6 +17,7 @@ namespace esa_datasource {
 		// saves current serach params
 		public $query;
 		public $id;
+		public $params;
 		
 		// pagination data
 		public $pagination = true; //is pagination possible / supported in the serach results
@@ -25,20 +26,17 @@ namespace esa_datasource {
 		
 		// some classes, the user may add to the esa_item
 		public $optional_classes = array('test' => 'test');
+		//public $query_options = array(); // some additional options, the user may use to specify his query. can be used in the implementation of a datasource
 		
 		//error collector
 		public $errors = array();
 		
 		/**
 		 * a generic search dialogue (can be overwitten) 	
-		 * - needs $this->apiurl to be set	
+		 * - needs $this->apiurl to be set
+		 * - you can overwrite this whole function in the implementation or just the search_form_params part 
 		 */
 		function search_form() {
-			/*
-			echo "<pre>";
-			print_r($_POST);
-			echo "</pre>";
-			*/
 			
 			echo "<p>{$this->info}</p>";
 			
@@ -48,18 +46,26 @@ namespace esa_datasource {
 
 			echo "<input type='hidden' name='esa_ds_page' value='1'>";
 			
+			echo $this->search_form_params($_POST);
+			
 			echo "<input type='submit' class='button button-primary' value='Search'>";
 			echo "</form>";
 		}
+		
+		/**
+		 * to overwritten by implementation if needed
+		 * @return string
+		 */
+		function search_form_params($post) {
+			return "";
+		}
+		
 		
 		/**
 		 * 
 		 * Serach given Data Source for Query
 		 * 
 		 * This is a generic function, it can be overwritten in some implementations
-		 * - based on $this->api_search_url 
-		 * - %s in apiurl becomes replaced by search string
-		 * - trys to use $_POST['esa_ds_query'] as search string, when $query is not given
 		 * 
 		 * 
 		 * @return array of result, wich has to be parsed by $this->parse_result_set or false if error
@@ -78,12 +84,22 @@ namespace esa_datasource {
 				$navi  = (isset($_POST['esa_ds_navigation'])) ? $_POST['esa_ds_navigation'] : '';
 				$this->query = $query;
 				
+				// additional $_POST data
+				$params = array();
+				foreach ($_POST as $k => $v) {
+					if ($v and preg_match('#^esa_ds_param_(.*)#', $k, $real_k)) {
+						$params[$real_k[1]] = $v;
+					}
+				}
+				$this->params = $params;
+				
+				// go
 				$fun = "api_search_url_$navi";
 				
 				if ($navi and method_exists($this, $fun)) {
-					$queryurl = $this->$fun($query);
+					$queryurl = $this->$fun($query, $params);
 				} else {
-					$queryurl = $this->api_search_url($query);
+					$queryurl = $this->api_search_url($query, $params);
 				}
 				if (ESA_DEBUG) {
 					echo $queryurl;
@@ -163,9 +179,9 @@ namespace esa_datasource {
 		
 		abstract function parse_result($result);
 		
-		abstract function api_single_url($query);
+		abstract function api_single_url($id);
 		
-		abstract function api_search_url($id);
+		abstract function api_search_url($query, $params = array());
 		
 		abstract function api_record_url($id);
 		
@@ -256,6 +272,9 @@ namespace esa_datasource {
 			echo "<input type='hidden' name='esa_ds_page' value='{$this->page}'>";
 			echo "<input type='hidden' name='esa_ds_pages' value='{$this->pages}'>";
 			echo "<input type='hidden' name='esa_ds_navigation' value='$type'>";
+			foreach ($this->params as $k => $v) {
+				echo "<input type='hidden' name='esa_ds_param_$k' value='$v'>";
+			}
 			echo "<input type='submit' class='button button-secondary' value='{$labels[$type]}'>";
 			echo "</form>";
 		}

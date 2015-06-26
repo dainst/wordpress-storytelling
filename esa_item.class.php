@@ -25,15 +25,17 @@ class esa_item {
 		$this->id = $id;
 		$this->source = $source;
 		$this->html = $html;	
+		$this->classes = $classes;
+		$this->css = $css;
 		if ($url) {
 			if (filter_var($url, FILTER_VALIDATE_URL)) {
 				$this->url = $url;
 			} else {
-				$this->_error("$url considered as invalid");
+				$this->classe[] = 'esa_item_invalid_url';
 			} 
 		}
-		$this->classes = $classes;
-		$this->css = $css;
+		
+		
 	}
 	
 	/**
@@ -110,6 +112,7 @@ class esa_item {
 			$this->html = $generated->html;
 			$this->store($cached);
 		} catch (Exception $e) {
+			$e->
 			$this->_error($e->getMessage());
 		}
 

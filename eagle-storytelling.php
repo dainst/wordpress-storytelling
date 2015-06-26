@@ -518,6 +518,7 @@ register_activation_hook( __FILE__, 'esa_install' );
  * 
  */
 
+
 add_action( 'init', 'esa_mce' );
 function esa_mce() {
 	add_filter("mce_external_plugins", function($plugin_array) {

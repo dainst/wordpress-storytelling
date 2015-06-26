@@ -14,7 +14,7 @@ namespace esa_datasource {
 			public $pagination = false;
 		
 			//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
-			function api_search_url($query) {
+			function api_search_url($query, $params = array()) {
 				return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&titles=$query";
 			}
 			
