@@ -12,7 +12,7 @@ namespace esa_datasource {
 		
 
 			public $title = "Europeana Connection Alpha 0.2";
-			public $info = "Europeana Connection Alpha 0.2"; 
+			public $info = "Insert anything you want to serach for <strong>or</strong> <a href='http://www.europeana.eu/portal/' target='_blank'> search at the Europeana-Site itself</a> and paste the URL of one record in the field below."; 
 			
 
 			private $_hits_per_page = 24;
@@ -55,7 +55,14 @@ namespace esa_datasource {
 			
 			function api_record_url($id) {
 				return "http://www.europeana.eu/portal/record$id.html";
-			} 
+			}
+			
+			function api_url_parser($string) {
+				if (preg_match('#http\:\/\/www\.europeana\.eu\/portal\/record(.*)\.html.*#', $string, $match)) {
+					//$this->id = $match[1]; // this is dangereaux shit! but i do bot have a better idea rigth now
+					return $this->api_single_url($match[1]);
+				}
+			}
 			
 			private function _api_params_url_part($params) {
 				if (isset($params['type'])) {
@@ -104,14 +111,14 @@ namespace esa_datasource {
 			private function _item2html($item, $id) {
 				$html  = "<div class='esa_item_left_column'>";
 				
-				$thumpnails = isset($item->edmPreview) ?
+				$thumbnails = isset($item->edmPreview) ?
 					$item->edmPreview : (
 					isset($item->europeanaAggregation->edmPreview) ?
 						$item->europeanaAggregation->edmPreview :
 						'');
-				$thumpnail = is_array($thumpnails) ? $thumpnails[0] : $thumpnails;
+				$thumbnail = is_array($thumbnails) ? $thumbnails[0] : $thumbnails;
 				 	
-				$html .= "<img src='$thumpnail' alt='thumpnail'>";
+				$html .= "<div class='esa_item_main_image' style='background-image:url(\"$thumbnail\")'>&nbsp;</div>";
 				$html .= "</div>";
 				
 				$html .= "<div class='esa_item_right_column'>";

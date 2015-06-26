@@ -94,20 +94,26 @@ namespace esa_datasource {
 				$this->params = $params;
 				
 				// go
-				$fun = "api_search_url_$navi";
 				
-				if ($navi and method_exists($this, $fun)) {
-					$queryurl = $this->$fun($query, $params);
+				// is url pasted?
+				if ($url = $this->api_url_parser($query)) {
+					$this->results = array($this->parse_result($this->_generic_api_call($url)));
 				} else {
-					$queryurl = $this->api_search_url($query, $params);
+					// perform search
+					$fun = "api_search_url_$navi";
+					
+					if ($navi and method_exists($this, $fun)) {
+						$queryurl = $this->$fun($query, $params);
+					} else {
+						$queryurl = $this->api_search_url($query, $params);
+					}
+					if (ESA_DEBUG) {
+						echo $queryurl;
+					}
+					
+					$this->parse_result_set($this->_generic_api_call($queryurl));
+				
 				}
-				if (ESA_DEBUG) {
-					echo $queryurl;
-				}
-				
-				$response = $this->parse_result_set($this->_generic_api_call($queryurl));
-				
-				
 
 				
 			} catch (\Exception $e) {
@@ -184,6 +190,8 @@ namespace esa_datasource {
 		abstract function api_search_url($query, $params = array());
 		
 		abstract function api_record_url($id);
+		
+		abstract function api_url_parser($id);
 		
 		/**
 		 * 

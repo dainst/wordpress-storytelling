@@ -3,7 +3,7 @@
 /* esa result overview (in admin "add media" - area) */
 .esa_item_list .esa_item {
 	border: 2px solid silver;
-	width: 130px;
+	width: 380px;
 	height: 130px;
 	overflow: hidden;
 	float: left;
