@@ -56,13 +56,20 @@ class esa_item {
 			$css_string .= "'";
 		}
 		
-		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source} $classes' $css_string>";
+		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_collapsed esa_item_{$this->source} $classes' $css_string>";
+		
+		if ($this->url) {
+			echo "<div class='esa_item_tools'><a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>&nbsp;</a></div>";
+		}
+		
 		echo "<div class='esa_item_inner'>"; 
 		echo $this->html;
 		echo "</div>";
-		if ($this->url) {
-			echo "<div class='esa_item_tools'><a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>v</a></div>";
-		}
+
+		echo "<div class='esa_item_resizebar'>";
+		echo "&nbsp;";
+		echo "</div>";
+		
 		echo "</div>";
 	}
 	
@@ -153,6 +160,7 @@ class esa_item {
 		} else {
 			$this->_error('insertion impossible!');
 			$this->_error($wpdb->last_error);
+			$this->_error(strlen($this->id));
 			$this->_error('<textarea>' . print_r($wpdb->last_query,1) . '</textarea>'); 
 			
 			return false;

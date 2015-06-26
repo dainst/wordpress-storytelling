@@ -97,26 +97,30 @@ namespace esa_datasource {
 			
 
 			private function _item2html($item, $id) {
-				//$html  = "<div class='wrapper'>";
-				$html = "<h1>{$item->title[0]}</h1>";
-				$html .= "<table class='datatable'>";
-				$html .= "<tr><td>id</td><td>{$id}</td></tr>";
+				$html  = "<div class='esa_item_left_column'>";
+				$html .= "<img src='{$item->edmPreview[0]}' alt='thumpnail'>";
+				$html .= "</div>";
+				
+				$html .= "<div class='esa_item_right_column'>";
+				$html .= "<h4>{$item->title[0]}</h4>";
+				$html .= "<ul class='datatable'>";
+				$html .= "<li><strong>id: </strong>{$id}</li>";
 				if (isset($item->year)) {
-					$html .= "<tr><td>year</td><td>{$item->year}</td></tr>";
+					$html .= "<li><strong>year: </strong>{$item->year}</li>";
 				}
-				$html .= "<tr><td>type</td><td>{$item->type}</td></tr>";
+				$html .= 	 "<li><strong>type: </strong>{$item->type}</li>";
 				if (count($item->title) > 1) {
-					$html .= "<tr><td>alternative titles</td><td>" . implode(',', array_slice($item->title, 1)) . "</td></tr>";
+					$html .= "<li><strong>alternative titles: </strong>" . implode(',', array_slice($item->title, 1)) . "</li>";
 				}
 				if (count($item->provider)) {
-					$html .= "<tr><td>provider</td><td>" . implode(',', $item->provider) . "</td></tr>";
+					$html .= "<li><strong>provider: </strong>" . implode(',', $item->provider) . "</li>";
 				}
 				/*if (count($item->dataProvider)) {
 					$html .= "<tr><td>data provider</td><td>" . implode(',', $item->dataProvider) . "</td></tr>";
 				}*/
-				$html .= "</table>";
-				$html .= "<img src='{$item->edmPreview[0]}'>";
-				//$html .= "</div>";
+				$html .= "</ul>";
+				
+				$html .= "</div>";
 				return $html;
 			}
 		

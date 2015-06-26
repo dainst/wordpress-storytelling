@@ -220,10 +220,14 @@ add_filter( 'page_template', 'esa_get_create_story_page_template' );
  */
 
 function esa_register_plugin_styles() {
+	// css
 	wp_register_style( 'eagle-storytelling', plugins_url( 'eagle-storytelling/css/eagle-storytelling.css' ) );
 	wp_enqueue_style( 'eagle-storytelling' );
 	wp_register_style( 'esa_item', plugins_url( 'eagle-storytelling/css/esa_item.css' ) );
 	wp_enqueue_style( 'esa_item' );
+	
+	//js
+	wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 }
 
 add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
@@ -489,7 +493,7 @@ function esa_install () {
 	$sql = 
 	"CREATE TABLE $table_name (
   		source VARCHAR(12) NOT NULL,
-  		id VARCHAR(96) NOT NULL,
+  		id VARCHAR(150) NOT NULL,
   		content TEXT NULL,
   		searchindex TEXT NULL,
   		url TEXT NULL,
