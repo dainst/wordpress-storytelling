@@ -97,7 +97,9 @@ namespace esa_datasource {
 				
 				// is url pasted?
 				if ($url = $this->api_url_parser($query)) {
+					//print_r($url);
 					$this->results = array($this->parse_result($this->_generic_api_call($url)));
+					
 				} else {
 					// perform search
 					$fun = "api_search_url_$navi";

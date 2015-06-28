@@ -103,6 +103,10 @@ namespace esa_datasource {
 				
 				$item = $response->object;
 				
+				if (!$this->id) { //this is the case if you paste an url in the search box
+					$this->id = $item->about;
+				}
+				
 				return new \esa_item('europeana', $response->object->id, $this->_item2html($response->object, $this->id), $this->api_record_url($this->id));
 				
 			}
@@ -124,11 +128,12 @@ namespace esa_datasource {
 				$html .= "<div class='esa_item_right_column'>";
 				$html .= "<h4>{$item->title[0]}</h4>";
 				$html .= "<ul class='datatable'>";
+								
 				$html .= "<li><strong>id: </strong>{$id}</li>";
 				if (isset($item->year)) {
 					$html .= "<li><strong>Year: </strong>{$item->year}</li>";
 				}
-				$html .= 	 "<li><strong>Type: </strong>{$item->type}</li>";
+				$html .= 	 "<li><strong>Type: </strong>" . ucfirst(strtolower($item->type)) . "</li>";
 				if (count($item->title) > 1) {
 					$html .= "<li><strong>Alternative titles: </strong>" . implode(',', array_slice($item->title, 1)) . "</li>";
 				}

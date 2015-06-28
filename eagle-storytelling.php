@@ -546,7 +546,12 @@ add_action('wp_ajax_esa_shortcode', function() {
 	wp_die();
 });
 
-
+/**
+ * Stand der Dinge:
+ * 
+ * beim URL pasten fehlt die ID im result Objekt
+ * 
+ */
 
 
 ?>

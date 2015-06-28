@@ -26,6 +26,12 @@ namespace esa_datasource {
 				return "https://en.wikipedia.org/?curid=$id";
 			}
 			
+			function api_url_parser($string) {
+				if (preg_match('#https?\:\/\/en\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
+					return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&titles={$match[1]}";
+				}
+			}
+			
 			public $info = "This is a simple data source wich searches the wikipedia for images to any keyword. <br>Is is not very useful.<br> I just designed it as example of how we will be able to use this engine to search and retrieve in various data sources in the future. <br> Just insert something and press 'search'. <br>-  philipp";    
 			public $title = 'Test Subplugin for Wikipedia';
 			
