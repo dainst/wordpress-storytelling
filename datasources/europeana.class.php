@@ -11,7 +11,7 @@ namespace esa_datasource {
 	class europeana extends abstract_datasource {
 		
 
-			public $title = "Europeana Connection Alpha 0.2";
+			public $title = "Europeana Connection Beta";
 			public $info = "Insert anything you want to serach for <strong>or</strong> <a href='http://www.europeana.eu/portal/' target='_blank'> search at the Europeana-Site itself</a> and paste the URL of one record in the field below."; 
 			
 
@@ -59,7 +59,6 @@ namespace esa_datasource {
 			
 			function api_url_parser($string) {
 				if (preg_match('#http\:\/\/www\.europeana\.eu\/portal\/record(.*)\.html.*#', $string, $match)) {
-					//$this->id = $match[1]; // this is dangereaux shit! but i do bot have a better idea rigth now
 					return $this->api_single_url($match[1]);
 				}
 			}
@@ -95,7 +94,7 @@ namespace esa_datasource {
 			}
 
 			function parse_result($response) {
-				$response = json_decode($response);
+				$response = json_decode($response);om: 0370 to: 0370
 				
 				if (!$response->success) {
 					throw new \Exception('Success = false'); // todo: better error message 
@@ -112,6 +111,18 @@ namespace esa_datasource {
 			}
 			
 
+			function search_form_params($post) {
+				//$echo = "<pre>b|" . print_r($post,1) . "</pre>";
+				$echo = "<select name='esa_ds_param_type' height='1'>";
+				foreach (array('', 'TEXT', 'VIDEO', 'SOUND', 'IMAGE', '3D') as $type) {
+						
+					$echo .= "<option value='$type' " . (($type == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
+				}
+				$echo .= "</select>";
+				return $echo;
+			}
+			
+			
 			private function _item2html($item, $id) {
 				$html  = "<div class='esa_item_left_column'>";
 				
@@ -140,6 +151,17 @@ namespace esa_datasource {
 				if (count($item->provider)) {
 					$html .= "<li><strong>Provider: </strong>" . implode(',', $item->provider) . "</li>";
 				}
+				
+				if (isset($item->europeanaAggregation) and isset($item->europeanaAggregation->edmCountry)) {
+					$country = isset($item->europeanaAggregation->edmCountry->def) ? implode(', ', $item->europeanaAggregation->edmCountry->def) : (
+							isset($item->europeanaAggregation->edmCountry->en) ? implode(', ', $item->europeanaAggregation->edmCountry->en) : ''
+							); 
+				}
+				if ($country) {
+					$html .= "<li><strong>Country: </strong>$country</li>";
+				}
+				
+				// concepts
 				if (isset($item->concepts) and count($item->concepts)) {
 					$tags = array();
 					$d = array();
@@ -149,30 +171,70 @@ namespace esa_datasource {
 						}
 						//$html .= "<li><hr>X<pre>" .  print_r(array_values((array) $concept->prefLabel), 1) . "</pre></li>";; 
 					}
-					$html .= "<li><strong>Keywords: </strong>" . implode(', ', array_unique($tags)) . "</li>";
-					//$html .= "<li><hr><pre>" . print_r($item->concepts, 1) . "</pre></li>";
+					$tags = array_diff($tags, array('?', 'unknown', 'Ignoratur'));
+					if (count($tags)) {
+						$html .= "<li><strong>Keywords: </strong>" . implode(', ', array_unique($tags)) . "</li>";
+						//$html .= "<li><hr><pre>" . print_r($item->concepts, 1) . "</pre></li>";
+					}
+
+				}
+				
+				// proxies
+				if (isset($item->proxies)) {
+					foreach ($item->proxies as $proxy) {
+						foreach ($proxy as $prop => $pval) {
+							if (preg_match('#dc(terms)?(.*)#', $prop, $match)) {
+								foreach ($this->_LangMap($pval) as $v) {
+									if (filter_var($v, FILTER_VALIDATE_URL)) {
+										$v = "<a href='$v' target='_blank'>$v</a>";
+									}
+									
+									$html .= "<li><strong>$match[2]: </strong>$v</li>";
+								}
+							}
+						}
+					}
 				}
 				
 				
 				$html .= "</ul>";
-				
-				
 				
 				$html .= "</div>";
 				return $html;
 			}
 			
 			
-			function search_form_params($post) {
-				//$echo = "<pre>b|" . print_r($post,1) . "</pre>";
-				$echo = "<select name='esa_ds_param_type' height='1'>";
-				foreach (array('', 'TEXT', 'VIDEO', 'SOUND', 'IMAGE', '3D') as $type) {
-					
-					$echo .= "<option value='$type' " . (($type == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
+			/*if (!preg_match('#dc(.*)#', $prop, $match)) {
+			 return array(false, false);
+			 }
+			
+			 $name = $match[1];
+			 */
+			
+			private function _LangMap($p) {
+				if (!is_object($p) and !is_array($p)) {
+					return array($p);
 				}
-				$echo .= "</select>";
-				return $echo;
+				
+				$p = (array) $p;
+				
+				$collector = array();
+				
+				foreach($p as $lng => $token) {
+					if (!is_array($token)) {
+						$collector[] = $token;
+					} else {
+						$collector = array_merge($collector, $token);
+					}
+				}
+				
+				return $collector;
+				
+				
 			}
+			
+			
+
 			
 		
 	}
