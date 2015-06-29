@@ -1,6 +1,15 @@
+/**
+ * @package 	eagle-storytelling
+ * @subpackage	CSS
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ *
+ * 
+ * some fixes for theme css
+ * 
+ *
+ */
 @CHARSET "UTF-8";
-
-/* some fixes for theme css */ 
 
 .searchform .s { height: 24px; width: 199px; margin-right: 10px; }
 

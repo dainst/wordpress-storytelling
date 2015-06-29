@@ -1,11 +1,13 @@
 <?php
-
 /**
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | esa_item Class
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ *
  * 
- * represents an item which was created by the esa-plugin wich can be represented as a shortcode or as visual object (like an image, a map and so on)
+ * Represents an item which was created by the esa-plugin wich can be represented as a shortcode or as visual object (like an image, a map and so on)
  * 
- * 
- * @author philipp Franck
  *
  */
 

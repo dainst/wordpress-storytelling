@@ -1,10 +1,21 @@
 <?php
+/**
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | Subplugin: Europeana
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ * 
+ * Status: Test Product 
+ *  
+ * This is a simple data source wich searches the wikipedia for images to any keyword. 
+ * It is not very useful. 
+ * I just designed as example of how we cwill beable to use this engine to serach and retrieve in various data sources in the future.
+ *
+ */
 namespace esa_datasource {
 	/**
 	 * 
-	 * This is a simple data source wich searches the wikipedia for images to any keyword. 
-	 * It is not very useful. 
-	 * I just designed as example of how we cwill beable to use this engine to serach and retrieve in various data sources in the future.
+
 	 * 
 	 * @author Philipp Franck
 	 *

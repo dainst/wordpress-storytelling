@@ -1,14 +1,23 @@
 <?php
+/**
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | Abstract Datasource Class
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ * 
+ * 
+ * Every Datasource wich is connected to the Eagle Story Telling Application (such as europeana, Isai Gazetteer etc.) is an implementation
+ * of this partly abstract class.
+ * 
+ * 
+ */
 namespace esa_datasource {
 	abstract class abstract_datasource {
-	
-		// url of the api, the source uses (important, if default search dialogue nad/or search functions are used)
-		//public $api_search_url;
-		//public $api_single_url;
 		
 		// infotext to this data source
 		public $title;
 		public $info; 
+		public $homeurl; 
 		
 		// array of esa_items containing the results of a performed search
 		public $results = array();
@@ -30,6 +39,17 @@ namespace esa_datasource {
 		
 		//error collector
 		public $errors = array();
+		
+		
+		/**
+		 * just to generate a generic info text
+		 */
+		function __construct() {
+			if (!$this->info) {
+				$this->info = "Insert anything you want to search for <strong>or</strong> <a href='{$this->homeurl}' target='_blank'> search at the {$this->title} itself</a> and paste the URL of one record in the field below.";
+			}
+		}
+		
 		
 		/**
 		 * a generic search dialogue (can be overwitten) 	
@@ -335,6 +355,7 @@ namespace esa_datasource {
 				//$this->error('some error');
 				//throw new \Exception('no response!');
 				
+				// a _temporary hack_ for the idai subplugin
 				$json = '{"@id":"http://gazetteer.dainst.org/place/2281530","gazId":"2281530","parent":"http://gazetteer.dainst.org/place/2321390","relatedPlaces":["http://gazetteer.dainst.org/place/2281792"],"types":["populated-place"],"prefName":{"title":"Palmyra","language":"","ancient":true},"names":[{"title":"Palmyre","language":""},{"title":"تدمر","language":"ara"},{"title":"Palmyra","language":""},{"title":"Tedmor","language":""},{"title":"Palmyra","language":"pol"},{"title":"Tadmor","language":""},{"title":"Palmyra","language":"eng"},{"title":"Palmira","language":"spa"},{"title":"Palmyra","language":"deu"},{"title":"مملكة تدمر","language":"ara"},{"title":"Palmira","language":"ita"},{"title":"Palmyre","language":"fra"},{"title":"Пальмира","language":"rus"},{"title":"Palmira","language":"por"}],"prefLocation":{"coordinates":[38.28055,34.56077],"confidence":0,"publicSite":true},"locations":[{"coordinates":[38.28055,34.56077],"confidence":3,"publicSite":true},{"coordinates":[38.31667,34.55],"confidence":3,"publicSite":true}],"identifiers":[{"value":"668331","context":"pleiades"},{"value":"18964","context":"arachne-place"},{"value":"zTopogAsienVordeSyriePalmyra","context":"zenon-thesaurus"},{"value":"2023","context":"arachne-place"},{"value":"1205728","context":"arachne-entity"},{"value":"000074435","context":"zenon-systemnr"},{"value":"163809","context":"geonames"}],"links":[{"object":"http://whc.unesco.org/en/list/23","predicate":"rdfs:seeAlso"},{"object":"http://arachne.uni-koeln.de/entity/1205728","predicate":"owl:sameAs"},{"object":"http://pleiades.stoa.org/places/668331","predicate":"owl:sameAs"},{"object":"http://sws.geonames.org/163809","predicate":"owl:sameAs"}],"provenance":["syrher","geonames"]}';
 			}
 			return $json;

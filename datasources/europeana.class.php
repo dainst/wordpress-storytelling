@@ -12,9 +12,8 @@ namespace esa_datasource {
 	class europeana extends abstract_datasource {
 		
 
-			public $title = "Europeana Connection Beta";
-			public $info = "Insert anything you want to serach for <strong>or</strong> <a href='http://www.europeana.eu/portal/' target='_blank'> search at the Europeana-Site itself</a> and paste the URL of one record in the field below."; 
-			
+			public $title = "Europeana";
+			public $homeurl = "http://www.europeana.eu/portal/";
 
 			private $_hits_per_page = 24;
 			
@@ -182,6 +181,7 @@ namespace esa_datasource {
 				}
 				
 				// proxies
+				$no_repeat = array();
 				if (isset($item->proxies)) {
 					foreach ($item->proxies as $proxy) {
 						foreach ($proxy as $prop => $pval) {
@@ -190,8 +190,11 @@ namespace esa_datasource {
 									if (filter_var($v, FILTER_VALIDATE_URL)) {
 										$v = "<a href='$v' target='_blank'>$v</a>";
 									}
+									if (!isset($no_repeat[$match[2]]) or ($no_repeat[$match[2]] != $v)) {
+										$html .= "<li><strong>$match[2]: </strong>$v</li>";
+										$no_repeat[$match[2]] = $v;
+									}
 									
-									$html .= "<li><strong>$match[2]: </strong>$v</li>";
 								}
 							}
 						}

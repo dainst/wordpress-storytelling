@@ -1,3 +1,15 @@
+/**
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | esa_item Javascript
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ *
+ * 
+ * Some Javascript functionality of the esa_items (mainly: toggle size)
+ * 
+ *
+ */
+
 jQuery(document).on('mouseenter', '.esa_item', function() {
 	if(
 		(jQuery(this).find('.esa_item_inner').css('height').replace(/[^-\d\.]/g, '') > 200) ||

@@ -17,8 +17,9 @@
 namespace esa_datasource {
 	class idai extends abstract_datasource {
 
-		public $info = "Generic Info Text...";
+
 		public $title = 'iDAI Gazetteer';
+		public $homeurl = "http://gazetteer.dainst.org/";
 		
 		public $pagination = false;
 

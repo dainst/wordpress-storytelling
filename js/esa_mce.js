@@ -1,10 +1,13 @@
 /**
- * package: Eagle Storytelling Application
- * role:	tiney mce plugin to view esa_items in editor (instead of shortcodes)
- * author:	Philipp Franck
- * date:	june 2015
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | tiny mce plugin to view esa_items in editor (instead of shortcodes)
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ *
+ * Status: BETA 
  * 
  * We could have used 'wpview' perhaps, but it still count as experimental, so we prefer a more classy apporach to build a whole own plugin.
+ * 
  * 
  */
 tinymce.PluginManager.add('esa_item', function( editor ) {

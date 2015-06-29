@@ -1,10 +1,14 @@
 /**
- * esa_mediamenu.js
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | esa_item mediamenu Javascript
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ *
+ * 
+ * Some Javascript functionality of the "Add Media" dialogue. Quite impoertant.
+ * 
  *
  */
-
-
-
 var esa_ds = {
 		
 	selected: false,
