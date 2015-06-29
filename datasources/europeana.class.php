@@ -94,7 +94,7 @@ namespace esa_datasource {
 			}
 
 			function parse_result($response) {
-				$response = json_decode($response);om: 0370 to: 0370
+				$response = json_decode($response);
 				
 				if (!$response->success) {
 					throw new \Exception('Success = false'); // todo: better error message 
