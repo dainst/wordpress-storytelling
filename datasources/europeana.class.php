@@ -1,13 +1,14 @@
 <?php
+/**
+ * @package 	eagle-storytelling
+ * @subpackage	Search in Datasources | Subplugin: Europeana
+ * @link 		http://www.europeana.eu/
+ * @author 		Philipp Franck
+ * 
+ * Status: Beta
+ * 
+ */
 namespace esa_datasource {
-	/**
-	 * 
-	 * The Subplugin to retrieve Data from Europeana!
-	 * 
-	 * 
-	 * @author philipp franck
-	 *
-	 */
 	class europeana extends abstract_datasource {
 		
 
@@ -142,7 +143,8 @@ namespace esa_datasource {
 								
 				$html .= "<li><strong>id: </strong>{$id}</li>";
 				if (isset($item->year)) {
-					$html .= "<li><strong>Year: </strong>{$item->year}</li>";
+					$year = (is_array($item->year)) ? implode(' ,', $item->year) : $item->year;
+					$html .= "<li><strong>Year: </strong>$year</li>";
 				}
 				$html .= 	 "<li><strong>Type: </strong>" . ucfirst(strtolower($item->type)) . "</li>";
 				if (count($item->title) > 1) {

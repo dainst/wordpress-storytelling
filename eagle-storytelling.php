@@ -16,22 +16,6 @@ Version:     0.7
 include('esa_settings.php');
 
 
-function printQueries() {
-	global $wpdb;
-
-	if (defined('SAVEQUERIES') && SAVEQUERIES===true) {
-		echo 'SAVEQUERIES was set properly so we can get the queries.';
-		//foreach($wpdb->queries as $q) {
-			echo "<pre style='height:500px; width: 100%; background: silver>";
-			print_r($wpdb->queries);
-			echo "</pre>";
-		//}
-	}
-	else
-		echo 'SAVEQUERIES was not set. Please update your wp-config.php!';
-}
-
-add_action('wp_footer','printQueries',99999);
 
 
 /****************************************/
@@ -220,14 +204,19 @@ add_filter( 'page_template', 'esa_get_create_story_page_template' );
  */
 
 function esa_register_plugin_styles() {
-	// css
-	wp_register_style( 'eagle-storytelling', plugins_url( 'eagle-storytelling/css/eagle-storytelling.css' ) );
-	wp_enqueue_style( 'eagle-storytelling' );
-	wp_register_style( 'esa_item', plugins_url( 'eagle-storytelling/css/esa_item.css' ) );
-	wp_enqueue_style( 'esa_item' );
+	if (get_post_type() == 'story') {
 	
-	//js
-	wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
+		// css
+		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
+		wp_enqueue_style('eagle-storytelling' );
+		wp_register_style('esa_item', plugins_url('eagle-storytelling/css/esa_item.css'));
+		wp_enqueue_style('esa_item');
+		wp_register_style('leaflet', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css');
+		wp_enqueue_style('leaflet');
+		
+		//js
+		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
+	}
 }
 
 add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
@@ -285,11 +274,13 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_style('media');
 		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
 		wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
+		wp_enqueue_style('leaflet', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css');
 	});
 	
 	
 	add_action('admin_print_scripts-media-upload-popup', function() {
 		wp_enqueue_script('jquery');
+		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
 	});
 	
@@ -306,7 +297,7 @@ function media_esa_dialogue() {
 	global $esa_datasources;
 	
 	// get current search engine
-	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : 'europeana';
+	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : array_keys($esa_datasources)[0];
 	
 	// get engine interface
 	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {

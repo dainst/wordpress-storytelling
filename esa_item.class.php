@@ -112,8 +112,8 @@ class esa_item {
 			$this->html = $generated->html;
 			$this->store($cached);
 		} catch (Exception $e) {
-			$e->
-			$this->_error($e->getMessage());
+			
+			$this->_error($e->getMessage() . '<br>'. $e->getTraceAsString());
 		}
 
 	}

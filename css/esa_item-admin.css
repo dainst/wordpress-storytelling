@@ -4,7 +4,7 @@
 .esa_item_list .esa_item {
 	border: 2px solid silver;
 	width: 380px;
-	height: 130px;
+	/*height: 130px;*/
 	overflow: hidden;
 	float: left;
 	margin: 4px;

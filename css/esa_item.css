@@ -37,13 +37,14 @@
 	margin-right: 0px;
 }
 
-
+/* -- */
 
 .esa_item_tools {
 	position: absolute;
 	padding: 4px;
 	width:100%;
 	display: none;
+	z-index: 10000;
 }
 
 .esa_item_tools a {
@@ -98,14 +99,46 @@
 
 /* esa_item style */
 
+.esa_item_collapsed .esa_item_left_column_max_left,
 .esa_item_left_column {
 	width: 150px;
 	float: left;
 }
 
-.esa_item_right_column {
-	margin-left: 160px
+.esa_item_left_column_max_left {
+	width: 100%
 }
+
+.esa_item_collapsed .esa_item_right_column_max_left,
+.esa_item_right_column {
+	margin-left: 160px;
+}
+
+.esa_item_right_column_max_left {
+}
+
+.esa_item_main_image {
+	width: 150px;
+	height: 150px;
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-background-size: cover;
+	background-size: cover;
+	
+}
+
+ .esa_item_map {
+ 	width:  100%; /*100%; */
+	height: 400px;
+	margin-bottom: 15px;
+ }
+
+.esa_item_collapsed .esa_item_map {
+	width: 150px;
+	height: 150px;
+	margin-bottom: 0px;
+}
+
 
 .esa_item_inner h4 {
 	padding: 0px;
@@ -125,18 +158,6 @@
 
 .esa_item_inner ul.datatable li {
 	padding-bottom: 0px;	
-}
-
-
-
-.esa_item_main_image {
-	width: 150px;
-	height: 150px;
-	background-repeat: no-repeat;
-	background-position: center center;
-	-webkit-background-size: cover;
-	background-size: cover;
-	
 }
 
 /* special definitions for different types of esa_items ... todo: when it gets more, maybe just load the css we need not all */
@@ -162,5 +183,5 @@
 	background: #F2EF99;
 	max-height:300px; 
 	overflow: scroll;
-	display: none	
+	hisplay: none	
 }
