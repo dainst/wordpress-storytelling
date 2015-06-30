@@ -320,7 +320,7 @@ function media_esa_dialogue() {
 	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
 	
 	echo '<div id="esa_item_settings"><form>';
-	echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for <a href="#" onclick="esa_ds.reset_form()"> default</a>.</p>';
+	echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for <a title="reset to default settings" href="#" onclick="esa_ds.reset_form()"> default</a>.</p>';
 	
 	echo '<div class="esa_item_setting">';
 	echo '<label for="height">' . __('Height') . '</label>';
@@ -448,7 +448,11 @@ function esa_shortcode($atts, $context) {
 	
 	$item = new esa_item($atts['source'], $atts['id'], false, false, $classes, $css);
 
-	return $item->html();
+	
+	ob_start();
+	$item->html();
+	return ob_get_clean();
+	
 
 }
 
