@@ -30,7 +30,8 @@ namespace esa_datasource {
 			
 		function api_single_url($id) {
 			$query = urlencode($id);
-			return "http://gazetteer.dainst.org/doc/$id.json";
+			return "http://gazetteer.dainst.org/search.json?q={%22bool%22:{%22must%22:%5B%20{%20%22match%22:%20{%20%22_id%22:%20$id%20}}%5D}}&type=extended";
+			//return "http://gazetteer.dainst.org/doc/$id.json";
 		}
 
 		function api_record_url($id) {
