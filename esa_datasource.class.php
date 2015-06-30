@@ -221,7 +221,9 @@ namespace esa_datasource {
 			
 			echo "<div class='esa_item_list'>";
 			foreach ($this->results as $result) {
-				$result->html();
+				if (is_object($result)) {
+					$result->html();
+				}
 			}
 			echo "</div><div style='clear:both'></div>";
 		}

@@ -319,17 +319,17 @@ function media_esa_dialogue() {
 	echo "<div id='esa_item_list_sidebar'>";
 	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
 	
-	echo '<div id="esa_item_settings">';
-	echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for default.</p>';
+	echo '<div id="esa_item_settings"><form>';
+	echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for <a href="#" onclick="esa_ds.reset_form()"> default</a>.</p>';
 	
 	echo '<div class="esa_item_setting">';
 	echo '<label for="height">' . __('Height') . '</label>';
-	echo '<input type="number" name="height" value="">';
+	echo '<input type="number" min="0" name="height" value="">';
 	echo "</div>";
 	
 	echo '<div class="esa_item_setting">';
 	echo '<label for="width">' . __('Width') . '</label>';
-	echo '<input type="number" name="width" value="">';
+	echo '<input type="number" min="0" name="width" value="">';
 	echo "</div>";
 	
 	echo '<div class="esa_item_setting">';
@@ -354,9 +354,9 @@ function media_esa_dialogue() {
 		echo "</div>";
 	}
 	
-	echo "</div>";
+	echo "</form></div>";
 	
-	echo '<input type="button" class="button button-primary" id="go_button" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	echo '<input type="button" class="button button-primary" id="go_button" disabled="disabled" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
 	
 	echo "</div>";
 	

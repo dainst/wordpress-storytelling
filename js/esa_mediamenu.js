@@ -49,17 +49,20 @@ var esa_ds = {
 		if (this !== esa_ds.selected) {
 			jQuery(this).addClass('selected');
 			jQuery('#esa_item_preview').html(jQuery(this).html());
-			jQuery('#go_button').show();
+			jQuery('#go_button').prop('disabled', false);
+			jQuery('#esa_item_preview').addClass('esa_item_collapsed');
 			esa_ds.selected = this;			
 		} else {
 			esa_ds.selected = false;
 			jQuery('#esa_item_preview').html('');
-			jQuery('#go_button').hide();
+			jQuery('#go_button').prop('disabled', true);
 		}
 
 	},
 	
-	
+	reset_form: function() {
+		jQuery('#esa_item_settings').find('form')[0].reset();
+	}
 
 	
 };
