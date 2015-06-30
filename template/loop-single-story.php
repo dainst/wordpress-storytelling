@@ -11,11 +11,14 @@
 			<?php /*the_author_posts_link();*/ the_author(); ?>
 			<?php esc_html_e('on','Flexible'); ?>
 			<?php the_time(et_get_option('flexible_date_format')) ?>
-			<?php esc_html_e('in','Flexible'); ?>
+
+			
 			<?php 
-				$the_taxonomys = get_the_taxonomies(get_the_ID(), array('template' => "<span class='tax-%s'>%l</span>"));
-				echo $the_taxonomys['story_keyword'];
+				$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
+				echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
 			?>
+
+			
 			<?php /*comments_popup_link(esc_html__('0 comments','Flexible'), esc_html__('1 comment','Flexible'), '% '.esc_html__('comments','Flexible'));*/ ?>
 		</p>
 

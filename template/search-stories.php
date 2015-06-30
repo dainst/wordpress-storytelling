@@ -58,7 +58,6 @@ $et_ptemplate_blog_perpage = 2;
 						$et_paged = is_front_page() ? get_query_var( 'page' ) : get_query_var( 'paged' );
 					?>
 					
-					<?php //query_posts("post_type=story&showposts=$et_ptemplate_blog_perpage&paged=" . $et_paged . $cat_query); ?>
 					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 					
 						<div class="et_pt_blogentry clearfix">
@@ -75,7 +74,7 @@ $et_ptemplate_blog_perpage = 2;
 								<?php /*comments_popup_link(esc_html__('0 comments','Flexible'), esc_html__('1 comment','Flexible'), '% '.esc_html__('comments','Flexible'));*/ ?>			
 								<?php 
 									$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
-									echo (count($the_taxonomys['story_keyword'])) ? esc_html_e('in','Flexible') . ' ' . $the_taxonomys['story_keyword'] : '';
+									echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
 								?>				
 							</p>
 							<?php $thumb = '';

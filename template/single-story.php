@@ -9,7 +9,7 @@
 		<?php include ('loop-single-story.php'); ?>
 	</div> <!-- end #left_area -->
 
-	<?php include ('sidebar-single-story.php'); ?>
+	<?php include ('sidebar-stories.php'); ?>
 </div> 	<!-- end #content-area -->
 	
 

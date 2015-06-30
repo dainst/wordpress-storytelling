@@ -80,7 +80,7 @@ if ( is_user_logged_in() ) {
 		<h5>Filter by keywords</h5>
 		<form role="search" method="get" id="searchform" action="<?php echo site_url(); ?>">
     		<div>
-        		<input type="text" value="" name="s" id="s" /><input type="submit" id="searchsubmit" value="Search" />
+        		<input type="text" value="" name="term" id="term" /><input type="submit" id="searchsubmit" value="Search" />
     		</div>
 		</form>
 		<h5>Filter by author</h5>
