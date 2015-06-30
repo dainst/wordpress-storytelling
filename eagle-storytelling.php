@@ -489,15 +489,15 @@ function esa_install () {
   		searchindex TEXT NULL,
   		url TEXT NULL,
   		timestamp DATETIME NOT NULL,
-  		PRIMARY KEY  (source, id));
-	) $charset_collate;";
+  		PRIMARY KEY  (source, id)
+	) COLLATE utf8_general_ci 
+	;";
 	
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 	
 }
 register_activation_hook( __FILE__, 'esa_install' );
-
 
 
 

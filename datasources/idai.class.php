@@ -58,8 +58,10 @@ namespace esa_datasource {
 				$the_name = $result->prefName->title;
 				$the_name .= ($result->prefName->ancient == true) ? ' (ancient)' : '';
 				$alt_names = array();
-				foreach($result->names as $name) {
-					$alt_names[] = $name->title;
+				if (isset($result->names) and is_array($result->names)) {
+					foreach($result->names as $name) {
+						$alt_names[] = $name->title;
+					}
 				}
 				$name_list = implode(', ', $alt_names);
 				$type_list = (isset($result->types)) ? implode(', ', $result->types) : '';
@@ -75,8 +77,14 @@ namespace esa_datasource {
 				$html .= "<h4>$the_name</h4>";
 
 				$html .= "<ul class='datatable'>";
-				$html .= "<li><strong>Names: </strong>$name_list</li>";
-				$html .= "<li><strong>$type_label: </strong>$type_list</li>";
+				
+				if (count($alt_names)) {
+					$html .= "<li><strong>Names: </strong>$name_list</li>";
+				}
+				if ($type_list) {
+					$html .= "<li><strong>$type_label: </strong>$type_list</li>";
+				}
+				
 				$html .= "<li><strong>Latitude: </strong>$lat</li>";
 				$html .= "<li><strong>Longitude: </strong>$long</li>";
 				$html .= "</ul>";

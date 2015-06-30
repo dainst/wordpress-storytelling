@@ -349,7 +349,7 @@ namespace esa_datasource {
 		
 
 			*/
-			//echo $url;
+			echo $url;
 			
 			if (!$json = file_get_contents($url)) {
 				$this->error('some error');
