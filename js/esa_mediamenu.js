@@ -49,10 +49,12 @@ var esa_ds = {
 		if (this !== esa_ds.selected) {
 			jQuery(this).addClass('selected');
 			jQuery('#esa_item_preview').html(jQuery(this).html());
+			jQuery('#go_button').show();
 			esa_ds.selected = this;			
 		} else {
 			esa_ds.selected = false;
 			jQuery('#esa_item_preview').html('');
+			jQuery('#go_button').hide();
 		}
 
 	},

@@ -34,7 +34,7 @@ namespace esa_datasource {
 		public $pages = false; // number of pages. false means: unknown
 		
 		// some classes, the user may add to the esa_item
-		public $optional_classes = array('test' => 'test');
+		public $optional_classes = array(); //'test' => 'test'
 		//public $query_options = array(); // some additional options, the user may use to specify his query. can be used in the implementation of a datasource
 		
 		//error collector
@@ -349,7 +349,7 @@ namespace esa_datasource {
 		
 
 			*/
-			echo $url;
+			//echo $url;
 			
 			if (!$json = file_get_contents($url)) {
 				$this->error('some error');

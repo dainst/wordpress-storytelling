@@ -40,8 +40,9 @@ namespace esa_datasource {
 		}
 			
 		function api_url_parser($string) {
-			if (preg_match('#http://gazetteer.dainst.org/app/\#\!\/show\/(.*)\??.?#', $string, $match)) {
-				return "https?://gazetteer.dainst.org/doc/{$match[1]}.json";
+			if (preg_match('#https?://gazetteer.dainst.org/app/\#\!\/show\/(.*)\??.?#', $string, $match)) {
+				return "http://gazetteer.dainst.org/search.json?q={%22bool%22:{%22must%22:%5B%20{%20%22match%22:%20{%20%22_id%22:%20{$match[1]}%20}}%5D}}&type=extended";
+				//return "http://gazetteer.dainst.org/doc/{$match[1]}.json";
 			}
 		}
 			

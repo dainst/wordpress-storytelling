@@ -58,8 +58,8 @@ namespace esa_datasource {
 			}
 			
 			function api_url_parser($string) {
-				if (preg_match('#http\:\/\/www\.europeana\.eu\/portal\/record(.*)\.html.*#', $string, $match)) {
-					return $this->api_single_url($match[1]);
+				if (preg_match('#https?\:\/\/(www\.)?europeana\.eu\/portal\/record(.*)\.html.*#', $string, $match)) {
+					return $this->api_single_url($match[2]);
 				}
 			}
 			
@@ -102,11 +102,12 @@ namespace esa_datasource {
 				
 				$item = $response->object;
 				
+
 				if (!$this->id) { //this is the case if you paste an url in the search box
-					$this->id = $item->about;
+					$this->id = $response->object->about;
 				}
 				
-				return new \esa_item('europeana', $response->object->id, $this->_item2html($response->object, $this->id), $this->api_record_url($this->id));
+				return new \esa_item('europeana', $this->id, $this->_item2html($response->object, $this->id), $this->api_record_url($this->id));
 				
 			}
 			

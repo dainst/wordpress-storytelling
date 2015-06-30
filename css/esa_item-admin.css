@@ -6,6 +6,10 @@
  */
 @CHARSET "UTF-8";
 
+#go_button {
+	display: none;
+}
+
 /* esa result overview (in admin "add media" - area) */
 .esa_item_list .esa_item {
 	border: 2px solid silver;

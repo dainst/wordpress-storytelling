@@ -320,6 +320,7 @@ function media_esa_dialogue() {
 	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
 	
 	echo '<div id="esa_item_settings">';
+	echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for default.</p>';
 	
 	echo '<div class="esa_item_setting">';
 	echo '<label for="height">' . __('Height') . '</label>';
