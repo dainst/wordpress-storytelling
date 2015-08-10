@@ -71,7 +71,15 @@ namespace esa_datasource {
 				$type_list = (isset($result->types)) ? implode(', ', $result->types) : '';
 				$type_label = (count($type_list) > 1) ? 'Types' : "Type";
 				
-				list($long, $lat) = $result->prefLocation->coordinates;
+				if (isset($result->prefLocation)) {
+					list($long, $lat) = $result->prefLocation->coordinates;
+					$hint = '';
+				} else {
+					// fetch coordinates from parent location 
+					$parent = $this->_json_decode($this->_fetch_external_data($this->api_url_parser($result->parent)));
+					list($long, $lat) = $parent->result[0]->prefLocation->coordinates;
+					$hint = "<li>(Coordinates taken from parent Object: {$parent->result[0]->prefName->title}</li>";
+				}
 				
 				$html  = "<div class='esa_item_left_column_max_left'>";
 				$html .= "<div class='esa_item_map' id='esa_item_map-{$result->gazId}@idai' data-latitude='$lat' data-longitude='$long'>&nbsp;</div>";
@@ -91,6 +99,9 @@ namespace esa_datasource {
 				
 				$html .= "<li><strong>Latitude: </strong>$lat</li>";
 				$html .= "<li><strong>Longitude: </strong>$long</li>";
+				if ($hint) {
+					$html .= $hint;
+				}
 				$html .= "</ul>";
 				
 				$html .= "</div>";

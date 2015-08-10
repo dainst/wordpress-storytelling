@@ -149,7 +149,7 @@ namespace esa_datasource {
 		
 		/**
 		 * 
-		 * get data from source for a specific unique identifier
+		 * get data from source for a specific unique identifier or URL
 		 * 
 		 * This is generic function, it can be overwritten in some implementations
 		 * 
