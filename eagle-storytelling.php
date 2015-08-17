@@ -16,6 +16,41 @@ Version:     0.7
 include('esa_settings.php');
 
 
+/****************************************/
+
+// user stuff
+
+
+register_activation_hook(__FILE__, function() {
+	add_role('esa_story_author', 'Story Author', array());
+	add_role('esa_story_contributor', 'Story Contributor', array());
+});
+
+
+register_deactivation_hook(__FILE__, function() {
+	remove_role('esa_story_author');
+	remove_role('esa_story_contributor');
+});
+
+add_action('admin_init', function () {
+	$role = get_role('esa_story_author');
+	$role->add_cap('read');
+	$role->add_cap('create_story');
+	$role->add_cap('edit_story');
+	$role->add_cap('delete_story');
+	$role->add_cap('publish_story');
+	$role->add_cap('delete_published_story');
+	$role->add_cap('edit_published_story');
+	
+	$role = get_role('esa_story_contributor');
+	$role->add_cap('read');
+	$role->add_cap('edit_story');
+	$role->add_cap('delete_story');
+});
+
+
+
+
 
 
 /****************************************/
@@ -48,35 +83,6 @@ function esa_create_keywords_widget() {
 add_action('init', 'esa_create_keywords_widget', 0);
 
 
-/****************************************/
-/*
-function esa_create_portfolio_taxonomies() {
-
-    $labels = array(
-        'name' => _x('Categories', 'taxonomy general name', 'Flexible'),
-        'singular_name' => _x('Category', 'taxonomy singular name', 'Flexible'),
-        'search_items' => __('Search Categories', 'Flexible'),
-        'all_items' => __('All Categories', 'Flexible'),
-        'parent_item' => __('Parent Category', 'Flexible'),
-        'parent_item_colon' => __('Parent Category:', 'Flexible'),
-        'edit_item' => __('Edit Category', 'Flexible'),
-        'update_item' => __('Update Category', 'Flexible'),
-        'add_new_item' => __('Add New Category', 'Flexible'),
-        'new_item_name' => __('New Category Name', 'Flexible'),
-        'menu_name' => __('Category', 'Flexible')
-    );
-
-    register_taxonomy('story_category', array('story'), array(
-        'hierarchical' => true,
-        'labels' => $labels,
-        'show_ui' => true,
-        'query_var' => true,
-        'rewrite' => apply_filters('et_portfolio_category_rewrite_args', array('slug' => 'story_category'))
-    ));
-}
-
-add_action('init', 'esa_create_portfolio_taxonomies', 0);
-*/
 
 /****************************************/
 /* create editor page for stories */ 
@@ -105,7 +111,16 @@ function esa_register_story_post_type() {
         'show_ui' => true,
         'query_var' => true,
         'rewrite' => apply_filters('et_portfolio_posttype_rewrite_args', array('slug' => 'story', 'with_front' => false)),
-        'capability_type' => 'post',
+        'capability_type' => 'story',
+    	'capabilities' => array(
+    		'publish_posts' => 'publish_story',
+    		'edit_posts' => 'edit_story',
+    		'edit_others_posts' => 'edit_others_story',
+    		'read_private_posts' => 'read_private_story',
+    		'edit_post' => 'edit_story',
+    		'delete_post' => 'delete_story',
+    		'read_post' => 'read_story',
+    	),
         'hierarchical' => false,
         'menu_position' => null,
         'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'custom-fields')
@@ -114,7 +129,7 @@ function esa_register_story_post_type() {
     register_post_type('story', $args);
 }
 
-add_action('init', 'esa_register_story_post_type' );
+add_action('init', 'esa_register_story_post_type');
 
 
 /****************************************/
@@ -243,13 +258,14 @@ function trismegistos_filter( $query ) {
 add_action( 'pre_get_posts', 'trismegistos_filter' );
 
 
+
+
 /****************************************/
 
 
 /** 
  * add media submenu!
  */
-
 
 
 require_once('esa_datasource.class.php');
@@ -542,12 +558,6 @@ add_action('wp_ajax_esa_shortcode', function() {
 	wp_die();
 });
 
-/**
- * Stand der Dinge:
- * 
- * beim URL pasten fehlt die ID im result Objekt
- * 
- */
 
 
 ?>
