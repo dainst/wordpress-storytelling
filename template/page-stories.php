@@ -82,7 +82,7 @@ $blog_cats = isset( $et_ptemplate_settings['et_ptemplate_blogcats'] ) ? (array) 
 							
 							
 							<?php if (!$et_ptemplate_blogstyle) { ?>
-								<p><?php truncate_post(550);?></p>
+								<p><?php the_excerpt();?></p>
 								<a href="<?php the_permalink(); ?>" class="readmore"><span><?php esc_html_e('read more','Flexible'); ?> &raquo;</span></a>
 							<?php } else { ?>
 								<?php

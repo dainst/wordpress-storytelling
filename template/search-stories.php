@@ -94,7 +94,7 @@ $et_ptemplate_blog_perpage = 2;
 							
 							
 							<?php if (!$et_ptemplate_blogstyle) { ?>
-								<p><?php truncate_post(550);?></p>
+								<p><?php the_excerpt();?></p>
 								<a href="<?php the_permalink(); ?>" class="readmore"><span><?php esc_html_e('read more','Flexible'); ?> &raquo;</span></a>
 							<?php } else { ?>
 								<?php
