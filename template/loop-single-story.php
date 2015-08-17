@@ -3,9 +3,9 @@
 	<?php if (et_get_option('flexible_integration_single_top') <> '' && et_get_option('flexible_integrate_singletop_enable') == 'on') echo (et_get_option('flexible_integration_single_top')); ?>
 	
 	<article id="post-<?php the_ID(); ?>" <?php post_class('entry clearfix'); ?>>
-		<h2 class="page_title"><?php the_title(); ?></h2>
+		<h1 class="page_title"><?php the_title(); ?></h1>
 
-		<p class="et_pt_blogmeta">
+		<p class="meta-info">
 			<?php esc_html_e('Posted','Flexible'); ?>
 			<?php esc_html_e('by','Flexible'); ?>
 			<?php /*the_author_posts_link();*/ the_author(); ?>
@@ -52,11 +52,14 @@
 		<div class="post-content">
 			
 			<?php the_content(); ?>
+			
+			<?php edit_post_link(esc_attr__('Edit this page','Flexible')); ?>
+			
 			<?php wp_link_pages(array('before' => '<p><strong>'.esc_attr__('Pages','Flexible').':</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
 			
 		</div>
 		<div style='clear:both'></div>
-		<?php edit_post_link(esc_attr__('Edit this page','Flexible')); ?>
+		
 		 	<!-- end .post-content -->
 	</article> <!-- end .entry -->
 	

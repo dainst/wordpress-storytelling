@@ -1,4 +1,4 @@
-<div id="breadcrumbs">
+<div id="breadcrumbs">HALLO
 	<?php if(function_exists('bcn_display')) { bcn_display(); } 
 		  else { ?>
 				<a href="<?php bloginfo('url'); ?>"><?php esc_html_e('Home','Flexible') ?></a> <span class="raquo">&raquo;</span>

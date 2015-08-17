@@ -11,6 +11,7 @@
  */
 @CHARSET "UTF-8";
 
+
 .searchform .s { height: 24px; width: 199px; margin-right: 10px; }
 
 .searchform .searchsubmit {
@@ -39,3 +40,6 @@ input[type="week"]
     padding: 2px;
     color: #4E4E4E;
 }
+
+/* extends original style css l. 138 */ 
+.story > .meta-info { margin-left: 36px; }

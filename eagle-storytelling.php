@@ -219,8 +219,9 @@ add_filter( 'page_template', 'esa_get_create_story_page_template' );
  */
 
 function esa_register_plugin_styles() {
-	if (get_post_type() == 'story') {
-	
+	global $post;
+	if ((get_post_type() == 'story') or ($post->post_title == 'Stories')) {
+		
 		// css
 		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
 		wp_enqueue_style('eagle-storytelling' );
