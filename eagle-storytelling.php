@@ -40,12 +40,21 @@ add_action('admin_init', function () {
 	$role->add_cap('delete_story');
 	$role->add_cap('publish_story');
 	$role->add_cap('delete_published_story');
-	$role->add_cap('edit_published_story');
+	$role->add_cap('edit_published_story');	
+	$role->add_cap('manage_story_keyword');
+	$role->add_cap('edit_story_keyword');
+	$role->add_cap('delete_story_keyword');
+	$role->add_cap('assign_story_keyword');
 	
 	$role = get_role('esa_story_contributor');
 	$role->add_cap('read');
 	$role->add_cap('edit_story');
 	$role->add_cap('delete_story');
+	$role->add_cap('manage_story_keyword');
+	$role->add_cap('edit_story_keyword');
+	$role->add_cap('delete_story_keyword');
+	$role->add_cap('assign_story_keyword');
+
 });
 
 
@@ -76,7 +85,13 @@ function esa_create_keywords_widget() {
         'labels' => $labels,
         'show_ui' => true,
         'query_var' => true,
-        'rewrite' => array('slug' => 'keyword')
+        'rewrite' => array('slug' => 'keyword'),
+    	'capabilities' => array(
+    		'manage_terms' => 'manage_story_keyword',
+    		'edit_terms' => 'edit_story_keyword',
+    		'delete_terms' => 'delete_story_keyword',
+    		'assign_terms' => 'assign_story_keyword'
+    	)
     ));
 }
 
@@ -113,8 +128,10 @@ function esa_register_story_post_type() {
         'rewrite' => apply_filters('et_portfolio_posttype_rewrite_args', array('slug' => 'story', 'with_front' => false)),
         'capability_type' => 'story',
     	'capabilities' => array(
+    		'publish_post' => 'publish_story',
     		'publish_posts' => 'publish_story',
     		'edit_posts' => 'edit_story',
+    		'edit_post' => 'edit_story',
     		'edit_others_posts' => 'edit_others_story',
     		'read_private_posts' => 'read_private_story',
     		'edit_post' => 'edit_story',
@@ -123,7 +140,7 @@ function esa_register_story_post_type() {
     	),
         'hierarchical' => false,
         'menu_position' => null,
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions', 'custom-fields')
+        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions')
     );
 
     register_post_type('story', $args);
