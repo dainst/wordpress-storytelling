@@ -19,7 +19,7 @@ $et_ptemplate_showthumb = isset( $et_ptemplate_settings['et_ptemplate_showthumb'
 
 $blog_cats = isset( $et_ptemplate_settings['et_ptemplate_blogcats'] ) ? (array) $et_ptemplate_settings['et_ptemplate_blogcats'] : array();
 //$et_ptemplate_blog_perpage = isset( $et_ptemplate_settings['et_ptemplate_blog_perpage'] ) ? (int) $et_ptemplate_settings['et_ptemplate_blog_perpage'] : 10;
-$et_ptemplate_blog_perpage = 2;
+//$et_ptemplate_blog_perpage = 2;
 ?>
 
 <?php get_header(); ?>
