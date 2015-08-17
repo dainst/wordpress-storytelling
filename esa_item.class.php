@@ -132,7 +132,7 @@ class esa_item {
 			$proceed = $wpdb->update(
 				$wpdb->prefix . 'esa_item_cache',
 				array(
-					'content' => ($this->html), 
+					'content' => stripslashes($this->html), 
 					'searchindex' => strip_tags($this->html), 
 					'timestamp' => current_time('mysql'),
 					'url' => $this->url,
@@ -148,13 +148,12 @@ class esa_item {
 				array(
 					"source" => $this->source,
 					"id" => $this->id,
-					'content' => ($this->html),
-					'searchindex' => $this->html,
+					'content' => $this->html,
+					'searchindex' => strip_tags($this->html),
 					'timestamp' => current_time('mysql'),
 					'url' => $this->url
 				)
-	
-			);
+				);
 		}
 			
 		
@@ -165,9 +164,9 @@ class esa_item {
 		} else {
 			$this->_error('insertion impossible!');
 			$this->_error($wpdb->last_error);
-			$this->_error(strlen($this->id));
+			//$this->_error(strlen($this->id));
 			$this->_error('<textarea>' . print_r($wpdb->last_query,1) . '</textarea>'); 
-			
+ 
 			return false;
 		}
 

@@ -71,18 +71,27 @@ namespace esa_datasource {
 				$type_list = (isset($result->types)) ? implode(', ', $result->types) : '';
 				$type_label = (count($type_list) > 1) ? 'Types' : "Type";
 				
+				$hint = '';
+				
 				if (isset($result->prefLocation)) {
-					list($long, $lat) = $result->prefLocation->coordinates;
-					$hint = '';
+					$prefLocation = $result->prefLocation;
 				} else {
-					// fetch coordinates from parent location 
-					$parent = $this->_json_decode($this->_fetch_external_data($this->api_url_parser($result->parent)));
-					list($long, $lat) = $parent->result[0]->prefLocation->coordinates;
-					$hint = "<li>(Coordinates taken from parent Object: {$parent->result[0]->prefName->title}</li>";
-				}
+					// fetch coordinates from parent location
+					$l = 0;
+					$parent = $result;
+					while (!isset($parent->prefLocation)) {
+						$parent = $this->_json_decode($this->_fetch_external_data($this->api_url_parser($parent->parent)))->result[0];
+						$l++;
+					}
+					$prefLocation = $parent->prefLocation;
+					$hint = "<li>(Coordinates taken from parent Object $l: {$parent->prefName->title}</li>";
+				}		
+				
+				list($long, $lat) = $prefLocation->coordinates;
+				$shape = (isset($prefLocation->shape)) ? "data-shape='" . json_encode($this->swapCoordinates($prefLocation->shape)) .  "'" : '';
 				
 				$html  = "<div class='esa_item_left_column_max_left'>";
-				$html .= "<div class='esa_item_map' id='esa_item_map-{$result->gazId}@idai' data-latitude='$lat' data-longitude='$long'>&nbsp;</div>";
+				$html .= "<div class='esa_item_map' id='esa_item_map-{$result->gazId}-idai' data-latitude='$lat' data-longitude='$long' $shape>&nbsp;</div>";
 				$html .= "</div>";
 				
 				$html .= "<div class='esa_item_right_column_max_left'>";
@@ -117,6 +126,15 @@ namespace esa_datasource {
 			return $res[0];
 		}
 
+		function swapCoordinates($arr) {
+		    foreach ($arr as $key => $val) {
+		        if (is_array($val))
+		            $arr[$key] = $this->swapCoordinates($val);
+		    }
+		    return array_reverse($arr);
+		}
+		
+		
 	}
 }
 ?>

@@ -45,19 +45,32 @@ jQuery(document).ready(function(){
 			console.log( textStatus );
 			// draw maps
 			jQuery('.esa_item_map').each(function(k, mapDiv) {
-				console.log(mapDiv);
+				//console.log(mapDiv);
 				
 				var mapId = jQuery(mapDiv).attr('id');
 				var lat   = parseFloat(jQuery(mapDiv).data('latitude'));
 				var long  = parseFloat(jQuery(mapDiv).data('longitude'));
-				console.log(mapId);
+				
+				var shape  = jQuery(mapDiv).data('shape');
+
+				
+				//console.log(mapId);
 				esa_maps[mapId] = L.map(mapId).setView([lat, long], 13);
 	
 				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 				}).addTo(esa_maps[mapId]);
 	
-				L.marker([lat, long]).addTo(esa_maps[mapId]);
+				
+				
+				if (typeof shape !== "undefined") {
+					console.log(shape);
+					var poly = L.multiPolygon(shape).addTo(esa_maps[mapId]);
+					esa_maps[mapId].fitBounds(poly.getBounds());
+				} else {
+					L.marker([lat, long]).addTo(esa_maps[mapId]);
+				}
+				
 			})
 		})
 		.fail(function( jqxhr, settings, exception ) {

@@ -490,7 +490,7 @@ function esa_install () {
 	"CREATE TABLE $table_name (
   		source VARCHAR(12) NOT NULL,
   		id VARCHAR(200) NOT NULL,
-  		content TEXT NULL,
+  		content LONGTEXT NULL,
   		searchindex TEXT NULL,
   		url TEXT NULL,
   		timestamp DATETIME NOT NULL,
