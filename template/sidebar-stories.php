@@ -1,8 +1,14 @@
 <?php if ( is_active_sidebar( 'sidebar' ) ){ ?>
 	<div id="sidebar">
 
+	<div class="topsearch">
+          <h3>Stories</h3>
+          <p><a href='<?php bloginfo('url'); ?>/stories'>Flagship Storytelling Application</a></p>
+    </div>
+    
+<?php	/*
 	<div class="widget widget_search">
-<?php /*
+ 
 if ( is_user_logged_in() ) {
 ?>
 		<h3><?php echo 'Hello '.wp_get_current_user()->user_login.'!' ?></h3>
@@ -15,9 +21,9 @@ if ( is_user_logged_in() ) {
 		<h3><a href="<?php echo wp_login_url(site_url('/stories/')); ?>" title="Login">Login</a></h3>
 		<p>(Logged in users can create new stories)</p>
 <?php
-}*/
+}
+	</div>*/
 ?>
-	</div>
 
 	<div class="widget">
 	

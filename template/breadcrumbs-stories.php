@@ -1,7 +1,9 @@
-<div id="breadcrumbs">HALLO
+<div id="breadcrumbs">
 	<?php if(function_exists('bcn_display')) { bcn_display(); } 
 		  else { ?>
 				<a href="<?php bloginfo('url'); ?>"><?php esc_html_e('Home','Flexible') ?></a> <span class="raquo">&raquo;</span>
+				
+				<a href="<?php bloginfo('url'); ?>/stories">Stories</a> <span class="raquo">&raquo;</span>
 				
 				<?php if( is_tag() ) { ?>
 					<?php esc_html_e('Posts Tagged ','Flexible') ?><span class="raquo">&quot;</span><?php single_tag_title(); echo('&quot;'); ?>
@@ -12,16 +14,9 @@
 				<?php } elseif (is_year()) { ?>
 					<?php esc_html_e('Posts made in','Flexible') ?> <?php the_time('Y'); ?>
 				<?php } elseif (is_search()) { ?>
-					<?php esc_html_e('Search results for','Flexible') ?> <?php the_search_query() ?>
+					<?php echo ($q = get_search_query()) ? "Search Results for '$q'" :  "Search Results"; ?>
 				<?php } elseif (is_single()) { ?>
-					<?php $category = get_the_category();
-						  /*if ( $category ) { 
-							$catlink = get_category_link( $category[0]->cat_ID );
-							echo ('<a href="'.esc_url($catlink).'">'.esc_html($category[0]->cat_name).'</a> '.'<span class="raquo">&raquo;</span> ');
-						  }*/
-						?> 
-						<a href="<?php bloginfo('url'); ?>/stories/"><?php esc_html_e('Stories','Flexible') ?></a> <span class="raquo">&raquo;</span> 
-						<?php echo get_the_title(); ?>
+					<?php echo get_the_title(); ?>
 				<?php } elseif (is_category()) { ?>
 					<?php single_cat_title(); ?>
 				<?php } elseif (is_tax()) { ?>
@@ -54,7 +49,7 @@
 				<?php } elseif (is_page_template('page-partner.php') && !is_page('partners')) { ?>
 				    <?php echo "About &raquo; Partners &raquo; "; wp_title(''); ?>
 				<?php } elseif (is_page()) { ?>
-					<?php wp_title(''); ?>
+					<?php //wp_title(''); ?>
 				<?php }; ?>
 	<?php } ?>
 </div> <!-- end #breadcrumbs -->
