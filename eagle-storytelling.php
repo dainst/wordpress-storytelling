@@ -182,24 +182,16 @@ add_filter( 'page_template', 'esa_get_stories_page_template' );
 /****************************************/
 /* register template for page "search stories" */ 
 
-function esa_get_search_stories_page_template( $page_template )
-{
-    /*if ( is_page( 'search-stories' ) ) {
-        $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
-    }*/
-	
-   	if ( get_query_var('post_type') == "story" ) {
-        $page_template = dirname( __FILE__ ) . '/template/search-stories.php';
-        
-      //  echo "<div style='background:yellow'>";       	echo "!!!!";        echo "</div>";
-        
+function esa_get_search_stories_page_template($page_template) {
+   	if ((get_query_var('post_type') == "story") or (get_query_var('taxonomy') == 'story_keyword')){
+        $page_template = dirname( __FILE__ ) . '/template/search-stories.php'; 
     }
     return $page_template;
 }
 
-add_filter( 'search_template', 'esa_get_search_stories_page_template' );
-add_filter( 'archive_template', 'esa_get_search_stories_page_template' );
-add_filter( '404_template', 'esa_get_search_stories_page_template' );
+add_filter('search_template', 'esa_get_search_stories_page_template');
+add_filter('archive_template', 'esa_get_search_stories_page_template');
+add_filter('404_template', 'esa_get_search_stories_page_template');
 
 
 
@@ -214,21 +206,6 @@ function searchfilter($query) {
 //add_filter('pre_get_posts','searchfilter');
 
 
-/****************************************/
-/* register template for page "create story" (which exists but is not yet used!) */ 
-
-function esa_get_create_story_page_template( $page_template )
-{
-    if ( is_page( 'create-story' ) ) {
-        $page_template = dirname( __FILE__ ) . '/template/page-create-story.php';
-    }
-    return $page_template;
-}
-
-add_filter( 'page_template', 'esa_get_create_story_page_template' );
-
-
-/****************************************/
 
 
 /**

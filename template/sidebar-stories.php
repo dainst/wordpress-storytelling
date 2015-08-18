@@ -20,11 +20,13 @@ if ( is_user_logged_in() ) {
 	</div>
 
 	<div class="widget">
+	
+
 		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
 			<h4 class="widgettitle">Search Stories</h4>
 		
     		<div>
-        		<input type="text" name="s" class="s" value="<?php echo $_GET['s'] ?>" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="text" name="s" class="s" value="<?php echo get_query_var('s') ?>" /><input type="submit" class="searchsubmit" value="Search" />
 				<input type="hidden" name="post_type" value="story" />
     		</div>
 
@@ -32,13 +34,13 @@ if ( is_user_logged_in() ) {
 			<h4 class="widgettitle">Filters</h4>
 			<h5>Filter by keywords</h5>
     		<div>
-        		<input type="text"   name="term" value="<?php echo $_GET['term'] ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
-        		<input type="hidden" name="taxonomy" 			value="story_keyword" />
+        		<input type="text"   name="term" value="<?php echo (get_query_var('taxonomy') == 'story_keyword') ? get_query_var('term') : '' ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="hidden" name="taxonomy" value="story_keyword" />
     		</div>
 
 			<h5>Filter by author</h5>
     		<div>
-        		<input type="text" name="author_name" value="<?php echo $_GET['author_name'] ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="text" name="author_name" value="<?php echo get_query_var('author_name') ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
     		</div>
 		</form>
 
