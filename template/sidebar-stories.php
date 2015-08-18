@@ -20,38 +20,35 @@ if ( is_user_logged_in() ) {
 	</div>
 
 	<div class="widget">
-		<h4 class="widgettitle">Search Stories</h4>
 		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
+			<h4 class="widgettitle">Search Stories</h4>
+		
     		<div>
-        		<input type="text" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="text" name="s" class="s" value="<?php echo $_GET['s'] ?>" /><input type="submit" class="searchsubmit" value="Search" />
 				<input type="hidden" name="post_type" value="story" />
     		</div>
-		</form>
-	</div>
 
-	<div id="search-stories" class="widget widget_recent_entries">
-		<h4 class="widgettitle">Filters</h4>
-		<h5>Filter by keywords</h5>
-		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
+
+			<h4 class="widgettitle">Filters</h4>
+			<h5>Filter by keywords</h5>
     		<div>
-        		<input type="text"   name="term"  				value="" 				class="s" /><input type="submit" class="searchsubmit" value="Search" />
-        		<input type="hidden" name="post_type" 			value="story" />
-      			<input type="hidden" name="taxonomy" 			value="story_keyword" />
+        		<input type="text"   name="term" value="<?php echo $_GET['term'] ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="hidden" name="taxonomy" 			value="story_keyword" />
+    		</div>
+
+			<h5>Filter by author</h5>
+    		<div>
+        		<input type="text" name="author_name" value="<?php echo $_GET['author_name'] ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
     		</div>
 		</form>
-		<h5>Filter by author</h5>
-		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
-    		<div>
-        		<input type="text" value="" name="author_name" class="s" /><input type="submit" class="searchsubmit" value="Search" />
-        		<input type="hidden" name="post_type" value="story" /> 
-    		</div>
-		</form>
+
 		<h5>Filter by TM ID</h5>
 		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
     		<div>
         		<input type="number" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
-        		<input type="hidden" name="post_type" value="story" />
-        		<input type="hidden" name="trismegistos" value="1" />
+        		<input type="hidden" name="post_type" 			value="story" />
+        		<input type="hidden" name="s" 					value="<?php echo $_GET['s'] ?>" />
+        		<input type="hidden" name="trismegistos" 		value="1" />
     		</div>
 		</form>
 	</div>
