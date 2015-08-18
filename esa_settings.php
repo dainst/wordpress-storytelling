@@ -17,7 +17,7 @@ define('ESA_DEBUG', false);
 
 // list of available data sources (must correspondent with files in /datasources)
 $esa_datasources = array(
-		'europeana' 	=> __('search in Europeana'),
+		'europeana' 	=> __('Search in Europeana'),
 		'idai'			=> __('Search in iDAI Gazetteer'),
 		'wiki' 			=> __('TEST Data-Engine: Wikipedia'),
 		
