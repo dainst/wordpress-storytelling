@@ -283,6 +283,7 @@ add_action('media_upload_esa', function() {
 	add_action('admin_print_styles-media-upload-popup', function() {
 		wp_enqueue_style('colors');
 		wp_enqueue_style('media');
+		wp_enqueue_style('media-views');
 		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
 		wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
 		wp_enqueue_style('leaflet', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css');
@@ -295,14 +296,14 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
 	});
 	
-		
+		/**
+		 * this builds the iframe wich is in fact the add media dialogue of our plugin!
+		 *
+		 */
 	return wp_iframe('media_esa_dialogue'); 
 });
 
-/**
- * this builds the iframe wich is in fact the add media dialogue of our plugin!
- * 
- */
+
 function media_esa_dialogue() {
 	
 	global $esa_datasources;
@@ -324,9 +325,29 @@ function media_esa_dialogue() {
 	
 	//media_upload_header();
 	
-
+	echo "<div id='esa-mediaframe'>";
 	
-	//preview field
+	echo "<div class='media-frame-router'>";
+	echo "<div class='media-router'>";
+	
+	// create search engine menu
+	foreach ($esa_datasources as $source => $label) {
+		$sel = ($source == $engine) ? 'active' : '';
+		echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=$source'>$label</a>";
+	}
+	echo "</div>";
+	echo "</div>"; //esa_item_list_sidebar
+	
+	
+
+	/*
+	if (get_user_setting('uploader')) { // todo: user-rights
+		$form_class .= ' html-uploader';
+	}*/
+	
+	
+	
+	//Sidebar
 	echo "<div id='esa_item_list_sidebar'>";
 	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
 	
@@ -361,51 +382,45 @@ function media_esa_dialogue() {
 			echo "<option value='$key'>$caption</option>";
 		}
 		echo '</select>';
-		
+	
 		echo "</div>";
 	}
 	
 	echo "</form></div>";
 	
-	echo '<input type="button" class="button button-primary" id="go_button" disabled="disabled" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
 	
-	echo "</div>";
+	echo "</div>"; //esa_item_list_sidebar
 	
-	echo "<div id='esa_item_list_main'>";
-
-	// create search engine menu
-	foreach ($esa_datasources as $source => $label) {
-		$sel = ($source == $engine) ? 'button-primary' : 'button-secondary';
-		echo "<a class='button $sel' href='?tab=esa&esa_source=$source'>$label</a>";
-	}
-
-
-	/*
-	if (get_user_setting('uploader')) { // todo: user-rights
-		$form_class .= ' html-uploader';
-	}*/
+	echo "<div class='media-frame-content'>";
 	
+	echo "<div class='attachments-browser'>";
 
-	echo "<h3 class='media-title'>{$eds->title}</h3>";
-	echo '<div id="media-items">';
-	// serach engine & results
+	
+	//echo "<h3 class='media-title'>{$eds->title}</h3>";	
 	$eds->search_form();
+	
+
+	echo '<div id="media-items">';
 	if ($eds->search()) {
 		$eds->show_result();
 	} else {
 		$eds->show_errors();
 	}
-	echo '</div>';
+	echo '</div>'; //media-items
 	
-	echo "</div>";
+	echo '</div>'; //attachments-browser
 	
+	echo "</div>"; //media-frame-content
 	
-	
+	echo "<div class='media-frame-toolbar'>";
+	echo "<div class='media-toolbar'>";
+	echo '<div class="media-toolbar-primary search-form">';
+	echo '<input type="button" class="button button-primary media-button" id="go_button" disabled="disabled" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	echo "</div>"; //media-toolbar-primary search-form
+	echo "</div>"; //media-toolbar
+	echo "</div>"; //media-frame-toolbar
 
-	
-
-	
-	
+	echo "</div>"; // esa-mediaframe
 }
 
 

@@ -45,7 +45,7 @@ namespace esa_datasource {
 			}
 			
 			public $info = "This is a simple data source wich searches the wikipedia for images to any keyword. <br>Is is not very useful.<br> I just designed it as example of how we will be able to use this engine to search and retrieve in various data sources in the future. <br> Just insert something and press 'search'. <br>-  philipp";    
-			public $title = 'Test Subplugin for Wikipedia';
+			public $title = 'Wikipedia';
 			
 			function parse_result_set($response) {
 				$response = json_decode($response);

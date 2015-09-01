@@ -6,10 +6,56 @@
  */
 @CHARSET "UTF-8";
 
+
 /* esa result overview (in admin "add media" - area) */
+
+body {
+	background-color: #FCFCFC;
+}
+
+
+
+
+#esa-mediaframe .media-frame-content, 
+#esa-mediaframe .media-frame-router, 
+#esa-mediaframe .media-frame-title, 
+#esa-mediaframe .media-frame-toolbar  {
+	right: auto;
+	left: auto;
+}
+
+#esa-mediaframe .media-frame-router {
+    top: 6px;
+}
+
+#esa-mediaframe .media-frame-toolbar {
+	right: 0px;
+	left: 0px;
+	background-color: #FCFCFC;
+	border-top: 1px solid #CCC;
+}
+
+#esa-mediaframe .media-frame-content {
+	top: 40px;
+	right: 363px;
+	left: 0px;
+	border-right: 1px solid #CCC;
+	border-bottom: none;
+}
+
+
+
+#esa-mediaframe #media-items {
+	margin: 10px;
+	overflow: auto;
+}
+
+
 .esa_item_list .esa_item {
 	border: 2px solid silver;
-	width: 380px;
+	min-width: 370px;
+	max-width: 410px;
+	width: 32%;
 	/*height: 130px;*/
 	overflow: hidden;
 	float: left;
@@ -33,20 +79,23 @@
 	display: none	
 }
 
-
+/*
 #esa_item_list_main {
 	padding: 6px;
 	height: 100%;
 	overflow: scroll-y;
 	margin-right: 362px;
 }
-
+*/
 #esa_item_list_sidebar {
 	padding: 6px;
-	border-left: 1px solid #CCC;
+	margin-top: 40px;
 	height: 100%;
-	overflow: scroll-y;
+	overflow: auto;
 	float: right;
+	height: 100%;
+	border-top: 1px solid #CCC;
+	background-color: #FCFCFC;
 }
 
 #esa_item_preview {
@@ -54,7 +103,7 @@
 	width: 350px;
 	overflow: hidden;	
 	margin-bottom: 6px;
-	border-bottom: 1px solid #CCC;
+	border: 2px solid #CCC;
 	float: none
 }
 
@@ -103,6 +152,9 @@
 	line-height: 26px;
 }
 
+.media-frame-content p {
+	margin: 1em
+}
 
 /* esa_item @ mce */
 
