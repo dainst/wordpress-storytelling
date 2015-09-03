@@ -306,6 +306,9 @@ add_action('media_upload_esa', function() {
 
 function media_esa_dialogue() {
 	
+	
+	$time = microtime(true);
+	
 	global $esa_datasources;
 	
 	// get current search engine
@@ -396,12 +399,11 @@ function media_esa_dialogue() {
 	echo "<div class='attachments-browser'>";
 
 	
-	//echo "<h3 class='media-title'>{$eds->title}</h3>";	
+	//echo "<h3 class='media-title'>{$eds->title}</h3>";
+	$success = $eds->search();	
 	$eds->search_form();
-	
-
 	echo '<div id="media-items">';
-	if ($eds->search()) {
+	if ($success) {
 		$eds->show_result();
 	} else {
 		$eds->show_errors();
@@ -421,6 +423,7 @@ function media_esa_dialogue() {
 	echo "</div>"; //media-frame-toolbar
 
 	echo "</div>"; // esa-mediaframe
+	//echo "<div class='timestamp'>Time: ", microtime(true) -$time, "</div>";
 }
 
 

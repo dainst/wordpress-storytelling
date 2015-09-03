@@ -133,6 +133,14 @@
 	
 }
 
+.esa_item_subtext {
+	margin-bottom: 5px
+}
+
+.esa_item p {
+	margin: 0px !important
+}
+
  .esa_item_map {
  	width:  100%; /*100%; */
 	height: 400px;

@@ -1,21 +1,17 @@
 <?php
 /**
  * @package 	eagle-storytelling
- * @subpackage	Search in Datasources | Subplugin: Europeana
+ * @subpackage	Search in Datasources | Subplugin: Wikipedia
  * @link 		http://www.europeana.eu/
  * @author 		Philipp Franck
  * 
- * Status: Test Product 
+ * Status: Beta
+ * 
  *  
- * This is a simple data source wich searches the wikipedia for images to any keyword. 
- * It is not very useful. 
- * I just designed as example of how we cwill beable to use this engine to serach and retrieve in various data sources in the future.
- *
+ * 
  */
 namespace esa_datasource {
 	/**
-	 * 
-
 	 * 
 	 * @author Philipp Franck
 	 *
@@ -23,15 +19,18 @@ namespace esa_datasource {
 	class wiki extends abstract_datasource {
 		
 			public $pagination = false;
+			
+			
 		
 			//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
 			function api_search_url($query, $params = array()) {
-				//return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&titles=$query";
-				return "https://en.wikipedia.org/w/api.php?action=query&prop=extracts|images&format=json&exintro=&titles=$query";
+				$query = urlencode($query);				
+				return "https://en.wikipedia.org/w/api.php?action=query&prop=extracts|categories|links|info&inprop=url&pllimit=max&exintro=&format=json&redirects=&titles=$query";
 			}
 			
-			function api_single_url($id) {
-				return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&pageids=$id";
+			function api_single_url($id) {				
+				$id = urlencode($id);
+				return "https://en.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=&format=json&redirects=&titles=$id";
 			}
 
 			function api_record_url($id) {
@@ -40,53 +39,131 @@ namespace esa_datasource {
 			
 			function api_url_parser($string) {
 				if (preg_match('#https?\:\/\/en\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
-					return "https://en.wikipedia.org/w/api.php?action=query&prop=info|pageimages&piprop=thumbnail&inprop=url&format=json&titles={$match[1]}";
+					return $this->api_single_url($match[1]);
 				}
 			}
 			
-			public $info = "This is a simple data source wich searches the wikipedia for images to any keyword. <br>Is is not very useful.<br> I just designed it as example of how we will be able to use this engine to search and retrieve in various data sources in the future. <br> Just insert something and press 'search'. <br>-  philipp";    
+			public $info = "Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>english Wikipedia</a> or insert a link to page from the english wikipedia.";    
 			public $title = 'Wikipedia';
 			
-			function parse_result_set($response) {
+			function parse_result_set($response, $subquery = false) {
+
+				$results = array();
+				
 				$response = json_decode($response);
-				$this->results = array(); 
+				
+				//echo "<pre>", print_r($response, 1), "</pre>";
+				
 				foreach ($response->query->pages as $page) {
-					foreach ($page->images as $image) {
-						
-						$imageData = $this->_fetch_external_data("https://commons.wikimedia.org/w/api.php?action=query&format=json&titles=".urlencode($image->title)."&prop=imageinfo&iiprop=url%7Cextmetadata&iiurlwidth=150");
-						
-						//{"batchcomplete":"","query":{"pages":{"26631028":{"pageid":26631028,"ns":6,"title":"File:Air Berlin Boeing 737-700; D-ABBT@TXL;31.12.2012 685ap (8438321804).jpg","imagerepository":"local","imageinfo":[{"thumburl":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Air_Berlin_Boeing_737-700%3B_D-ABBT%40TXL%3B31.12.2012_685ap_%288438321804%29.jpg/50px-Air_Berlin_Boeing_737-700%3B_D-ABBT%40TXL%3B31.12.2012_685ap_%288438321804%29.jpg","thumbwidth":50,"thumbheight":33,"url":"https://upload.wikimedia.org/wikipedia/commons/e/ed/Air_Berlin_Boeing_737-700%3B_D-ABBT%40TXL%3B31.12.2012_685ap_%288438321804%29.jpg","descriptionurl":"https://commons.wikimedia.org/wiki/File:Air_Berlin_Boeing_737-700;_D-ABBT@TXL;31.12.2012_685ap_(8438321804).jpg"}]}}}}
-						
-						$imageData = json_decode($imageData);
-						
-						foreach ($imageData->query->pages as $imageItem) {
-						
-							$html  = "<div class='esa_item_left_column'>";
-							//$html .= "<span class='esa_item_main_image' src='' alt='thumpnail'>";
-							$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$imageItem->imageinfo[0]->thumburl}\")'>&nbsp;</div>";
-							//$html .= "<pre>".print_r($imageData,1)."</pre>";
-							$html .= "<div>{$imageItem->imageinfo[0]->extmetadata->ImageDescription->value}</div>";
-							$html .= "</div>";
-							
-							$html .= "<div class='esa_item_right_column'>";
-							$html .= "<h4>{$page->title}</h4>";
-							//$html .= "<pre>".print_r($image,1)."</pre>";
-							//$html .= "<pre>".print_r($imageData,1)."</pre>";
-							$html .= "<p>{$page->extract}</p>";
-							$html .= "</div>";
-						
-							$this->results[] = new \esa_item('wiki', $page->pageid, $html, $page->fullurl);
+					
+					if (property_exists($page, 'missing')) {
+						continue;
+					}					
+					
+					// finde Kategorien
+					$categories  = array(); 			
+					if (isset($page->categories)) {			
+						foreach ($page->categories as $category) {
+							$categories[] = $category->title;
 						}
 					}
+						
+					// Sonderfall: Disambiguation Page
+					if (in_array('Category:All disambiguation pages', $categories)) {
+						//echo "<hr><pre>".print_r($page,1)."</pre></hr>";
+						foreach ($page->links as $link) {
+							
+							if ($link->ns != 0) {
+								continue;
+							}
+							
+							$d = $this->_fetch_external_data($this->api_single_url($link->title));
+							//echo "<hr><pre>".print_r($d,1)."</pre></hr>";
+							$results = array_merge($results, $this->parse_result_set($d, true));
+						}
+					
+					// normaler Fall
+					} else {						
+						$results[] = $this->render_page($page);
+					}
+
 				}
-				return $this->results;
+				
+				if (!$subquery) {
+					$this->results = $results;
+				}
+				
+				return $results;
 			}
 
+			
+			function render_page($page) {
+					
+				// fetch image / media data
+				
+				//$url = "https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mime|mediatype|extmetadata&iiurlwidth=150&titles=$title&redirects=";
+				$title = urlencode($page->title);
+				$url = "https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata&iiurlwidth=150&titles=$title&generator=images&redirects=";
+					
+				$imageData = $this->_fetch_external_data($url);
+				$imageData = json_decode($imageData);
+				
+				//echo "<hr><pre>".print_r($url,1)."</pre>";
+				//echo "<pre>", print_r($imageData,1), "</pre>";
+
+				$subhtml = '';
+				if (isset($imageData->query->pages)) {
+					foreach ($imageData->query->pages as $imageItem) {
+						
+						//$skip_images = array( 'File:Commons-logo.svg', 'File:Boxed East arrow.svg', 'File:Openstreetmap logo.svg', 'File:PD-icon.svg', 'File:Question book-new.svg', 'File:Wiktionary-logo-en.svg', 'File:Folder Hexagonal Icon.svg', 'File:Wikiquote-logo.svg', 'File:Edit-clear.svg', 'File:Wikisource-logo.svg', 'File:Crystal personal.svg', 'File:Portal-puzzle.svg', 'File:Ambox important.svg', 'File:Text document with red question mark.svg', 'File:P vip.svg', 'File:Gloriole blur.svg', 'File:Star empty.svg', 'File:Star full.svg', 'File:Star half.svg', 'File:WPanthroponymy.svg', 'File:Gnome-dev-cdrom-audio.svg'
+						//if (in_array($imageItem->title, $skip_images)) {continue;}
+						
+						$text = strip_tags($imageItem->imageinfo[0]->extmetadata->ImageDescription->value);
+						$drlink = "<a href='{$imageItem->imageinfo[0]->url}' target='_blank'>{$imageItem->imageinfo[0]->title}</a>";
+						
+						switch($imageItem->imageinfo[0]->mediatype) {
+							case 'BITMAP':$subhtml .= "<div class='esa_item_main_image' style='background-image:url(\"{$imageItem->imageinfo[0]->thumburl}\")' title='{$imageItem->title}'>&nbsp;</div><div class='esa_item_subtext'>{$text}</div>"; break;
+							case 'AUDIO': $subhtml .= "<audio controls><source src='{$imageItem->imageinfo[0]->url}' type='{$imageItem->imageinfo[0]->mime}'>$drlink</audio><div class='esa_item_subtext'>{$text}</div>"; break;
+							case 'VIDEO': $subhtml .= "<video controls><source src='{$imageItem->imageinfo[0]->url}' type='{$imageItem->imageinfo[0]->mime}'>$drlink</video><div class='esa_item_subtext'>{$text}</div>"; break;
+							case 'DRAWING': break;
+							default: $subhtml .= $drlink;
+						}
+									
+						//$subhtml .= "<b>{$imageItem->imageinfo[0]->mediatype}</b>";
+						//$subhtml .= "<textarea>".print_r($imageData,1)."</textarea>";
+						//$subhtml .= '<hr>';
+					}
+				}
+					
+				if ($subhtml) {	
+					$html  = "<div class='esa_item_left_column'>";
+					$html .= $subhtml;
+					$html .= "</div>";
+					$html .= "<div class='esa_item_right_column'>";
+				} else {
+					$html .= "<div class='esa_item_single_column'>";
+				}
+					
+
+				$html .= "<h4>{$page->title}</h4>";
+				$html .= "<p>{$page->extract}</p>";
+				$html .= "</div>";
+					
+				return new \esa_item('wiki', $page->title, $html, $page->fullurl);
+			}
+			
 			function parse_result($response) {
 				// wikipedia always return a whole set
-				$res = $this->parse_result_set($response);
-				return $res[0];
+				$response = json_decode($response);
+				
+				//echo "<pre>", print_r($response, 1), "</pre>";die();
+				
+				foreach ($response->query->pages as $page) {
+					return $this->render_page($page);
+				}
+						
 			}
+			
 		
 	}
 }
