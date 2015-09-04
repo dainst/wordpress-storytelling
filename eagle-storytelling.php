@@ -55,11 +55,37 @@ add_action('admin_init', function () {
 	$role->add_cap('delete_story_keyword');
 	$role->add_cap('assign_story_keyword');
 
+	
+	
 });
 
+/****************************************/
 
+add_action('admin_menu', function () {
+	
+	//create new top-level menu
+	add_menu_page('Eagle Storytelling Application', 'Eagle Storytelling Application', 'administrator', __FILE__, function() {
+		$url = admin_url('admin.php');
+		echo "	<h1>Eagle Storytelling Application</h1>
+				<form method='POST' action='$url'>
+    				<input type='hidden' name='action' value='esa_flush_cache'>
+    				<input type='submit' value='Flush esa_item cache!' class='button'>
+				</form>";
+	});
 
+});
 
+add_action('admin_action_esa_flush_cache', function() {
+	global $wpdb;
+	
+	$sql = "truncate {$wpdb->prefix}esa_item_cache;";
+	
+	$wpdb->query($sql);
+	
+    wp_redirect($_SERVER['HTTP_REFERER']);
+    exit();
+	
+});
 
 
 /****************************************/
