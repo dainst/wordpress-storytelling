@@ -51,31 +51,36 @@ $et_ptemplate_blog_perpage = 2;
 				<?php the_content(); ?>
 				
 				<div id="et_pt_blog" class="responsive">
-					<?php $cat_query = ''; 
-					if ( !empty($blog_cats) ) $cat_query = '&cat=' . implode(",", $blog_cats);
-					else echo '<!-- blog category is not selected -->'; ?>
 					<?php 
-						$et_paged = is_front_page() ? get_query_var( 'page' ) : get_query_var( 'paged' );
+						$cat_query = ''; 
+						if (!empty($blog_cats)) {
+							$cat_query = '&cat=' . implode(",", $blog_cats);
+						} else {
+							echo '<!-- blog category is not selected -->';
+							$et_paged = is_front_page() ? get_query_var( 'page' ) : get_query_var( 'paged' );
+						}
+					
+						if (have_posts()) {
+							while (have_posts()) {
+								the_post(); 
+								include('loop-story.php');
+							}
+					 	
+							echo '<div class="page-nav clearfix">';
+							if(function_exists('wp_pagenavi')) {
+								echo wp_pagenavi(); 
+							} else { 
+								get_template_part('includes/navigation');
+							}
+							echo "</div>";
+						} else {
+							get_template_part('includes/no-results');
+						}
+						wp_reset_query();
 					?>
-					
-					<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-					
-						<?php include('loop-story.php'); ?>
-						
-					<?php endwhile; ?>
-						<div class="page-nav clearfix">
-							<?php if(function_exists('wp_pagenavi')) { wp_pagenavi(); }
-							else { ?>
-								 <?php get_template_part('includes/navigation'); ?>
-							<?php } ?>
-						</div> <!-- end .entry -->
-					<?php else : ?>
-						<?php get_template_part('includes/no-results'); ?>
-					<?php endif; wp_reset_query(); ?>
 				</div> <!-- end #et_pt_blog -->
 				
 				<?php wp_link_pages(array('before' => '<p><strong>'.esc_attr__('Pages','Flexible').':</strong> ', 'after' => '</p>', 'next_or_number' => 'number')); ?>
-				<?php edit_post_link(esc_attr__('Edit this page','Flexible')); ?>
 			</div> 	<!-- end .post-content -->
 		</article> <!-- end .entry -->
 	</div> <!-- end #left_area -->

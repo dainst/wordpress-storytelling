@@ -1,7 +1,7 @@
 <?php
 /**
  * @package eagle-storytelling
- * @version 0.7
+ * @version 0.8
  */
 /*
 Plugin Name: Eagle Storytelling Application
@@ -9,7 +9,7 @@ Plugin URI:  http://wordpress.org/plugins/eagle-storytelling/
 Description: Create your own EAGLE story! 
 Author:	     Wolfgang Schmidle & Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     0.7
+Version:     0.8
 
 */
 
@@ -93,6 +93,7 @@ function esa_create_keywords_widget() {
     		'assign_terms' => 'assign_story_keyword'
     	)
     ));
+    
 }
 
 add_action('init', 'esa_create_keywords_widget', 0);
@@ -147,6 +148,50 @@ function esa_register_story_post_type() {
 }
 
 add_action('init', 'esa_register_story_post_type');
+
+
+/****************************************/
+/* register save story */
+
+
+add_action('save_post', function($post_id) {
+		
+	$post = get_post($post_id);
+	global $wpdb;
+
+	if (!wp_is_post_revision($post_id) and ($post->post_type == 'story')) {
+		
+		$regex = get_shortcode_regex();
+		preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
+
+		echo "<pre>", print_r($shortcodes,1), "</pre>";
+		
+		if ($shortcodes) {
+			
+			$sql = "delete from wp_esa_item_to_post where post_id='$post_id'";
+			$wpdb->query($sql);
+			
+			foreach($shortcodes as $shortcode) {
+				if ($shortcode[2] == 'esa') {
+					$atts = shortcode_parse_atts($shortcode[3]);
+					echo "<pre>", print_r($atts,1), "</pre>";
+					
+					$wpdb->insert(
+							$wpdb->prefix . 'esa_item_to_post',
+							array(
+									"post_id" => $post_id,
+									"esa_item_source" => $atts['source'],
+									"esa_item_id" => $atts['id']
+							)
+					);
+					
+					
+				}
+			}
+		}
+	}		
+});
+
 
 
 /****************************************/
@@ -240,7 +285,7 @@ add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
  * @param WP_Query $query
  */
 
-function trismegistos_filter( $query ) {
+add_action('pre_get_posts', function($query) {
 
 	if( $query->is_main_query() ) {
 		if(isset($_GET['trismegistos'])) {
@@ -249,11 +294,52 @@ function trismegistos_filter( $query ) {
 		}
 	}
 	
-}
-add_action( 'pre_get_posts', 'trismegistos_filter' );
+});
 
 
+/**
+ * 
+ * Make search able to serach inside of esa_item_cache to find Entries by it's content in esa item. 
+ * 
+ * 
+ */
+add_filter('posts_search', function($sql) {
+	
+	global $wp_query;
+	
+	if (($wp_query->query['post_type'] != 'story') or (!$sql)) {
+		return $sql;
+	}
+	//echo '<pre style="border:1px solid red; background: silver">', $sql, '</pre>';
+	global $wpdb;
+	$sqst = "select
+				esai2post.post_id
+			from
+				{$wpdb->prefix}esa_item_to_post as esai2post
+				left join {$wpdb->prefix}esa_item_cache as esai on (esai.id = esai2post.esa_item_id and esai.source = esai2post.esa_item_source)
+			where
+				esai.searchindex like '%{$wp_query->query['s']}%'
+				";
+	
+				
+	$sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst)) or (1 = 1 $sql))";
+	//AND wp_posts.post_type = 'story' AND (wp_posts.post_status = 'publish' OR wp_posts.post_author = 1 AND wp_posts.post_status = 'private')
+				
+	//echo '<pre style="border:1px solid red; background: silver">', print_r($sqlr, 1), '</pre>';
+	
+	return $sqlr;
+	
+});
 
+
+/* 
+// view Query
+add_action('found_posts', function() {
+	global $wp_query;
+	if (is_search()) {
+		echo '<pre style="border:1px solid red; background: silver">', print_r($wp_query->request, 1), '</pre>';
+	}
+});*/
 
 /****************************************/
 
@@ -447,7 +533,7 @@ function media_esa_dialogue() {
 
 
 function esa_shortcode($atts, $context) {
-
+	
 	if (!isset($atts['source']) or !isset($atts['id'])) {
 		return;
 	}
@@ -512,12 +598,12 @@ add_shortcode('esa', 'esa_shortcode');
  * need a special table for that cache
  */
 function esa_install () {
+
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	
 	global $wpdb;
 	
 	$table_name = $wpdb->prefix . "esa_item_cache";
-	
-	$charset_collate = $wpdb->get_charset_collate();
-	
 	$sql = 
 	"CREATE TABLE $table_name (
   		source VARCHAR(12) NOT NULL,
@@ -527,10 +613,25 @@ function esa_install () {
   		url TEXT NULL,
   		timestamp DATETIME NOT NULL,
   		PRIMARY KEY  (source, id)
-	) COLLATE utf8_general_ci 
+	)
+	COLLATE utf8_general_ci 
+	ENGINE = MYISAM
 	;";
 	
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+
+	// because esa_item has wo columns as index, we can't solve this with a taxonomy...
+	$table_name = $wpdb->prefix . "esa_item_to_post";
+	$sql = 
+	"CREATE TABLE $table_name (
+		post_id BIGINT(20) UNSIGNED NOT NULL,
+		esa_item_source VARCHAR(12) NOT NULL,
+  		esa_item_id VARCHAR(200) NOT NULL
+  	)
+	COLLATE utf8_general_ci
+	ENGINE = MYISAM
+	;";
+	
 	dbDelta( $sql );
 	
 }

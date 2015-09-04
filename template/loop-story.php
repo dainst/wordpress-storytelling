@@ -1,5 +1,5 @@
 <div class="et_pt_blogentry clearfix">
-							<h2 class="et_pt_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+							<h2 class="et_pt_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?><?php //the_ID(); ?></a></h2>
 							
 							<p class="et_pt_blogmeta">
 								<?php esc_html_e('Posted','Flexible'); ?> 

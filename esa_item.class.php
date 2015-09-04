@@ -153,7 +153,7 @@ class esa_item {
 					'timestamp' => current_time('mysql'),
 					'url' => $this->url
 				)
-				);
+			);
 		}
 			
 		
