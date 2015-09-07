@@ -16,14 +16,15 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 		
 	function replaceEsaShortcodes( content ) {
 		return content.replace( /\[esa([^\]]*)\]/g, function( match ) {
-			//console.log('replaceEsaShortcodes speaking', match);
+			console.log('replaceEsaShortcodes speaking', match);
 			return html( match );
 		});
 	}
-
+//[esa source="europeana" id="/2020707/11B9BDAA1657DE3C2085185DF144E846F35A7898"]
 	function html( data ) {
 		var encodedShortCode = window.encodeURIComponent(data);
-		// do ajax
+		// do ajax 
+		
 		jQuery.ajax({
 			url: ajaxurl,
 			type: 'post',
@@ -33,8 +34,7 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 			},
 			success: function(result) {
 				//console.log('ajax success');
-				//console.log(result.trim());
-				jQuery('#content_ifr').contents().find('span.esa_item_wrapper[data-mce-esa-item="' + encodedShortCode + '"]').html(result.trim()); //
+				jQuery('#content_ifr').contents().find('div.esa_item_wrapper[data-mce-esa-item="' + encodedShortCode + '"]').html(result.trim()); //
 			},
 			error: function(e) {
 				console.log('ajax error');
@@ -43,22 +43,23 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 		}); 
 		
 		// data-mce-resize="true"  <- unfortunatley only works on images.
-		return '<!-- esa_item --><span class="esa_item_wrapper mceNonEditable" data-mce-esa-item="' + encodedShortCode + '" data-mce-placeholder="1" >.</span><!-- /esa_item -->';
+		return '<!-- esa_item --><div class="esa_item_wrapper mceNonEditable" data-mce-esa-item="' + encodedShortCode + '" data-mce-placeholder="1" >.</div><!-- /esa_item -->';
 	}
 
-	function restoreEsaShortcodes( content ) {
-		
+	function restoreEsaShortcodes(content) {
+				
 		/**
 		 * for some reason mce works always with strings and regexes, not with objects. maybe it's faster. but it sucks.
 		 */
-		function getAttr( str, name ) {
+				
+		function getAttr(str, name) {
+			//console.log(name);
 			name = new RegExp(name + '=\"([^\"]+)\"').exec(str);
 			return name ? window.decodeURIComponent(name[1]) : '';
 		}
 		
 		return content.replace(/<!-- esa_item -->(.*?)<!-- \/esa_item -->/ig, function(match, match_with_p) {
 			var data = getAttr(match, 'data-mce-esa-item');
-
 			if (data) {
 				return '<p>' + data + '</p>';
 			}
