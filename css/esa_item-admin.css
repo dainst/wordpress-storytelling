@@ -158,6 +158,15 @@ body {
 
 /* esa_item @ mce */
 
+#tinymce .esa_item{
+	position: absolute;
+	-moz-user-select: none;             
+    -webkit-user-select: none;
+    user-select: none; 
+}
+
+
+
 #tinymce .esa_item-selected  {
 	border: 2px solid blue;
 } 
@@ -166,5 +175,17 @@ body {
 	background: url('../images/loading.png') center center no-repeat;
 	min-width: 200px;
 	min-height: 200px;
+	width: 100%;
 	display: inline-block;
+	position: relative;
+	-moz-user-select: none;             
+    -webkit-user-select: none;
+    user-select: none; 
+}
+
+#tinymce .esa_item_overlay {
+	background: rgba(255, 100, 100, 0.0);
+	width: 100%;
+	height: 100%;
+	position: absolute
 }

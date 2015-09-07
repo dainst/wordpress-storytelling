@@ -8,6 +8,12 @@
  * 
  * We could have used 'wpview' perhaps, but it still count as experimental, so we prefer a more classy apporach to build a whole own plugin.
  * 
+ * TODO
+ * 
+ * * make them editable (align, size etc)
+ * * prevent dblclick
+ * * when only one is prevent no p error
+ * * make them deletable (remove comments on delete...)
  * 
  */
 tinymce.PluginManager.add('esa_item', function( editor ) {
@@ -16,7 +22,7 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 		
 	function replaceEsaShortcodes( content ) {
 		return content.replace( /\[esa([^\]]*)\]/g, function( match ) {
-			console.log('replaceEsaShortcodes speaking', match);
+			//console.log('replaceEsaShortcodes speaking', match);
 			return html( match );
 		});
 	}
@@ -34,7 +40,7 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 			},
 			success: function(result) {
 				//console.log('ajax success');
-				jQuery('#content_ifr').contents().find('div.esa_item_wrapper[data-mce-esa-item="' + encodedShortCode + '"]').html(result.trim()); //
+				jQuery('#content_ifr').contents().find('div.esa_item_wrapper[data-mce-esa-item="' + encodedShortCode + '"]').html(result.trim() + '<div class="esa_item_overlay">&nbsp;</div>'); //
 			},
 			error: function(e) {
 				console.log('ajax error');
@@ -61,7 +67,7 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 		return content.replace(/<!-- esa_item -->(.*?)<!-- \/esa_item -->/ig, function(match, match_with_p) {
 			var data = getAttr(match, 'data-mce-esa-item');
 			if (data) {
-				return '<p>' + data + '</p>';
+				return '' + data + '';
 			}
 			
 			return match;
@@ -71,15 +77,28 @@ tinymce.PluginManager.add('esa_item', function( editor ) {
 	/**
 	 * prevent images in esa_item to be selected on click -> todo: does not work yet!
 	 */
-	editor.on( 'mousedown', function( event ) {
+	editor.on('mousedown', function(event) {
+		console.log("hallo", event);
 		var dom = editor.dom,
 			node = event.target;
-		if ( jQuery(node).parents('span.esa_item_wrapper') ) {
-			event.stopPropagation();
+		if (jQuery(node).parents('div.esa_item_wrapper').length) {
+			console.log('teaparty');
+			event.stopImmediatePropagation();
+			event.preventDefault()
 		}
 	});
-	
-	
+	/*
+	editor.on( 'dblclick', function( event ) {
+		console.log("dallo", event);
+		var dom = editor.dom,
+			node = event.target;
+		if ( jQuery(node).parents('div.esa_item_wrapper') ) {
+			console.log('deaparty');
+			event.stopImmediatePropagation();
+			event.preventDefault()
+		}
+	});
+	*/
 	// Display esa_item content instead of shortcode
 	editor.on( 'ResolveName', function( event ) {
 		//console.log('ResolveName speaking');

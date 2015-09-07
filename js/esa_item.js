@@ -5,7 +5,7 @@
  * @author 		Philipp Franck
  *
  * 
- * Some Javascript functionality of the esa_items (mainly: toggle size)
+ * Some Javascript functionality of the esa_items
  * 
  *
  */
@@ -19,6 +19,7 @@ jQuery(document).on('mouseenter', '.esa_item', function() {
 	}
 	
 });
+
 
 jQuery(document).on('mouseleave', '.esa_item', function() {
 	jQuery(this).find('.esa_item_resizebar').fadeOut('slow');
