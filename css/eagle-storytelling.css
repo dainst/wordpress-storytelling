@@ -48,6 +48,17 @@ input[type="week"]
 /* esa specific styles */
 .story-thumbnail {
 	float: left;
-	margin-top: 36px;
 	margin-right: 1em;
+}
+
+.story-thumbnail-list {
+	margin-left: -36px;
+}
+
+.post-excerpt {
+	clear: both;
+	margin-left: 36px;
+	margin-right: 36px;
+	padding-top: 18px;
+	font-style: italic;
 }

@@ -2,7 +2,7 @@
 	<div id="sidebar">
 
 	<div class="topsearch">
-          <h3>Stories</h3>
+          <h3><a href='<?php bloginfo('url'); ?>/stories'>Stories</a></h3>
           <p><a href='<?php bloginfo('url'); ?>/stories'>Flagship Storytelling Application</a></p>
     </div>
     

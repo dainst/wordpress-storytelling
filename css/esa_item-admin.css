@@ -175,7 +175,7 @@ body {
 }
 
 #tinymce .esa_item_wrapper  {
-	background: url('../images/loading.png') center center no-repeat;
+	/* background: url('../images/loading.png') center center no-repeat; */
 	min-width: 200px;
 	min-height: 200px;
 	width: 100%;

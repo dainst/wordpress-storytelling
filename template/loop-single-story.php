@@ -3,11 +3,12 @@
 	<?php if (et_get_option('flexible_integration_single_top') <> '' && et_get_option('flexible_integrate_singletop_enable') == 'on') echo (et_get_option('flexible_integration_single_top')); ?>
 	
 	<article id="post-<?php the_ID(); ?>" <?php post_class('entry clearfix'); ?>>
-	<pre><?php //print_r(get_post_meta(get_the_ID())); ?></pre>
+	
+
 	
 		<div class="story-thumbnail">
-			<?php if ($url = get_post_meta(get_the_ID(), 'esa_thumbnail', true)) { ?>
-				<img src="<?php echo $url; ?>" alt='<?php the_title; ?>' />
+			<?php if ($thumplnail_url = get_post_meta(get_the_ID(), 'esa_thumbnail', true)) { ?>
+				<img src="<?php echo $thumplnail_url; ?>" alt='<?php the_title; ?>' />
 			<?php } ?>
 		</div>
 		
@@ -15,39 +16,28 @@
 
 			<h1 class="page_title"><?php the_title(); ?></h1>
 	
-		<?php if(has_post_thumbnail()) { ?><div><?php } ?>
+		<?php if($thumplnail_url) { ?><div><?php } ?>
 			<div class="meta-info">
 				<?php esc_html_e('Posted','Flexible'); ?>
 				<?php esc_html_e('by','Flexible'); ?>
-				<?php /*the_author_posts_link();*/ the_author(); ?>
+				<?php //the_author_posts_link(); 
+					the_author(); ?>
 				<?php esc_html_e('on','Flexible'); ?>
 				<?php the_time(et_get_option('flexible_date_format')) ?>
 	
-				
 				<?php 
 					$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
 					echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
 				?>
-	
 				
-				<?php /*comments_popup_link(esc_html__('0 comments','Flexible'), esc_html__('1 comment','Flexible'), '% '.esc_html__('comments','Flexible'));*/ ?>
 			</div>
-		<?php if(has_post_thumbnail()) { ?></div><?php } ?>
+		<?php if($thumplnail_url) { ?></div><?php } ?>
 		
-		<?php /*
-			$index_postinfo = et_get_option('flexible_postinfo2');
-			if ( $index_postinfo ){
-				echo '<p class="meta-info">';
-				et_postinfo_meta( '', et_get_option('flexible_date_format'), esc_html__('0 comments','Flexible'), esc_html__('1 comment','Flexible'), '% ' . esc_html__('comments','Flexible') );
-				echo '</p>';
-				echo "d<pre>"; the_tags(); echo "</pre>";
-				echo "e<pre>"; the_category(); echo "</pre>";
-			}*/
-		?>
+
 		<p class="sharelink"><a class="addthis_button_compact"><span>Share &raquo;</span></a></p>
 
 		<div class="post-excerpt">
-			
+			<?php the_excerpt(); ?>
 		</div>
 		
 		<div class="post-content">

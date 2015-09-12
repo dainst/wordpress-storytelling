@@ -28,10 +28,19 @@ $et_ptemplate_blog_perpage = 2;
 
 <div id="content-area" class="clearfix<?php if ( $fullwidth ) echo ' fullwidth'; ?>">
 	<div id="left-area">
-	    <h1 class="page_title"><?php echo ($q = get_search_query()) ? "SEARCH RESULTS FOR '$q'" :  "SEARCH RESULTS"; ?></h1>
+	    
+	    <h1 class="page_title">
+		    <?php if (is_search()) {
+		    	echo ($q = get_search_query()) ? "SEARCH RESULTS FOR '$q'" :  "SEARCH RESULTS";
+		    } else if (is_archive()) {
+		    	echo single_term_title();
+			} ?>
+	    </h1>
+		
+		
+		
 		<article id="post-<?php the_ID(); ?>" <?php post_class('entry clearfix'); ?>>
 			
-
 			<?php
 				$thumb = '';
 				$width = apply_filters('et_blog_image_width',640);
