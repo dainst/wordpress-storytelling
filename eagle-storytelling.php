@@ -167,7 +167,7 @@ function esa_register_story_post_type() {
     	),
         'hierarchical' => false,
         'menu_position' => null,
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'revisions')
+        'supports' => array('title', 'editor', 'excerpt', 'comments', 'revisions')
     );
 
     register_post_type('story', $args);
@@ -694,13 +694,46 @@ function esa_mce() {
 
 add_action('wp_ajax_esa_shortcode', function() {
 	if (isset($_POST['esa_shortcode'])) {
-		echo do_shortcode(str_replace('\\', '', rawurldecode($_POST['esa_shortcode'])));
+		
+		$result = array();
+		
+		if (!isset($_POST['featured_image']) or ($_POST['featured_image'] == '')) {
+			$post_id = $_POST['post_id'];
+			$thumpnail = get_post_meta($post_id, 'esa_thumbnail', true);
+			$result['featured_image'] = $thumpnail;
+		}
+		
+		$result['esa_item'] = do_shortcode(str_replace('\\', '', rawurldecode($_POST['esa_shortcode'])));
+
+		//$result['debug'] = $post;
+		
+		echo json_encode($result);
+		
 		wp_die();
 	}
 	echo "ERROR"; // todo: do something more useful
 	wp_die();
 });
 
-
+add_action('wp_ajax_esa_set_featured_image', function() {
+	
+	
+	if (isset($_POST['image_url']) and isset($_POST['post'])) {
+		
+		$image_url = $_POST['image_url'];
+		$post_id = $_POST['post'];
+			
+		if (!add_post_meta($_POST['post'], 'esa_thumbnail', $image_url, true)) {
+			update_post_meta($_POST['post'], 'esa_thumbnail', $image_url);
+		}
+		
+		if ($_POST['image_url'] != '') {
+			echo "!";
+		}
+		wp_die();
+	}
+	echo "E"; // todo: do something more useful
+	wp_die();
+});
 
 ?>

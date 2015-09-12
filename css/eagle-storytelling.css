@@ -43,4 +43,11 @@ input[type="week"]
 }
 
 /* extends original style css l. 138 */ 
-.story > .meta-info { margin-left: 36px; }
+.story > .meta-info { padding-left: 36px; }
+
+/* esa specific styles */
+.story-thumbnail {
+	float: left;
+	margin-top: 36px;
+	margin-right: 1em;
+}
