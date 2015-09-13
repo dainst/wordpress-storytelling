@@ -5,7 +5,7 @@
 ?>
 
 
-<?php 
+<?php /*
 $et_ptemplate_settings = array();
 $et_ptemplate_settings = maybe_unserialize( 
 // get_post_meta($post->ID,'et_ptemplate_settings',true) );
@@ -19,7 +19,10 @@ $et_ptemplate_showthumb = isset( $et_ptemplate_settings['et_ptemplate_showthumb'
 
 $blog_cats = isset( $et_ptemplate_settings['et_ptemplate_blogcats'] ) ? (array) $et_ptemplate_settings['et_ptemplate_blogcats'] : array();
 //$et_ptemplate_blog_perpage = isset( $et_ptemplate_settings['et_ptemplate_blog_perpage'] ) ? (int) $et_ptemplate_settings['et_ptemplate_blog_perpage'] : 10;
-$et_ptemplate_blog_perpage = 2;
+$et_ptemplate_blog_perpage = 2; */
+
+$is_esa_story_page = true;
+
 ?>
 
 <?php get_header(); ?>
@@ -46,15 +49,7 @@ $et_ptemplate_blog_perpage = 2;
 				<?php the_content(); ?>
 				
 				<div id="et_pt_blog" class="responsive">
-					<?php 
-						$cat_query = ''; 
-						if (!empty($blog_cats)) {
-							$cat_query = '&cat=' . implode(",", $blog_cats);
-						} else {
-							echo '<!-- blog category is not selected -->';
-							$et_paged = is_front_page() ? get_query_var( 'page' ) : get_query_var( 'paged' );
-						}
-					
+					<?php		
 						if (have_posts()) {
 							while (have_posts()) {
 								the_post(); 
@@ -68,8 +63,9 @@ $et_ptemplate_blog_perpage = 2;
 								get_template_part('includes/navigation');
 							}
 							echo "</div>";
+							
 						} else {
-							get_template_part('includes/no-results');
+							echo "No Stories found that are matching your criteria.";
 						}
 						wp_reset_query();
 					?>

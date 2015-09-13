@@ -6,6 +6,7 @@
 
 
 <?php 
+/*
 $et_ptemplate_settings = array();
 $et_ptemplate_settings = maybe_unserialize( 
 // get_post_meta($post->ID,'et_ptemplate_settings',true) );
@@ -19,6 +20,9 @@ $et_ptemplate_showthumb = isset( $et_ptemplate_settings['et_ptemplate_showthumb'
 
 $blog_cats = isset( $et_ptemplate_settings['et_ptemplate_blogcats'] ) ? (array) $et_ptemplate_settings['et_ptemplate_blogcats'] : array();
 //$et_ptemplate_blog_perpage = isset( $et_ptemplate_settings['et_ptemplate_blog_perpage'] ) ? (int) $et_ptemplate_settings['et_ptemplate_blog_perpage'] : 10;
+*/
+
+$is_esa_story_page = true;
 $et_ptemplate_blog_perpage = 5;
 ?>
 

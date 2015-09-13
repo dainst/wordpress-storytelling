@@ -283,7 +283,8 @@ function searchfilter($query) {
 
 function esa_register_plugin_styles() {
 	global $post;
-	if ((get_post_type() == 'story') or ($post->post_title == 'Stories')) {
+	global $is_esa_story_page;
+	if ((get_post_type() == 'story') or ($is_esa_story_page)) {
 		
 		// css
 		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
