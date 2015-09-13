@@ -64,10 +64,14 @@ namespace esa_datasource {
 			}
 			
 			private function _api_params_url_part($params) {
+				$return = '';
 				if (isset($params['type'])) {
-					return "&qf=TYPE%3A{$params['type']}";
+					$return .= "&qf=TYPE%3A{$params['type']}";
 				}
-				return '';
+				if (isset($params['onlyeagle'])) {
+					$return .= "&qf=PROVIDER%3AEAGLE";
+				}
+				return $return;
 			}
 			
 			function parse_result_set($response) {
@@ -120,6 +124,8 @@ namespace esa_datasource {
 					$echo .= "<option value='$type' " . (($type == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
 				}
 				$echo .= "</select>";
+				$checked = isset($post['esa_ds_param_onlyeagle']) ? 'checked' : '';
+				$echo .= "<input type='checkbox' name='esa_ds_param_onlyeagle' id='esa_ds_param_onlyeagle' $checked /><label for='esa_ds_param_onlyeagle'>Only Eagle Content</label>";
 				return $echo;
 			}
 			

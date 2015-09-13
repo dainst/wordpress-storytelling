@@ -129,9 +129,9 @@ namespace esa_datasource {
 					} else {
 						$queryurl = $this->api_search_url($query, $params);
 					}
-					if (ESA_DEBUG) {
+					//if (ESA_DEBUG) {
 						echo $queryurl;
-					}
+					//}
 					
 					$this->parse_result_set($this->_generic_api_call($queryurl));
 				
