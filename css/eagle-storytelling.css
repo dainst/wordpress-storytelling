@@ -62,3 +62,14 @@ input[type="week"]
 	padding-top: 18px;
 	font-style: italic;
 }
+
+#story-author-dropdown {
+	height: 24px;
+    width: 199px;
+    margin-right: 10px;
+    background-color: #FFF;
+    border: 1px solid #BBB;
+    padding: 2px;
+    color: #4E4E4E;
+    box-sizing: content-box;
+}

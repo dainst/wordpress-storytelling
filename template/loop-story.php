@@ -2,8 +2,8 @@
 	
 	
 	<div class="story-thumbnail story-thumbnail-list">
-		<?php if ($thumplnail_url = get_post_meta(get_the_ID(), 'esa_thumbnail', true)) { ?>
-			<img src="<?php echo $thumplnail_url; ?>" alt='<?php the_title; ?>' />
+		<?php if ($thumpnail_url = get_post_meta(get_the_ID(), 'esa_thumbnail', true)) { ?>
+			<img src="<?php echo $thumpnail_url; ?>" alt='<?php the_title; ?>' />
 		<?php } ?>
 	</div>
 	
@@ -12,12 +12,9 @@
 	<h2 class="et_pt_title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?><?php //the_ID(); ?></a></h2>
 	
 	<p class="et_pt_blogmeta">
-		<?php esc_html_e('Posted','Flexible'); ?> 
-		<?php esc_html_e('by','Flexible'); ?> 
-		<?php /*the_author_posts_link();*/ the_author(); ?> 
-		<?php esc_html_e('on','Flexible'); ?> 
-		<?php the_time(et_get_option('flexible_date_format')) ?>
 		<?php 
+			echo "Posted by <a href='"; bloginfo('url'); echo "?s=&post_type=story&author="; the_author_meta('ID'); echo "'>"; the_author(); echo "</a>";
+			echo " on "; the_time(et_get_option('flexible_date_format'));
 			$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
 			echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
 		?>				

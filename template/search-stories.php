@@ -41,20 +41,6 @@ $et_ptemplate_blog_perpage = 2;
 		
 		<article id="post-<?php the_ID(); ?>" <?php post_class('entry clearfix'); ?>>
 			
-			<?php
-				$thumb = '';
-				$width = apply_filters('et_blog_image_width',640);
-				$height = apply_filters('et_blog_image_height',320);
-				$classtext = '';
-				$titletext = get_the_title();
-				$thumbnail = get_thumbnail($width,$height,$classtext,$titletext,$titletext,false,'Blogimage');
-				$thumb = $thumbnail["thumb"];
-			?>
-			<?php if ( '' != $thumb && 'on' == et_get_option('flexible_page_thumbnails') ) { ?>
-				<div class="post-thumbnail">
-					<?php print_thumbnail($thumb, $thumbnail["use_timthumb"], $titletext, $width, $height, $classtext); ?>	
-				</div> 	<!-- end .post-thumbnail -->
-			<?php } ?>
 			
 			<div class="post-content">
 				<?php the_content(); ?>

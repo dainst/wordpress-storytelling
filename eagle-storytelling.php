@@ -277,8 +277,6 @@ function searchfilter($query) {
 //add_filter('pre_get_posts','searchfilter');
 
 
-
-
 /**
  * Register style sheet.
  */
@@ -301,6 +299,11 @@ function esa_register_plugin_styles() {
 }
 
 add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
+
+
+
+
+
 
 
 /****************************************/

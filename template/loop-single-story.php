@@ -3,7 +3,6 @@
 	<?php if (et_get_option('flexible_integration_single_top') <> '' && et_get_option('flexible_integrate_singletop_enable') == 'on') echo (et_get_option('flexible_integration_single_top')); ?>
 	
 	<article id="post-<?php the_ID(); ?>" <?php post_class('entry clearfix'); ?>>
-	
 
 	
 		<div class="story-thumbnail">
@@ -11,25 +10,17 @@
 				<img src="<?php echo $thumplnail_url; ?>" alt='<?php the_title; ?>' />
 			<?php } ?>
 		</div>
-		
-		
 
-			<h1 class="page_title"><?php the_title(); ?></h1>
+		<h1 class="page_title"><?php the_title(); ?></h1>
 	
 		<?php if($thumplnail_url) { ?><div><?php } ?>
 			<div class="meta-info">
-				<?php esc_html_e('Posted','Flexible'); ?>
-				<?php esc_html_e('by','Flexible'); ?>
-				<?php //the_author_posts_link(); 
-					the_author(); ?>
-				<?php esc_html_e('on','Flexible'); ?>
-				<?php the_time(et_get_option('flexible_date_format')) ?>
-	
 				<?php 
+					echo "Posted by <a href='"; bloginfo('url'); echo "?s=&post_type=story&author="; the_author_meta('ID'); echo "'>"; the_author(); echo "</a>";
+					echo " on "; the_time(et_get_option('flexible_date_format'));
 					$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
 					echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
-				?>
-				
+				?>	
 			</div>
 		<?php if($thumplnail_url) { ?></div><?php } ?>
 		
