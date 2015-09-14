@@ -309,22 +309,7 @@ add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
 
 /****************************************/
 
-/**
- * provisional solution for serach for TRISMEGISTOS-ID
- * 
- * @param WP_Query $query
- */
 
-add_action('pre_get_posts', function($query) {
-
-	if( $query->is_main_query() ) {
-		if(isset($_GET['trismegistos'])) {
-			//echo "<div style='background:yellow'>";       	echo "!!!!";        echo "</div>";
-			$query->set('s', "tm:{$_GET['s']}"); 
-		}
-	}
-	
-});
 
 
 /**
@@ -356,7 +341,8 @@ add_filter('posts_search', function($sql) {
 		$where = "\n\t esai.searchindex like '%{$wp_query->query['s']}%'";
 		$sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where)) or (1 = 1 $sql))";
 	}
-	if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])) {
+	if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])
+		and $wp_query->query['esa_item_source'] and $wp_query->query['esa_item_id']) {
 		$story = true;
 		$where = "esai.id = '{$wp_query->query['esa_item_id']}' and esai.source = '{$wp_query->query['esa_item_source']}'";
 		$sqlr = "AND {$wpdb->prefix}posts.ID in ($sqst $where)";

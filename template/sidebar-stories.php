@@ -50,15 +50,11 @@ if ( is_user_logged_in() ) {
         		<?php // <input type="text" name="author_name" value="<?php echo get_query_var('author_name') ? >" class="s" />?>
 				<input type="submit" class="searchsubmit" value="Search" /> 
     		</div>
-		</form>
 
-		<h5>Filter by TM ID</h5>
-		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
+			<h5>Filter by Europeana ID</h5>
     		<div>
-        		<input type="number" value="" name="s" class="s" /><input type="submit" class="searchsubmit" value="Search" />
-        		<input type="hidden" name="post_type" 			value="story" />
-        		<input type="hidden" name="s" 					value="<?php echo $_GET['s'] ?>" />
-        		<input type="hidden" name="trismegistos" 		value="1" />
+        		<input type="hidden" name="esa_item_source" 	value="europeana" />
+        		<input type="text" 	 name="esa_item_id" 		value="<?php echo ($_GET['esa_item_source']  == 'europeana') ? $_GET['esa_item_id'] : '' ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
     		</div>
 		</form>
 	</div>
