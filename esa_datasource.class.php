@@ -26,7 +26,7 @@ namespace esa_datasource {
 		// saves current serach params
 		public $query;
 		public $id;
-		public $params;
+		public $params = array();
 		
 		// pagination data
 		public $pagination = true; //is pagination possible / supported in the serach results
@@ -73,7 +73,7 @@ namespace esa_datasource {
 		}
 		
 		/**
-		 * to overwritten by implementation if needed
+		 * to be overwritten by implementation if needed
 		 * @return string
 		 */
 		function search_form_params($post) {
@@ -111,13 +111,13 @@ namespace esa_datasource {
 						$params[$real_k[1]] = $v;
 					}
 				}
-				$this->params = $params;
+				$this->params = array_merge($this->params, $params);
 				
 				// go
 				
 				// is url pasted?
 				if ($url = $this->api_url_parser($query)) {
-					//print_r($url);
+					print_r($url);
 					$this->results = array($this->parse_result($this->_generic_api_call($url)));
 					
 				} else {
@@ -129,9 +129,9 @@ namespace esa_datasource {
 					} else {
 						$queryurl = $this->api_search_url($query, $params);
 					}
-					//if (ESA_DEBUG) {
+					if (ESA_DEBUG) {
 						echo $queryurl;
-					//}
+					}
 					
 					$this->parse_result_set($this->_generic_api_call($queryurl));
 				
@@ -193,6 +193,8 @@ namespace esa_datasource {
 		 * it HAS to be implemented in every data source class
 		 * 
 		 * @param unknown $result
+		 * 
+		 * @param implementation may use 2nd parameter $params = array()
 		 */
 		abstract function parse_result_set($result);
 		
@@ -200,7 +202,7 @@ namespace esa_datasource {
 		
 		abstract function api_single_url($id);
 		
-		abstract function api_search_url($query, $params = array());
+		abstract function api_search_url($query);
 		
 		abstract function api_record_url($id);
 		

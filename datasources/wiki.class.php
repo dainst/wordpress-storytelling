@@ -5,7 +5,7 @@
  * @link 		http://www.europeana.eu/
  * @author 		Philipp Franck
  * 
- * Status: Beta
+ * 
  * 
  *  
  * 
@@ -20,30 +20,47 @@ namespace esa_datasource {
 		
 			public $pagination = false;
 			
-			
-		
+			public $params = array(
+				'lang'  => 'en'
+			);
+					
 			//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
-			function api_search_url($query, $params = array()) {
-				$query = urlencode($query);				
-				return "https://en.wikipedia.org/w/api.php?action=query&prop=extracts|categories|links|info&inprop=url&pllimit=max&exintro=&format=json&redirects=&titles=$query";
+			function api_search_url($query) {
+				$query = urlencode($query);
+				return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|categories|links|info&inprop=url&pllimit=max&exintro=&format=json&redirects=&titles=$query";
 			}
 			
-			function api_single_url($id) {				
+			function api_single_url($id) {
+				$id = $this->real_id($id);
 				$id = urlencode($id);
-				return "https://en.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=&format=json&redirects=&titles=$id";
+				return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=&format=json&redirects=&titles=$id";
 			}
 
 			function api_record_url($id) {
-				return "https://en.wikipedia.org/?curid=$id";
+				$id = $this->real_id($id);
+				return "https://{$this->params['lang']}.wikipedia.org/?curid=$id";
 			}
 			
 			function api_url_parser($string) {
-				if (preg_match('#https?\:\/\/en\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
-					return $this->api_single_url($match[1]);
+				if (preg_match('#https?\:\/\/(..)\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
+					$this->params['lang'] = $match[1];
+					return $this->api_single_url($match[2]);
 				}
 			}
 			
-			public $info = "Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>english Wikipedia</a> or insert a link to page from the english wikipedia.";    
+			function api_image_url($title) {
+				$title = urlencode($title);
+				return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata&iiurlwidth=150&titles=$title&generator=images&redirects=";
+			}
+			
+			// ids look like that: wikiID@wikiLANG  -> this function strips them
+			function real_id($id) {
+				$ex = explode('@', $id);
+				$this->params['lang'] = (isset($ex[1])) ? $ex[1] : $this->params['lang'];
+				return $ex[0];
+			}
+			
+			public $info = "Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>Wikipedia</a> or insert a link to page from the english wikipedia.";    
 			public $title = 'Wikipedia';
 			
 			function parse_result_set($response, $subquery = false) {
@@ -102,13 +119,11 @@ namespace esa_datasource {
 				// fetch image / media data
 				
 				//$url = "https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mime|mediatype|extmetadata&iiurlwidth=150&titles=$title&redirects=";
-				$title = urlencode($page->title);
-				$url = "https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata&iiurlwidth=150&titles=$title&generator=images&redirects=";
 					
-				$imageData = $this->_fetch_external_data($url);
+				$imageData = $this->_fetch_external_data($this->api_image_url($page->title));
 				$imageData = json_decode($imageData);
 				
-				//echo "<hr><pre>".print_r($url,1)."</pre>";
+				//echo "<hr><pre>".print_r($this->api_image_url($page->title),1)."</pre>";
 				//echo "<pre>", print_r($imageData,1), "</pre>";
 
 				$subhtml = '';
@@ -148,8 +163,10 @@ namespace esa_datasource {
 				$html .= "<h4>{$page->title}</h4>";
 				$html .= "<p>{$page->extract}</p>";
 				$html .= "</div>";
-					
-				return new \esa_item('wiki', $page->title, $html, $page->fullurl);
+				
+				$id = $page->title . '@' . $this->params['lang'];
+				
+				return new \esa_item('wiki', $id, $html, $page->fullurl);
 			}
 			
 			function parse_result($response) {

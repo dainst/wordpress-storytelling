@@ -570,6 +570,7 @@ function esa_shortcode($atts, $context) {
 	
 	$css = array();
 	$classes = array();
+	$tags = array();
 	
 	if (isset($atts['height'])) {
 		$css['height'] = $atts['height'] . 'px';

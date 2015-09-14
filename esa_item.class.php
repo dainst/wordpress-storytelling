@@ -33,7 +33,7 @@ class esa_item {
 			if (filter_var($url, FILTER_VALIDATE_URL)) {
 				$this->url = $url;
 			} else {
-				$this->classe[] = 'esa_item_invalid_url';
+				$this->classes[] = 'esa_item_invalid_url';
 			} 
 		}
 		
