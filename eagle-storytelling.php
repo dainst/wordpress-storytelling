@@ -167,6 +167,7 @@ function esa_register_story_post_type() {
     		'delete_post' => 'delete_story',
     		'read_post' => 'read_story',
     	),
+    	'exclude_from_search' => true,
         'hierarchical' => false,
         'menu_position' => null,
         'supports' => array('title', 'editor', 'excerpt', 'comments', 'revisions')
