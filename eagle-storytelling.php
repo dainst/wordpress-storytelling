@@ -45,6 +45,7 @@ add_action('admin_init', function () {
 	$role->add_cap('edit_story_keyword');
 	$role->add_cap('delete_story_keyword');
 	$role->add_cap('assign_story_keyword');
+	$role->add_cap('upload_files');
 	
 	$role = get_role('esa_story_contributor');
 	$role->add_cap('read');
@@ -54,6 +55,7 @@ add_action('admin_init', function () {
 	$role->add_cap('edit_story_keyword');
 	$role->add_cap('delete_story_keyword');
 	$role->add_cap('assign_story_keyword');
+	$role->add_cap('upload_files');
 
 	
 	
