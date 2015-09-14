@@ -333,28 +333,43 @@ add_action('pre_get_posts', function($query) {
  * 
  * 
  */
+
+add_filter('query_vars', function($public_query_vars) {
+	$public_query_vars[] = 'esa_item_source';
+	$public_query_vars[] = 'esa_item_id';
+	return $public_query_vars;
+});
+
 add_filter('posts_search', function($sql) {
 	
 	global $wp_query;
-	
-	if (($wp_query->query['post_type'] != 'story') or (!$sql)) {
-		return $sql;
-	}
-	//echo '<pre style="border:1px solid red; background: silver">', $sql, '</pre>';
 	global $wpdb;
+	
 	$sqst = "select
 				esai2post.post_id
 			from
 				{$wpdb->prefix}esa_item_to_post as esai2post
-				left join {$wpdb->prefix}esa_item_cache as esai on (esai.id = esai2post.esa_item_id and esai.source = esai2post.esa_item_source)
-			where
-				esai.searchindex like '%{$wp_query->query['s']}%'
-				";
+			left join {$wpdb->prefix}esa_item_cache as esai on (esai.id = esai2post.esa_item_id and esai.source = esai2post.esa_item_source)
+				where";
 	
-				
-	$sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst)) or (1 = 1 $sql))";
-	//AND wp_posts.post_type = 'story' AND (wp_posts.post_status = 'publish' OR wp_posts.post_author = 1 AND wp_posts.post_status = 'private')
-				
+	if (isset($wp_query->query['s']) and ($wp_query->query['s'] != '')) {
+		$where = "\n\t esai.searchindex like '%{$wp_query->query['s']}%'";
+		$sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where)) or (1 = 1 $sql))";
+	}
+	if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])) {
+		$story = true;
+		$where = "esai.id = '{$wp_query->query['esa_item_id']}' and esai.source = '{$wp_query->query['esa_item_source']}'";
+		$sqlr = "AND {$wpdb->prefix}posts.ID in ($sqst $where)";
+	}
+	
+	
+	//echo "<pre>"; print_r($wp_query->query); die($sql);
+	
+	if (($wp_query->query['post_type'] != 'story') or (!$sql and !$story)) {
+		return $sql;
+	}
+	
+	//echo '<pre style="border:1px solid red; background: silver">', $sql, '</pre>';				
 	//echo '<pre style="border:1px solid red; background: silver">', print_r($sqlr, 1), '</pre>';
 	
 	return $sqlr;

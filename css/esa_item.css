@@ -62,11 +62,18 @@
 	background: #F5F5F5;
 	height: 28px;
 	width: 28px;
-	background: url('../images/eye.png') center center no-repeat white;
 	color: rgba(0,0,0,0);
 	cursor: pointer;
 	float: right;
 	padding: 1px
+}
+
+.esa_item_tools a.esa_item_tools_originurl  {
+	background: url('../images/eye.png') center center no-repeat white;
+}
+
+.esa_item_tools a.esa_item_tools_find {
+	background: url('../images/find.png') center center no-repeat white;
 }
 
 .esa_item_tools a:hover {
