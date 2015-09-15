@@ -9,7 +9,7 @@ Plugin URI:  http://wordpress.org/plugins/eagle-storytelling/
 Description: Create your own EAGLE story! 
 Author:	     Wolfgang Schmidle & Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     0.8
+Version:     0.9
 
 */
 
@@ -20,7 +20,7 @@ include('esa_settings.php');
 
 // user stuff
 
-
+/*
 register_activation_hook(__FILE__, function() {
 	add_role('esa_story_author', 'Story Author', array());
 	add_role('esa_story_contributor', 'Story Contributor', array());
@@ -31,32 +31,28 @@ register_deactivation_hook(__FILE__, function() {
 	remove_role('esa_story_author');
 	remove_role('esa_story_contributor');
 });
-
+*/
 add_action('admin_init', function () {
-	$role = get_role('esa_story_author');
-	$role->add_cap('read');
-	$role->add_cap('create_story');
-	$role->add_cap('edit_story');
-	$role->add_cap('delete_story');
-	$role->add_cap('publish_story');
-	$role->add_cap('delete_published_story');
-	$role->add_cap('edit_published_story');	
-	$role->add_cap('manage_story_keyword');
-	$role->add_cap('edit_story_keyword');
-	$role->add_cap('delete_story_keyword');
-	$role->add_cap('assign_story_keyword');
-	$role->add_cap('upload_files');
 	
-	$role = get_role('esa_story_contributor');
-	$role->add_cap('read');
-	$role->add_cap('edit_story');
-	$role->add_cap('delete_story');
-	$role->add_cap('manage_story_keyword');
-	$role->add_cap('edit_story_keyword');
-	$role->add_cap('delete_story_keyword');
-	$role->add_cap('assign_story_keyword');
-	$role->add_cap('upload_files');
+	
 
+	
+	$roles = array('subscriber', 'editor', 'author');
+	foreach ($roles as $role) {
+		$role = get_role($role);
+		$role->add_cap('read');
+		$role->add_cap('create_story');
+		$role->add_cap('edit_story');
+		$role->add_cap('delete_story');
+		$role->add_cap('publish_story');
+		$role->add_cap('delete_published_story');
+		$role->add_cap('edit_published_story');	
+		$role->add_cap('manage_story_keyword');
+		$role->add_cap('edit_story_keyword');
+		$role->add_cap('delete_story_keyword');
+		$role->add_cap('assign_story_keyword');
+		$role->add_cap('upload_files');
+	}
 	
 	
 });
