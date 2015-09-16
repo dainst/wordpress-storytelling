@@ -54,6 +54,14 @@ add_action('admin_init', function () {
 		$role->add_cap('upload_files');
 	}
 	
+	$roles = array('administrator');
+	foreach ($roles as $role) {
+		$role = get_role($role);
+		$role->add_cap('edit_others_story');
+		$role->add_cap('read_private_posts');
+	}
+			
+	
 	
 });
 
