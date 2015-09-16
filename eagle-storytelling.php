@@ -37,7 +37,7 @@ add_action('admin_init', function () {
 	
 
 	
-	$roles = array('subscriber', 'editor', 'author');
+	$roles = array('subscriber', 'editor', 'author', 'administrator');
 	foreach ($roles as $role) {
 		$role = get_role($role);
 		$role->add_cap('read');
