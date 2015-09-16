@@ -46,7 +46,7 @@ if ( is_user_logged_in() ) {
 
 			<h5>Filter by author</h5>
     		<div>
-    			<?php wp_dropdown_users(array('id' => 'story-author-dropdown', 'name' => 'author', 'show_option_all' => '<all>', 'selected' => (int) $_GET['author'])); ?>
+    			<?php esa_dropdown_users((int) $_GET['author']); ?>
         		<?php // <input type="text" name="author_name" value="<?php echo get_query_var('author_name') ? >" class="s" />?>
 				<input type="submit" class="searchsubmit" value="Search" /> 
     		</div>

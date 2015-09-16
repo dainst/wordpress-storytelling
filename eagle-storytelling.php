@@ -765,7 +765,7 @@ function esa_thumpnail($post, $return = false) {
 	
 } 
 
-add_filter('admin_post_thumbnail_html', function ($html) {
+add_filter('admin_post_thumbnail_html', function($html) {
 	
 	global $post;
 	
@@ -792,6 +792,57 @@ add_filter('admin_post_thumbnail_html', function ($html) {
 			</span>";
 });
 
+/* esa users */
 
+function esa_dropdown_users($selected) {
+
+	// get users who has at least one story published
+	global $wpdb;
+	$sql = "
+			select 
+				count(post_author) as post_count, 
+				display_name,
+				users.ID
+			from 
+				{$wpdb->prefix}posts as posts 
+				left join {$wpdb->prefix}users as users on (posts.post_author=users.ID) 
+			where 
+				post_type='story' 
+				and post_status='publish' 
+			group by 
+				posts.post_author
+			order by
+				post_count desc";
+	
+	$users = $wpdb->get_results($sql);
+	
+	//print_r($sql);echo"<hr>";print_r($result);
+	
+	// some copied wp_dropdown_users
+
+	$output = '';
+	if (!empty($users)) {
+		$name = 'author';
+		$id = 'story-author-dropdown';
+		$output = "<select name='{$name}'{$id} class=''>\n";
+		$output .= "\t<option value='0'>&lt;all&gt;</option>\n";
+
+		$found_selected = false;
+		foreach ((array) $users as $user) {
+			$user->ID = (int) $user->ID;
+			$_selected = selected($user->ID, $selected, false);
+			if ($_selected) {
+				$found_selected = true;
+			}
+			$display = "{$user->display_name} ({$user->post_count})";
+			$output .= "\t<option value='$user->ID'$_selected>" . esc_html($display) . "</option>\n";
+		}
+
+		$output .= "</select>";
+	}
+
+	echo $output;
+	
+}
 
 ?>
