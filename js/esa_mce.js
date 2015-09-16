@@ -97,7 +97,7 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 		}); 
 		
 		// data-mce-resize="true"  <- unfortunatley only works on images.
-		return '<!-- esa_item --><div class="esa_item_wrapper mceNonEditable" data-mce-esa-item="' + encodedShortCode + '" data-mce-placeholder="1" >.</div><!-- /esa_item -->. ';
+		return '<!-- esa_item --><div class="esa_item_wrapper mceNonEditable" data-mce-esa-item="' + encodedShortCode + '" data-mce-placeholder="1" >.</div><!-- /esa_item --> ';
 	}
 
 	function restoreEsaShortcodes(content) {
@@ -136,9 +136,15 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 				
 				var is_featured = jQuery(item).parents(document).find('.is_featured').removeClass('is_featured');
 				
-				console.log(is_featured);
+				if (result == 'ERROR') {
+					console.log('error php side');
+					return;
+				}
 				
-				jQuery(item).toggleClass('is_featured', result == '!');
+				jQuery(item).toggleClass('is_featured', result != '');
+				jQuery('#esa_thumpnail_content_1').toggle(result != '');
+				jQuery('#esa_thumpnail_content_2').toggle(result == '');
+				jQuery('#esa_thumpnail_admin_picture').attr("src", result);
 				
 			},
 			error: function(e) {
@@ -155,11 +161,10 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 	 */
 	editor.on('mousedown', function(event) {
 		
-		console.log("s", event.which, event);
+		//console.log("s", event.which, event);
 		var dom = editor.dom,
 			node = event.target;
 		if (jQuery(node).parents('div.esa_item_wrapper').length) {
-			console.log('teaparty');
 			event.stopImmediatePropagation();
 			event.preventDefault();
 			//jQuery(node).toggleClass('esa_item_overlay_selected');

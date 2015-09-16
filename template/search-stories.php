@@ -5,25 +5,7 @@
 ?>
 
 
-<?php /*
-$et_ptemplate_settings = array();
-$et_ptemplate_settings = maybe_unserialize( 
-// get_post_meta($post->ID,'et_ptemplate_settings',true) );
-get_metadata('story', $post->ID,'et_ptemplate_settings',true) );
-
-$fullwidth = isset( $et_ptemplate_settings['et_fullwidthpage'] ) ? (bool) $et_ptemplate_settings['et_fullwidthpage'] : false;
-
-$et_ptemplate_blogstyle = isset( $et_ptemplate_settings['et_ptemplate_blogstyle'] ) ? (bool) $et_ptemplate_settings['et_ptemplate_blogstyle'] : false;
-
-$et_ptemplate_showthumb = isset( $et_ptemplate_settings['et_ptemplate_showthumb'] ) ? (bool) $et_ptemplate_settings['et_ptemplate_showthumb'] : false;
-
-$blog_cats = isset( $et_ptemplate_settings['et_ptemplate_blogcats'] ) ? (array) $et_ptemplate_settings['et_ptemplate_blogcats'] : array();
-//$et_ptemplate_blog_perpage = isset( $et_ptemplate_settings['et_ptemplate_blog_perpage'] ) ? (int) $et_ptemplate_settings['et_ptemplate_blog_perpage'] : 10;
-$et_ptemplate_blog_perpage = 2; */
-
-$is_esa_story_page = true;
-
-?>
+<?php $is_esa_story_page = true; ?>
 
 <?php get_header(); ?>
 

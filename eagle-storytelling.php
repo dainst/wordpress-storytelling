@@ -166,7 +166,7 @@ function esa_register_story_post_type() {
     	'exclude_from_search' => true,
         'hierarchical' => false,
         'menu_position' => null,
-        'supports' => array('title', 'editor', 'excerpt', 'comments', 'revisions')
+        'supports' => array('title', 'editor', 'excerpt', 'revisions', 'thumbnail')
     );
 
     register_post_type('story', $args);
@@ -732,13 +732,66 @@ add_action('wp_ajax_esa_set_featured_image', function() {
 			update_post_meta($_POST['post'], 'esa_thumbnail', $image_url);
 		}
 		
-		if ($_POST['image_url'] != '') {
-			echo "!";
-		}
+		echo $image_url;
 		wp_die();
 	}
-	echo "E"; // todo: do something more useful
+	echo 'ERROR'; // 
 	wp_die();
 });
+
+
+
+
+/* thumbnailing */
+
+function esa_thumpnail($post, $return = false) {
+	
+	
+	// check if esa thumpnail exists
+	if ($esa_thumbnail_url = get_post_meta($post->ID, 'esa_thumbnail', true)) {
+		$thumbnail = "<img src='$esa_thumbnail_url' alt='thumbnail' />";
+	}
+	
+	// check if regular thumpnail exists
+	if (!$thumbnail) {
+		$thumbnail = get_the_post_thumbnail($post->ID, array(150, 150));
+	}
+
+	if (!$return) {
+		echo "<div class='story-thumbnail'>$thumbnail</div>";
+	}
+
+	return $thumbnail;
+	
+} 
+
+add_filter('admin_post_thumbnail_html', function ($html) {
+	
+	global $post;
+	
+	$thumbnail = '';
+	$style1 = 'style="display: none;"';
+	$style2 = 'style="display: block;"';
+	
+	// check if esa thumpnail exists
+	if ($esa_thumbnail_url = get_post_meta($post->ID, 'esa_thumbnail', true)) {
+		$thumbnail = "";
+		$style2 = 'style="display: none;"';
+		$style1 = 'style="display: block;"';
+	}
+
+	$text1 = "Featured image from embedded content. Use the <img src='' alt='img'>-buttons in the upper right corner of embedded content to select or deselect.</p>";
+	$text2 = "Use this to select a featured image from the media library or to upload images. Alternatively use the <img src='' alt='img'>-buttons in the upper right corner of embedded content to set Images from there as featured image.</p>";	
+	
+	return "<span id='esa_thumpnail_content_1' $style1>
+				<img id='esa_thumpnail_admin_picture' src='$esa_thumbnail_url' alt='{$post->post_title}' /> 
+				<p>$text1</p>
+			</span>
+			<span id='esa_thumpnail_content_2' $style2>
+				$text2 $html
+			</span>";
+});
+
+
 
 ?>

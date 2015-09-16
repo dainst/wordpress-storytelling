@@ -156,6 +156,10 @@ body {
 	margin: 1em
 }
 
+#esa-mediaframe .esa_item_tools a.esa_item_tools_find {
+	display:none
+}
+
 /* esa_item @ mce */
 
 #tinymce .esa_item{
@@ -200,3 +204,5 @@ body {
 .is_featured {
 	background: url('../images/featuredD.png') center center no-repeat !important;
 }
+
+

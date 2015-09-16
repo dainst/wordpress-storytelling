@@ -1,11 +1,6 @@
 <div class="et_pt_blogentry clearfix">
 	
-	
-	<div class="story-thumbnail story-thumbnail-list">
-		<?php if ($thumpnail_url = get_post_meta(get_the_ID(), 'esa_thumbnail', true)) { ?>
-			<img src="<?php echo $thumpnail_url; ?>" alt='<?php the_title; ?>' />
-		<?php } ?>
-	</div>
+	<?php $thumbnail_url = esa_thumpnail(get_post());  ?>
 	
 	<a href="<?php the_permalink(); ?>" class="readmore"><span><?php esc_html_e('read Story','Flexible'); ?> &raquo;</span></a>
 	

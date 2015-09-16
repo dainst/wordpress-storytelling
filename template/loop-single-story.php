@@ -5,15 +5,11 @@
 	<article id="post-<?php the_ID(); ?>" <?php post_class('entry clearfix'); ?>>
 
 	
-		<div class="story-thumbnail">
-			<?php if ($thumplnail_url = get_post_meta(get_the_ID(), 'esa_thumbnail', true)) { ?>
-				<img src="<?php echo $thumplnail_url; ?>" alt='<?php the_title; ?>' />
-			<?php } ?>
-		</div>
+		<?php $thumbnail_url = esa_thumpnail(get_post());  ?>
 
 		<h1 class="page_title"><?php the_title(); ?></h1>
 	
-		<?php if($thumplnail_url) { ?><div><?php } ?>
+		<?php if($thumbnail_url) { ?><div><?php } ?>
 			<div class="meta-info">
 				<?php 
 					echo "Posted by <a href='"; bloginfo('url'); echo "?s=&post_type=story&author="; the_author_meta('ID'); echo "'>"; the_author(); echo "</a>";
@@ -22,7 +18,7 @@
 					echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
 				?>	
 			</div>
-		<?php if($thumplnail_url) { ?></div><?php } ?>
+		<?php if($thumbnail_url) { ?></div><?php } ?>
 		
 
 		<p class="sharelink"><a class="addthis_button_compact"><span>Share &raquo;</span></a></p>
