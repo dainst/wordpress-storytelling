@@ -22,13 +22,17 @@ if ( is_user_logged_in() ) {
 		<p>(Logged in users can create new stories)</p>
 <?php
 }
+
+http://195.37.232.186/eagle/keyword/strolche/
+
+
 	</div>*/
 ?>
 
 	<div class="widget">
 	
 
-		<form role="search" method="get" class="searchform" action="<?php echo site_url(); ?>/">
+		<form role="search" method="get" class="searchform" id="esa_searchform" action="<?php echo site_url(); ?>/">
 			<h4 class="widgettitle">Search Stories</h4>
 		
     		<div>
@@ -38,9 +42,11 @@ if ( is_user_logged_in() ) {
 
 
 			<h4 class="widgettitle">Filters</h4>
-			<h5>Filter by keywords</h5>
+			<h5>Filter by keyword</h5>
     		<div>
-        		<input type="text"   name="term" value="<?php echo (get_query_var('taxonomy') == 'story_keyword') ? get_query_var('term') : '' ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+    			<?php esa_keyword_cloud(array('selected' =>  $_GET['term'])); ?>
+        		<?php // <input type="hidden" name="term" 	value="<?php echo (get_query_var('taxonomy') == 'story_keyword') ? get_query_var('term') : '' ? >" class="s" id='esa_keyword_filter' />?>
+				<input type="submit" class="searchsubmit" value="Search" /> 
         		<input type="hidden" name="taxonomy" value="story_keyword" />
     		</div>
 
@@ -81,7 +87,6 @@ if ( is_user_logged_in() ) {
 ?>
 		</ul>
 	</div> 
-
 
 
 		 		 

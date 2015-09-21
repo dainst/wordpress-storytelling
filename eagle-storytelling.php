@@ -832,7 +832,7 @@ function esa_dropdown_users($selected) {
 	if (!empty($users)) {
 		$name = 'author';
 		$id = 'story-author-dropdown';
-		$output = "<select name='{$name}'{$id} class=''>\n";
+		$output = "<select name='{$name}' id='{$id}'>\n";
 		$output .= "\t<option value='0'>&lt;all&gt;</option>\n";
 
 		$found_selected = false;
@@ -852,5 +852,154 @@ function esa_dropdown_users($selected) {
 	echo $output;
 	
 }
+
+
+/* esa tag cloud */ 
+function esa_keyword_cloud($args = array()) {
+	/**
+	 * mostly copied from wp_generate_tag_cloud  (wp-includes/category-template.php)
+	 */
+	
+	$defaults = array(
+		'smallest' => 8, 'largest' => 22, 'unit' => 'pt', 'number' => 45,
+		'format' => 'flat', 'separator' => "\n", 'orderby' => 'name', 'order' => 'ASC',
+		'exclude' => '', 'include' => '', 'link' => 'view', 'taxonomy' => 'story_keyword', 'post_type' => 'story', 'echo' => true, 
+		'topic_count_text' => null, 'topic_count_text_callback' => null,
+		'topic_count_scale_callback' => 'default_topic_count_scale', 'filter' => 1,
+		'selected' => ''
+	);
+	$args = wp_parse_args( $args, $defaults );
+
+	$tags = get_terms( $args['taxonomy'], array_merge( $args, array( 'orderby' => 'count', 'order' => 'DESC' ) ) ); // Always query top tags
+
+	if ( empty( $tags ) || is_wp_error( $tags ) )
+		return;
+
+	// Juggle topic count tooltips:
+	if ( isset( $args['topic_count_text'] ) ) {
+		// First look for nooped plural support via topic_count_text.
+		$translate_nooped_plural = $args['topic_count_text'];
+	} elseif ( ! empty( $args['topic_count_text_callback'] ) ) {
+		// Look for the alternative callback style. Ignore the previous default.
+		if ( $args['topic_count_text_callback'] === 'default_topic_count_text' ) {
+			$translate_nooped_plural = _n_noop( '%s topic', '%s topics' );
+		} else {
+			$translate_nooped_plural = false;
+		}
+	} elseif ( isset( $args['single_text'] ) && isset( $args['multiple_text'] ) ) {
+		// If no callback exists, look for the old-style single_text and multiple_text arguments.
+		$translate_nooped_plural = _n_noop( $args['single_text'], $args['multiple_text'] );
+	} else {
+		// This is the default for when no callback, plural, or argument is passed in.
+		$translate_nooped_plural = _n_noop( '%s topic', '%s topics' );
+	}
+	
+	$tags_sorted = apply_filters( 'tag_cloud_sort', $tags, $args );
+	
+	if ( $tags_sorted !== $tags ) {
+		$tags = $tags_sorted;
+		unset( $tags_sorted );
+	} else {
+		if ( 'RAND' === $args['order'] ) {
+			shuffle( $tags );
+		} else {
+			// SQL cannot save you; this is a second (potentially different) sort on a subset of data.
+			if ( 'name' === $args['orderby'] ) {
+				uasort( $tags, '_wp_object_name_sort_cb' );
+			} else {
+				uasort( $tags, '_wp_object_count_sort_cb' );
+			}
+	
+			if ( 'DESC' === $args['order'] ) {
+				$tags = array_reverse( $tags, true );
+			}
+		}
+	}
+	
+	if ( $args['number'] > 0 )
+		$tags = array_slice( $tags, 0, $args['number'] );
+	
+	$counts = array();
+	$real_counts = array(); // For the alt tag
+	foreach ( (array) $tags as $key => $tag ) {
+		$real_counts[ $key ] = $tag->count;
+		$counts[ $key ] = call_user_func( $args['topic_count_scale_callback'], $tag->count );
+	}
+	
+	$min_count = min( $counts );
+	$spread = max( $counts ) - $min_count;
+	if ( $spread <= 0 )
+		$spread = 1;
+	$font_spread = $args['largest'] - $args['smallest'];
+	if ( $font_spread < 0 )
+		$font_spread = 1;
+	$font_step = $font_spread / $spread;
+
+	// Assemble the data that will be used to generate the tag cloud markup.
+	$tags_data = array();
+	
+	$tags_data[] = array(
+			'id'         => 'X_x',
+			'name'	     => '<all>',
+			'title'      => '<all>',
+			'slug'       => '',
+			'real_count' => '10',
+			'class'	     => 'tag-link-X_x',
+			'font_size'  => ($args['smallest'] + $args['largest']) / 2
+	);
+	
+	
+	
+	foreach ( $tags as $key => $tag ) {
+		$tag_id = isset( $tag->id ) ? $tag->id : $key;
+	
+		$count = $counts[ $key ];
+		$real_count = $real_counts[ $key ];
+	
+		if ( $translate_nooped_plural ) {
+			$title = sprintf( translate_nooped_plural( $translate_nooped_plural, $real_count ), number_format_i18n( $real_count ) );
+		} else {
+			$title = call_user_func( $args['topic_count_text_callback'], $real_count, $tag, $args );
+		}
+	
+		$tags_data[] = array(
+				'id'         => $tag_id,
+				'name'	     => $tag->name,
+				'title'      => $title,
+				'slug'       => $tag->slug,
+				'real_count' => $real_count,
+				'class'	     => 'tag-link-' . $tag_id,
+				'font_size'  => $args['smallest'] + ( $count - $min_count ) * $font_step,
+		);
+	}
+
+	
+	$a = array();
+	
+	// generate the output links array
+	foreach ( $tags_data as $key => $tag_data ) {
+		$a[] = "<input 
+					type='radio' 
+					value='" . esc_attr( $tag_data['slug'] ) . "' 
+					class='" . esc_attr( $tag_data['class'] ) . "' 
+					id='esa_cloud_item_$key'
+					name='term'" .
+					(($args['selected'] == $tag_data['slug']) ? "checked='checked' " : ' ') .
+
+				"/>
+				<label
+					for='esa_cloud_item_$key'
+					style='font-size: " . esc_attr( str_replace( ',', '.', $tag_data['font_size'] ) . $args['unit'] ) . ";'
+					title='" . esc_attr( $tag_data['title'] ) . "'
+				>".	esc_html( $tag_data['name'] ) . "
+				</label>";
+	}
+
+	$return = join( $args['separator'], $a );
+
+
+	echo "<div id='story_keywords'>$return</div>";
+}
+	
 
 ?>

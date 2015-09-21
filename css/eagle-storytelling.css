@@ -63,13 +63,40 @@ input[type="week"]
 	font-style: italic;
 }
 
+#esa_searchform h5, 
+#esa_searchform h4{
+	margin-top: 1em
+}
+
 #story-author-dropdown {
 	height: 24px;
     width: 199px;
-    margin-right: 10px;
+    margin-right: 9px;
     background-color: #FFF;
     border: 1px solid #BBB;
     padding: 2px;
     color: #4E4E4E;
     box-sizing: content-box;
+}
+
+#story_keywords {
+	display: inline-block;
+	margin-right: 10px;
+	width: 199px;
+}
+
+
+#story_keywords label {
+    color: #676761;
+    cursor: pointer
+}
+
+#story_keywords input[type="radio"] {
+    display:none;   
+}
+
+#story_keywords label:hover,
+#story_keywords input[type="radio"]:checked + label {
+    color: #40403C;
+    text-decoration: underline
 }
