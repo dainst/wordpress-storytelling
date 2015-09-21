@@ -10,8 +10,7 @@
 		<?php 
 			echo "Posted by <a href='"; bloginfo('url'); echo "?s=&post_type=story&author="; the_author_meta('ID'); echo "'>"; the_author(); echo "</a>";
 			echo " on "; the_time(et_get_option('flexible_date_format'));
-			$the_taxonomys = get_the_taxonomies($get_the_ID, array('template' => "<span class='tax-%s'>%l</span>"));
-			echo (count($the_taxonomys['story_keyword'])) ? '<br> Keywords: ' . $the_taxonomys['story_keyword'] : '';
+			echo '<br>' . esa_get_story_keywords();
 		?>				
 	</p>
 

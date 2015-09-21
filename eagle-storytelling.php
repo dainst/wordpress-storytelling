@@ -1000,6 +1000,20 @@ function esa_keyword_cloud($args = array()) {
 
 	echo "<div id='story_keywords'>$return</div>";
 }
-	
+
+
+
+function esa_get_story_keywords() {
+	global $post;
+	$terms = wp_get_object_terms($post->ID, 'story_keyword');
+	$links = array();
+	$url = get_site_url();
+	foreach ( $terms as $term ) {
+		$links[] = "<a href='$url/?s=&post_type=story&term={$term->slug}&taxonomy=story_keyword&author=0'>{$term->name}</a>";
+	}
+	if (count($links)) {
+		return "Keywords: " . wp_sprintf('%l', $links);
+	}
+}
 
 ?>
