@@ -831,7 +831,7 @@ function esa_dropdown_users($selected) {
 	$output = '';
 	if (!empty($users)) {
 		$name = 'author';
-		$id = 'story-author-dropdown';
+		$id = 'esa-filter-author';
 		$output = "<select name='{$name}' id='{$id}'>\n";
 		$output .= "\t<option value='0'>&lt;all&gt;</option>\n";
 
@@ -998,7 +998,7 @@ function esa_keyword_cloud($args = array()) {
 	$return = join( $args['separator'], $a );
 
 
-	echo "<div id='story_keywords'>$return</div>";
+	echo "<div id='esa-filter-keywords'>$return</div>";
 }
 
 

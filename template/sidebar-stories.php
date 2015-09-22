@@ -46,7 +46,7 @@ http://195.37.232.186/eagle/keyword/strolche/
     		<div>
     			<?php esa_keyword_cloud(array('selected' =>  $_GET['term'])); ?>
         		<?php // <input type="hidden" name="term" 	value="<?php echo (get_query_var('taxonomy') == 'story_keyword') ? get_query_var('term') : '' ? >" class="s" id='esa_keyword_filter' />?>
-				<input type="submit" class="searchsubmit" value="Search" /> 
+				<?php // <input type="submit" class="searchsubmit" value="Search" /> ?>
         		<input type="hidden" name="taxonomy" value="story_keyword" />
     		</div>
 
@@ -54,13 +54,14 @@ http://195.37.232.186/eagle/keyword/strolche/
     		<div>
     			<?php esa_dropdown_users((int) $_GET['author']); ?>
         		<?php // <input type="text" name="author_name" value="<?php echo get_query_var('author_name') ? >" class="s" />?>
-				<input type="submit" class="searchsubmit" value="Search" /> 
+				<?php // <input type="submit" class="searchsubmit" value="Search" /> ?>
     		</div>
 
 			<h5>Filter by Europeana ID</h5>
     		<div>
         		<input type="hidden" name="esa_item_source" 	value="europeana" />
-        		<input type="text" 	 name="esa_item_id" 		value="<?php echo ($_GET['esa_item_source']  == 'europeana') ? $_GET['esa_item_id'] : '' ?>" class="s" /><input type="submit" class="searchsubmit" value="Search" />
+        		<input type="text" 	 name="esa_item_id" 	id="esa-filter-europeana"	value="<?php echo ($_GET['esa_item_source']  == 'europeana') ? $_GET['esa_item_id'] : '' ?>" class="s" />
+        		<?php //<input type="submit" class="searchsubmit" value="Search" / ?>
     		</div>
 		</form>
 	</div>
