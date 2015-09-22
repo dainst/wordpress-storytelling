@@ -22,9 +22,11 @@
 
 		<p class="sharelink"><a class="addthis_button_compact"><span>Share &raquo;</span></a></p>
 
-		<div class="post-excerpt">
-			<?php the_excerpt(); ?>
-		</div>
+		<?php if (has_excerpt()) { ?>
+			<div class="post-excerpt">
+				<?php the_excerpt(); ?>
+			</div>
+		<?php } ?>
 		
 		<div class="post-content">
 			<?php the_content(); ?>
