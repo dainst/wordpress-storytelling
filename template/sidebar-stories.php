@@ -6,28 +6,7 @@
           <p><a href='<?php bloginfo('url'); ?>/stories'>Flagship Storytelling Application</a></p>
     </div>
     
-<?php	/*
-	<div class="widget widget_search">
- 
-if ( is_user_logged_in() ) {
-?>
-		<h3><?php echo 'Hello '.wp_get_current_user()->user_login.'!' ?></h3>
-		<a href="<?php echo site_url(); ?>/wp-admin/post-new.php?post_type=story">Create new story</a><br>
-		<a href="<?php echo site_url(); ?>/wp-admin/edit.php?post_type=story">Edit existing stories</a><br><br>
-		<a href="<?php echo wp_logout_url() ?>">Logout</a>
-<?php
-} else {
-?>
-		<h3><a href="<?php echo wp_login_url(site_url('/stories/')); ?>" title="Login">Login</a></h3>
-		<p>(Logged in users can create new stories)</p>
-<?php
-}
 
-http://195.37.232.186/eagle/keyword/strolche/
-
-
-	</div>*/
-?>
 
 	<div class="widget">
 	
@@ -71,25 +50,42 @@ http://195.37.232.186/eagle/keyword/strolche/
 	<div id="recent-stories" class="widget widget_recent_entries">
 		<h4 class="widgettitle">Latest Stories</h4>
 		<ul>
-<?php
-    $args = array(
-        'post_type' => 'story',
-        'showposts' => 10
-    );
-    $latest_stories_loop = new WP_Query( $args );
-    while ( $latest_stories_loop->have_posts() ) : $latest_stories_loop->the_post(); 
-?>
-			<li>
-				<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
-			</li>
-<?php
-    endwhile;
-    wp_reset_postdata();
-?>
+			<?php
+			    $args = array(
+			        'post_type' => 'story',
+			        'showposts' => 10
+			    );
+			    $latest_stories_loop = new WP_Query( $args );
+			    while ( $latest_stories_loop->have_posts() ) : $latest_stories_loop->the_post(); 
+			?>
+						<li>
+							<a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
+						</li>
+			<?php
+			    endwhile;
+			    wp_reset_postdata();
+			?>
 		</ul>
 	</div> 
 
-
+	<div class="widget widget_edit">
+		<?php if (is_user_logged_in()) { ?>
+			<h4 class='widgettitle'><?php echo 'Logged in as '.wp_get_current_user()->user_login ?></h4>
+			<p>
+				<?php if(current_user_can( 'edit_others_posts', get_ ) || ($post->post_author == $current_user->ID))  { ?>
+					<?php edit_post_link('Edit this story'); ?>	<br>
+				<?php }?>
+				<a href="<?php echo site_url(); ?>/wp-admin/post-new.php?post_type=story">Create new story</a><br>
+				<a href="<?php echo site_url(); ?>/wp-admin/edit.php?post_type=story">Edit existing stories</a><br><br>
+				<a href="<?php echo wp_logout_url() ?>">Logout</a>
+			</p>
+		<?php } else { ?>
+			<h4 class='widgettitle'>Not logged in</h4>
+			<p>
+				<a href="<?php echo wp_login_url(site_url('/stories/')); ?>" title="Login">Log in</a> to create a story.
+			</p>
+		<?php }	?>
+	</div>
 		 		 
 	</div> <!-- end #sidebar -->
 <?php } ?>
