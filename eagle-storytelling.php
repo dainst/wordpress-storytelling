@@ -1,11 +1,11 @@
 <?php
 /**
  * @package eagle-storytelling
- * @version 0.8
+ * @version 1.0
  */
 /*
 Plugin Name: Eagle Storytelling Application
-Plugin URI:  http://wordpress.org/plugins/eagle-storytelling/
+Plugin URI:  https://github.com/codarchlab/eagle-storytelling
 Description: Create your own EAGLE story! 
 Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
@@ -13,7 +13,24 @@ Version:     1.0
 
 */
 
-include('esa_settings.php');
+
+/**
+ * Settings
+ */
+// show debug info
+define('ESA_DEBUG', false);
+
+$esa_settings = array(
+		'datasources' => array(
+			'europeana' 	=> __('Europeana'),
+			'idai'			=> __('iDAI Gazetteer'),
+			'wiki' 			=> __('Wikipedia'),
+		),
+		'post_types' => array('post', 'page')
+);
+
+
+
 
 /**
  * Settings page
@@ -23,12 +40,38 @@ add_action('admin_menu', function () {
 	
 	//create new top-level menu
 	add_menu_page('Eagle Storytelling Application', 'Eagle Storytelling Application', 'administrator', __FILE__, function() {
+		
+		global $esa_settings;
+		
 		$url = admin_url('admin.php');
-		echo "	<h1>Eagle Storytelling Application</h1>
-				<form method='POST' action='$url'>
-    				<input type='hidden' name='action' value='esa_flush_cache'>
-    				<input type='submit' value='Flush esa_item cache!' class='button'>
-				</form>";
+		echo "<h1>Eagle Storytelling Application</h1>";
+		
+		print_r($esa_settings);
+		
+		echo "<h2>Settings</h2>";
+		
+		
+		
+		/*
+		echo "<form method='POST' action='$url'>";
+		
+		$types = get_post_types($args = array('public' => true));
+		echo "<label for='esa_restrict_post_type'>Restrict Story Telling Apllication to custom post type</label>";
+		echo "<select name='esa_restrict_post_type'>";
+		foreach ($types as $type => $name) {
+			echo "<option value='$type'>$name</option>";
+		}
+		echo "</select><br>";
+		echo "<input type='submit' value='Save' class='button'>";
+		echo "</form>";
+		*/
+		
+		
+		echo "<h2>Cache</h2>";
+		echo "<form method='POST' action='$url'>";
+    	echo "<input type='hidden' name='action' value='esa_flush_cache'>";
+    	echo "<input type='submit' value='Flush esa_item cache!' class='button'>";
+		echo "</form>";
 	});
 
 });
@@ -48,17 +91,12 @@ add_action('admin_action_esa_flush_cache', function() {
 
 
 
-
-
-
-
-/****************************************/
 add_action('save_post', function($post_id) {
 		
 	$post = get_post($post_id);
 	global $wpdb;
 
-	if (!wp_is_post_revision($post_id) and ($post->post_type == 'story')) { //!
+	if (!wp_is_post_revision($post_id) and is_esa($post->post_type)) { 
 		
 		$regex = get_shortcode_regex();
 		preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
@@ -96,11 +134,16 @@ add_action('save_post', function($post_id) {
  * Register style sheets and javascript
  */
 
-add_action( 'wp_enqueue_scripts', function() {
+add_action('wp_enqueue_scripts', function() {
 	global $post;
-	global $is_esa_story_page;
-	if ((get_post_type() == 'story') or ($is_esa_story_page)) { //!
-		
+	/*
+	echo "<textarea style='background:orange; position: absolute; right: 0px; width: 500px; height: 500px; z-index:1000000'>", 
+	is_object($post), 
+	print_r($post,1), 
+	"</textarea>";*/
+	
+	if (is_esa($post->post_type)) {
+
 		// css
 		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
 		wp_enqueue_style('eagle-storytelling' );
@@ -191,16 +234,17 @@ require_once('esa_item.class.php');
 
 // add them to media menu
 
-
 add_filter('media_upload_tabs', function($tabs) {
-    return array_merge($tabs, array('esa' => 'EAGLE Storytelling Application'));
+	global $post;
+	return (!is_object($post) or is_esa($post->post_type)) ?
+    	array_merge($tabs, array('esa' => 'EAGLE Storytelling Application')) :
+		$tabs;
 });
 
 
 // create submenu
 
 add_action('media_upload_esa', function() {
-	
 	
 	add_action('admin_print_styles-media-upload-popup', function() {
 		wp_enqueue_style('colors');
@@ -218,20 +262,20 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
 	});
 	
-		/**
-		 * this builds the iframe wich is in fact the add media dialogue of our plugin!
-		 *
-		 */
+	/**
+	 * this builds the iframe wich is in fact the add media dialogue of our plugin!
+	 *
+	 */
 	return wp_iframe('media_esa_dialogue'); 
 });
 
 
 function media_esa_dialogue() {
 	
-	
 	$time = microtime(true);
 	
-	global $esa_datasources;
+	global $esa_settings;
+	$esa_datasources = $esa_settings['datasources'];
 	
 	// get current search engine
 	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : array_keys($esa_datasources)[0];
@@ -412,11 +456,6 @@ add_shortcode('esa', 'esa_shortcode');
 
 
 
-
-
-		
-		
-
 /** 
  * the caching mechanism for esa_items 
  * 
@@ -494,7 +533,7 @@ add_action('init', function() {
 	});
 	
 	add_filter('mce_buttons', function($buttons) {
-		array_push( $buttons, 'whatever' );
+		array_push($buttons, 'whatever');
 		return $buttons;
 	});
 	
@@ -598,6 +637,15 @@ add_filter('admin_post_thumbnail_html', function($html) {
 			</span>";
 });
 
+/**
+ * useful functions
+ */
+function is_esa($post_type) {
+	global $is_esa_story_page;
+	global $esa_settings;
+	//print_r($esa_settings['post_types'] );die();
+	return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page;
+}
 
 include('esa_widget.php');
 ?>
