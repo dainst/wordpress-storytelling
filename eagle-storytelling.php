@@ -7,65 +7,17 @@
 Plugin Name: Eagle Storytelling Application
 Plugin URI:  http://wordpress.org/plugins/eagle-storytelling/
 Description: Create your own EAGLE story! 
-Author:	     Wolfgang Schmidle & Philipp Franck
+Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     0.9
+Version:     1.0
 
 */
 
 include('esa_settings.php');
 
-
-/****************************************/
-
-// user stuff
-
-/*
-register_activation_hook(__FILE__, function() {
-	add_role('esa_story_author', 'Story Author', array());
-	add_role('esa_story_contributor', 'Story Contributor', array());
-});
-
-
-register_deactivation_hook(__FILE__, function() {
-	remove_role('esa_story_author');
-	remove_role('esa_story_contributor');
-});
-*/
-add_action('admin_init', function () {
-	
-	
-
-	
-	$roles = array('subscriber', 'editor', 'author', 'administrator');
-	foreach ($roles as $role) {
-		$role = get_role($role);
-		$role->add_cap('read');
-		$role->add_cap('create_story');
-		$role->add_cap('edit_story');
-		$role->add_cap('delete_story');
-		$role->add_cap('publish_story');
-		$role->add_cap('delete_published_story');
-		$role->add_cap('edit_published_story');	
-		$role->add_cap('manage_story_keyword');
-		$role->add_cap('edit_story_keyword');
-		$role->add_cap('delete_story_keyword');
-		$role->add_cap('assign_story_keyword');
-		$role->add_cap('upload_files');
-	}
-	
-	$roles = array('administrator');
-	foreach ($roles as $role) {
-		$role = get_role($role);
-		$role->add_cap('edit_others_story');
-		$role->add_cap('read_private_posts');
-	}
-			
-	
-	
-});
-
-/****************************************/
+/**
+ * Settings page
+ */
 
 add_action('admin_menu', function () {
 	
@@ -94,105 +46,19 @@ add_action('admin_action_esa_flush_cache', function() {
 });
 
 
-/****************************************/
 
-function esa_create_keywords_widget() {
 
-    $labels = array(
-        'name' => _x('Keywords', 'Keywords', 'Flexible'),
-        'singular_name' => _x('Keyword', 'taxonomy singular name', 'Flexible'),
-        'search_items' => __('Search Keywords', 'Flexible'),
-        'all_items' => __('All Keywords', 'Flexible'),
-        'parent_item' => __('Parent Keyword', 'Flexible'),
-        'parent_item_colon' => __('Parent Keyword:', 'Flexible'),
-        'edit_item' => __('Edit Keyword', 'Flexible'),
-        'update_item' => __('Update Keyword', 'Flexible'),
-        'add_new_item' => __('Add New Keyword', 'Flexible'),
-        'new_item_name' => __('New Keyword Name', 'Flexible'),
-        'menu_name' => __('Keyword', 'Flexible')
-    );
 
-    register_taxonomy('story_keyword', array('story'), array(
-        'hierarchical' => false,
-        'labels' => $labels,
-        'show_ui' => true,
-        'query_var' => true,
-        'rewrite' => array('slug' => 'keyword'),
-    	'capabilities' => array(
-    		'manage_terms' => 'manage_story_keyword',
-    		'edit_terms' => 'edit_story_keyword',
-    		'delete_terms' => 'delete_story_keyword',
-    		'assign_terms' => 'assign_story_keyword'
-    	)
-    ));
-    
-}
-
-add_action('init', 'esa_create_keywords_widget', 0);
 
 
 
 /****************************************/
-/* create editor page for stories */ 
-
-function esa_register_story_post_type() {
-
-    $labels = array(
-        'name' => _x('Stories', 'post type general name', 'Flexible'),
-        'singular_name' => _x('Story', 'post type singular name', 'Flexible'),
-        'add_new' => _x('Add New', 'story item', 'Flexible'),
-        'add_new_item' => __('Add New Story', 'Flexible'),
-        'edit_item' => __('Edit Story', 'Flexible'),
-        'new_item' => __('New Story', 'Flexible'),
-        'all_items' => __('All Stories', 'Flexible'),
-        'view_item' => __('View Story', 'Flexible'),
-        'search_items' => __('Search Stories', 'Flexible'),
-        'not_found' => __('Nothing found', 'Flexible'),
-        'not_found_in_trash' => __('Nothing found in Trash', 'Flexible'),
-        'parent_item_colon' => ''
-    );
-
-    $args = array(
-        'labels' => $labels,
-        'public' => true,
-        'publicly_queryable' => true,
-        'show_ui' => true,
-        'query_var' => true,
-        'rewrite' => apply_filters('et_portfolio_posttype_rewrite_args', array('slug' => 'story', 'with_front' => false)),
-        'capability_type' => 'story',
-    	'capabilities' => array(
-    		'publish_post' => 'publish_story',
-    		'publish_posts' => 'publish_story',
-    		'edit_posts' => 'edit_story',
-    		'edit_post' => 'edit_story',
-    		'edit_others_posts' => 'edit_others_story',
-    		'read_private_posts' => 'read_private_story',
-    		'edit_post' => 'edit_story',
-    		'delete_post' => 'delete_story',
-    		'read_post' => 'read_story',
-    	),
-    	'exclude_from_search' => true,
-        'hierarchical' => false,
-        'menu_position' => null,
-        'supports' => array('title', 'editor', 'excerpt', 'revisions', 'thumbnail')
-    );
-
-    register_post_type('story', $args);
-}
-
-add_action('init', 'esa_register_story_post_type');
-
-
-/****************************************/
-/* register save story */
-
-
 add_action('save_post', function($post_id) {
 		
 	$post = get_post($post_id);
 	global $wpdb;
 
-	if (!wp_is_post_revision($post_id) and ($post->post_type == 'story')) {
+	if (!wp_is_post_revision($post_id) and ($post->post_type == 'story')) { //!
 		
 		$regex = get_shortcode_regex();
 		preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
@@ -226,72 +92,14 @@ add_action('save_post', function($post_id) {
 });
 
 
-
-/****************************************/
-/* register template for the story pages */ 
-
-function esa_get_story_post_type_template($single_template) {
-     global $post;
-
-     if ($post->post_type == 'story') {
-          $single_template = dirname( __FILE__ ) . '/template/single-story.php';
-     }
-     return $single_template;
-}
-
-add_filter( 'single_template', 'esa_get_story_post_type_template' );
-
-
-/****************************************/
-/* register template for page "stories" */ 
-
-function esa_get_stories_page_template( $page_template )
-{
-    
-	if ( is_page( 'stories' ) ) {
-        $page_template = dirname( __FILE__ ) . '/template/page-stories.php';
-    }
-    return $page_template;
-}
-
-add_filter( 'page_template', 'esa_get_stories_page_template' );
-
-
-/****************************************/
-/* register template for page "search stories" */ 
-
-function esa_get_search_stories_page_template($page_template) {
-   	if ((get_query_var('post_type') == "story") or (get_query_var('taxonomy') == 'story_keyword')){
-        $page_template = dirname( __FILE__ ) . '/template/search-stories.php'; 
-    }
-    return $page_template;
-}
-
-add_filter('search_template', 'esa_get_search_stories_page_template');
-add_filter('archive_template', 'esa_get_search_stories_page_template');
-add_filter('404_template', 'esa_get_search_stories_page_template');
-
-
-
-function searchfilter($query) {
-    if ($query->is_search && $query->post_type == "story") {
-        $query->set('meta_key','_wp_page_template');
-        $query->set('meta_value', dirname( __FILE__ ) . '/template/search-stories.php');    
-   	}
-	return $query;
-}
-
-//add_filter('pre_get_posts','searchfilter');
-
-
 /**
- * Register style sheet.
+ * Register style sheets and javascript
  */
 
-function esa_register_plugin_styles() {
+add_action( 'wp_enqueue_scripts', function() {
 	global $post;
 	global $is_esa_story_page;
-	if ((get_post_type() == 'story') or ($is_esa_story_page)) {
+	if ((get_post_type() == 'story') or ($is_esa_story_page)) { //!
 		
 		// css
 		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
@@ -304,24 +112,15 @@ function esa_register_plugin_styles() {
 		//js
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 	}
-}
+});
 
-add_action( 'wp_enqueue_scripts', 'esa_register_plugin_styles' );
-
-
-
-
-
-
-
-/****************************************/
 
 
 
 
 /**
  * 
- * Make search able to serach inside of esa_item_cache to find Entries by it's content in esa item. 
+ * Make search able to search inside of esa_item_cache to find Entries by it's content in esa item. 
  * 
  * 
  */
@@ -379,7 +178,6 @@ add_action('found_posts', function() {
 	}
 });*/
 
-/****************************************/
 
 
 /** 
@@ -682,13 +480,11 @@ register_activation_hook( __FILE__, 'esa_install' );
 /**
  * tinyMCE with esa_objects 
  * 
- * -- experimental -- 
  * 
  */
 
 
-add_action( 'init', 'esa_mce' );
-function esa_mce() {
+add_action('init', function() {
 	add_filter("mce_external_plugins", function($plugin_array) {
 		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling/js/esa_mce.js';
 		$plugin_array['noneditable'] = plugins_url() . '/eagle-storytelling/js/mce_noneditable.js';
@@ -702,7 +498,7 @@ function esa_mce() {
 		return $buttons;
 	});
 	
-};
+});
 
 
 add_action('wp_ajax_esa_shortcode', function() {
@@ -750,7 +546,9 @@ add_action('wp_ajax_esa_set_featured_image', function() {
 
 
 
-/* thumbnailing */
+/**
+ *  thumbnailing
+ */
 
 function esa_thumpnail($post, $return = false) {
 	
@@ -800,220 +598,6 @@ add_filter('admin_post_thumbnail_html', function($html) {
 			</span>";
 });
 
-/* esa users */
 
-function esa_dropdown_users($selected) {
-
-	// get users who has at least one story published
-	global $wpdb;
-	$sql = "
-			select 
-				count(post_author) as post_count, 
-				display_name,
-				users.ID
-			from 
-				{$wpdb->prefix}posts as posts 
-				left join {$wpdb->prefix}users as users on (posts.post_author=users.ID) 
-			where 
-				post_type='story' 
-				and post_status='publish' 
-			group by 
-				posts.post_author
-			order by
-				post_count desc";
-	
-	$users = $wpdb->get_results($sql);
-	
-	//print_r($sql);echo"<hr>";print_r($result);
-	
-	// some copied wp_dropdown_users
-
-	$output = '';
-	if (!empty($users)) {
-		$name = 'author';
-		$id = 'esa-filter-author';
-		$output = "<select name='{$name}' id='{$id}'>\n";
-		$output .= "\t<option value='0'>&lt;all&gt;</option>\n";
-
-		$found_selected = false;
-		foreach ((array) $users as $user) {
-			$user->ID = (int) $user->ID;
-			$_selected = selected($user->ID, $selected, false);
-			if ($_selected) {
-				$found_selected = true;
-			}
-			$display = "{$user->display_name} ({$user->post_count})";
-			$output .= "\t<option value='$user->ID'$_selected>" . esc_html($display) . "</option>\n";
-		}
-
-		$output .= "</select>";
-	}
-
-	echo $output;
-	
-}
-
-
-/* esa tag cloud */ 
-function esa_keyword_cloud($args = array()) {
-	/**
-	 * mostly copied from wp_generate_tag_cloud  (wp-includes/category-template.php)
-	 */
-	
-	$defaults = array(
-		'smallest' => 8, 'largest' => 22, 'unit' => 'pt', 'number' => 45,
-		'format' => 'flat', 'separator' => "\n", 'orderby' => 'name', 'order' => 'ASC',
-		'exclude' => '', 'include' => '', 'link' => 'view', 'taxonomy' => 'story_keyword', 'post_type' => 'story', 'echo' => true, 
-		'topic_count_text' => null, 'topic_count_text_callback' => null,
-		'topic_count_scale_callback' => 'default_topic_count_scale', 'filter' => 1,
-		'selected' => ''
-	);
-	$args = wp_parse_args( $args, $defaults );
-
-	$tags = get_terms( $args['taxonomy'], array_merge( $args, array( 'orderby' => 'count', 'order' => 'DESC' ) ) ); // Always query top tags
-
-	if ( empty( $tags ) || is_wp_error( $tags ) )
-		return;
-
-	// Juggle topic count tooltips:
-	if ( isset( $args['topic_count_text'] ) ) {
-		// First look for nooped plural support via topic_count_text.
-		$translate_nooped_plural = $args['topic_count_text'];
-	} elseif ( ! empty( $args['topic_count_text_callback'] ) ) {
-		// Look for the alternative callback style. Ignore the previous default.
-		if ( $args['topic_count_text_callback'] === 'default_topic_count_text' ) {
-			$translate_nooped_plural = _n_noop( '%s topic', '%s topics' );
-		} else {
-			$translate_nooped_plural = false;
-		}
-	} elseif ( isset( $args['single_text'] ) && isset( $args['multiple_text'] ) ) {
-		// If no callback exists, look for the old-style single_text and multiple_text arguments.
-		$translate_nooped_plural = _n_noop( $args['single_text'], $args['multiple_text'] );
-	} else {
-		// This is the default for when no callback, plural, or argument is passed in.
-		$translate_nooped_plural = _n_noop( '%s topic', '%s topics' );
-	}
-	
-	$tags_sorted = apply_filters( 'tag_cloud_sort', $tags, $args );
-	
-	if ( $tags_sorted !== $tags ) {
-		$tags = $tags_sorted;
-		unset( $tags_sorted );
-	} else {
-		if ( 'RAND' === $args['order'] ) {
-			shuffle( $tags );
-		} else {
-			// SQL cannot save you; this is a second (potentially different) sort on a subset of data.
-			if ( 'name' === $args['orderby'] ) {
-				uasort( $tags, '_wp_object_name_sort_cb' );
-			} else {
-				uasort( $tags, '_wp_object_count_sort_cb' );
-			}
-	
-			if ( 'DESC' === $args['order'] ) {
-				$tags = array_reverse( $tags, true );
-			}
-		}
-	}
-	
-	if ( $args['number'] > 0 )
-		$tags = array_slice( $tags, 0, $args['number'] );
-	
-	$counts = array();
-	$real_counts = array(); // For the alt tag
-	foreach ( (array) $tags as $key => $tag ) {
-		$real_counts[ $key ] = $tag->count;
-		$counts[ $key ] = call_user_func( $args['topic_count_scale_callback'], $tag->count );
-	}
-	
-	$min_count = min( $counts );
-	$spread = max( $counts ) - $min_count;
-	if ( $spread <= 0 )
-		$spread = 1;
-	$font_spread = $args['largest'] - $args['smallest'];
-	if ( $font_spread < 0 )
-		$font_spread = 1;
-	$font_step = $font_spread / $spread;
-
-	// Assemble the data that will be used to generate the tag cloud markup.
-	$tags_data = array();
-	
-	$tags_data[] = array(
-			'id'         => 'X_x',
-			'name'	     => '<all>',
-			'title'      => '<all>',
-			'slug'       => '',
-			'real_count' => '10',
-			'class'	     => 'tag-link-X_x',
-			'font_size'  => ($args['smallest'] + $args['largest']) / 2
-	);
-	
-	
-	
-	foreach ( $tags as $key => $tag ) {
-		$tag_id = isset( $tag->id ) ? $tag->id : $key;
-	
-		$count = $counts[ $key ];
-		$real_count = $real_counts[ $key ];
-	
-		if ( $translate_nooped_plural ) {
-			$title = sprintf( translate_nooped_plural( $translate_nooped_plural, $real_count ), number_format_i18n( $real_count ) );
-		} else {
-			$title = call_user_func( $args['topic_count_text_callback'], $real_count, $tag, $args );
-		}
-	
-		$tags_data[] = array(
-				'id'         => $tag_id,
-				'name'	     => $tag->name,
-				'title'      => $title,
-				'slug'       => $tag->slug,
-				'real_count' => $real_count,
-				'class'	     => 'tag-link-' . $tag_id,
-				'font_size'  => $args['smallest'] + ( $count - $min_count ) * $font_step,
-		);
-	}
-
-	
-	$a = array();
-	
-	// generate the output links array
-	foreach ( $tags_data as $key => $tag_data ) {
-		$a[] = "<input 
-					type='radio' 
-					value='" . esc_attr( $tag_data['slug'] ) . "' 
-					class='" . esc_attr( $tag_data['class'] ) . "' 
-					id='esa_cloud_item_$key'
-					name='term'" .
-					(($args['selected'] == $tag_data['slug']) ? "checked='checked' " : ' ') .
-
-				"/>
-				<label
-					for='esa_cloud_item_$key'
-					style='font-size: " . esc_attr( str_replace( ',', '.', $tag_data['font_size'] ) . $args['unit'] ) . ";'
-					title='" . esc_attr( $tag_data['title'] ) . "'
-				>".	esc_html( $tag_data['name'] ) . "
-				</label>";
-	}
-
-	$return = join( $args['separator'], $a );
-
-
-	echo "<div id='esa-filter-keywords'>$return</div>";
-}
-
-
-
-function esa_get_story_keywords() {
-	global $post;
-	$terms = wp_get_object_terms($post->ID, 'story_keyword');
-	$links = array();
-	$url = get_site_url();
-	foreach ( $terms as $term ) {
-		$links[] = "<a href='$url/?s=&post_type=story&term={$term->slug}&taxonomy=story_keyword&author=0'>{$term->name}</a>";
-	}
-	if (count($links)) {
-		return "Keywords: " . wp_sprintf('%l', $links);
-	}
-}
-
+include('esa_widget.php');
 ?>

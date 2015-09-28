@@ -22,4 +22,7 @@ $esa_datasources = array(
 		'wiki' 			=> __('Wikipedia'),
 		
 );
+
+$esa_post_type = 'story';
+
 ?>
