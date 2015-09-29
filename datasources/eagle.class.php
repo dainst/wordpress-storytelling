@@ -2,6 +2,7 @@
 namespace esa_datasource {
 	class eagle extends abstract_datasource {
 		
+		public $title = 'test';
 		
 			function search_form() {
 				echo "search dialgue";
@@ -16,7 +17,31 @@ namespace esa_datasource {
 			}
 			
 			function interprete_result($result) {
-				;
+			}
+			
+			
+			function parse_result_set($result){
+				
+			}
+			
+			function parse_result($result){
+				
+			}
+			
+			function api_single_url($id){
+				
+			}
+			
+			function api_search_url($query){
+				
+			}
+			
+			function api_record_url($id){
+				
+			}
+			
+			function api_url_parser($id){
+				
 			}
 		
 	}

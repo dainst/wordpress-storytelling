@@ -317,6 +317,15 @@ namespace esa_datasource {
 		}
 		
 		/**
+		 * if the functionality of the datasource relies onto something special like specific php libraries or external software,
+		 * you can implement a dependancy check on wose result the availabilty in wordpress depends.
+		 * @return true if everything is OK or a string
+		 */
+		function dependancy_check() {
+			return true;
+		}
+		
+		/**
 		 * fetches $data from url, unsing curl if possible, if not it uses file_get_contents
 		 * 
 		 * (curl version never tested :D )

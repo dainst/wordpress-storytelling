@@ -21,14 +21,57 @@ Version:     1.0
 define('ESA_DEBUG', false);
 
 $esa_settings = array(
-		'datasources' => array(
-			'europeana' 	=> __('Europeana'),
-			'idai'			=> __('iDAI Gazetteer'),
-			'wiki' 			=> __('Wikipedia'),
-		),
-		'post_types' => array('post', 'page')
+	'post_types' => array('post', 'page')
 );
 
+require_once('esa_datasource.class.php');
+require_once('esa_item.class.php');
+
+/**
+ * 
+ */
+function esa_install () {
+
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+	global $wpdb;
+	
+	// need a special table for that cache
+	$table_name = $wpdb->prefix . "esa_item_cache";
+	$sql =
+	"CREATE TABLE $table_name (
+		source VARCHAR(12) NOT NULL,
+		id VARCHAR(200) NOT NULL,
+		content LONGTEXT NULL,
+		searchindex TEXT NULL,
+		url TEXT NULL,
+		timestamp DATETIME NOT NULL,
+		PRIMARY KEY  (source, id)
+	)
+	COLLATE utf8_general_ci
+	ENGINE = MYISAM
+	;";
+
+	dbDelta( $sql );
+
+	// because esa_item has wo columns as index, we can't solve this with a taxonomy...
+	$table_name = $wpdb->prefix . "esa_item_to_post";
+	$sql =
+	"CREATE TABLE $table_name (
+		post_id BIGINT(20) UNSIGNED NOT NULL,
+		esa_item_source VARCHAR(12) NOT NULL,
+		esa_item_id VARCHAR(200) NOT NULL
+	)
+	COLLATE utf8_general_ci
+	ENGINE = MYISAM
+	;";
+
+	dbDelta( $sql );
+
+	
+	
+}
+register_activation_hook( __FILE__, 'esa_install');
 
 
 
@@ -38,40 +81,55 @@ $esa_settings = array(
 
 add_action('admin_menu', function () {
 	
+	
 	//create new top-level menu
 	add_menu_page('Eagle Storytelling Application', 'Eagle Storytelling Application', 'administrator', __FILE__, function() {
 		
 		global $esa_settings;
-		
 		$url = admin_url('admin.php');
-		echo "<h1>Eagle Storytelling Application</h1>";
 		
-		print_r($esa_settings);
+		$datasources = json_decode(get_option('esa_datasources'));
 		
-		echo "<h2>Settings</h2>";
+		//update_option('esa_datasources') = json_encode($list);
 		
+		$dsfiles = glob(dirname(__file__) . "/datasources/*.class.php");
 		
+		echo "<div class='wrap'><h2>Eagle Storytelling Application</h2>";
 		
-		/*
+		$xx = $datasources;
+		print_r($xx);
+		
+		echo "<h3>Settings</h3>";
+	
 		echo "<form method='POST' action='$url'>";
-		
-		$types = get_post_types($args = array('public' => true));
-		echo "<label for='esa_restrict_post_type'>Restrict Story Telling Apllication to custom post type</label>";
-		echo "<select name='esa_restrict_post_type'>";
-		foreach ($types as $type => $name) {
-			echo "<option value='$type'>$name</option>";
+		echo "<h4>Available Data Sources</h4>";
+		$labels = array();
+		foreach ($dsfiles as $filename) {
+			$name = basename($filename, '.class.php');
+			$ds = get_esa_datasource($name);
+			$label = $ds->title;
+			$labels[$name] = $label;
+			$is_ok = $ds->dependancy_check();
+			$error = ($is_ok === true) ? "<span style='color:green'>O.K.</span>" : "<span style='color:red'>Error: $is_ok</span>";
+			$checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';
+			$disabled = ($is_ok === true) ? '' : 'disabled="disabled"';
+			echo "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label [$error]</label></div>";
 		}
-		echo "</select><br>";
-		echo "<input type='submit' value='Save' class='button'>";
+		update_option('esa_datasource_labels', json_encode($labels));
+		wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');
+		echo "<input type='hidden' name='action' value='esa_save_settings'>";
+		echo "<input type='submit' value='Save' class='button button-primary'>";
 		echo "</form>";
-		*/
 		
 		
-		echo "<h2>Cache</h2>";
+		
+		echo "<h3>Cache</h3>";
 		echo "<form method='POST' action='$url'>";
     	echo "<input type='hidden' name='action' value='esa_flush_cache'>";
     	echo "<input type='submit' value='Flush esa_item cache!' class='button'>";
 		echo "</form>";
+		
+		echo "</div>";
 	});
 
 });
@@ -89,7 +147,18 @@ add_action('admin_action_esa_flush_cache', function() {
 });
 
 
-
+add_action('admin_action_esa_save_settings' ,function() {
+	if (!check_admin_referer('esa_save_settings', 'esa_save_settings_nonce')) {
+	   echo "Nonce failed";
+	}
+	
+	print_r($_POST);
+	if (isset($_POST['esa_datasources'])) {
+		update_option('esa_datasources', json_encode(array_map('sanitize_text_field', $_POST['esa_datasources'])));
+	}		
+	wp_redirect($_SERVER['HTTP_REFERER']);
+    exit();
+});
 
 add_action('save_post', function($post_id) {
 		
@@ -136,11 +205,6 @@ add_action('save_post', function($post_id) {
 
 add_action('wp_enqueue_scripts', function() {
 	global $post;
-	/*
-	echo "<textarea style='background:orange; position: absolute; right: 0px; width: 500px; height: 500px; z-index:1000000'>", 
-	is_object($post), 
-	print_r($post,1), 
-	"</textarea>";*/
 	
 	if (is_esa($post->post_type)) {
 
@@ -156,8 +220,6 @@ add_action('wp_enqueue_scripts', function() {
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 	}
 });
-
-
 
 
 
@@ -227,11 +289,6 @@ add_action('found_posts', function() {
  * add media submenu!
  */
 
-
-require_once('esa_datasource.class.php');
-require_once('esa_item.class.php');
-
-
 // add them to media menu
 
 add_filter('media_upload_tabs', function($tabs) {
@@ -275,19 +332,10 @@ function media_esa_dialogue() {
 	$time = microtime(true);
 	
 	global $esa_settings;
-	$esa_datasources = $esa_settings['datasources'];
-	
+	$esa_datasources = json_decode(get_option('esa_datasources'));
+	$labels = (array) json_decode(get_option('esa_datasource_labels'));
 	// get current search engine
-	$engine = isset($_GET['esa_source']) ? $_GET['esa_source'] : array_keys($esa_datasources)[0];
-	
-	// get engine interface
-	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
-		echo "Error: Search engine $engine not found!"; return;
-	}
-	
-	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
-	$ed_class = "\\esa_datasource\\$engine";
-	$eds = new $ed_class;
+	$eds = get_esa_datasource(isset($_GET['esa_source']) ? $_GET['esa_source'] : $esa_datasources[0]);
 	
 	$post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
 	
@@ -300,20 +348,13 @@ function media_esa_dialogue() {
 	echo "<div class='media-router'>";
 	
 	// create search engine menu
-	foreach ($esa_datasources as $source => $label) {
+	foreach ($esa_datasources as $source) {
 		$sel = ($source == $engine) ? 'active' : '';
+		$label = $labels[$source];
 		echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=$source'>$label</a>";
 	}
 	echo "</div>";
 	echo "</div>"; //esa_item_list_sidebar
-	
-	
-
-	/*
-	if (get_user_setting('uploader')) { // todo: user-rights
-		$form_class .= ' html-uploader';
-	}*/
-	
 	
 	
 	//Sidebar
@@ -470,48 +511,7 @@ add_shortcode('esa', 'esa_shortcode');
  * 
  */
 
-/**
- * need a special table for that cache
- */
-function esa_install () {
 
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-	
-	global $wpdb;
-	
-	$table_name = $wpdb->prefix . "esa_item_cache";
-	$sql = 
-	"CREATE TABLE $table_name (
-  		source VARCHAR(12) NOT NULL,
-  		id VARCHAR(200) NOT NULL,
-  		content LONGTEXT NULL,
-  		searchindex TEXT NULL,
-  		url TEXT NULL,
-  		timestamp DATETIME NOT NULL,
-  		PRIMARY KEY  (source, id)
-	)
-	COLLATE utf8_general_ci 
-	ENGINE = MYISAM
-	;";
-	
-	dbDelta( $sql );
-
-	// because esa_item has wo columns as index, we can't solve this with a taxonomy...
-	$table_name = $wpdb->prefix . "esa_item_to_post";
-	$sql = 
-	"CREATE TABLE $table_name (
-		post_id BIGINT(20) UNSIGNED NOT NULL,
-		esa_item_source VARCHAR(12) NOT NULL,
-  		esa_item_id VARCHAR(200) NOT NULL
-  	)
-	COLLATE utf8_general_ci
-	ENGINE = MYISAM
-	;";
-	
-	dbDelta( $sql );
-	
-}
-register_activation_hook( __FILE__, 'esa_install' );
 
 
 
@@ -647,5 +647,15 @@ function is_esa($post_type) {
 	return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page;
 }
 
-include('esa_widget.php');
+function get_esa_datasource($engine) {
+	// get engine interface
+	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
+		echo "Error: Search engine $engine not found!"; return;
+	}
+	
+	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
+	$ed_class = "\\esa_datasource\\$engine";
+	return new $ed_class;
+}
+
 ?>
