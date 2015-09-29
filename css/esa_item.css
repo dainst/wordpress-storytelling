@@ -192,7 +192,7 @@
 	font-size: 14px;
 	color: #4D4D4A;
 	letter-spacing: 1px;
-	font-weight: normal;
+	font-weight: bold;
 	text-transform: uppercase;
 	line-height: 130%;
 	display: inline-block;
@@ -209,6 +209,15 @@
 	padding-bottom: 0px;	
 }
 
+.esa_item .sub1,
+.esa_item .sub2 {
+	font-size: 85%
+}
+
+.esa_item_collapsed .sub2 {
+	display: none
+}
+
 /* special definitions for different types of esa_items ... todo: when it gets more, maybe just load the css we need not all */
 
 
@@ -222,7 +231,10 @@
 	background-repeat: no-repeat;
 }
 
-
+/* esa eagle */
+.eagle_transcription {
+	text-transform: uppercase;
+}
 
 
 

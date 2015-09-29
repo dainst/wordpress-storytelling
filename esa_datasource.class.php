@@ -18,10 +18,10 @@ namespace esa_datasource {
 		public $title;
 		public $info; 
 		public $homeurl; 
+		public $debug = false;
 		
 		// array of esa_items containing the results of a performed search
 		public $results = array();
-
 
 		// saves current serach params
 		public $query;
@@ -35,7 +35,6 @@ namespace esa_datasource {
 		
 		// some classes, the user may add to the esa_item
 		public $optional_classes = array(); //'test' => 'test'
-		//public $query_options = array(); // some additional options, the user may use to specify his query. can be used in the implementation of a datasource
 		
 		//error collector
 		public $errors = array();
@@ -129,7 +128,7 @@ namespace esa_datasource {
 					} else {
 						$queryurl = $this->api_search_url($query, $params);
 					}
-					if (ESA_DEBUG) {
+					if ($this->debug) {
 						echo $queryurl;
 					}
 					

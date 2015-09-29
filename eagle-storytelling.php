@@ -89,6 +89,9 @@ add_action('admin_menu', function () {
 		$url = admin_url('admin.php');
 		
 		$datasources = json_decode(get_option('esa_datasources'));
+		if (!is_array($datasources)) {
+			$datasources  = array();
+		}
 		
 		//update_option('esa_datasources') = json_encode($list);
 		

@@ -11,12 +11,15 @@
 
 
 namespace esa_datasource {
-	class /* name */ extends abstract_datasource {
+	class __NAME__ extends abstract_datasource {
 
-		public $info = "Generic Info Text...";
-		public $title = 'Title';
+		public $title = 'Title'; // Label / Title of the Datasource
+		public $info = false; // get created automatically, or enter text
+		public $homeurl; // link to the dataset's homepage
+		public $debug = false;
 		
-		public $pagination = false;
+		public $pagination = false; // are results paginated?
+		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
 		function api_search_url($query, $params = array()) {
 			return "";
@@ -26,6 +29,8 @@ namespace esa_datasource {
 			return "";
 		}
 
+
+		
 		function api_record_url($id) {
 			return "";
 		}
@@ -41,7 +46,7 @@ namespace esa_datasource {
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			$this->results = array();
-			foreach (/* whatever */ as $page) {
+			foreach (__whatever__ as $page) {
 					
 				$html  = "<div class='esa_item_left_column'>";
 				$html .= "<div class='esa_item_main_image' style='background-image:url(\"{/* image url */}\")'>&nbsp;</div>";
@@ -57,7 +62,7 @@ namespace esa_datasource {
 				$html .= "</div>";
 					
 					
-				$this->results[] = new \esa_item(/* source */, /* id */, $html, /* url */);
+				$this->results[] = new \esa_item(__source__, __id__, $html, __url__);
 			}
 			return $this->results;
 		}
@@ -67,6 +72,7 @@ namespace esa_datasource {
 			$res = $this->parse_result_set($response);
 			return $res[0];
 		}
+		
 
 	}
 }
