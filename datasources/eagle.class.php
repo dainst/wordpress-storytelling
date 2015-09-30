@@ -46,11 +46,6 @@ namespace esa_datasource {
 			
 		function parse_result_set($response) {
 			$response = json_decode($response);
-			// = new \DOMDocument();
-			//$response->loadXML($response);
-			
-
-		
 			
 			$this->results = array();
 			foreach ($response->response->docs as $page) {
@@ -86,41 +81,9 @@ namespace esa_datasource {
 				
 				$data['table'] = array_filter($data['table'], function($part) {return $part and (string) $part != '';});
 				
-				
-				// start html rendering
-				
-				if (count($data['images'])) {
-					$html  = "<div class='esa_item_left_column'>";
-					foreach($data['images'] as $image)  {
-						$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
-						$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
-					}
-					$html .= "</div>";
-					$html .= "<div class='esa_item_right_column'>";
-				} else {
-					$html = "<div class='esa_item_single_column'>";
-				}
-				
-
-				$html .= "<h4>{$obj->title}</h4><br>";
-
-				foreach ($data['text'] as $type => $text) {
-					$html .= "<span class='eagle_{$type}'>$text</span>";
-				}
-				
-				$html .= "<ul class='datatable'>";
-				foreach ($data['table'] as $field => $value) {
-					if ($value != '') {
-						$label = $this->_label($field);
-						$html .= "<li><strong>{$label}: </strong>{$value}</li>";
-					}
-				}
-				$html .= "</ul>";
-
-				$html .= "</div>";
-					
-					
-				$this->results[] = new \esa_item('eagle', $page->dnetresourceidentifier, $html, $page->landingpage);
+				$data['title'] = $obj->title;
+									
+				$this->results[] = new \esa_item('eagle', $page->dnetresourceidentifier, $this->render_item($data), $page->landingpage);
 				break;
 			}
 			return $this->results;
@@ -130,20 +93,6 @@ namespace esa_datasource {
 			// if always return a whole set
 			$res = $this->parse_result_set($response);
 			return $res[0];
-		}
-		
-		private function _label($of) {
-			$labels = array(
-					'objectType' => 'Type',
-					'repositoryname' => 'Repository',
-					'material' => 'Material',
-					'tmid' => 'Trismegistos-Id',
-					'artifactType' => 'Artifact Type',
-					'objectType2' => 'Type',
-					'transcription' => 'Transcription'
-			);
-			
-			return (isset($labels[$of])) ? $labels[$of] : $of;
 		}
 		
 		private function _document($epi, &$data) {

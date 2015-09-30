@@ -304,6 +304,63 @@ namespace esa_datasource {
 		}
 		
 		/**
+		 * transforms a array to a esa_item html
+		 */
+		function render_item($data = array()) {
+			
+			if (count($data['images'])) {
+				$html  = "<div class='esa_item_left_column'>";
+				foreach($data['images'] as $image)  {
+					$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
+					$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
+				}
+				$html .= "</div>";
+				$html .= "<div class='esa_item_right_column'>";
+			} else {
+				$html = "<div class='esa_item_single_column'>";
+			}
+			
+			
+			$html .= "<h4>{$data['title']}</h4><br>";
+			
+			if (count($data['text'])) {
+				foreach ($data['text'] as $type => $text) {
+					$html .= "<span class='eagle_{$type}'>$text</span>";
+				}
+			}
+			
+			if (count($data['table'])) {
+			$html .= "<ul class='datatable'>";
+				foreach ($data['table'] as $field => $value) {
+					if ($value != '') {
+						$label = $this->_label($field);
+						$html .= "<li><strong>{$label}: </strong>{$value}</li>";
+					}
+				}
+				$html .= "</ul>";
+			}
+				
+			$html .= "</div>";
+			
+			return $html;
+		}
+		
+		
+		private function _label($of) {
+			$labels = array(
+					'objectType' => 'Type',
+					'repositoryname' => 'Repository',
+					'material' => 'Material',
+					'tmid' => 'Trismegistos-Id',
+					'artifactType' => 'Artifact Type',
+					'objectType2' => 'Type',
+					'transcription' => 'Transcription'
+			);
+				
+			return (isset($labels[$of])) ? $labels[$of] : $of;
+		}
+		
+		/**
 		 * shows the list of errors
 		 *
 		 */
@@ -377,6 +434,11 @@ namespace esa_datasource {
 			
 			return $json;
 		}
+		
+		protected function _ckeck_url() {
+			return (!filter_var($url, FILTER_VALIDATE_URL) === false);
+		}
+		
 		
 		/**
 		 * json decode with error handling
