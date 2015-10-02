@@ -1,7 +1,7 @@
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | esa_item mediamenu Javascript
- * @link 		http://www.europeana.eu/
+ * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck
  *
  * 

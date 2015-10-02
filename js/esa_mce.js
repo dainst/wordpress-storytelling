@@ -1,33 +1,13 @@
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | tiny mce plugin to view esa_items in editor (instead of shortcodes)
- * @link 		http://www.europeana.eu/
+ * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck
  *
  * Status: BETA 
  * 
  * We could have used 'wpview' perhaps, but it still count as experimental, so we prefer a more classy apporach to build a whole own plugin.
  * 
- * TODO
- * 
- * - featured image
- * -- # Abwahl von FI geht nicht
- * -- # beim laden gleich das richtige als is_fetured (wie?!) anzeigen
- * -- # post nr ist hardgecoded, an richtigen post attachen (storytelling.php)
- * -- # thumpnail entfernen, wenn gelöscht
- * -- fI auch in loop vernünftig zeigen nicht nur in single loop
- * 
- * - # tools design 
- * 
- * X make them editable (align, size etc)
- * X- skip?!
- * 
- * X prevent dblclick
- * 
- * # when only one is prevent no p error
- * 
- * # make them deletable 
- * #- (remove comments on delete...)
  * 
  * 
  * 

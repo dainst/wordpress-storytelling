@@ -1,15 +1,15 @@
 <?php
 /**
  * @package eagle-storytelling
- * @version 1.0
+ * @version 1.0 BETA Tester Version
  */
 /*
 Plugin Name: Eagle Storytelling Application
-Plugin URI:  https://github.com/codarchlab/eagle-storytelling
+Plugin URI:  http://www.eagle-network.eu/stories/
 Description: Create your own EAGLE story! 
 Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     1.0
+Version:     1.0 BETA Tester Version
 
 */
 

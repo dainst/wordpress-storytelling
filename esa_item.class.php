@@ -2,7 +2,7 @@
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | esa_item Class
- * @link 		http://www.europeana.eu/
+ * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck
  *
  * 
@@ -65,7 +65,7 @@ class esa_item {
 		echo "<div class='esa_item_tools'>";
 		echo ($this->url) ? "<a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>&nbsp;</a>" : '';
 		$url = get_bloginfo('url');
-		echo "<a href='$url?s&post_type=story&esa_item_id={$this->id}&esa_item_source={$this->source}' class='esa_item_tools_find' title='Find Storys with this Item'>&nbsp;</a>";
+		echo "<a href='$url?s&post_type=story&esa_item_id={$this->id}&esa_item_source={$this->source}' class='esa_item_tools_find' title='Find Stories with this Item'>&nbsp;</a>";
 		echo "</div>";
 		
 		echo "<div class='esa_item_inner'>"; 

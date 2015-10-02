@@ -5,11 +5,9 @@
  * @link 		http://gazetteer.dainst.org/
  * @author 		Philipp Franck
  *
- * Status: Alpha 2
+ * Status: Beta
  * 
- * Sub-Plugin is nearly ready, there is only one Problem: Ich bekomme einen 400er Bad Request wenn ich die API anspreche, um einen einzelnen Record
- * zu bekommen. Eine URL wie http://gazetteer.dainst.org/doc/2281530.json, die im Browser ein Ergebnis liefert, klappt mit PHP über curl oder
- * file_get_contents nicht.  
+ * Sub-Plugin is nearly ready, there is only one Problem: 
  *
  */
 
@@ -30,6 +28,11 @@ namespace esa_datasource {
 			
 		function api_single_url($id) {
 			$query = urlencode($id);
+			/*Ich bekomme einen 400er Bad Request wenn ich die API anspreche, um einen einzelnen Record
+ 			* zu bekommen. Eine URL wie http://gazetteer.dainst.org/doc/2281530.json, die im Browser ein Ergebnis liefert, klappt mit PHP über curl oder
+ 			* file_get_contents nicht.
+ 			* -> Daher diese kompliziert URL
+ 			*/   
 			return "http://gazetteer.dainst.org/search.json?q={%22bool%22:{%22must%22:%5B%20{%20%22match%22:%20{%20%22_id%22:%20$id%20}}%5D}}&type=extended";
 			//return "http://gazetteer.dainst.org/doc/$id.json";
 		}

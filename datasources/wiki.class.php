@@ -2,7 +2,7 @@
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | Subplugin: Wikipedia
- * @link 		http://www.europeana.eu/
+ * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck
  * 
  * 

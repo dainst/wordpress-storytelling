@@ -2,12 +2,12 @@
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | Abstract Datasource Class
- * @link 		http://www.europeana.eu/
+ * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck
  * 
  * 
- * Every Datasource wich is connected to the Eagle Story Telling Application (such as europeana, Isai Gazetteer etc.) is an implementation
- * of this partly abstract class.
+ * Every datasource wich is connected to the Eagle Story Telling Application (such as europeana, Isai 
+ * Gazetteer etc.) is an implementation of this abstract class.
  * 
  * 
  */
@@ -116,7 +116,7 @@ namespace esa_datasource {
 				
 				// is url pasted?
 				if ($url = $this->api_url_parser($query)) {
-					print_r($url);
+					//print_r($url);
 					$this->results = array($this->parse_result($this->_generic_api_call($url)));
 					
 				} else {
