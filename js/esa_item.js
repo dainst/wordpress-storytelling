@@ -36,17 +36,17 @@ jQuery(document).on('click', '.esa_item_resizebar', function() {
 	
 });
 
-var esa_maps = {}; // an array copnating all maps from esa objects
+var esa_maps = {}; // an array containing all maps from esa objects
 
 // load leaflet if needed
 jQuery(document).ready(function(){
 	if (jQuery('.esa_item_map').length) {
 		jQuery.getScript("http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js")
 		.done(function( script, textStatus ) {
-			console.log( textStatus );
+			//console.log( textStatus );
 			// draw maps
 			jQuery('.esa_item_map').each(function(k, mapDiv) {
-				//console.log(mapDiv);
+				console.log(mapDiv);
 				
 				var mapId = jQuery(mapDiv).attr('id');
 				var lat   = parseFloat(jQuery(mapDiv).data('latitude'));

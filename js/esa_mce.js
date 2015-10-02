@@ -47,7 +47,7 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 				//console.log('ajax success');
 				
 				result = JSON.parse(result);
-				console.log(result);
+				//console.log(result);
 				if (typeof result.featured_image !== 'undefined') {
 					tinymce.esa.featured_image = result.featured_image;
 				}
@@ -65,7 +65,12 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 				var tools = jQuery('<div class="esa_item_tools">');
 				tools.append('<a href="#" class="esa_item_tools_delete" title="Delete">&nbsp;</a>');
 				//tools.append('<a href="#" class="esa_item_tools_edit" title="Edit">&nbsp;</a>');
-				tools.append('<a href="#" class="esa_item_tools_featured ' + is_featured + '" title="Set as Featured Image">&nbsp;</a>');
+				
+				if (bg_url) {
+					tools.append('<a href="#" class="esa_item_tools_featured ' + is_featured + '" title="Set as Featured Image">&nbsp;</a>');
+				}
+				
+
 				overlay.append(tools);
 				esa_item_wrapper.append(overlay);
 
