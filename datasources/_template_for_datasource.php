@@ -40,9 +40,23 @@ namespace esa_datasource {
 				return "...{$match[1]}";
 			}
 		}
+		/*	pagination functions
+		function api_search_url_next($query, $params = array()) {
 			
-
+		}
 			
+		function api_search_url_prev($query, $params = array()) {
+			
+		}
+			
+		function api_search_url_first($query, $params = array()) {
+			
+		}
+			
+		function api_search_url_last($query, $params = array()) {
+			
+		}
+		*/	
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			$this->results = array();

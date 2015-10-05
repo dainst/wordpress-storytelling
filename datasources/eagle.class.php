@@ -14,21 +14,23 @@ namespace esa_datasource {
 	class eagle extends abstract_datasource {
 
 		public $title = 'Eagle'; // Label / Title of the Datasource
-		public $info = false; // get created automatically, or enter text
+		public $info = 'Search the Eagle Database'; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
-		public $debug = true;
+		public $debug = false;
 		
-		public $pagination = false; // are results paginated?
+		public $pagination = true; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
+		private $_hits_per_page = 24;
 
 		function api_search_url($query, $params = array()) {
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?wt=json&start=11&q=$query";
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
 		}
 			
 		function api_single_url($id) {
 			//dnetresourceidentifier:UAH\:\:92b78b60f9d00a0ac34898be97d15188\:\:01f8fcf400938969ace9675f86365c2c\:\:visual
 			$id = str_replace(':', '\:', $id);
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?q=dnetresourceidentifier:$id";
+			//$id = rawurlencode($id);
+			return 'http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?wt=json&q=dnetresourceidentifier:'.$id;
 		}
 
 		
@@ -37,12 +39,34 @@ namespace esa_datasource {
 		}
 			
 		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/en\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
-				return "...{$match[1]}";
-			}
+			
+			// eagle search has no URIS!
+			return false;
+			
 		}
 			
-
+		function api_search_url_next($query, $params = array()) {
+			$this->page += 1;
+			$start = 1 + ($this->page - 1) * $this->_hits_per_page;
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$start&q=$query";
+					}
+			
+		function api_search_url_prev($query, $params = array()) {
+			$this->page -= 1;
+			$start = 1 + ($this->page - 1) * $this->_hits_per_page;
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$start&q=$query";
+		}
+			
+		function api_search_url_first($query, $params = array()) {
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
+		}
+			
+		function api_search_url_last($query, $params = array()) {
+			$this->page = $this->pages;
+			$last = 1 + ($this->pages) * $this->_hits_per_page;
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$last&q=$query";
+		}
+			
 			
 		function parse_result_set($response) {
 			$response = json_decode($response);
@@ -50,14 +74,13 @@ namespace esa_datasource {
 			$this->results = array();
 			foreach ($response->response->docs as $page) {
 
-				
 				$ob = new \SimpleXMLElement($page->__result[0]);
 				$obj = $ob->metadata->eagleObject;
 				
 				if ($this->debug) {
 					$i++;
 					$iu = $i * 11;
-					echo "<textarea style='border:2px solid silver; width: 50%; min-height: 10px'; postion: absolute; right: 0px; top: {$iu}px>", print_r($obj, 1),"</textarea>";
+					echo "<textarea style='border:2px solid silver; width: 100%; min-height: 150px'; postion: absolute; right: 0px; top: {$iu}px>", print_r($obj, 1),"</textarea>";
 				}
 				
 				// different Types of entity
@@ -71,21 +94,23 @@ namespace esa_datasource {
 					$this->_visual($obj->visualRepresentation, $data);
 				}
 				
-				echo "<textarea style='border:2px solid silver; width: 50%; min-height: 10px'; postion: absolute; right: 0px; top: {$iu}px>", print_r($data, 1),"</textarea>";
-						
+				/*		
 				if (!isset($data['text']) or !$data['text']) {
 					$data['text'][] = (string) $obj->description != (string) $obj->title ? (string) $obj->description : 'kein text';
-				}
-				$data['table']['type'] = $obj->entityType;
+				}*/
+				//$data['table']['type'] = $obj->entityType;
 				$data['table']['repositoryname'] = $page->repositoryname;
-				
+								
 				$data['table'] = array_filter($data['table'], function($part) {return $part and (string) $part != '';});
 				
 				$data['title'] = $obj->title;
 									
 				$this->results[] = new \esa_item('eagle', $page->dnetresourceidentifier, $this->render_item($data), $page->landingpage);
-				break;
+				//break;
 			}
+			
+			$this->pages = round($response->response->numFound / $this->_hits_per_page);
+			
 			return $this->results;
 		}
 
@@ -97,37 +122,43 @@ namespace esa_datasource {
 		
 		private function _document($epi, &$data) {
 			
-			echo "<textarea style='border:2px solid silver; width: 50%; min-height: 10px'; postion: absolute; right: 0px; top: {$iu}px>", print_r($epi, 1),"</textarea>";
+			//echo "<textarea style='border:2px solid silver; width: 50%; min-height: 10px'; postion: absolute; right: 0px; top: {$iu}px>", print_r($epi, 1),"</textarea>";
 				
 			
 			if ($epi->hasArtifact) {
-				$this->_artifact($epi->hasArtifact, $data);
+				foreach($epi->hasArtifact as $artifact) {
+					$this->_artifact($artifact, $data);
+				}
 			}
 			
 			if ($epi->transcription) {
-				$data['text']['transcription'] = $epi->transcription->textHtml->asXML();
+				$this->_transcription($epi->transcription, $data);
 			}
 			
 			if ($epi->translation) {
 				$aut = ($epi->translation->publicationAuthor) ? $epi->translation->publicationAuthor : ($epi->translation->publicationEditor) . ' (Ed.)';
 			
-				$text = "{$epi->translation->text}";
+				$data['text']['translation'] = "{$epi->translation->text}";
 			
 				if ($epi->translation->author) {
-					$text .= "<div class='sub1'>(Translation by {$epi->translation->author})</div>";
+					$data['table']['Translation'] = $epi->translation->author;
 				}
 			
-				if (count($epi->translation->comments)) {
+				/*if (count($epi->translation->comments)) {
 					$text .= "<div class='sub2'>{comments}</div>";
-				}
+				}*/
 			
-				if ((string) $epi->translation->publicationTitle =! '1') {
-					$text .= "<div class='sub2'>Publication: ";
-					$text .= "{$epi->translation->publicationAuthor}: {$epi->translation->publicationTitle}. {$epi->translation->publicationPlace}, {$epi->translation->publicationYear}";
-					$text .= "</div>";
+				if ((string) $epi->translation->publicationTitle != '1') {
+					$publicationTitle = preg_replace('#\.$#', '', $epi->translation->publicationTitle, -1);
+					$publicationTitle = str_replace('Originally published in ', '', $publicationTitle);
+					$at = $this->_merge(': ', $epi->translation->publicationAuthor, $publicationTitle);
+					$dp = $this->_merge(', ', $epi->translation->publicationPlace, $epi->translation->publicationYear);
+					$pub = $this->_merge('. ', $at, $dp);
+					$pub .= ($pub) ? '.' : '';
+					$data['table']['publication'] = $pub;
+					//$text .= ($pub) ? "<div class='sub2'>Publication: $pub</div>" : '';
 				}
 				
-				$data['text']['translation'] = $text;
 			}
 				
 			
@@ -142,6 +173,9 @@ namespace esa_datasource {
 				$this->_artifact($visu->hasArtifact, $data);
 			}
 			
+			if ($visu->hasTranscription) {
+				$this->_transcription($visu->hasTranscription, $data);
+			}
 			
 			$data['images'][] = (object) array(
 					'url' => (string) $visu->thumbnail,
@@ -151,21 +185,31 @@ namespace esa_datasource {
 			return $data;
 		}
 		
+		private function _transcription($trans, &$data) {
+			$data['text']['transcription'] = $trans->text;
+			//$data['text']['transcription'] = $trans->textHtml->asXML();
+			//$data['text']['transcription'] = $trans->textEpidoc;
+		}
 		
 		private function _artifact($artifact, &$data) {
 			if ($artifact->hasVisualRepresentation) {
 				foreach($artifact->hasVisualRepresentation as $visu)  {
-
+					$this->_visual($visu, $data);
 				}
 			}
-			if ($artifact->inscription->hasTmId) {
-				$tabledata['tmid'] = $artifact->inscription->hasTmId->tmId;
+			
+			if ($artifact->inscription) {
+				$this->_inscription($artifact->inscription, $data);
+			}
+			if ($artifact->hasTmId) {
+				$data['table']['tmid'] = $artifact->hasTmId->tmId;
 			}
 			$data['table']['material'] = $artifact->material;
 			$data['table']['artifactType'] = $artifact->artifactType;
 			$data['table']['objectType2'] = $artifact->objectType;
 			$data['table']['inscriptionType'] = $artifact->inscriptionType;
 			$data['table']['conservationPlace'] = $this->_place($artifact->conservationPlace->conservationCity, $artifact->conservationPlace->conservationCountry);
+			$data['table']['originDating'] = $artifact->originDating;
 			if ($artifact->findingSpot) {
 				$data['table']['findingSpotAncient'] = $this->_place($artifact->findingSpot->ancientFindSpot, $artifact->findingSpot->romanProvinceItalicRegion);
 				$data['table']['findingSpotModern'] = $this->_place($artifact->findingSpot->modernFindSpot, $artifact->findingSpot->modernCountry);
@@ -174,6 +218,39 @@ namespace esa_datasource {
 			
 			return $data;
 			
+		}
+		
+		private function _inscription($ins, &$data) {
+			if ($ins->hasTmId) {
+				$data['table']['tmid'] = $ins->hasTmId->tmId;
+			}
+			$data['table']['paleographicCharacteristics'] = $ins->paleographicCharacteristics;
+			$data['table']['honorand'] = $ins->honorand;
+			
+			if ($ins->hasTranscription) {
+				$this->_transcription($ins->hasTranscription, $data);
+			}
+			
+			if ($ins->hasTranslation) {
+				$data['text']['translation'] = $ins->hasTranslation->text;
+			}
+			
+		}
+		
+		private function _merge() {
+			$parts = func_get_args();
+			if (count($parts) == 0) {
+				return '';
+			}
+			if (count($parts) == 1) {
+				return $parts[0];
+			}
+			if (count($parts) == 2) {
+				return $parts[1];
+			}
+			$glue = array_shift($parts);
+			$filtered = array_filter($parts, function($part) {return $part and (string) $part != '';});
+			return implode($glue, $filtered);
 		}
 		
 		private function _place() {

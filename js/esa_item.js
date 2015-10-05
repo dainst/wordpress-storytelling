@@ -12,8 +12,11 @@
 
 jQuery(document).on('mouseenter', '.esa_item', function() {
 	if(
-		(jQuery(this).find('.esa_item_inner').css('height').replace(/[^-\d\.]/g, '') > 200) ||
-		(jQuery(this).find('.esa_item_map').length)
+		(jQuery(this).find('.esa_item_inner').height() > 200) ||
+		(jQuery(this).find('.esa_item_left_column_max_left').height() > 200) ||
+		(jQuery(this).find('.esa_item_left_column').height() > 200) ||
+		(jQuery(this).find('.esa_item_map').length) ||
+		(jQuery(this).find('.sub2').length)
 	) {
 		jQuery(this).find('.esa_item_resizebar').fadeIn('slow');	
 	}

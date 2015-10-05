@@ -6,7 +6,7 @@
  * @author 		Philipp Franck
  * 
  * 
- * Every datasource wich is connected to the Eagle Story Telling Application (such as europeana, Isai 
+ * Every datasource wich is connected to the Eagle Story Telling Application (such as europeana, iDai 
  * Gazetteer etc.) is an implementation of this abstract class.
  * 
  * 
@@ -308,14 +308,23 @@ namespace esa_datasource {
 		 */
 		function render_item($data = array()) {
 			
-			if (count($data['images'])) {
-				$html  = "<div class='esa_item_left_column'>";
-				foreach($data['images'] as $image)  {
-					$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
-					$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
+			if (count($data['images']) || count($data['text'])) {
+				$html  = "<div class='esa_item_left_column_max_left'>";
+				
+				if (count($data['text'])) {
+					foreach ($data['text'] as $type => $text) {
+						$html .= "<div class='esa_item_text {$type}'>$text</div>";
+					}
+				}
+				
+				if (count($data['images'])) {
+					foreach($data['images'] as $image)  {
+						$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
+						$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
+					}
 				}
 				$html .= "</div>";
-				$html .= "<div class='esa_item_right_column'>";
+				$html .= "<div class='esa_item_right_column_max_left'>";
 			} else {
 				$html = "<div class='esa_item_single_column'>";
 			}
@@ -323,11 +332,7 @@ namespace esa_datasource {
 			
 			$html .= "<h4>{$data['title']}</h4><br>";
 			
-			if (count($data['text'])) {
-				foreach ($data['text'] as $type => $text) {
-					$html .= "<span class='eagle_{$type}'>$text</span>";
-				}
-			}
+
 			
 			if (count($data['table'])) {
 			$html .= "<ul class='datatable'>";
