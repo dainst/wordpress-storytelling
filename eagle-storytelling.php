@@ -10,14 +10,35 @@ Description: Create your own EAGLE story!
 Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
 Version:     1.0 BETA Tester Version
+*/
+/*
 
+Copyright (C) 2015  Philipp Franck, Deutsches Archäologisches Institut
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+
+// If this file is called directly, abort.
+if (!defined('ABSPATH')) {
+	die();
+}
 
 /**
  * Settings
  */
-// show debug info
 define('ESA_DEBUG', false);
 
 $esa_settings = array(
@@ -28,7 +49,7 @@ require_once('esa_datasource.class.php');
 require_once('esa_item.class.php');
 
 /**
- * 
+ * Installation
  */
 function esa_install () {
 
