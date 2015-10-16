@@ -13,7 +13,7 @@ Version:     1.0 BETA Tester Version
 */
 /*
 
-Copyright (C) 2015  Philipp Franck, Deutsches Archäologisches Institut
+Copyright (C) 2015  Deutsches Archäologisches Institut
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -120,8 +120,6 @@ add_action('admin_menu', function () {
 		
 		echo "<div class='wrap'><h2>Eagle Storytelling Application</h2>";
 		
-		$xx = $datasources;
-		print_r($xx);
 		
 		echo "<h3>Settings</h3>";
 	

@@ -9,6 +9,25 @@
  * 
  * Takes a link to a ressource encoded in epidoc and builds a Esa Item around it.
  *
+ *
+ * Proovided List of EpiDoc Using Projects
+ * 
+ * * http://www.eagle-network.eu/advanced-search/
+ * 
+ * * Ancient Inscriptions of the Northern Black Sea - http://iospe.kcl.ac.uk/
+ * * Epigraphische Datenbank Heidelberg - http://edh-www.adw.uni-heidelberg.de/
+ * * http://agp.wlu.edu/search
+ * * Inscriptions of Greek Cyrenaicaica - https://igcyr.unibo.it/
+ * * Inscriptions of Israel/Palestine - http://library.brown.edu/cds/projects/iip/search/
+
+ * 
+ * * The Inscriptions of Roman Tripolitania: http://inslib.kcl.ac.uk/
+ * * Vindolanda Tablets Online: http://vindolanda.csad.ox.ac.uk/
+ * * Inscriptions of Aphrodisias: http://insaph.kcl.ac.uk/iaph2007/index.html
+ * 
+ * 
+ * * Datenbank zur jüdischen Grabsteinepigraphik - http://steinheim-institut.de
+ * 
  */
 
 
@@ -16,7 +35,11 @@ namespace esa_datasource {
 	class epidoc extends abstract_datasource {
 
 		public $title = 'Epidoc'; // Label / Title of the Datasource
-		public $info = 'Paste a link to a ressource encoded in Epidoc and be amazed'; // get created automatically, or enter text
+		public $info = 
+			'Some Projects using the EpiDoc-Format:<ul>
+				<li>
+				<li>
+				</ul>'; 
 		public $homeurl = ''; // link to the dataset's homepage
 		public $debug = true;
 		
