@@ -39,13 +39,22 @@ namespace esa_datasource {
 		//error collector
 		public $errors = array();
 		
+		// require additional classes -> array of files
+		public $require = array();
 		
 		/**
-		 * just to generate a generic info text
+		 * some initialation
 		 */
-		function __construct() {
+		final function __construct() {
+			// generate a generic info text
 			if (!$this->info) {
 				$this->info = "Insert anything you want to search for <strong>or</strong> <a href='{$this->homeurl}' target='_blank'> search at the {$this->title} itself</a> and paste the URL of one record in the field below.";
+			}
+			// require additional classes
+			if (count($this->require)) {
+				foreach($this->require as $require) {
+					require_once($require);
+				}
 			}
 		}
 		
@@ -382,7 +391,7 @@ namespace esa_datasource {
 		 * you can implement a dependancy check on wose result the availabilty in wordpress depends.
 		 * @return true if everything is OK or a string
 		 */
-		function dependancy_check() {
+		function dependency_check() {
 			return true;
 		}
 		
@@ -484,6 +493,7 @@ namespace esa_datasource {
 			return $dec;
 		}
 		
+
 		
 	}
 }

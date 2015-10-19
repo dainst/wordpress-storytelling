@@ -6,6 +6,9 @@
  */
 @CHARSET "UTF-8";
 
+/* moar stylesheets  */
+@import url("../inc/epidocConverter/xsl/global.css");
+
 /* esa item is important! its the visual interpretation of our shortcuts */
 .esa_item {
 	background-color: rgba(200, 200, 200, 0.1);
@@ -226,13 +229,15 @@
 	border-radius: 1px;
 	padding: 2px;
 	margin-bottom: 10px;
-	width: 100%
+	width: 100%;
+	overflow: auto;
 }
 
 .esa_item_collapsed .esa_item_text {
 	width: 150px;
 	min-height: 150px;
 	margin-bottom: 4px;
+	overflow: hidden;
 }
 
 
@@ -268,6 +273,18 @@
 .transcription div[lang='grc'] {
 	text-transform: none;
 }
+
+/* esa epidoc */
+.esa_item_epidoc h3, 
+.esa_item_epidoc h2 {
+	display: none
+}
+
+.esa_item_epidoc .datatable .textpart  {
+	left: 0em;
+}
+
+
 
 /* debug */
 

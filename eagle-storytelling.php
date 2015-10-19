@@ -131,7 +131,7 @@ add_action('admin_menu', function () {
 			$ds = get_esa_datasource($name);
 			$label = $ds->title;
 			$labels[$name] = $label;
-			$is_ok = $ds->dependancy_check();
+			$is_ok = $ds->dependency_check();
 			$error = ($is_ok === true) ? "<span style='color:green'>O.K.</span>" : "<span style='color:red'>Error: $is_ok</span>";
 			$checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';
 			$disabled = ($is_ok === true) ? '' : 'disabled="disabled"';

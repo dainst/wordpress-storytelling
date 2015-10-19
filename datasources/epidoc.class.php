@@ -28,6 +28,10 @@
  * 
  * * Datenbank zur jüdischen Grabsteinepigraphik - http://steinheim-institut.de
  * 
+ * 
+ * http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD006705.xml
+ * http://vindolanda.csad.ox.ac.uk/Search/tablet-xml-files/128.xml
+ * 
  */
 
 
@@ -35,17 +39,17 @@ namespace esa_datasource {
 	class epidoc extends abstract_datasource {
 
 		public $title = 'Epidoc'; // Label / Title of the Datasource
-		public $info = 
-			'Some Projects using the EpiDoc-Format:<ul>
-				<li>
-				<li>
-				</ul>'; 
+		public $info = 'http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD006705.xml<br>http://iospe.kcl.ac.uk/5.7.xml'; 
 		public $homeurl = ''; // link to the dataset's homepage
 		public $debug = true;
 		
 		public $pagination = false; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
+		public $require = array('inc/epidocConverter/epidocConverter.class.php');
+		
+		
+		
 		function api_search_url($query, $params = array()) {
 			//http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD000015.xml
 			if ($this->_ckeck_url($query)) {
@@ -55,6 +59,9 @@ namespace esa_datasource {
 		}
 			
 		function api_single_url($id) {
+			if ($this->_ckeck_url($id)) {
+				return $id;
+			}
 			return "";
 		}
 
@@ -72,55 +79,48 @@ namespace esa_datasource {
 			return array($this->parse_result($response));
 		}
 
-		function parse_result($response) {
-			require_once('inc/epidocElement.class.php');
-			
-			$xml = new \epidocElement($response);
-			
-			if (!$xml->validate()) {
-				return $this->error('No Epidoc File detected!');
-			}
-			
-			
-			echo "<textarea>", $xml->asXML(), "</textarea>";
-			
-			
-			$publicationStmt = array();
-			foreach ($xml->teiHeader->fileDesc->publicationStmt->idno as $idno) {
-				$publicationStmt[(string) $idno->type] = (string) $idno;
-			}
-			
-			
-			if (!$xml->validate()) {
-				$this->error('No Epidoc File detected!');
-			}
-			
+		function parse_result($response) {	
 
-			echo "<textarea>", $xml->asXML(), "</textarea>";
+			$c = new \epidocConverter($response);
+
+			$epi = $c->convert();
 			
+			$mainTextMap = array(
+				'edition',
+				'translation'
+			);
 			
-			$publicationStmt = array();
-			foreach ($xml->teiHeader->fileDesc->publicationStmt->idno as $idno) {
-				$atts = $idno->attributes();
-				$publicationStmt[(string) $atts->type] = (string) $idno;
+			foreach ($epi->children() as $tagname => $div) {
+				if ($tagname == 'div') {
+					
+					$id = (string) $div['id'];
+					
+					$field = in_array($id, $mainTextMap) ? 'text' : 'table';
+					
+					$data[$field][$id] = $div->asXML();
+					
+				}
 			}
-			print_r($publicationStmt);
-			
-			$data = array(
-					'title'	=> (string) $xml->teiHeader->fileDesc->titleStmt->title,
-					'table'	=> array(
-						'provider'	=> (string) $xml->teiHeader->fileDesc->publicationStmt->authority,
-						'tmid'		=> $publicationStmt['TM'],
-						
-						
-					),
-				'url' => $publicationStmt['URI']
-			);		
-			
+
 			return new \esa_item('epidoc', $this->query, $this->render_item($data), $data['url']);
-
 		}
 		
+		
+		function dependency_check() {
+			
+
+			$c = new \epidocConverter;
+			
+			try {
+				$c->status();
+			} catch (\Exception $e) {
+				return $e->getMessage();
+			}
+			
+			return true;
+			
+			
+		}
 
 	}
 }
