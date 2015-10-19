@@ -16,14 +16,43 @@
  * @tutorial
  * 
  * try {
- * 	$s = new epidocConverter(file_get_contents(("myepidocfiles/HD006705.xml")));
+ * 	$s = new epidocConverter(file_get_contents("/myepidocfiles/HD006705.xml"));
  * 	$xml = $s->convert();
- * 	echo '<div class='myepidocbox'>' .  $xml->asXML() . '</div>';
+ * 	echo '<div class="myepidocbox">' .  $xml->asXML() . '</div>';
  * } catch (Exception $e) {
  * 	echo $e->getMessage();
  * }
  * 
  * 
+ * Tipps:
+ * 
+ * 
+ * = If you have the xslt stylesheets in a different directory =
+ * 
+ * //let's say they are in /home/myxsl/supi.xsl.
+ * 
+ * $s = new epidocConverter();
+ * $s->xslFile = 'supi.xsl';
+ * $s->workingDir = '/home/myxsl/';  //see footnote 1
+ * $s->createSaxon();
+ * $s->set(file_get_contents("/myepidocfiles/HD006705.xml");
+ * 
+ * 
+ * =  Using Windows? =
+ * 
+ * 
+ * $s = new epidocConverter();
+ * $s->xslFile = 'supi.xsl';
+ * $s->workingDir = 'C://www/html//trax//';  //see footnote 1
+ * $s->createSaxon();
+ * $s->set(file_get_contents("/myepidocfiles/HD006705.xml");
+ * 
+ * Better: Don't use Windows.
+ * 
+ * 
+ * 
+ * @see
+ * http://www.saxonica.com/html/saxon-c/php_api.html
  *
  */
 /*
@@ -49,8 +78,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class epidocConverter {
 	
 	// position of xslt stylsheets and doctype dtd
-	public $xslFile = "xsl/start-edition.xsl";	
-	public $dtdPath = 'tei-epidoc.dtd';
+	public $xslFile = "xsl/start-edition.xsl"; // relative to this files' position !
+	public $dtdPath = 'tei-epidoc.dtd'; //can be set to anywhere, but default is working directory
+	public $workingDir = ''; //set in __construct, but is public value if you want to change
 	
 	// the processor
 	public $saxon = NULL;
@@ -64,9 +94,13 @@ class epidocConverter {
 	 * @throws Exception
 	 */
 	function __construct($data = false) {
-		// check for saxon
 		
-		if (class_exists('SaxonProcessor'))  {
+		// set up working dir (see footnote 1)
+		$this->workingDir = __DIR__;
+		$this->dtdPath = $this->workingDir . '/' . $this->dtdPath;
+		
+		// check for saxon	
+		if (class_exists('SaxonProcessor')) {
 						
 			$this->createSaxon();
             
@@ -87,7 +121,7 @@ class epidocConverter {
 	function createSaxon() {
 		//On Windows we recommend setting the cwd using the overloaded constructor
 		//because there remains an issue with building Saxon/C with PHP when using the function VCWD_GETCWD. i.e. $proc = new SaxonProcessor('C://www/html//trax//');
-		$this->saxon = new SaxonProcessor();
+		$this->saxon = new SaxonProcessor($this->workingDir);
 	}
 	
 	/**
@@ -147,19 +181,19 @@ class epidocConverter {
 		if (!$str) {
 			throw new Exception('Empty XML String');
 		}
-		
+
 		// correct dtd-path if necessary
-		$str = preg_replace('#\<!DOCTYPE TEI.*\>#m', '<!DOCTYPE TEI SYSTEM "' . $this->dtdPath . '">', $str);
+		$str = preg_replace('#(\<!DOCTYPE TEI.*?\>)#mi', '<!DOCTYPE TEI SYSTEM "' . $this->dtdPath . '">', $str);
 		
 		// correct TEI Version if necessary
 		$str = str_ireplace(array('<TEI.2', '</TEI.2'), array('<TEI', '</TEI'), $str);
 		
 		// correct namespace if necessary and check if TEI Document
 		$doc = new DOMDocument();
-		$doc->loadXML($str);
+		$doc->loadXML($str, LIBXML_DTDLOAD);
 		$tei = $doc->documentElement;
 		if (strtoupper($tei->tagName) != 'TEI') {
-			throw new Exception('no TEI');
+			throw new Exception('no TEI (root Element is called >>' . $tei->tagName . '<<)');
 		} 
 		$tei->setAttribute('xmlns', "http://www.tei-c.org/ns/1.0");
 		$str = $doc->saveXML();
@@ -177,7 +211,7 @@ class epidocConverter {
 				$this->createSaxon(); // to reset error log
 				$this->importStr($str);
 			} else {
-				throw new Exception('e:' . $error);
+				throw new Exception('Import Error: ' . $error);
 			}
 		}
 		
@@ -202,22 +236,30 @@ class epidocConverter {
 	/**
 	 * converts the imprted Data to SimpleXMLElement using the stylsheets
 	 * @throws Exception
+	 * @return SimpleXMLElement
 	 */
 	function convert() {
 
 		// does xslt stylesheet exist?
-		if (file_exists(!$this->xslFile)) {
-			throw new Exception("File $xslFile does not exist.");
+		if (!file_exists($this->workingDir . '/' . $this->xslFile)) {
+			throw new Exception("File >>{$this->xslFile}<< does not exist." );
 		}
+
 		
 		$this->saxon->setSourceValue($this->xdm);
 		$this->saxon->setStylesheetFile($this->xslFile);
 		
+		//$this->saxon->setParameter('edition-type', $this->saxon->createXdmValue('diplomatic'));
+		//$this->saxon->setProperty('edition-type', $this->saxon->createXdmValue('diplomatic'));
+		
 		$result = $this->saxon->transformToString();
+		
+		$this->raiseErrors();
+		
 		if($result != null) {
 			$simpleXml = new SimpleXMLElement($result);
 			
-			file_put_contents('test.html', $simpleXml->asXML());
+			file_put_contents($this->workingDir . '/test.html', $simpleXml->asXML());
 			
 			return $simpleXml->body;
 		} else {
@@ -227,7 +269,23 @@ class epidocConverter {
 		$this->saxon->clearProperties();
 	}
 	
-	
-	
+
 }
+
+/**
+ * 
+ * Footnotes
+ * 
+ * 1) the working dir
+ * There is a thing in the SAXON/C API. As you can see in php_saxon.cpp, l. 69ff on linux it is using VCWD_GETCWD  to get the working directory,
+ * and gives it in xsltProcessor.cpp, l. 242 to the Java-powered Saxon Processor. Appereantly that one searches in this working directory for the 
+ * stylesheets. Therefore it throws an error, if you want to give a absolute path as stylesheets. They implented a way for windows users to define the
+ * working directory manually, because there VCWD_GETCWD dows not work. We use this (on linux) to define the right working directory. 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
 ?>
