@@ -23,7 +23,7 @@ namespace esa_datasource {
 		// array of esa_items containing the results of a performed search
 		public $results = array();
 
-		// saves current serach params
+		// saves current search params
 		public $query;
 		public $id;
 		public $params = array();
@@ -41,6 +41,7 @@ namespace esa_datasource {
 		
 		// require additional classes -> array of files
 		public $require = array();
+		public $path;
 		
 		/**
 		 * some initialation
@@ -50,12 +51,16 @@ namespace esa_datasource {
 			if (!$this->info) {
 				$this->info = "Insert anything you want to search for <strong>or</strong> <a href='{$this->homeurl}' target='_blank'> search at the {$this->title} itself</a> and paste the URL of one record in the field below.";
 			}
+			
 			// require additional classes
 			if (count($this->require)) {
 				foreach($this->require as $require) {
-					require_once($require);
+					require_once(__DIR__ . '/' . $require);
 				}
 			}
+			
+			//make plugin path available
+			$this->path = __DIR__;
 		}
 		
 		
@@ -322,7 +327,9 @@ namespace esa_datasource {
 				
 				if (count($data['text'])) {
 					foreach ($data['text'] as $type => $text) {
-						$html .= "<div class='esa_item_text {$type}'>$text</div>";
+						if ($text) {
+							$html .= "<div class='esa_item_text {$type}'>$text</div>";
+						}
 					}
 				}
 				
@@ -346,9 +353,11 @@ namespace esa_datasource {
 			if (count($data['table'])) {
 			$html .= "<ul class='datatable'>";
 				foreach ($data['table'] as $field => $value) {
-					if ($value != '') {
+					$value = trim($value);
+					if ($value) {
 						$label = $this->_label($field);
 						$html .= "<li><strong>{$label}: </strong>{$value}</li>";
+						//$html .='<textarea>' . print_r($value,1) . "</textarea>";
 					}
 				}
 				$html .= "</ul>";
@@ -368,7 +377,11 @@ namespace esa_datasource {
 					'tmid' => 'Trismegistos-Id',
 					'artifactType' => 'Artifact Type',
 					'objectType2' => 'Type',
-					'transcription' => 'Transcription'
+					'transcription' => 'Transcription',
+					'provider' => 'Content Provider',
+					'ancientFindSpot' => 'Ancient find spot',
+					'modernFindSpot' =>  'Modern find spot',
+					'origDate' => 'Date'
 			);
 				
 			return (isset($labels[$of])) ? $labels[$of] : $of;
@@ -449,7 +462,7 @@ namespace esa_datasource {
 			return $json;
 		}
 		
-		protected function _ckeck_url() {
+		protected function _ckeck_url($url) {
 			return (!filter_var($url, FILTER_VALIDATE_URL) === false);
 		}
 		
