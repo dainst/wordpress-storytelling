@@ -14,7 +14,7 @@ namespace esa_datasource {
 	class eagle extends abstract_datasource {
 
 		public $title = 'Eagle'; // Label / Title of the Datasource
-		public $info = 'Search the Eagle Database'; // get created automatically, or enter text
+		public $info = '<p>Search the Eagle Database</p>'; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;
 		
@@ -23,6 +23,13 @@ namespace esa_datasource {
 		private $_hits_per_page = 24;
 
 		function api_search_url($query, $params = array()) {
+			
+			//  identify eagle id
+			if (substr_count($query, '::') == 2) {
+				return $this->api_single_url($query);
+			}
+			
+			$query = str_replace(':', '\:', $query);
 			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
 		}
 			
