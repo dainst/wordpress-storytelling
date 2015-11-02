@@ -528,16 +528,9 @@ namespace esa_datasource {
 		 * @param $require path or filename of file in plugin base dir
 		 */
 		protected function _require($require) {
-			require_once($this->_path() . '/' . $require);
+			require_once(__DIR__ . '/' . $require);
 		}
 		
-		/**
-		 * for the children to know where parents are
-		 * @return string
-		 */
-		protected function _path() {
-			return __DIR__;
-		}
 		
 	}
 }

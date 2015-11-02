@@ -1,9 +1,9 @@
 <?php
 /**
- * @package 	eagle-storytelling
- * @subpackage	Search in Datasources | Subplugin: 
+ * @package 	Wikimedia Commons
+ * @subpackage	Search in Datasources | Subplugin: Wikimedia Commons
  * @link 		
- * @author 		
+ * @author 		Philipp Franck
  *
  * Status: Alpha 1
  *
@@ -11,12 +11,12 @@
 
 
 namespace esa_datasource {
-	class __NAME__ extends abstract_datasource {
+	class commons extends abstract_datasource {
 
-		public $title = 'Title'; // Label / Title of the Datasource
+		public $title = 'Wikimedia Commons'; // Label / Title of the Datasource
 		public $info = false; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
-		public $debug = false;
+		public $debug = true;
 		//public $examplesearch; // placeholder for search field
 		//public $searchbuttonlabel = 'Search'; // label for searchbutton
 		
@@ -26,11 +26,11 @@ namespace esa_datasource {
 		public $require = array();  // require additional classes -> array of fileanmes	
 		
 		function api_search_url($query, $params = array()) {
-			return "";
+			//return "https://commons.wikimedia.org/w/api.php?action=opensearch&search=$query&limit=1000";
 		}
 			
 		function api_single_url($id) {
-			return "";
+			return "https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image=$id&thumbwidth=150&thumbheight=150";
 		}
 
 
@@ -40,8 +40,10 @@ namespace esa_datasource {
 		}
 			
 		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/en\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
-				return "...{$match[1]}";
+			if (preg_match('#https?\:\/\/commons.wikimedia.org\/wiki\/.*\#\/media\/File\:(.*)#', $string, $match)) {
+			//if (preg_match('#https?\:\/\/commons.wikimedia.org\/(.*)#', $string, $match)) {
+				echo "<br><textarea>", print_r($match), "</textarea>";
+				return "https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image={$match[1]}&thumbwidth=150&thumbheight=150";
 			}
 		}
 		/*	pagination functions
@@ -64,9 +66,10 @@ namespace esa_datasource {
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			$this->results = array();
-			foreach ($this->results[1] as $i => $name) {
-				$title = $this->results[2];
-				$url = $this->results[3];
+			
+			
+			
+			foreach (__whatever__ as $page) {
 					
 				$html  = "<div class='esa_item_left_column'>";
 				$html .= "<div class='esa_item_main_image' style='background-image:url(\"{/* image url */}\")'>&nbsp;</div>";
@@ -84,7 +87,7 @@ namespace esa_datasource {
 					
 				$this->results[] = new \esa_item(__source__, __id__, $html, __url__);
 			}
-			return array();
+			return $this->results;
 		}
 
 		function parse_result($response) {
