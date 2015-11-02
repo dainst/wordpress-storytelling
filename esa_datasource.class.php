@@ -15,9 +15,12 @@ namespace esa_datasource {
 	abstract class abstract_datasource {
 		
 		// infotext to this data source
-		public $title;
-		public $info; 
-		public $homeurl; 
+		public $title; // title
+		public $info; // infotext
+		public $homeurl; // homepage of this datasource
+		public $examplesearch; // placeholder for search field
+		public $searchbuttonlabel = 'Search'; // label for searchbutton
+		
 		public $debug = false;
 		
 		// array of esa_items containing the results of a performed search
@@ -49,7 +52,7 @@ namespace esa_datasource {
 		final function __construct() {
 			// generate a generic info text
 			if (!$this->info) {
-				$this->info = "Insert anything you want to search for <strong>or</strong> <a href='{$this->homeurl}' target='_blank'> search at the {$this->title} itself</a> and paste the URL of one record in the field below.";
+				$this->info = "<p>Insert anything you want to search for <strong>or</strong> <a href='{$this->homeurl}' target='_blank'> search at the {$this->title} itself</a> and paste the URL of one record in the field below.<p>";
 			}
 			
 			// require additional classes
@@ -71,17 +74,17 @@ namespace esa_datasource {
 		 */
 		function search_form() {
 			
-			echo "<p>{$this->info}</p>";
+			echo $this->info;
 			
 			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : '';
-			echo "<form method='post'>";
-			echo "<input type='text' name='esa_ds_query' value='{$query}'>";
+			echo "<form method='post' id='esa_search_form'>";
+			echo "<input type='text' name='esa_ds_query' placeholder='{$this->examplesearch}' value='{$query}'>";
 
 			echo "<input type='hidden' name='esa_ds_page' value='1'>";
 			
 			echo $this->search_form_params($_POST);
 			
-			echo "<input type='submit' class='button button-primary' value='Search'>";
+			echo "<input type='submit' class='button button-primary' value='{$this->searchbuttonlabel}'>";
 			echo "</form>";
 		}
 		

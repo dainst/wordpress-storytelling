@@ -152,8 +152,21 @@ body {
 	line-height: 26px;
 }
 
+.media-frame-content ul,
 .media-frame-content p {
 	margin: 1em
+}
+
+.toggled {
+	display:none	
+}
+
+#esa_search_form input[name='esa_ds_query'] {
+	width: 100%;
+}
+
+#esa_search_form input[type='submit'] {
+	float: right
 }
 
 #esa-mediaframe .esa_item_tools a.esa_item_tools_find {

@@ -10,34 +10,6 @@
  * Takes a link to a ressource encoded in epidoc and builds a Esa Item around it.
  *
  *
- * Proovided List of EpiDoc Using Projects
- * 
- * * http://www.eagle-network.eu/advanced-search/
- * 
- * * Ancient Inscriptions of the Northern Black Sea - http://iospe.kcl.ac.uk/
- * * Epigraphische Datenbank Heidelberg - http://edh-www.adw.uni-heidelberg.de/
- * * Inscriptions of Greek Cyrenaicaica - https://igcyr.unibo.it/
- * * Inscriptions of Israel/Palestine - http://library.brown.edu/cds/projects/iip/search/
- * * http://www.trismegistos.org/
- * * http://papyri.info
- * 
- * * The Inscriptions of Roman Tripolitania: http://inslib.kcl.ac.uk/
- * * Vindolanda Tablets Online: http://vindolanda.csad.ox.ac.uk/
- * * Inscriptions of Aphrodisias: http://insaph.kcl.ac.uk/iaph2007/index.html
- * 
- * 
- * * Datenbank zur jüdischen Grabsteinepigraphik - http://steinheim-institut.de
- * 
- * 
- * http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD006705.xml
- * http://vindolanda.csad.ox.ac.uk/Search/tablet-xml-files/128.xml
- * 
- * 
- * 
- * Stand dder Dinge
- * - git remote richtig
- * - testen
- * - infotext
  * 
  * 
  */
@@ -47,8 +19,41 @@ namespace esa_datasource {
 	class epidoc extends abstract_datasource {
 
 		public $title = 'Epidoc'; // Label / Title of the Datasource
-		public $info = 'http://insaph.kcl.ac.uk/iaph2007/xml/iAph010008.xml<br>http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD000106.xml<br>http://library.brown.edu/cds/projects/iip/view_xml/akko0100/'; 
+		public $info = "<p>
+							<a href='http://sourceforge.net/projects/epidoc/' target='_blank'>EpiDoc</a> is an international, 
+							collaborative effort that provides guidelines and tools 
+							for encoding scholarly and educational editions of ancient documents. It uses a subset 
+							of the TEI standard for the representation of texts in digital 
+							form and was developed initially for the publication of digital editions of ancient 
+							inscriptions.
+						</p>
+						<p>
+							You can paste an URL to any Epidoc-encoded Document here to embed it's content in the Text.
+						</p>
+						<p>
+							If you are unsure where to find such things, have a look <i>for example</i> at 
+							<a href='#' class='toggle' data-toggle='epidoclist'>theese databases</a>
+							and	search for Buttons named 'export as XML' or 'export as Epidoc' to get URL.
+						</p>
+						<ul class='toggleable toggled' id='epidoclist'>
+							<li><a href='http://www.eagle-network.eu/advanced-search/' 		target='_blank'>Eagle Network</a></li>
+							<li><a href='http://edh-www.adw.uni-heidelberg.de/' 			target='_blank'>Epigraphische Datenbank Heidelberg</a></li>
+							<li><a href='http://iospe.kcl.ac.uk/' 							target='_blank'>Ancient Inscriptions of the Northern Black Sea</a></li>
+							<li><a href='https://igcyr.unibo.it/' 							target='_blank'>Inscriptions of Greek Cyrenaicaica </a></li>
+							<li><a href='http://library.brown.edu/cds/projects/iip/search/' target='_blank'>Inscriptions of Israel/Palestine</a></li>
+							<li><a href='http://www.trismegistos.org/' 						target='_blank'>trismegistos.org: Papyrological and epigraphical resources formerly Egypt and the Nile valley</a></li>
+							<li><a href='http://papyri.info' 								target='_blank'>Papyri.info: Aggregated material from the Advanced Papyrological Information System</a></li>
+							<li><a href='http://inslib.kcl.ac.uk/' 							target='_blank'>The Inscriptions of Roman Tripolitania</a></li>
+							<li><a href='http://vindolanda.csad.ox.ac.uk/' 					target='_blank'>Vindolanda Tablets</a></li>
+							<li><a href='http://insaph.kcl.ac.uk/iaph2007/index.html' 		target='_blank'>Inscriptions of Aphrodisias</a></li>
+							<li><a href='http://steinheim-institut.de' 						target='_blank'>Datenbank zur jüdischen Grabsteinepigraphik</a></li>
+					
+						</ul>
+						";
 		public $homeurl = ''; // link to the dataset's homepage
+		public $examplesearch = 'e. g. http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD000106.xml';
+		public $searchbuttonlabel = 'Import';
+		
 		public $debug = true;
 		
 		public $pagination = false; // are results paginated?

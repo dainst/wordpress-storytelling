@@ -69,4 +69,9 @@ var esa_ds = {
 
 jQuery(document).ready(function() {
 	jQuery('body').on('click', '.esa_item_list .esa_item',  esa_ds.select);
+	
+	jQuery('body').on('click', '.toggle', function(event) {
+		jQuery('#' + jQuery(event.target).data('toggle')).toggle();
+	})
+	
 });

@@ -15,7 +15,7 @@ namespace esa_datasource {
 		
 		public $title = 'Wikipedia';
 		
-		public $info = "Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>Wikipedia</a> or insert a link to page from the english wikipedia.";
+		public $info = "<p>Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>Wikipedia</a> or insert a link to page from the english wikipedia.</p>";
 	
 		public $pagination = false;
 		
