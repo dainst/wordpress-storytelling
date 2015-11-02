@@ -7,8 +7,8 @@
 @CHARSET "UTF-8";
 
 /* moar stylesheets  */
-/*@import url("../inc/epidocConverter/xsl/global.css");*/
-@import url("../inc/epidocConverter/xslShort/epidoc.css");
+@import url("../inc/epidocConverter/xsl/global.css");
+/*@import url("../inc/epidocConverter/xslShort/epidoc.css");*/
 
 /* esa item is important! its the visual interpretation of our shortcuts */
 .esa_item {
@@ -267,13 +267,7 @@
 }
 
 /* esa eagle */
-.transcription {
-	text-transform: uppercase;
-}
 
-.transcription div[lang='grc'] {
-	text-transform: none;
-}
 
 /* esa epidoc */
 /*

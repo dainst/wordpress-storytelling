@@ -20,7 +20,7 @@ namespace esa_datasource {
 		
 		public $pagination = true; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
-		private $_hits_per_page = 24;
+		private $_hits_per_page = 10;
 
 		function api_search_url($query, $params = array()) {
 			
@@ -195,7 +195,36 @@ namespace esa_datasource {
 		private function _transcription($trans, &$data) {
 			$data['text']['transcription'] = $trans->text;
 			//$data['text']['transcription'] = $trans->textHtml->asXML();
-			//$data['text']['transcription'] = $trans->textEpidoc;
+			//$data['text']['transcription'] = $trans->textEpidoc->asXML();
+			$xml = $trans->textEpidoc->asXML();
+			if ($xml and ($xml != '<textEpidoc/>')) {
+				try {
+					$this->_require('inc/epidocConverter/epidocConverter.class.php');
+					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
+					$c = \epidocConverter::create($xml,1);
+
+					$epi = $c->convert();
+					
+					// remove trailing <br> tag
+					$epi = preg_replace("/>\s+</", "><", $epi);
+					$epiDom = new \DOMDocument();
+					$epiDom->loadHTML(mb_convert_encoding($epi, 'HTML-ENTITIES', 'UTF-8'));
+					//$epiDom->normalize();
+					$divs = $epiDom->getElementsByTagName('div');
+					foreach ($divs as $div) {
+						$firstchild = $div->firstChild;
+						if ($firstchild->nodeName == 'br') {
+							$firstchild->parentNode->removeChild($firstchild);
+						}
+						$data['text']['transcription'] = trim($epiDom->saveHTML($div));
+					}
+					
+					
+					//$data['text']['transcription'] = $epi;
+				} catch (\Exception $e) {
+					$data['table']['debug'] = $e->getMessage();
+				}
+			}
 		}
 		
 		private function _artifact($artifact, &$data) {

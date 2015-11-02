@@ -58,7 +58,7 @@ namespace esa_datasource {
 			// require additional classes
 			if (count($this->require)) {
 				foreach($this->require as $require) {
-					require_once(__DIR__ . '/' . $require);
+					$this->_require($require);
 				}
 			}
 			
@@ -510,7 +510,9 @@ namespace esa_datasource {
 			return $dec;
 		}
 		
-
+		protected function _require($require) {
+			require_once(__DIR__ . '/' . $require);
+		}
 		
 	}
 }

@@ -124,7 +124,6 @@ namespace esa_datasource {
 				$title = $id;
 				
 				// saxon stylesheets provide some headlines
-				
 				$h2s = $div->getElementsByTagName('h2');
 				foreach ($h2s as $h2) {
 					//$title = $h2->nodeValue;
@@ -136,7 +135,7 @@ namespace esa_datasource {
 					$h3->parentNode->removeChild($h3);
 				}
 				
-				
+				// remove trailing <br> tag
 				$firstchild = $div->firstChild;
 				if ($firstchild->nodeName == 'br') {
 					$firstchild->parentNode->removeChild($firstchild);
