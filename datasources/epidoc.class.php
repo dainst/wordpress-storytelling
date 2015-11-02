@@ -32,6 +32,14 @@
  * http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD006705.xml
  * http://vindolanda.csad.ox.ac.uk/Search/tablet-xml-files/128.xml
  * 
+ * 
+ * 
+ * Stand dder Dinge
+ * - git remote richtig
+ * - testen
+ * - infotext
+ * 
+ * 
  */
 
 
