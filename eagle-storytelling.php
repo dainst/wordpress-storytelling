@@ -239,10 +239,11 @@ add_action('wp_enqueue_scripts', function() {
 		// css
 		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
 		wp_enqueue_style('eagle-storytelling' );
+		
 		wp_register_style('esa_item', plugins_url('eagle-storytelling/css/esa_item.css'));
 		wp_enqueue_style('esa_item');
-		wp_register_style('leaflet', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css');
-		wp_enqueue_style('leaflet');
+		esa_item_special_styles();
+		
 		
 		//js
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
@@ -342,8 +343,8 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_style('media');
 		wp_enqueue_style('media-views');
 		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
+		esa_item_special_styles();
 		wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
-		wp_enqueue_style('leaflet', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css');
 	});
 	
 	
@@ -359,6 +360,28 @@ add_action('media_upload_esa', function() {
 	 */
 	return wp_iframe('media_esa_dialogue'); 
 });
+
+function esa_item_special_styles() {
+	
+	$datasources = json_decode(get_option('esa_datasources'));
+	if (!is_array($datasources)) {
+		$datasources  = array();
+	}
+	$css = array();
+	foreach ($datasources as $ds) {
+		$dso = get_esa_datasource($ds);
+		$cssInfo = $dso->stylesheet();
+		if (isset($cssInfo['css'])) {
+			$css[$cssInfo['name']] = "\n\n/* {$cssInfo['name']} styles ($ds)  */\n" . $cssInfo['css']; // names to avoid dublication if some datasources share the same styles e. g. epidoc
+		}
+		if (isset($cssInfo['file'])) {
+			wp_enqueue_style('esa_item_' . $cssInfo['name'], $cssInfo['file']);
+		}
+	}
+
+	wp_add_inline_style('esa_item', implode('\n', $css));
+	
+};
 
 
 function media_esa_dialogue() {

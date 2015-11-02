@@ -17,6 +17,8 @@
 
 namespace esa_datasource {
 	class epidoc extends abstract_datasource {
+		
+		public $converter_ffm = false; // force fallback mode of EpidocConverter ? 
 
 		public $title = 'Epidoc'; // Label / Title of the Datasource
 		public $info = "<p>
@@ -91,7 +93,7 @@ namespace esa_datasource {
 
 		function parse_result($response) {
 			
-			$c = \epidocConverter::create('', true);
+			$c = \epidocConverter::create('', $this->converter_ffm);
 			$c->workingDir = $this->path . '/inc/epidocConverter';
 			$c->set($response);
 			$epi = $c->convert(true);
@@ -302,6 +304,27 @@ namespace esa_datasource {
 			
 			return $c->status();
 
+			
+		}
+		
+		function stylesheet() {
+			
+			$c = \epidocConverter::create('', $this->converter_ffm);
+			$css =
+				$c->getStylesheet() . "
+				
+				.esa_item_collapsed .textpart  {
+					left: 0em;
+				}
+				
+				.esa_item_collapsed .linenumber {
+					display: none
+				}";
+			
+			return array(
+				'css' => $css,
+				'name' => 'epidoc'
+			);
 			
 		}
 

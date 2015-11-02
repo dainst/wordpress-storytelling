@@ -6,9 +6,7 @@
  */
 @CHARSET "UTF-8";
 
-/* moar stylesheets  */
-@import url("../inc/epidocConverter/xsl/global.css");
-/*@import url("../inc/epidocConverter/xslShort/epidoc.css");*/
+
 
 /* esa item is important! its the visual interpretation of our shortcuts */
 .esa_item {
@@ -258,32 +256,11 @@
 
 
 
-/* esa europeana */
-
-.esa_item_europeana {
-	background-image: url('../images/europeana-logo-2.png');
-	background-position: top right;
-	background-repeat: no-repeat;
-}
-
 /* esa eagle */
 
 
 /* esa epidoc */
-/*
-.esa_time_epidoc h2,
-.esa_time_epidoc h3 {
-	display: none
-}
-*/
 
-.esa_item_collapsed .textpart  {
-	left: 0em;
-}
-
-.esa_item_collapsed .linenumber {
-	display: none
-}
 
 
 /* debug */

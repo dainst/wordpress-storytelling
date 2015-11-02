@@ -137,6 +137,14 @@ namespace esa_datasource {
 		    return array_reverse($arr);
 		}
 		
+		function stylesheet() {
+			return array(
+				'file' => 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
+				'name' => 'leaflet'
+			)
+			;
+		}
+		
 		
 	}
 }

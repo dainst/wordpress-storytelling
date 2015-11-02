@@ -413,6 +413,19 @@ namespace esa_datasource {
 		}
 		
 		/**
+		 * get datasource specif styles
+		 * @return array(
+		 * 'name' =>  name,
+		 * 'css' => css sontent AND/OR 
+		 * 'file' => file to link)
+		 */
+		function stylesheet() {
+			return array();
+		}
+		
+		
+		
+		/**
 		 * fetches $data from url, unsing curl if possible, if not it uses file_get_contents
 		 * 
 		 * (curl version never tested :D )
@@ -510,8 +523,20 @@ namespace esa_datasource {
 			return $dec;
 		}
 		
+		/**
+		 * require a file
+		 * @param $require path or filename of file in plugin base dir
+		 */
 		protected function _require($require) {
-			require_once(__DIR__ . '/' . $require);
+			require_once($this->_path() . '/' . $require);
+		}
+		
+		/**
+		 * for the children to know where parents are
+		 * @return string
+		 */
+		protected function _path() {
+			return __DIR__;
 		}
 		
 	}

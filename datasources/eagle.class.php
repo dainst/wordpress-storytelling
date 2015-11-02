@@ -18,6 +18,8 @@ namespace esa_datasource {
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;
 		
+		public $converter_ffm = false; // force fallback mode of EpidocConverter ?
+		
 		public $pagination = true; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 		private $_hits_per_page = 10;
@@ -201,7 +203,7 @@ namespace esa_datasource {
 				try {
 					$this->_require('inc/epidocConverter/epidocConverter.class.php');
 					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
-					$c = \epidocConverter::create($xml,1);
+					$c = \epidocConverter::create($xml,$this->converter_ffm);
 
 					$epi = $c->convert();
 					
@@ -219,7 +221,7 @@ namespace esa_datasource {
 						$data['text']['transcription'] = trim($epiDom->saveHTML($div));
 					}
 					
-					
+					$data['table']['debug'] = $c->status();
 					//$data['text']['transcription'] = $epi;
 				} catch (\Exception $e) {
 					$data['table']['debug'] = $e->getMessage();
@@ -293,6 +295,29 @@ namespace esa_datasource {
 			$parts = func_get_args();
 			$filtered = array_filter($parts, function($part) {return $part and (string) $part != '';});
 			return implode(', ', $filtered);
+		}
+		
+		
+		
+		function stylesheet() {
+			$this->_require('inc/epidocConverter/epidocConverter.class.php');
+			$c = \epidocConverter::create('', $this->converter_ffm);
+			$css =
+				$c->getStylesheet() . "
+				
+				.esa_item_collapsed .textpart  {
+					left: 0em;
+				}
+				
+				.esa_item_collapsed .linenumber {
+					display: none
+				}";
+			
+			return array(
+				'css' => $css,
+				'name' => 'epidoc'
+			);
+			
 		}
 	}
 }
