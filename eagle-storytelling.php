@@ -131,11 +131,17 @@ add_action('admin_menu', function () {
 			$ds = get_esa_datasource($name);
 			$label = $ds->title;
 			$labels[$name] = $label;
-			$is_ok = $ds->dependency_check();
-			$error = ($is_ok === true) ? "<span style='color:green'>O.K.</span>" : "<span style='color:red'>Error: $is_ok</span>";
+			try  {
+				$is_ok = true;
+				$status = $ds->dependency_check();
+			} catch(\exception $e) {
+				$is_ok = false;
+				$status = $e->getMessage();
+			}
+			$status = ($is_ok === true) ? "<span style='color:green'>($status)</span>" : "<span style='color:red'>(Error: $status)</span>";
 			$checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';
 			$disabled = ($is_ok === true) ? '' : 'disabled="disabled"';
-			echo "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label [$error]</label></div>";
+			echo "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label $status</label></div>";
 		}
 		update_option('esa_datasource_labels', json_encode($labels));
 		wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');

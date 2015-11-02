@@ -299,16 +299,10 @@ namespace esa_datasource {
 		function dependency_check() {
 			
 
-			$c = new \epidocConverter;
+			$c = \epidocConverter::create();
 			
-			try {
-				$c->status();
-			} catch (\Exception $e) {
-				return $e->getMessage();
-			}
-			
-			return true;
-			
+			return $c->status();
+
 			
 		}
 

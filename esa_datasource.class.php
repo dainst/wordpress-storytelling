@@ -405,10 +405,11 @@ namespace esa_datasource {
 		/**
 		 * if the functionality of the datasource relies onto something special like specific php libraries or external software,
 		 * you can implement a dependancy check on wose result the availabilty in wordpress depends.
-		 * @return true if everything is OK or a string
+		 * @return string
+		 * @throws Exception if not
 		 */
 		function dependency_check() {
-			return true;
+			return 'O. K.';
 		}
 		
 		/**
