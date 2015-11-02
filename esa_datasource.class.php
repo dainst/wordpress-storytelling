@@ -261,7 +261,7 @@ namespace esa_datasource {
 		 * 
 		 */
 		function show_pagination() {
-			if ($this->pagination) {
+			if ($this->pagination and $this->pages > 1) {
 				
 				echo "<div class='esa_item_list_pagination'>";
 				
