@@ -258,7 +258,13 @@ add_filter('query_vars', function($public_query_vars) {
 	return $public_query_vars;
 });
 
-add_filter('posts_search', function($sql) {
+add_filter('posts_search', function($sql, $query) {
+	
+	$args = func_get_args();
+	
+	if (!$query->is_main_query()) {
+		return $sql;
+	}
 	
 	global $wp_query;
 	global $wpdb;
@@ -284,7 +290,7 @@ add_filter('posts_search', function($sql) {
 	
 	//echo "<pre>"; print_r($wp_query->query); die($sql);
 	
-	if (($wp_query->query['post_type'] != 'story') or (!$sql and !$story)) {
+	if (($wp_query->query['post_type'] != 'story') or (!$sql and !$story)) { //@todo: enable generic version 
 		return $sql;
 	}
 	
@@ -293,7 +299,7 @@ add_filter('posts_search', function($sql) {
 	
 	return $sqlr;
 	
-});
+}, 10, 2);
 
 
 /* 
@@ -446,7 +452,7 @@ function media_esa_dialogue() {
 	echo "<div class='media-frame-toolbar'>";
 	echo "<div class='media-toolbar'>";
 	echo '<div class="media-toolbar-primary search-form">';
-	echo '<input type="button" class="button button-primary media-button" id="go_button" disabled="disabled" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Post') . '" />';
+	echo '<input type="button" class="button button-primary media-button" id="go_button" disabled="disabled" onclick="esa_ds.insert()" value="' . esc_attr__('Insert into Story') . '" />';
 	echo "</div>"; //media-toolbar-primary search-form
 	echo "</div>"; //media-toolbar
 	echo "</div>"; //media-frame-toolbar
@@ -625,7 +631,7 @@ function esa_thumpnail($post, $return = false) {
 	}
 
 	if (!$return) {
-		echo "<div class='story-thumbnail'>$thumbnail</div>";
+		echo "<div class='story-thumpnail'>$thumbnail</div>";
 	}
 
 	return $thumbnail;

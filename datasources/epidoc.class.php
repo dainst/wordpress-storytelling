@@ -2,10 +2,10 @@
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | Subplugin: epidoc
- * @link 		
- * @author 		
+ * @link 		http://sourceforge.net/projects/epidoc/
+ * @author 		Philipp Franck
  *
- * Status: Alpha 1
+ * Status: Beta
  * 
  * Takes a link to a ressource encoded in epidoc and builds a Esa Item around it.
  *
