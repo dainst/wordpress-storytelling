@@ -210,7 +210,7 @@ namespace esa_datasource {
 					// remove trailing <br> tag
 					$epi = preg_replace("/>\s+</", "><", $epi);
 					$epiDom = new \DOMDocument();
-					$epiDom->loadHTML(mb_convert_encoding($epi, 'HTML-ENTITIES', 'UTF-8'));
+					@$epiDom->loadHTML(mb_convert_encoding($epi, 'HTML-ENTITIES', 'UTF-8'));
 					//$epiDom->normalize();
 					$divs = $epiDom->getElementsByTagName('div');
 					foreach ($divs as $div) {
