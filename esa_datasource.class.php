@@ -11,6 +11,9 @@
  * 
  * 
  */
+
+
+
 namespace esa_datasource {
 	abstract class abstract_datasource {
 		
@@ -338,10 +341,16 @@ namespace esa_datasource {
 				
 				if (count($data['images'])) {
 					foreach($data['images'] as $image)  {
-						$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
-						$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
+						if ($image instanceof \esa_item\image) { //vorrübergehend beide Lösungen akzeptiren
+							$html .= $image->render();
+							
+						} else {						
+							$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
+							$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
+						}
 					}
 				}
+				
 				$html .= "</div>";
 				$html .= "<div class='esa_item_right_column_max_left'>";
 			} else {
@@ -533,5 +542,7 @@ namespace esa_datasource {
 		
 		
 	}
+	
+	
 }
 ?>

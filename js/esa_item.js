@@ -81,4 +81,12 @@ jQuery(document).ready(function(){
 			console.log(exception)
 		});
 	}
-})
+});
+
+//full res image
+jQuery(document).on('click', '.esa_fullres', function() {
+	alert(jQuery(this).data('fullres'));
+});
+
+
+

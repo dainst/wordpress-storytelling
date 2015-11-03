@@ -40,10 +40,14 @@ namespace esa_datasource {
 		}
 			
 		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/commons.wikimedia.org\/wiki\/.*\#\/media\/File\:(.*)#', $string, $match)) {
+			if (preg_match('#https?\:\/\/commons.wikimedia.org\/wiki\/.*\#\/media\/(File\:.*)#', $string, $match)) {
 			//if (preg_match('#https?\:\/\/commons.wikimedia.org\/(.*)#', $string, $match)) {
-				echo "<br><textarea>", print_r($match), "</textarea>";
-				return "https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image={$match[1]}&thumbwidth=150&thumbheight=150";
+
+				$title = urlencode($match[1]);
+				//return "https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image={$match[1]}&thumbwidth=150&thumbheight=150";
+				$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata&iiurlwidth=150&titles=$title";
+				echo "<br><textarea>", print_r($url), "</textarea>";
+				return $url;
 			}
 		}
 		/*	pagination functions
@@ -66,30 +70,36 @@ namespace esa_datasource {
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			$this->results = array();
+			echo "<br><textarea>", print_r($response), "</textarea>";
 			
 			
-			
-			foreach (__whatever__ as $page) {
-					
-				$html  = "<div class='esa_item_left_column'>";
-				$html .= "<div class='esa_item_main_image' style='background-image:url(\"{/* image url */}\")'>&nbsp;</div>";
-				$html .= "</div>";
-					
-				$html .= "<div class='esa_item_right_column'>";
-				$html .= "<h4>{/* title */}</h4>";
-
-				$html .= "<ul class='datatable'>";
-				$html .= "<li><strong>{/* field */}: </strong>{/* data */}</li>";
-				$html .= "</ul>";
-				
-				$html .= "</div>";
+			foreach ($response->query->pages as $pageId => $page) {
 					
 					
-				$this->results[] = new \esa_item(__source__, __id__, $html, __url__);
+				$this->results[] = new \esa_item('commons', $pageId, $this->render_item($this->fetch_information($page)), $this->api_single_url($pageId));
 			}
 			return $this->results;
 		}
 
+		
+		function fetch_information($page) {
+			$data = array('table'=>array(), 'text'=>array(), 'images'=>array());
+			
+			$data['images'][] = new \esa_item\image(array(
+				'type' 	=>	$page->imageinfo[0]->mediatype,
+				'url'	=>	$page->imageinfo[0]->thumburl,
+				'fullres' => $page->imageinfo[0]->url,
+				'mime'	=>	$page->imageinfo[0]->mime,
+				'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+			));
+			
+			preg_match('#File\:(.*)\..*#', $page->title, $matches);
+			$data['title'] = $matches[1];
+			
+			return $data;			
+		}
+		
+		
 		function parse_result($response) {
 			// if always return a whole set
 			$res = $this->parse_result_set($response);

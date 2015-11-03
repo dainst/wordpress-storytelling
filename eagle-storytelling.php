@@ -47,6 +47,7 @@ $esa_settings = array(
 
 require_once('esa_datasource.class.php');
 require_once('esa_item.class.php');
+require_once('esa_item_transfer.class.php');
 
 /**
  * Installation
@@ -198,7 +199,7 @@ add_action('save_post', function($post_id) {
 		$regex = get_shortcode_regex();
 		preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
 
-		echo "<pre>", print_r($shortcodes,1), "</pre>";
+		//echo "<pre>", print_r($shortcodes,1), "</pre>";
 		
 		if ($shortcodes) {
 			
@@ -342,6 +343,7 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_style('colors');
 		wp_enqueue_style('media');
 		wp_enqueue_style('media-views');
+		wp_enqueue_style('thickbox');
 		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
 		esa_item_special_styles();
 		wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
@@ -350,6 +352,7 @@ add_action('media_upload_esa', function() {
 	
 	add_action('admin_print_scripts-media-upload-popup', function() {
 		wp_enqueue_script('jquery');
+		wp_enqueue_script('thickbox');
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
 	});
