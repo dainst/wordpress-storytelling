@@ -186,11 +186,11 @@ namespace esa_datasource {
 				$this->_transcription($visu->hasTranscription, $data);
 			}
 			
-			$data['images'][] = (object) array(
+			$data['images'][] = new \esa_item\image(array(
 					'url' => (string) $visu->thumbnail,
 					'title' => (string) $visu->visualRepresentationIpr,
 					'text'=> (string)  $visu->description
-			);
+			));
 			return $data;
 		}
 		
@@ -221,7 +221,7 @@ namespace esa_datasource {
 						$data['text']['transcription'] = trim($epiDom->saveHTML($div));
 					}
 					
-					$data['table']['debug'] = $c->status();
+					//$data['table']['debug'] = $c->status();
 					//$data['text']['transcription'] = $epi;
 				} catch (\Exception $e) {
 					$data['table']['debug'] = $e->getMessage();

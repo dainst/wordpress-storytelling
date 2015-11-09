@@ -23,7 +23,6 @@ namespace esa_item {
 			$drlink = "<a href='{$this->url}' target='_blank'>{$this->title}</a>";
 			
 			$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
-			
 			if(($this->type == 'BITMAP') and ($this->fullres)) {
 				$image = "<a href='{$this->fullres}' title='{$this->title}' class='thickbox'>$image</a>";
 			} 

@@ -56,7 +56,7 @@ namespace esa_datasource {
 		public $examplesearch = 'e. g. http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD000106.xml';
 		public $searchbuttonlabel = 'Import';
 		
-		public $debug = true;
+		public $debug = false;
 		
 		public $pagination = false; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
@@ -216,6 +216,7 @@ namespace esa_datasource {
 				$xml->facsimile->graphic
 			);
 			
+			$data['table']['xslt'] = $c->status();
 			
 			//$debug = '<textarea>'. print_r($data['text'], 1) . '</textarea>';
 
@@ -236,11 +237,13 @@ namespace esa_datasource {
 					$list = array();
 						
 					foreach($elems as $elem) {
-						$img = (object) array();
+						$img = new \esa_item\image(array(
+							'url' => $elem['url'],
+							'text' => (string) $elem->desc,
+							'title' => (string) $elem->desc->ref
+						));
 						
-						$img->url = $elem['url'];
-						$img->text = (string) $elem->desc;
-						$img->title = (string) $elem->desc->ref;
+
 						
 						$list[] = $img;
 					}

@@ -334,7 +334,6 @@ add_filter('media_upload_tabs', function($tabs) {
 		$tabs;
 });
 
-
 // create submenu
 
 add_action('media_upload_esa', function() {
@@ -374,10 +373,10 @@ function esa_item_special_styles() {
 	foreach ($datasources as $ds) {
 		$dso = get_esa_datasource($ds);
 		$cssInfo = $dso->stylesheet();
-		if (isset($cssInfo['css'])) {
+		if (isset($cssInfo['css']) and $cssInfo['css']) {
 			$css[$cssInfo['name']] = "\n\n/* {$cssInfo['name']} styles ($ds)  */\n" . $cssInfo['css']; // names to avoid dublication if some datasources share the same styles e. g. epidoc
 		}
-		if (isset($cssInfo['file'])) {
+		if (isset($cssInfo['file']) and $cssInfo['file']) {
 			wp_enqueue_style('esa_item_' . $cssInfo['name'], $cssInfo['file']);
 		}
 	}
@@ -650,7 +649,6 @@ add_action('wp_ajax_esa_set_featured_image', function() {
  */
 
 function esa_thumpnail($post, $return = false) {
-	
 	
 	// check if esa thumpnail exists
 	if ($esa_thumbnail_url = get_post_meta($post->ID, 'esa_thumbnail', true)) {
