@@ -10,6 +10,8 @@
  *
  */
 
+
+
 jQuery(document).on('mouseenter', '.esa_item', function() {
 	if(
 		(jQuery(this).find('.esa_item_inner').height() > 200) ||
@@ -23,7 +25,6 @@ jQuery(document).on('mouseenter', '.esa_item', function() {
 	
 });
 
-
 jQuery(document).on('mouseleave', '.esa_item', function() {
 	jQuery(this).find('.esa_item_resizebar').fadeOut('slow');
 });
@@ -36,6 +37,29 @@ jQuery(document).on('click', '.esa_item_resizebar', function() {
 		//console.log(mapId);
 		esa_maps[mapId].invalidateSize();
 	}
+});
+
+jQuery(document).on('mouseenter', '.esa_item_tools a', function(e) {		
+	var tooltip = jQuery('<div>', {
+		class: 'esa_item_tooltip'
+	}).text(jQuery(this).attr('title'));
+	jQuery(this).after(tooltip);
+	
+	var fullwidth = tooltip.width() + 14;
+	tooltip.css({
+		display: 'block',
+		width : '0px'
+	});
+	tooltip.animate({
+		width: fullwidth
+	}, 'slow');
+});
+
+jQuery(document).on('mouseleave', '.esa_item_tools a', function(e) {
+	
+	jQuery('.esa_item_tooltip').toggle('fast', function() {
+		jQuery(this).remove();
+	});
 	
 });
 

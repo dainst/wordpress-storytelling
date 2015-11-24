@@ -234,4 +234,46 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 			event.content = restoreEsaShortcodes( event.content );
 		}
 	});
+	
+	
+	/**
+	
+	This was to make the esa_item functionality in the editor. But it doesn't work
+	
+	1. 
+	http://stackoverflow.com/questions/3033206/inject-javascript-into-iframe-generated-by-tinymce-yui
+	http://stackoverflow.com/questions/25924605/load-jquery-file-in-tinymce-iframe
+	
+	2.
+	
+	editor.on('init', function(args) {
+		if (typeof esaJsPath === "undefined") {
+			console.log('esaJsPath is undefined');
+			return;
+		}
+		console.log('yolo');
+		var esaDocument = args.target.getDoc();//jQuery('iframe#content_ifr')[0].contentWindow.document;
+		//jQuery(jQuery('iframe#content_ifr')[0].contentDocument.body).append('<script type="text/javascript"> </script>');
+		console.log(esaJqPath);
+		editor.designMode = 'off';
+		jQuery(esaDocument.head).append('<script type="text/javascript" src="' + esaJqPath + '"></script>');
+		jQuery(esaDocument.head).append('<script type="text/javascript" src="' + esaJsPath + 'esa_item.js"></script>');
+		jQuery(esaDocument.head).append('<script type="text/javascript">console.log(jQuery("p"))</script>');
+		jQuery(esaDocument.head).append('<script type="text/javascript">console.log(jQuery(".esa_item"))</script>');
+		editor.designMode = 'on';
+	});
+	
+	3.
+	jspath.js:
+	var esaJsPath = "<?php echo $_GET['plugins_url'] . '/eagle-storytelling/js/'; ?>";
+	var esaJqPath = "<?php echo $_GET['jq_url'] ?>";
+
+	4.
+	in add_action('init', function() { add_filter("mce_external_plugins", function($plugin_array) {
+		$wp_scripts = wp_scripts();
+		$jqurl = get_home_url() . $wp_scripts->registered['jquery-core']->src;
+		plugin_array['jspath'] = plugins_url() . '/eagle-storytelling/js/jspath.php?plugins_url=' . plugins_url() . '&jq_url=' . $jqurl;
+
+	
+	*/
 });

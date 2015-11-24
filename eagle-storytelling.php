@@ -42,7 +42,8 @@ if (!defined('ABSPATH')) {
 define('ESA_DEBUG', false);
 
 $esa_settings = array(
-	'post_types' => array('post', 'page')
+	'post_types' => array('post', 'page'),
+	'add_media_entry' => 'Eagle Storytelling Application'
 );
 
 require_once('esa_datasource.class.php');
@@ -90,9 +91,8 @@ function esa_install () {
 
 	dbDelta( $sql );
 
-	
-	
 }
+
 register_activation_hook( __FILE__, 'esa_install');
 
 
@@ -234,7 +234,7 @@ add_action('save_post', function($post_id) {
 
 add_action('wp_enqueue_scripts', function() {
 	global $post;
-	
+
 	if (is_esa($post->post_type)) {
 
 		// css
@@ -247,6 +247,7 @@ add_action('wp_enqueue_scripts', function() {
 		
 		
 		//js
+
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 	}
 });
@@ -329,8 +330,9 @@ add_action('found_posts', function() {
 
 add_filter('media_upload_tabs', function($tabs) {
 	global $post;
+	global $esa_settings;
 	return (!is_object($post) or is_esa($post->post_type)) ?
-    	array_merge($tabs, array('esa' => 'EAGLE Storytelling Application')) :
+    	array_merge($tabs, array('esa' => $esa_settings['add_media_entry'])) :
 		$tabs;
 });
 
@@ -350,7 +352,7 @@ add_action('media_upload_esa', function() {
 	
 	
 	add_action('admin_print_scripts-media-upload-popup', function() {
-		wp_enqueue_script('jquery');
+		$a = wp_enqueue_script('jquery');
 		wp_enqueue_script('thickbox');
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
@@ -583,6 +585,7 @@ add_shortcode('esa', 'esa_shortcode');
 
 
 add_action('init', function() {
+
 	add_filter("mce_external_plugins", function($plugin_array) {
 		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling/js/esa_mce.js';
 		$plugin_array['noneditable'] = plugins_url() . '/eagle-storytelling/js/mce_noneditable.js';

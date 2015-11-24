@@ -8,7 +8,7 @@
 
 
 
-/* esa item is important! its the visual interpretation of our shortcuts */
+/* esa item is important! its the visual interpretation of our shortcodes */
 .esa_item {
 	background-color: rgba(200, 200, 200, 0.1);
 	min-width: 190px;
@@ -77,13 +77,13 @@
 .esa_item_tools a.esa_item_tools_find {
 	background: url('../images/find.png') center center no-repeat white;
 }
-
+/*
 .esa_item_tools a:hover {
 	border: 1px solid #A0A5AA;
 	border-radius: 2px;
 	padding: 0px
 }
-
+*/
 .esa_item_tools a.esa_item_tools_originurl {
 	background: url('../images/eye.png') center center no-repeat white;
 }
@@ -107,6 +107,17 @@
 .esa_item_tools a:hover {
 	/*box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.8);*/
 	opacity: 1
+}
+
+
+.esa_item_tooltip {
+	padding-left: 0.4em;
+	padding-right: 2em;
+	height: 28px;
+	float: right;
+	background: white;
+	display: none;
+	white-space: nowrap;
 }
 
 .esa_item_resizebar {
@@ -250,16 +261,6 @@
 .esa_item_collapsed .sub2 {
 	display: none
 }
-
-/* special definitions for different types of esa_items ... todo: when it gets more, maybe just load the css we need not all */
-
-
-
-
-/* esa eagle */
-
-
-/* esa epidoc */
 
 
 
