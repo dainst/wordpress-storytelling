@@ -29,7 +29,7 @@ jQuery(document).on('mouseleave', '.esa_item', function() {
 	jQuery(this).find('.esa_item_resizebar').fadeOut('slow');
 });
 
-jQuery(document).on('click', '.esa_item_resizebar', function() {
+jQuery(document).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
 	jQuery(this).parents('.esa_item').toggleClass('esa_item_collapsed');
 	
 	if (mapDiv = jQuery(this).parents('.esa_item').find('.esa_item_map')[0]) {
@@ -73,7 +73,7 @@ jQuery(document).ready(function(){
 			//console.log( textStatus );
 			// draw maps
 			jQuery('.esa_item_map').each(function(k, mapDiv) {
-				console.log(mapDiv);
+				//console.log(mapDiv);
 				
 				var mapId = jQuery(mapDiv).attr('id');
 				var lat   = parseFloat(jQuery(mapDiv).data('latitude'));

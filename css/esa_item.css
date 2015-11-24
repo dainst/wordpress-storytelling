@@ -100,6 +100,11 @@
 	background: url('../images/delete.png') center center no-repeat white;	
 }
 
+.esa_item_tools a.esa_item_tools_expand {
+	background: url('../images/expand.png') center center no-repeat white;	
+}
+
+
 .esa_item_tools a:focus {
 	box-shadow: none
 }
