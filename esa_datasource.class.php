@@ -326,78 +326,12 @@ namespace esa_datasource {
 		/**
 		 * transforms a array to a esa_item html
 		 */
-		function render_item($data = array()) {
-			
-			if (count($data['images']) || count($data['text'])) {
-				$html  = "<div class='esa_item_left_column_max_left'>";
-				
-				if (count($data['text'])) {
-					foreach ($data['text'] as $type => $text) {
-						if ($text) {
-							$html .= "<div class='esa_item_text {$type}'>$text</div>";
-						}
-					}
-				}
-				
-				if (count($data['images'])) {
-					foreach($data['images'] as $image)  {
-						if ($image instanceof \esa_item\image) { //vorrübergehend beide Lösungen akzeptiren
-							$html .= $image->render();
-							
-						} else {						
-							$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
-							$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
-						}
-					}
-				}
-				
-				$html .= "</div>";
-				$html .= "<div class='esa_item_right_column_max_left'>";
-			} else {
-				$html = "<div class='esa_item_single_column'>";
-			}
-			
-			
-			$html .= "<h4>{$data['title']}</h4><br>";
-			
+		function render_item($item) {
+			return $item->render();
+		}
+		
+		
 
-			
-			if (count($data['table'])) {
-			$html .= "<ul class='datatable'>";
-				foreach ($data['table'] as $field => $value) {
-					$value = trim($value);
-					if ($value) {
-						$label = $this->_label($field);
-						$html .= "<li><strong>{$label}: </strong>{$value}</li>";
-						//$html .='<textarea>' . print_r($value,1) . "</textarea>";
-					}
-				}
-				$html .= "</ul>";
-			}
-				
-			$html .= "</div>";
-			
-			return $html;
-		}
-		
-		
-		private function _label($of) {
-			$labels = array(
-					'objectType' => 'Type',
-					'repositoryname' => 'Repository',
-					'material' => 'Material',
-					'tmid' => 'Trismegistos-Id',
-					'artifactType' => 'Artifact Type',
-					'objectType2' => 'Type',
-					'transcription' => 'Transcription',
-					'provider' => 'Content Provider',
-					'ancientFindSpot' => 'Ancient find spot',
-					'modernFindSpot' =>  'Modern find spot',
-					'origDate' => 'Date'
-			);
-				
-			return (isset($labels[$of])) ? $labels[$of] : $of;
-		}
 		
 		/**
 		 * shows the list of errors

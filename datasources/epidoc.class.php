@@ -108,6 +108,8 @@ namespace esa_datasource {
 			
 			$divs = $epiDom->getElementsByTagName('div');
 			
+			$data = new \esa_item\data();
+			
 			foreach ($divs as $div) {
 					
 				
@@ -122,8 +124,8 @@ namespace esa_datasource {
 				}
 				
 				$field = $map[$id] ? 'text' : 'table';
-				
 				$title = $id;
+
 				
 				// saxon stylesheets provide some headlines
 				$h2s = $div->getElementsByTagName('h2');
@@ -143,22 +145,22 @@ namespace esa_datasource {
 					$firstchild->parentNode->removeChild($firstchild);
 				}
 				
-				$data[$field][$title][$lang] = trim($epiDom->saveHTML($div));
+				$data->{$field}[$title][$lang] = trim($epiDom->saveHTML($div));
 			}
 			
 			// get translation, english if avalable
 			foreach ($map as $title => $isText) {
-				if (!isset($data[$field][$title])) {
+				if (!isset($data->{$field}[$title])) {
 					continue;
 				}
 				
 				
 				$field = $isText ? 'text' : 'table';
-				if (isset($data[$field][$title]['en'])) {
-					$data[$field][$title] = $data[$field][$title]['en'];
+				if (isset($data->{$field}[$title]['en'])) {
+					$data->{$field}[$title] = $data->{$field}[$title]['en'];
 				} else {
-					$last = array_pop($data[$field][$title]);
-					$data[$field][$title] = $last;
+					$last = array_pop($data->{$field}[$title]);
+					$data->{$field}[$title] = $last;
 				}
 			}
 			
@@ -170,57 +172,57 @@ namespace esa_datasource {
 			
 			// teiHeader
 			// teiHeader->fileDesc
-			$data['title'] = $this->_get(
+			$data->title = $this->_get(
 				$xml->teiHeader->fileDesc->titleStmt->title
 			);
 
-			$data['table']['provider'] = $this->_get(
+			$data->table['provider'] = $this->_get(
 				$xml->teiHeader->fileDesc->publicationStmt->authority
 			);
 			
 			// teiHeader->fileDesc->sourceDesc
 			
-			$data['table']['objectType'] = $this->_get(
+			$data->table['objectType'] = $this->_get(
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->physDesc->objectDesc->supportDesc->support->objectType,
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->physDesc->objectDesc->supportDesc->support->p->objectType
 			);
-			$data['table']['material'] = $this->_get(
+			$data->table['material'] = $this->_get(
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->physDesc->objectDesc->supportDesc->support->material,
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->physDesc->objectDesc->supportDesc->support->p->material
 			);				
-			$data['table']['execution'] = $this->_get(
+			$data->table['execution'] = $this->_get(
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->physDesc->objectDesc->layoutDesc->layout->execution
 			);
-			$data['table']['modernFindSpot'] = $this->_get(
+			$data->table['modernFindSpot'] = $this->_get(
 					$xml->teiHeader->fileDesc->sourceDesc->msDesc->history->provenance->placeName,
 					$xml->teiHeader->fileDesc->sourceDesc->msDesc->history->provenance->p->placeName
 			);
-			$data['table']['ancientFindSpot'] = $this->_get(
+			$data->table['ancientFindSpot'] = $this->_get(
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->history->origin->origPlace->placeName,
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->history->origin->origPlace
 			);
-			$data['table']['origDate'] = $this->_get(
+			$data->table['origDate'] = $this->_get(
 				$xml->teiHeader->fileDesc->sourceDesc->msDesc->history->origin->origDate
 			);
 
-			$data['table']['urls'] = $this->_get(
+			$data->table['urls'] = $this->_get(
 					$xml->teiHeader->fileDesc->publicationStmt->idno
 			);
-			$data['url'] = $this->_get(
+			$data->url = $this->_get(
 					(string) $xml->teiHeader->fileDesc->publicationStmt->idno[0],
 					$this->id
 			);
 			
 			
-			$data['images'] = $this->_getImage(
+			$data->images = $this->_getImage(
 				$xml->facsimile->graphic
 			);
 			
-			$data['table']['xslt'] = $c->status();
+			$data->table['xslt'] = $c->status();
 			
 			//$debug = '<textarea>'. print_r($data['text'], 1) . '</textarea>';
 
-			return new \esa_item('epidoc', $this->query, $debug . $this->render_item($data), $data['url']);
+			return new \esa_item('epidoc', $this->query, $debug . $data->render(), $data->url);
 		}
 		
 		

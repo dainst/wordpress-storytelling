@@ -65,24 +65,43 @@ namespace esa_datasource {
 			$response = json_decode($response);
 			$this->results = array();
 			foreach ($this->results[1] as $i => $name) {
+
+				
+				/* old way of doint it 
+				
 				$title = $this->results[2];
 				$url = $this->results[3];
-					
 				$html  = "<div class='esa_item_left_column'>";
-				$html .= "<div class='esa_item_main_image' style='background-image:url(\"{/* image url */}\")'>&nbsp;</div>";
+				$html .= "<div class='esa_item_main_image' style='background-image:url(\"{ image url }\")'>&nbsp;</div>";
 				$html .= "</div>";
 					
 				$html .= "<div class='esa_item_right_column'>";
-				$html .= "<h4>{/* title */}</h4>";
+				$html .= "<h4>{ title }</h4>";
 
 				$html .= "<ul class='datatable'>";
-				$html .= "<li><strong>{/* field */}: </strong>{/* data */}</li>";
+				$html .= "<li><strong>{ field }: </strong>{ data }</li>";
 				$html .= "</ul>";
 				
 				$html .= "</div>";
+				*/
+				
+				$data = new \esa_item\data();
+				
+				$data->title = __title__;
+				$data->addText($key, $value);
+				$data->addTable($key, $value);
+				$data->addImages(array(
+					'url' 		=> '',
+					'fullres' 	=> '',
+					'type' 		=> 'BITMAP',
+					'mime' 		=> '',
+					'title' 	=> '',
+					'text' 		=> ''
+				));
+				
+				
 					
-					
-				$this->results[] = new \esa_item(__source__, __id__, $html, __url__);
+				$this->results[] = new \esa_item(__source__, __id__, $data->render(), __url__);
 			}
 			return array();
 		}

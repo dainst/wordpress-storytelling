@@ -93,7 +93,7 @@ namespace esa_datasource {
 				}
 				
 				// different Types of entity
-				$data = array();
+				$data = new \esa_item\data();
 
 				if ($obj->entityType == 'artifact') {
 					$this->_artifact($obj->artifact, $data);
@@ -104,17 +104,17 @@ namespace esa_datasource {
 				}
 				
 				/*		
-				if (!isset($data['text']) or !$data['text']) {
-					$data['text'][] = (string) $obj->description != (string) $obj->title ? (string) $obj->description : 'kein text';
+				if (!isset($data->text) or !$data->text) {
+					$data->text[] = (string) $obj->description != (string) $obj->title ? (string) $obj->description : 'kein text';
 				}*/
-				//$data['table']['type'] = $obj->entityType;
-				$data['table']['repositoryname'] = $page->repositoryname;
+				//$data->table['type'] = $obj->entityType;
+				$data->table['repositoryname'] = $page->repositoryname;
 								
-				$data['table'] = array_filter($data['table'], function($part) {return $part and (string) $part != '';});
+				$data->table = array_filter($data->table, function($part) {return $part and (string) $part != '';});
 				
-				$data['title'] = $obj->title;
+				$data->title = $obj->title;
 									
-				$this->results[] = new \esa_item('eagle', $page->dnetresourceidentifier, $this->render_item($data), $page->landingpage);
+				$this->results[] = new \esa_item('eagle', $page->dnetresourceidentifier, $data->render(), $page->landingpage);
 				//break;
 			}
 			
@@ -147,10 +147,10 @@ namespace esa_datasource {
 			if ($epi->translation) {
 				$aut = ($epi->translation->publicationAuthor) ? $epi->translation->publicationAuthor : ($epi->translation->publicationEditor) . ' (Ed.)';
 			
-				$data['text']['translation'] = "{$epi->translation->text}";
+				$data->text['translation'] = "{$epi->translation->text}";
 			
 				if ($epi->translation->author) {
-					$data['table']['Translation'] = $epi->translation->author;
+					$data->table['Translation'] = $epi->translation->author;
 				}
 			
 				/*if (count($epi->translation->comments)) {
@@ -164,7 +164,7 @@ namespace esa_datasource {
 					$dp = $this->_merge(', ', $epi->translation->publicationPlace, $epi->translation->publicationYear);
 					$pub = $this->_merge('. ', $at, $dp);
 					$pub .= ($pub) ? '.' : '';
-					$data['table']['publication'] = $pub;
+					$data->table['publication'] = $pub;
 					//$text .= ($pub) ? "<div class='sub2'>Publication: $pub</div>" : '';
 				}
 				
@@ -186,7 +186,7 @@ namespace esa_datasource {
 				$this->_transcription($visu->hasTranscription, $data);
 			}
 			
-			$data['images'][] = new \esa_item\image(array(
+			$data->images[] = new \esa_item\image(array(
 					'url' => (string) $visu->thumbnail,
 					'title' => (string) $visu->visualRepresentationIpr,
 					'text'=> (string)  $visu->description
@@ -195,9 +195,9 @@ namespace esa_datasource {
 		}
 		
 		private function _transcription($trans, &$data) {
-			$data['text']['transcription'] = $trans->text;
-			//$data['text']['transcription'] = $trans->textHtml->asXML();
-			//$data['text']['transcription'] = $trans->textEpidoc->asXML();
+			$data->text['transcription'] = $trans->text;
+			//$data->text['transcription'] = $trans->textHtml->asXML();
+			//$data->text['transcription'] = $trans->textEpidoc->asXML();
 			$xml = $trans->textEpidoc->asXML();
 			if ($xml and ($xml != '<textEpidoc/>')) {
 				try {
@@ -218,13 +218,13 @@ namespace esa_datasource {
 						if ($firstchild->nodeName == 'br') {
 							$firstchild->parentNode->removeChild($firstchild);
 						}
-						$data['text']['transcription'] = trim($epiDom->saveHTML($div));
+						$data->text['transcription'] = trim($epiDom->saveHTML($div));
 					}
 					
-					//$data['table']['debug'] = $c->status();
-					//$data['text']['transcription'] = $epi;
+					//$data->table['debug'] = $c->status();
+					//$data->text['transcription'] = $epi;
 				} catch (\Exception $e) {
-					$data['table']['debug'] = $e->getMessage();
+					$data->table['debug'] = $e->getMessage();
 				}
 			}
 		}
@@ -240,17 +240,17 @@ namespace esa_datasource {
 				$this->_inscription($artifact->inscription, $data);
 			}
 			if ($artifact->hasTmId) {
-				$data['table']['tmid'] = $artifact->hasTmId->tmId;
+				$data->table['tmid'] = $artifact->hasTmId->tmId;
 			}
-			$data['table']['material'] = $artifact->material;
-			$data['table']['artifactType'] = $artifact->artifactType;
-			$data['table']['objectType2'] = $artifact->objectType;
-			$data['table']['inscriptionType'] = $artifact->inscriptionType;
-			$data['table']['conservationPlace'] = $this->_place($artifact->conservationPlace->conservationCity, $artifact->conservationPlace->conservationCountry);
-			$data['table']['originDating'] = $artifact->originDating;
+			$data->table['material'] = $artifact->material;
+			$data->table['artifactType'] = $artifact->artifactType;
+			$data->table['objectType2'] = $artifact->objectType;
+			$data->table['inscriptionType'] = $artifact->inscriptionType;
+			$data->table['conservationPlace'] = $this->_place($artifact->conservationPlace->conservationCity, $artifact->conservationPlace->conservationCountry);
+			$data->table['originDating'] = $artifact->originDating;
 			if ($artifact->findingSpot) {
-				$data['table']['findingSpotAncient'] = $this->_place($artifact->findingSpot->ancientFindSpot, $artifact->findingSpot->romanProvinceItalicRegion);
-				$data['table']['findingSpotModern'] = $this->_place($artifact->findingSpot->modernFindSpot, $artifact->findingSpot->modernCountry);
+				$data->table['findingSpotAncient'] = $this->_place($artifact->findingSpot->ancientFindSpot, $artifact->findingSpot->romanProvinceItalicRegion);
+				$data->table['findingSpotModern'] = $this->_place($artifact->findingSpot->modernFindSpot, $artifact->findingSpot->modernCountry);
 			}
 			
 			
@@ -260,17 +260,17 @@ namespace esa_datasource {
 		
 		private function _inscription($ins, &$data) {
 			if ($ins->hasTmId) {
-				$data['table']['tmid'] = $ins->hasTmId->tmId;
+				$data->table['tmid'] = $ins->hasTmId->tmId;
 			}
-			$data['table']['paleographicCharacteristics'] = $ins->paleographicCharacteristics;
-			$data['table']['honorand'] = $ins->honorand;
+			$data->table['paleographicCharacteristics'] = $ins->paleographicCharacteristics;
+			$data->table['honorand'] = $ins->honorand;
 			
 			if ($ins->hasTranscription) {
 				$this->_transcription($ins->hasTranscription, $data);
 			}
 			
 			if ($ins->hasTranslation) {
-				$data['text']['translation'] = $ins->hasTranslation->text;
+				$data->text['translation'] = $ins->hasTranslation->text;
 			}
 			
 		}

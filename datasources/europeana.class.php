@@ -131,33 +131,45 @@ namespace esa_datasource {
 		
 		
 		private function _item2html($item, $id) {
-			$html  = "<div class='esa_item_left_column'>";
+			$data = new \esa_item\data();
 			
+			// images
 			$thumbnails = isset($item->edmPreview) ?
 				$item->edmPreview : (
 				isset($item->europeanaAggregation->edmPreview) ?
 					$item->europeanaAggregation->edmPreview :
 					'');
-			$thumbnail = is_array($thumbnails) ? $thumbnails[0] : $thumbnails;
-			 	
-			$html .= "<div class='esa_item_main_image' style='background-image:url(\"$thumbnail\")'>&nbsp;</div>";
-			$html .= "</div>";
+			$thumbnails = (!is_array($thumbnails)) ? array($thumbnails) : $thumbnails;
 			
-			$html .= "<div class='esa_item_right_column'>";
-			$html .= "<h4>{$item->title[0]}</h4>";
-			$html .= "<ul class='datatable'>";
-							
-			$html .= "<li><strong>id: </strong>{$id}</li>";
-			if (isset($item->year)) {
-				$year = (is_array($item->year)) ? implode(' ,', $item->year) : $item->year;
-				$html .= "<li><strong>Year: </strong>$year</li>";
+			$images = array();
+			if (isset($item->aggregations)) {
+				foreach ($item->aggregations as $aggregation) {
+					$images[] = isset($aggregation->edmIsShownBy) ? $aggregation->edmIsShownBy : '';
+				}
 			}
-			$html .= 	 "<li><strong>Type: </strong>" . ucfirst(strtolower($item->type)) . "</li>";
+			
+			foreach ($thumbnails as $i => $thumb) { //todo: is more fetchable
+				$data->addImages(array(
+					'url' => $thumb,
+					'fullres' => $images[$i]
+				));
+			}
+			 
+			// title
+			$data->title = $item->title[0];
+			
+			// other
+			if (isset($item->year)) {
+				$data->addTable('Year', $item->year);
+			}
+			
+			$data->addTable('Type', ucfirst(strtolower($item->type)));
+
 			if (count($item->title) > 1) {
-				$html .= "<li><strong>Alternative titles: </strong>" . implode(',', array_slice($item->title, 1)) . "</li>";
+				$data->addTable('Alternative titles', implode(',', array_slice($item->title, 1)));
 			}
 			if (count($item->provider)) {
-				$html .= "<li><strong>Provider: </strong>" . implode(',', $item->provider) . "</li>";
+				$data->addTable('Provider', implode(',', $item->provider));
 			}
 			
 			if (isset($item->europeanaAggregation) and isset($item->europeanaAggregation->edmCountry)) {
@@ -166,7 +178,7 @@ namespace esa_datasource {
 						); 
 			}
 			if ($country) {
-				$html .= "<li><strong>Country: </strong>$country</li>";
+				$data->addTable('Country', $country);
 			}
 			
 			// concepts
@@ -177,12 +189,10 @@ namespace esa_datasource {
 					if (isset($concept->prefLabel)) {
 						$tags[] = isset($concept->prefLabel->en) ? $concept->prefLabel->en[0] : isset($concept->altLabel->en) ? $concept->altLabel->en[0] : array_values((array) $concept->prefLabel)[0][0];
 					}
-					//$html .= "<li><hr>X<pre>" .  print_r(array_values((array) $concept->prefLabel), 1) . "</pre></li>";; 
 				}
 				$tags = array_diff($tags, array('?', 'unknown', 'Ignoratur'));
 				if (count($tags)) {
-					$html .= "<li><strong>Keywords: </strong>" . implode(', ', array_unique($tags)) . "</li>";
-					//$html .= "<li><hr><pre>" . print_r($item->concepts, 1) . "</pre></li>";
+					$data->addTable('Keywords', implode(', ', array_unique($tags)));
 				}
 
 			}
@@ -198,7 +208,7 @@ namespace esa_datasource {
 									$v = "<a href='$v' target='_blank'>$v</a>";
 								}
 								if (!isset($no_repeat[$match[2]]) or ($no_repeat[$match[2]] != $v)) {
-									$html .= "<li><strong>$match[2]: </strong>$v</li>";
+									$data->addTable($match[2], $v);
 									$no_repeat[$match[2]] = $v;
 								}
 								
@@ -207,12 +217,11 @@ namespace esa_datasource {
 					}
 				}
 			}
+			$data->addTable('id', $id);
+
+			//$data->addTable('id', $this->api_single_url($id));
 			
-			
-			$html .= "</ul>";
-			
-			$html .= "</div>";
-			return $html;
+			return $data->render();
 		}
 		
 		
