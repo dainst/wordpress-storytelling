@@ -188,9 +188,10 @@ namespace esa_datasource {
 		 * @param string $param
 		 */
 		private function _generic_api_call($url) {
+			
 				
 			if (!$url) {
-				throw new \Exception('No Query');
+				throw new \Exception('No Query: ' . $url);
 			}
 				
 			$response = $this->_fetch_external_data($url);

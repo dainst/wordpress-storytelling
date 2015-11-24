@@ -133,6 +133,9 @@ namespace esa_datasource {
 		private function _item2html($item, $id) {
 			$data = new \esa_item\data();
 			
+			// title
+			$data->title = $item->title[0];
+			
 			// images
 			$thumbnails = isset($item->edmPreview) ?
 				$item->edmPreview : (
@@ -151,12 +154,12 @@ namespace esa_datasource {
 			foreach ($thumbnails as $i => $thumb) { //todo: is more fetchable
 				$data->addImages(array(
 					'url' => $thumb,
-					'fullres' => $images[$i]
+					'fullres' => $images[$i],
+					'title' => $data->title 
 				));
 			}
 			 
-			// title
-			$data->title = $item->title[0];
+
 			
 			// other
 			if (isset($item->year)) {

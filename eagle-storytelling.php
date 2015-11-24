@@ -238,17 +238,20 @@ add_action('wp_enqueue_scripts', function() {
 	if (is_esa($post->post_type)) {
 
 		// css
+		wp_enqueue_style('thickbox');
+		
 		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling/css/eagle-storytelling.css'));
 		wp_enqueue_style('eagle-storytelling' );
 		
 		wp_register_style('esa_item', plugins_url('eagle-storytelling/css/esa_item.css'));
 		wp_enqueue_style('esa_item');
+		
 		esa_item_special_styles();
 		
 		
 		//js
-
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
+		wp_enqueue_script('thickbox');
 	}
 });
 

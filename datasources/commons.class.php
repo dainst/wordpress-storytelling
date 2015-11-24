@@ -76,16 +76,16 @@ namespace esa_datasource {
 			foreach ($response->query->pages as $pageId => $page) {
 					
 					
-				$this->results[] = new \esa_item('commons', $pageId, $this->render_item($this->fetch_information($page)), $this->api_single_url($pageId));
+				$this->results[] = new \esa_item('commons', $pageId, $this->fetch_information($page)->render(), $this->api_single_url($pageId));
 			}
 			return $this->results;
 		}
 
 		
 		function fetch_information($page) {
-			$data = array('table'=>array(), 'text'=>array(), 'images'=>array());
+			$data = new \esa_item\data();
 			
-			$data['images'][] = new \esa_item\image(array(
+			$data->images[] = new \esa_item\image(array(
 				'type' 	=>	$page->imageinfo[0]->mediatype,
 				'url'	=>	$page->imageinfo[0]->thumburl,
 				'fullres' => $page->imageinfo[0]->url,
@@ -94,7 +94,7 @@ namespace esa_datasource {
 			));
 			
 			preg_match('#File\:(.*)\..*#', $page->title, $matches);
-			$data['title'] = $matches[1];
+			$data->title = $matches[1];
 			
 			return $data;			
 		}
