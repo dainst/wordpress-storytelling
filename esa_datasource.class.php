@@ -265,7 +265,7 @@ namespace esa_datasource {
 		 * 
 		 */
 		function show_pagination() {
-			if ($this->pagination and $this->pages > 1) {
+			if ($this->pagination and ($this->pages > 1 or $this->pages == '?')) {
 				
 				echo "<div class='esa_item_list_pagination'>";
 				
@@ -283,14 +283,14 @@ namespace esa_datasource {
 					echo "Page " . $this->page;
 				}
 								
-				if ($this->pages) {
+				if ($this->pages and $this->pages != '?') {
 					echo ($this->page) ? ' of ' : 'Pages: '; 
 					echo $this->pages;
 				}
 				
 				echo "</div>";
 				
-				if (method_exists($this, "api_search_url_next") and ($this->page < $this->pages)) {
+				if (method_exists($this, "api_search_url_next") and ($this->page < $this->pages or $this->pages == '?')) {
 					$this->show_pagination_button('next');
 				}
 				

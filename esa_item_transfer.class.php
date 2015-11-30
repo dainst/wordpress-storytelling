@@ -30,9 +30,7 @@ namespace esa_item {
 				return $this->images[] = new image($image);
 			}
 		}
-		/**
-		 * transforms an array to a esa_item html
-		 */
+
 		function render() {
 				
 			if (count($this->images) || count($this->text)) {
@@ -127,22 +125,44 @@ namespace esa_item {
 		}
 	
 		public function render() {
+
+			
 			$drlink = "<a href='{$this->url}' target='_blank'>{$this->title}</a>";
 			
-			$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
-			if(($this->type == 'BITMAP') and ($this->fullres)) {
-				$image = "<a href='{$this->fullres}' title='{$this->title}' class='thickbox'>$image</a>";
-			} 
-			$image = "$image<div class='esa_item_subtext'>{$this->text}</div>";
-
+			$text = "<div class='esa_item_subtext'>{$this->text}</div>";
+			
 			switch($this->type) {
-				case 'BITMAP':$html = $image; break;
-				case 'AUDIO': $html = "<audio controls><source src='{$this->url}' type='{$this->mime}'>$drlink</audio><div class='esa_item_subtext'>{$this->text}</div>"; break;
-				case 'VIDEO': $html = "<video controls><source src='{$this->url}' type='{$this->mime}'>$drlink</video><div class='esa_item_subtext'>{$this->text}</div>"; break;
-				case 'DRAWING': break;
+				case 'DRAWING':
+				case 'BITMAP':
+				case 'IMAGE':
+					$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
+					$drurl = ($this->fullres) ? $this->fullres : $this->url;
+					if((($this->type == 'BITMAP') and ($this->fullres)) or ($this->type == 'DRAWING')) {
+						$image = "<a href='$drurl' title='{$this->title}' class='thickbox'>$image</a>";
+					}
+					$html = $image; 
+				break;
+				
+				case 'AUDIO': 
+					$html = "<audio controls class='esa_item_multimedia'><source src='{$this->url}' type='{$this->mime}'>$drlink</audio><div class='esa_item_subtext'>{$this->text}</div>"; 
+				break;
+				
+				case 'VIDEO': 
+					$html = 
+					"<div id='$id'>
+						<video controls class='esa_item_multimedia'>
+							<source src='{$this->url}' type='{$this->mime}'>$drlink
+						</video>
+					</div>";
+				break;
+				
+				case 'DOWNLOAD':
+					$html = "<a target='_blank' href='{$this->fullres}'><div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div></a>";
+				break;	
+
 			}
 				
-			return $html;
+			return $html . $text;
 		}
 	
 	}

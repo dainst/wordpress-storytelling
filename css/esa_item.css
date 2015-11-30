@@ -180,6 +180,7 @@
 	background-position: center center;
 	-webkit-background-size: cover;
 	background-size: cover;
+	background-color: white;
 	
 	
 	float: left;
@@ -187,6 +188,18 @@
 	margin-bottom: 0.5em;
 	
 }
+
+.esa_svg_box {
+	background: white;
+	text-align: center;
+}
+
+
+.esa_item_collapsed .esa_item_multimedia {
+	width: 150px;
+	max-height: 150px;
+}
+
 
 .esa_item_collapsed .esa_item_main_image {
 	float:none;

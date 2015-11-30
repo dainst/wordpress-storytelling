@@ -5,7 +5,7 @@
  * @link 		
  * @author 		Philipp Franck
  *
- * Status: Alpha 1
+ * Status: Beta
  *
  */
 
@@ -16,68 +16,84 @@ namespace esa_datasource {
 		public $title = 'Wikimedia Commons'; // Label / Title of the Datasource
 		public $info = false; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
-		public $debug = true;
-		//public $examplesearch; // placeholder for search field
+		public $debug = false;
+		public $examplesearch = 'a search term like "res gestae" or an Wikimedia Commons url like "https://upload.wikimedia.org/wikipedia/commons/7/77/Res_Gestae_Divi_Augusti.jpg"'; // placeholder for search field
 		//public $searchbuttonlabel = 'Search'; // label for searchbutton
 		
-		public $pagination = false; // are results paginated?
+		public $pagination = true; // are results paginated?
+		private $_hits_per_page = 9;
+		
+		
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
 		public $require = array();  // require additional classes -> array of fileanmes	
 		
 		function api_search_url($query, $params = array()) {
-			//return "https://commons.wikimedia.org/w/api.php?action=opensearch&search=$query&limit=1000";
+			$offset = $this->_hits_per_page * ($this->page - 1);
+			$query = urlencode($query);
+			return "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mime|mediatype|extmetadata&iiurlwidth=150&generator=search&gsrsearch=$query&gsrnamespace=6&gsrlimit={$this->_hits_per_page}&gsroffset={$offset}";
 		}
 			
 		function api_single_url($id) {
-			return "https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image=$id&thumbwidth=150&thumbheight=150";
+			return "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata|mime&iiurlwidth=150&pageids=$id";
 		}
-
-
 		
 		function api_record_url($id) {
-			return "";
+			return  "https://commons.wikimedia.org/wiki/?curid=$id";
 		}
 			
 		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/commons.wikimedia.org\/wiki\/.*\#\/media\/(File\:.*)#', $string, $match)) {
-			//if (preg_match('#https?\:\/\/commons.wikimedia.org\/(.*)#', $string, $match)) {
+			if (preg_match('#https?\:\/\/commons.wikimedia.org\/wiki\/(.*\#\/media\/)?(File\:.*)#', $string, $match)) {
 
-				$title = urlencode($match[1]);
-				//return "https://tools.wmflabs.org/magnus-toolserver/commonsapi.php?image={$match[1]}&thumbwidth=150&thumbheight=150";
-				$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata&iiurlwidth=150&titles=$title";
-				echo "<br><textarea>", print_r($url), "</textarea>";
+				$title = urlencode($match[2]);
+				$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata|mime&iiurlwidth=150&titles=$title";
+				
+				if ($this->debug) {
+					echo "<br><textarea>", print_r($url), "</textarea>";
+				}
+				
 				return $url;
 			}
 		}
-		/*	pagination functions
+		//	pagination functions
 		function api_search_url_next($query, $params = array()) {
-			
+			$this->page += 1;
+			return $this->api_search_url($query, $params);
 		}
 			
 		function api_search_url_prev($query, $params = array()) {
-			
+			$this->page -= 1;
+			return $this->api_search_url($query, $params);
 		}
 			
 		function api_search_url_first($query, $params = array()) {
-			
+			$this->page = 1;
+			return $this->api_search_url($query, $params);
 		}
-			
+		/*	
 		function api_search_url_last($query, $params = array()) {
-			
+			$this->page = $this->pages;
+			return $this->api_search_url($query, $params);
 		}
-		*/	
+		*/
 		function parse_result_set($response) {
+
 			$response = json_decode($response);
 			$this->results = array();
-			echo "<br><textarea>", print_r($response), "</textarea>";
-			
+			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}
 			
 			foreach ($response->query->pages as $pageId => $page) {
-					
-					
-				$this->results[] = new \esa_item('commons', $pageId, $this->fetch_information($page)->render(), $this->api_single_url($pageId));
+				$this->results[] = new \esa_item('commons', $pageId, $this->fetch_information($page)->render(), $page->imageinfo[0]->descriptionurl);
 			}
+			
+			// workaround because media wiki api is not respoding total amount of pages
+			echo count($this->results);
+			if (count($this->results) >= $this->_hits_per_page) {
+				$this->pages = '?';
+			} else {
+				$this->pages = $this->page;
+			}
+			
 			return $this->results;
 		}
 
@@ -85,16 +101,45 @@ namespace esa_datasource {
 		function fetch_information($page) {
 			$data = new \esa_item\data();
 			
-			$data->images[] = new \esa_item\image(array(
-				'type' 	=>	$page->imageinfo[0]->mediatype,
-				'url'	=>	$page->imageinfo[0]->thumburl,
-				'fullres' => $page->imageinfo[0]->url,
-				'mime'	=>	$page->imageinfo[0]->mime,
-				'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
-			));
-			
+			// title
 			preg_match('#File\:(.*)\..*#', $page->title, $matches);
 			$data->title = $matches[1];
+			
+			// media
+			if ($page->imageinfo[0]->mediatype == 'BITMAP') {
+				$data->addImages(array(
+					'type' 	=>	$page->imageinfo[0]->mediatype,
+					'url'	=>	$page->imageinfo[0]->thumburl,
+					'fullres'=> $page->imageinfo[0]->url,
+					'mime'	=>	$page->imageinfo[0]->mime,
+					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+				));
+			} elseif ($page->imageinfo[0]->mediatype == 'OFFICE') {
+				$data->addImages(array(
+					'type' 	=>	'DOWNLOAD',
+					'title'	=>	'Download file: ' . $page->imageinfo[0]->url,
+					'url'	=>	$page->imageinfo[0]->thumburl,
+					'fullres'=> $page->imageinfo[0]->url,
+					'mime'	=>	$page->imageinfo[0]->mime,
+					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+				));
+			} else {
+				$data->addImages(array(
+					'type' 	=>	$page->imageinfo[0]->mediatype,
+					'url'	=>	$page->imageinfo[0]->url,
+					'mime'	=>	$page->imageinfo[0]->mime,
+					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+				));
+			}
+			//
+
+			// rest
+			foreach ($page->imageinfo[0]->extmetadata as $meta => $val) {
+				if (in_array($meta, array('ImageDescription', 'DateTime', 'License', 'Artist'))) {
+					$data->addTable($meta, $val->value);
+				}
+			}
+			
 			
 			return $data;			
 		}
