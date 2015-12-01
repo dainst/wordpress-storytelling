@@ -230,7 +230,7 @@
 .esa_item_collapsed .esa_item_media_box {
 	width: 150px;
 	float: none;
-	margin: 0px;
+	margin: 0px 0px 2px 0px;
 }
 
 .esa_item_fullres {
@@ -332,7 +332,8 @@
 }
 
 .esa_item_divider {
-	clear: both
+	clear: both;
+	height: 1px
 }
 
 /* debug */
