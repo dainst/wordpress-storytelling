@@ -15,9 +15,12 @@ namespace esa_datasource {
 		
 		public $title = 'Wikipedia';
 		
-		public $info = "<p>Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>Wikipedia</a> or insert a link to page from the english wikipedia.</p>";
+		public $info = "<p>Use the field above to search for articles in the <a href='https://en.wikipedia.org/' target='_blank'>Wikipedia</a> or insert a link to page from any wikipedia.</p>";
 	
-		public $pagination = false;
+		public $pagination = true; // are results paginated?
+		private $_hits_per_page = 9;
+		
+		public $debug = false;
 		
 		public $params = array(
 			'lang'  => 'en'
@@ -26,13 +29,15 @@ namespace esa_datasource {
 		//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
 		function api_search_url($query) {
 			$query = urlencode($query);
-			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|categories|links|info&inprop=url&pllimit=max&exintro=&format=json&redirects=&titles=$query";
-		}
+			$offset = $this->_hits_per_page * ($this->page - 1);
+			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&generator=search&redirects=&gsrsearch=$query&gsrwhat=text&exlimit=max&pilimit=max&gsrlimit={$this->_hits_per_page}&gsroffset={$offset}";
+		}                                                                          
 		
 		function api_single_url($id) {
 			$id = $this->real_id($id);
 			$id = urlencode($id);
-			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|info&inprop=url&exintro=&format=json&redirects=&titles=$id";
+			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&redirects=&titles=$id";
+
 		}
 
 		function api_record_url($id) {
@@ -47,10 +52,31 @@ namespace esa_datasource {
 			}
 		}
 		
-		function api_image_url($title) {
-			$title = urlencode($title);
-			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata&iiurlwidth=150&titles=$title&generator=images&redirects=";
+		//	pagination functions
+		function api_search_url_next($query, $params = array()) {
+			$this->page += 1;
+			return $this->api_search_url($query, $params);
 		}
+			
+		function api_search_url_prev($query, $params = array()) {
+			$this->page -= 1;
+			return $this->api_search_url($query, $params);
+		}
+			
+		function api_search_url_first($query, $params = array()) {
+			$this->page = 1;
+			return $this->api_search_url($query, $params);
+		}
+		/*	
+		function api_search_url_last($query, $params = array()) {
+			$this->page = $this->pages;
+			return $this->api_search_url($query, $params);
+		}
+		*/
+		
+		
+		
+		
 		
 		// ids look like that: wikiID@wikiLANG  -> this function strips them
 		function real_id($id) {
@@ -63,115 +89,56 @@ namespace esa_datasource {
 		
 		function parse_result_set($response, $subquery = false) {
 
-			$results = array();
+			$this->results = array();
 			
 			$response = json_decode($response);
 			
-			//echo "<pre>", print_r($response, 1), "</pre>";
+			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}
 			
-			foreach ($response->query->pages as $page) {
-				
-				if (property_exists($page, 'missing')) {
-					continue;
-				}					
-				
-				// finde Kategorien
-				$categories  = array(); 			
-				if (isset($page->categories)) {			
-					foreach ($page->categories as $category) {
-						$categories[] = $category->title;
-					}
-				}
-					
-				// Sonderfall: Disambiguation Page
-				if (in_array('Category:All disambiguation pages', $categories)) {
-					//echo "<hr><pre>".print_r($page,1)."</pre></hr>";
-					foreach ($page->links as $link) {
-						
-						if ($link->ns != 0) {
-							continue;
-						}
-						
-						$d = $this->_fetch_external_data($this->api_single_url($link->title));
-						//echo "<hr><pre>".print_r($d,1)."</pre></hr>";
-						$results = array_merge($results, $this->parse_result_set($d, true));
-					}
-				
-				// normaler Fall
-				} else {						
-					$results[] = $this->render_page($page);
-				}
-
+			foreach ($response->query->pages as $id => $page) {					
+				$this->results[] = $this->render_page($page);
 			}
 			
-			if (!$subquery) {
-				$this->results = $results;
+			// workaround because media wiki api is not respoding total amount of pages
+			
+			if (count($this->results) >= $this->_hits_per_page) {
+				$this->pages = '?';
+			} else {
+				$this->pages = $this->page;
 			}
 			
-			return $results;
+			return $this->results;
 		}
 
-		
+
 		function render_page($page) {
-				
-			// fetch image / media data
+			$data = new \esa_item\data();
 			
-			//$url = "https://en.wikipedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mime|mediatype|extmetadata&iiurlwidth=150&titles=$title&redirects=";
-				
-			$imageData = $this->_fetch_external_data($this->api_image_url($page->title));
-			$imageData = json_decode($imageData);
+			// title
+			$data->title = $page->title;
 			
-			//echo "<hr><pre>".print_r($this->api_image_url($page->title),1)."</pre>";
-			//echo "<pre>", print_r($imageData,1), "</pre>";
-
-			$subhtml = '';
-			if (isset($imageData->query->pages)) {
-				foreach ($imageData->query->pages as $imageItem) {
-					
-					//$skip_images = array( 'File:Commons-logo.svg', 'File:Boxed East arrow.svg', 'File:Openstreetmap logo.svg', 'File:PD-icon.svg', 'File:Question book-new.svg', 'File:Wiktionary-logo-en.svg', 'File:Folder Hexagonal Icon.svg', 'File:Wikiquote-logo.svg', 'File:Edit-clear.svg', 'File:Wikisource-logo.svg', 'File:Crystal personal.svg', 'File:Portal-puzzle.svg', 'File:Ambox important.svg', 'File:Text document with red question mark.svg', 'File:P vip.svg', 'File:Gloriole blur.svg', 'File:Star empty.svg', 'File:Star full.svg', 'File:Star half.svg', 'File:WPanthroponymy.svg', 'File:Gnome-dev-cdrom-audio.svg'
-					//if (in_array($imageItem->title, $skip_images)) {continue;}
-					
-					$text = strip_tags($imageItem->imageinfo[0]->extmetadata->ImageDescription->value);
-					$drlink = "<a href='{$imageItem->imageinfo[0]->url}' target='_blank'>{$imageItem->imageinfo[0]->title}</a>";
-					
-					switch($imageItem->imageinfo[0]->mediatype) {
-						case 'BITMAP':$subhtml .= "<div class='esa_item_main_image' style='background-image:url(\"{$imageItem->imageinfo[0]->thumburl}\")' title='{$imageItem->title}'>&nbsp;</div><div class='esa_item_subtext'>{$text}</div>"; break;
-						case 'AUDIO': $subhtml .= "<audio controls><source src='{$imageItem->imageinfo[0]->url}' type='{$imageItem->imageinfo[0]->mime}'>$drlink</audio><div class='esa_item_subtext'>{$text}</div>"; break;
-						case 'VIDEO': $subhtml .= "<video controls><source src='{$imageItem->imageinfo[0]->url}' type='{$imageItem->imageinfo[0]->mime}'>$drlink</video><div class='esa_item_subtext'>{$text}</div>"; break;
-						case 'DRAWING': break;
-						default: $subhtml .= $drlink;
-					}
-								
-					//$subhtml .= "<b>{$imageItem->imageinfo[0]->mediatype}</b>";
-					//$subhtml .= "<textarea>".print_r($imageData,1)."</textarea>";
-					//$subhtml .= '<hr>';
-				}
+			// media
+			if ($page->thumbnail) {
+				$data->addImages(array(
+					'type' 	=>	'BITMAP',
+					'url'	=>	$page->thumbnail->source,
+					'fullres'=> $page->thumbnail->original
+				));
 			}
-				
-			if ($subhtml) {	
-				$html  = "<div class='esa_item_left_column'>";
-				$html .= $subhtml;
-				$html .= "</div>";
-				$html .= "<div class='esa_item_right_column'>";
-			} else {
-				$html .= "<div class='esa_item_single_column'>";
-			}
-				
-
-			$html .= "<h4>{$page->title}</h4>";
-			$html .= "<p>{$page->extract}</p>";
-			$html .= "</div>";
 			
+			// extract
+			$data->addTable('', $page->extract . "<br><a href='{$page->fullurl}' target='_blank'>Read Full Article</a>");
+
+			//id
 			$id = $page->title . '@' . $this->params['lang'];
-			
-			return new \esa_item('wiki', $id, $html, $page->fullurl);
+
+			return new \esa_item('wiki', $id, $data->render(), $page->fullurl);
 		}
 		
 		function parse_result($response) {
-			// wikipedia always return a whole set
 			$response = json_decode($response);
 			
-			//echo "<pre>", print_r($response, 1), "</pre>";die();
+			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}
 			
 			foreach ($response->query->pages as $page) {
 				return $this->render_page($page);

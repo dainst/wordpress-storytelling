@@ -8,18 +8,19 @@ namespace esa_item {
 		public $table = array();
 		public $text = array();
 		
+		
 		function addTable($key, $value) {
 			if (isset($this->table[$key])) {
-				$this->table[$key] = $value . ', ' . $this->table[$key];
+				return $this->table[$key] = $this->table[$key] . ', ' . $value;
 			}
-			$this->table[$key] = $value;
+			return $this->table[$key] = $value;
 		}
 		
 		function addText($key, $value) {
-			if (isset($this->table[$key])) {
-				$this->table[$key] = $value . '<br>' . $this->table[$key];
+			if (isset($this->text[$key])) {
+				return $this->text[$key] = $this->text[$key] . '<br>' . $value;
 			}
-			$this->table[$key] = $value;
+			return $this->text[$key] = $value;
 		}
 		
 		function addImages($image) {
@@ -45,14 +46,13 @@ namespace esa_item {
 				}
 		
 				if (count($this->images)) {
+					$i = 0;
 					foreach($this->images as $image)  {
-						if ($image instanceof \esa_item\image) { //vorrübergehend beide Lösungen akzeptiren
+						if ($image instanceof \esa_item\image) {
 							$html .= $image->render();
-								
-						} else {
-							$html .= "<div class='esa_item_main_image' style='background-image:url(\"{$image->url}\")' title='{$image->title}'>&nbsp;</div>";
-							$html .= "<div class='esa_item_subtext'>{$image->text}</div>";
-						}
+							$i++;
+							$html .= (($i % 4) == 0) ? "<div class='esa_item_divider'>&nbsp;</div>" : '';
+						} 
 					}
 				}
 		
@@ -65,15 +65,14 @@ namespace esa_item {
 				
 			$html .= "<h4>{$this->title}</h4><br>";
 				
-		
-				
 			if (count($this->table)) {
 				$html .= "<ul class='datatable'>";
 				foreach ($this->table as $field => $value) {
-					$value = trim($value);
+					$value = (is_array($value)) ? implode(', ', $value) : trim($value);
 					if ($value) {
 						$label = $this->_label($field);
-						$html .= "<li><strong>{$label}: </strong>{$value}</li>";
+						$label = $label ? "<strong>{$label}: </strong>" : '';
+						$html .= "<li>$label $value</li>";
 						//$html .='<textarea>' . print_r($value,1) . "</textarea>";
 					}
 				}
@@ -98,7 +97,9 @@ namespace esa_item {
 					'provider' => 'Content Provider',
 					'ancientFindSpot' => 'Ancient find spot',
 					'modernFindSpot' =>  'Modern find spot',
-					'origDate' => 'Date'
+					'origDate' => 'Date',
+					'ImageDescription' => 'Description',
+					'DateTime' => "Created at"
 			);
 		
 			return (isset($labels[$of])) ? $labels[$of] : $of;
@@ -129,31 +130,32 @@ namespace esa_item {
 			
 			$drlink = "<a href='{$this->url}' target='_blank'>{$this->title}</a>";
 			
-			$text = "<div class='esa_item_subtext'>{$this->text}</div>";
+			$text = $this->text ? "<div class='esa_item_subtext'>{$this->text}</div>" : '';
 			
 			switch($this->type) {
 				case 'DRAWING':
+					$class = 'esa_item_svg';
 				case 'BITMAP':
 				case 'IMAGE':
-					$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
 					$drurl = ($this->fullres) ? $this->fullres : $this->url;
-					if((($this->type == 'BITMAP') and ($this->fullres)) or ($this->type == 'DRAWING')) {
-						$image = "<a href='$drurl' title='{$this->title}' class='thickbox'>$image</a>";
+					$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
+					if($this->fullres or ($this->type == 'DRAWING')) {
+						$image = "<a href='$drurl' title='{$this->title}' class='thickbox'>$image<img class='esa_item_fullres $class' src='' data-fullsize='$drurl' alt='{$this->title}' /></a>";
+					} else {
+						$image = "$image<img class='esa_item_fullres' src='' data-fullsize='$drurl' alt='{$this->title}' />";
 					}
 					$html = $image; 
 				break;
 				
 				case 'AUDIO': 
-					$html = "<audio controls class='esa_item_multimedia'><source src='{$this->url}' type='{$this->mime}'>$drlink</audio><div class='esa_item_subtext'>{$this->text}</div>"; 
+					$html = "<audio controls class='esa_item_multimedia'><source src='{$this->url}' type='{$this->mime}'>$drlink</audio>"; 
 				break;
 				
 				case 'VIDEO': 
 					$html = 
-					"<div id='$id'>
-						<video controls class='esa_item_multimedia'>
+						"<video controls class='esa_item_multimedia'>
 							<source src='{$this->url}' type='{$this->mime}'>$drlink
-						</video>
-					</div>";
+						</video>";
 				break;
 				
 				case 'DOWNLOAD':
@@ -162,7 +164,7 @@ namespace esa_item {
 
 			}
 				
-			return $html . $text;
+			return "<div class='esa_item_media_box $class'>$html $text</div>";
 		}
 	
 	}

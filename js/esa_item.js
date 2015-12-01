@@ -13,15 +13,15 @@
 
 
 jQuery(document).on('mouseenter', '.esa_item', function() {
-	if(
+	/*if(
 		(jQuery(this).find('.esa_item_inner').height() > 200) ||
 		(jQuery(this).find('.esa_item_left_column_max_left').height() > 200) ||
 		(jQuery(this).find('.esa_item_left_column').height() > 200) ||
 		(jQuery(this).find('.esa_item_map').length) ||
 		(jQuery(this).find('.sub2').length)
-	) {
+	) {*/
 		jQuery(this).find('.esa_item_resizebar').fadeIn('slow');	
-	}
+	//}
 	
 });
 
@@ -30,13 +30,54 @@ jQuery(document).on('mouseleave', '.esa_item', function() {
 });
 
 jQuery(document).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
-	jQuery(this).parents('.esa_item').toggleClass('esa_item_collapsed');
+	var thisItem = jQuery(this).parents('.esa_item');
+	thisItem.toggleClass('esa_item_collapsed');
 	
-	if (mapDiv = jQuery(this).parents('.esa_item').find('.esa_item_map')[0]) {
+	// map
+	if (mapDiv = thisItem.find('.esa_item_map')[0]) {
 		var mapId = jQuery(mapDiv).attr('id');
 		//console.log(mapId);
 		esa_maps[mapId].invalidateSize();
 	}
+	
+	// on Expand
+	var isExpanding = false;
+	if (!thisItem.hasClass('esa_item_collapsed')) {
+		
+		var mediaBoxes = thisItem.find('.esa_item_media_box');
+		//console.log('expansion', mediaBoxes.length);
+		
+		if (mediaBoxes.length == 0) {
+			return;
+		}
+
+		var itmWidth = thisItem.width();
+			
+		thisItem.removeClass('esa_item_media_size_1');
+		thisItem.removeClass('esa_item_media_size_2');
+		thisItem.removeClass('esa_item_media_size_3');
+		thisItem.removeClass('esa_item_media_size_4');
+		
+		var b = Math.min(mediaBoxes.length, 4);
+		var p = Math.min(Math.floor(itmWidth / 150), 4);
+		var s = Math.min(b,  p);
+		//console.log(itmWidth, b, p, s);
+
+		thisItem.addClass('esa_item_media_size_' + s);
+
+		//load fullres images of not allready  (because good guy me always tries to save some traffic)
+		jQuery.each(thisItem.find('.esa_item_fullres'), function(i, item) {
+			if (typeof jQuery(item).src === 'undefined') {
+				jQuery(item).attr('src', jQuery(item).data('fullsize'));
+			}
+			//console.log(jQuery(item).src, jQuery(item).data('fullsize'));
+
+		});
+		
+		
+	}
+	
+
 });
 
 jQuery(document).on('mouseenter', '.esa_item_tools a', function(e) {		

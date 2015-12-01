@@ -22,11 +22,7 @@ namespace esa_datasource {
 		
 		public $pagination = true; // are results paginated?
 		private $_hits_per_page = 9;
-		
-		
-		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
-		public $require = array();  // require additional classes -> array of fileanmes	
 		
 		function api_search_url($query, $params = array()) {
 			$offset = $this->_hits_per_page * ($this->page - 1);
