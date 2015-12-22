@@ -10,12 +10,14 @@
  */
 namespace esa_datasource {
 	class europeana extends abstract_datasource {
-		
+		public $debug = false;
 
 		public $title = "Europeana";
 		public $homeurl = "http://www.europeana.eu/portal/";
 
 		private $_hits_per_page = 24;
+		
+		public $url_parser = '#https?\:\/\/(www\.)?europeana\.eu\/portal\/record(.*)\.html.*#';
 		
 		function api_search_url($query, $params = array()) {
 			$query = urlencode($query);
@@ -57,11 +59,7 @@ namespace esa_datasource {
 			return "http://www.europeana.eu/portal/record$id.html";
 		}
 		
-		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/(www\.)?europeana\.eu\/portal\/record(.*)\.html.*#', $string, $match)) {
-				return $this->api_single_url($match[2]);
-			}
-		}
+
 		
 		private function _api_params_url_part($params) {
 			$return = '';

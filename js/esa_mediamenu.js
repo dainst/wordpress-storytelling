@@ -5,7 +5,7 @@
  * @author 		Philipp Franck
  *
  * 
- * Some Javascript functionality of the "Add Media" dialogue. Quite impoertant.
+ * Some Javascript functionality of the "Add Media" dialogue. Quite important.
  * 
  *
  */

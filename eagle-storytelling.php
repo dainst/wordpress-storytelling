@@ -18,6 +18,7 @@ Copyright (C) 2015  Deutsches Archäologisches Institut
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
+as published by the Free Software Foundation; either version 2
 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -37,7 +38,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Settings
+ * ******************************************* Settings
  */
 define('ESA_DEBUG', false);
 
@@ -50,8 +51,9 @@ require_once('esa_datasource.class.php');
 require_once('esa_item.class.php');
 require_once('esa_item_transfer.class.php');
 
+
 /**
- * Installation
+ * ******************************************* Installation
  */
 function esa_install () {
 
@@ -96,9 +98,10 @@ function esa_install () {
 register_activation_hook( __FILE__, 'esa_install');
 
 
-
+		
+		
 /**
- * Settings page
+ *  ******************************************* Settings page
  */
 
 add_action('admin_menu', function () {
@@ -163,6 +166,20 @@ add_action('admin_menu', function () {
 
 });
 
+/**
+ * the caching mechanism for esa_items
+ *
+ * how it works: everytime a esa_item get displayed, it look in the cache if there is a non expired cache of this item. if not,
+ * it fetches the contents from the corresponding api and caches it
+ * that has two reasons:
+ * - we want to make the embedded esa_items searchable
+ * - page loading would be quite slow, if every items content had to be fetched again from the api
+ *
+ * how long may content be kept in cache? that has to be diskussed.
+ *
+ *
+ */
+
 add_action('admin_action_esa_flush_cache', function() {
 	global $wpdb;
 	
@@ -189,47 +206,10 @@ add_action('admin_action_esa_save_settings' ,function() {
     exit();
 });
 
-add_action('save_post', function($post_id) {
-		
-	$post = get_post($post_id);
-	global $wpdb;
-
-	if (!wp_is_post_revision($post_id) and is_esa($post->post_type)) { 
-		
-		$regex = get_shortcode_regex();
-		preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
-
-		//echo "<pre>", print_r($shortcodes,1), "</pre>";
-		
-		if ($shortcodes) {
-			
-			$sql = "delete from wp_esa_item_to_post where post_id='$post_id'";
-			$wpdb->query($sql);
-			
-			foreach($shortcodes as $shortcode) {
-				if ($shortcode[2] == 'esa') {
-					$atts = shortcode_parse_atts($shortcode[3]);
-					echo "<pre>", print_r($atts,1), "</pre>";
-					
-					$wpdb->insert(
-							$wpdb->prefix . 'esa_item_to_post',
-							array(
-									"post_id" => $post_id,
-									"esa_item_source" => $atts['source'],
-									"esa_item_id" => $atts['id']
-							)
-					);
-					
-					
-				}
-			}
-		}
-	}		
-});
 
 
 /**
- * Register style sheets and javascript
+ * ******************************************* Register style sheets and javascript
  */
 
 add_action('wp_enqueue_scripts', function() {
@@ -252,17 +232,111 @@ add_action('wp_enqueue_scripts', function() {
 		//js
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('thickbox');
+		
+		//wp_enqueue_script('leaflet.js', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js');
+		
 	}
 });
+
+add_action('admin_init', function() {
+
+	/**
+	 * tinyMCE with esa_objects
+	 */
+
+	add_filter("mce_external_plugins", function($plugin_array) {
+		$plugin_array['esa_mce'] = plugins_url() . '/eagle-storytelling/js/esa_mce.js';
+		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling/js/esa_item.js';
+		//$plugin_array['noneditable'] = plugins_url() . '/eagle-storytelling/js/mce_noneditable.js';
+		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item.css');
+		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item-mce.css');
+		return $plugin_array;
+	});
+	
+	//wp_enqueue_script('leaflet.js', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js');
+
+	add_filter('mce_buttons', function($buttons) {
+		array_push($buttons, 'whatever');
+		return $buttons;
+	});
+
+	// stylesteeht
+	wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
+	esa_item_special_styles();
+});
+
+// registers additional stylesheet for enabled datasources
+function esa_item_special_styles() {
+
+	$datasources = json_decode(get_option('esa_datasources'));
+	if (!is_array($datasources)) {
+		$datasources  = array();
+	}
+	$css = array();
+	foreach ($datasources as $ds) {
+		$dso = get_esa_datasource($ds);
+		// stylsheets
+		$cssInfo = $dso->stylesheet();
+		if (isset($cssInfo['css']) and $cssInfo['css']) {
+			$css[$cssInfo['name']] = "\n\n/* {$cssInfo['name']} styles ($ds)  */\n" . $cssInfo['css']; // names to avoid dublication if some datasources share the same styles e. g. epidoc
+		}
+		if (isset($cssInfo['file']) and $cssInfo['file']) {
+			wp_enqueue_style('esa_item_' . $cssInfo['name'], $cssInfo['file']);
+		}
+
+
+	}
+
+	wp_add_inline_style('esa_item', implode('\n', $css));
+
+};
 
 
 
 /**
  * 
- * Make search able to search inside of esa_item_cache to find Entries by it's content in esa item. 
+ * ******************************************* Search
  * 
- * 
+ * Make search able to search inside of esa_item_cache to find entries by it's content in esa item. 
  */
+
+add_action('save_post', function($post_id) {
+
+	$post = get_post($post_id);
+	global $wpdb;
+
+	if (!wp_is_post_revision($post_id) and is_esa($post->post_type)) {
+
+		$regex = get_shortcode_regex();
+		preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
+
+		//echo "<pre>", print_r($shortcodes,1), "</pre>";
+
+		if ($shortcodes) {
+				
+			$sql = "delete from wp_esa_item_to_post where post_id='$post_id'";
+			$wpdb->query($sql);
+				
+			foreach($shortcodes as $shortcode) {
+				if ($shortcode[2] == 'esa') {
+					$atts = shortcode_parse_atts($shortcode[3]);
+					echo "<pre>", print_r($atts,1), "</pre>";
+						
+					$wpdb->insert(
+							$wpdb->prefix . 'esa_item_to_post',
+							array(
+									"post_id" => $post_id,
+									"esa_item_source" => $atts['source'],
+									"esa_item_id" => $atts['id']
+							)
+					);
+						
+						
+				}
+			}
+		}
+	}
+});
 
 add_filter('query_vars', function($public_query_vars) {
 	$public_query_vars[] = 'esa_item_source';
@@ -326,7 +400,7 @@ add_action('found_posts', function() {
 
 
 /** 
- * add media submenu!
+ * *******************************************add media submenu!
  */
 
 // add them to media menu
@@ -350,7 +424,7 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_style('thickbox');
 		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
 		esa_item_special_styles();
-		wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
+		wp_enqueue_style('esa_item-mediaframe', plugins_url() .'/eagle-storytelling/css/esa_item-mediaframe.css');
 	});
 	
 	
@@ -368,28 +442,6 @@ add_action('media_upload_esa', function() {
 	return wp_iframe('media_esa_dialogue'); 
 });
 
-function esa_item_special_styles() {
-	
-	$datasources = json_decode(get_option('esa_datasources'));
-	if (!is_array($datasources)) {
-		$datasources  = array();
-	}
-	$css = array();
-	foreach ($datasources as $ds) {
-		$dso = get_esa_datasource($ds);
-		$cssInfo = $dso->stylesheet();
-		if (isset($cssInfo['css']) and $cssInfo['css']) {
-			$css[$cssInfo['name']] = "\n\n/* {$cssInfo['name']} styles ($ds)  */\n" . $cssInfo['css']; // names to avoid dublication if some datasources share the same styles e. g. epidoc
-		}
-		if (isset($cssInfo['file']) and $cssInfo['file']) {
-			wp_enqueue_style('esa_item_' . $cssInfo['name'], $cssInfo['file']);
-		}
-	}
-
-	wp_add_inline_style('esa_item', implode('\n', $css));
-	
-};
-
 
 function media_esa_dialogue() {
 	
@@ -402,7 +454,7 @@ function media_esa_dialogue() {
 	$eds = get_esa_datasource(isset($_GET['esa_source']) ? $_GET['esa_source'] : $esa_datasources[0]);
 	
 	$post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
-	
+	$item_id = isset($_GET['esa_id']) ? $_GET['esa_id'] : null;
 	
 	//media_upload_header();
 	
@@ -471,7 +523,8 @@ function media_esa_dialogue() {
 
 	
 	//echo "<h3 class='media-title'>{$eds->title}</h3>";
-	$success = $eds->search();	
+	$query = $item_id ? $eds->api_record_url($item_id) : null;
+	$success = $eds->search($query);	
 	$eds->search_form();
 	echo '<div id="media-items">';
 	if ($success) {
@@ -498,9 +551,9 @@ function media_esa_dialogue() {
 }
 
 
-
 /**
- *  the esa_item shortcode 
+ * ******************************************* the esa_item shortcode / URL Embed
+ * 
  *  
  *  attribute
  *  id (mandatory) - unique id of the datatset as used in the external data source 
@@ -515,6 +568,15 @@ function media_esa_dialogue() {
  *  [esa source="wiki" id="berlin"] 
  *  
  */
+
+add_action('init', function() {
+	
+	// shortcode
+	add_shortcode('esa', 'esa_shortcode');
+
+});
+
+
 
 
 function esa_shortcode($atts, $context) {
@@ -550,124 +612,123 @@ function esa_shortcode($atts, $context) {
 	$item = new esa_item($atts['source'], $atts['id'], false, false, $classes, $css);
 
 	
-	ob_start();
-	$item->html();
-	return ob_get_clean();
+	
+	return $item->html(true);
 	
 
 }
 
-add_shortcode('esa', 'esa_shortcode');
+add_action('wp_ajax_esa_shortcode', function() {
+	if (isset($_POST['shortcode'])) {
 
+		$result = array();
 
+		$result['shortcode'] = rawurldecode($_POST['shortcode']);
+		
+		$result['esa_item'] = do_shortcode(str_replace('\\', '', rawurldecode($_POST['shortcode'])));
 
-/** 
- * the caching mechanism for esa_items 
- * 
- * how it works: everytime a esa_item get displayed, it look in the cache if there is a non expired cache of this item. if not,
- * it fetches the contents from the corresponding api and caches it
- * that has two reasons: 
- * - we want to make the embedded esa_items searchable
- * - page loading would be quite slow, if every items content had to be fetched again from the api
- * 
- * how long may content eb kept in cache? that has to be diskussed.
- * 
- * 
- */
+		$result['debug'] = str_replace('\\', '', rawurldecode($_POST['shortcode']));
 
+		echo json_encode($result);
 
-
-
-
-
-/**
- * tinyMCE with esa_objects 
- * 
- * 
- */
-
-
-add_action('init', function() {
-
-	add_filter("mce_external_plugins", function($plugin_array) {
-		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling/js/esa_mce.js';
-		$plugin_array['noneditable'] = plugins_url() . '/eagle-storytelling/js/mce_noneditable.js';
-		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item.css');
-		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
-		return $plugin_array;
-	});
-	
-	add_filter('mce_buttons', function($buttons) {
-		array_push($buttons, 'whatever');
-		return $buttons;
-	});
-	
+		wp_die();
+	}
+	wp_send_json_error(array(
+			'type' => 'esa',
+			'message' => 'no shortcode'
+	));
 });
 
-
-add_action('wp_ajax_esa_shortcode', function() {
-	if (isset($_POST['esa_shortcode'])) {
+add_action('wp_ajax_esa_url_checker', function() {
+	
+	if (isset($_POST['esa_url'])) {
+		
+		$url = rawurldecode($_POST['esa_url']);
 		
 		$result = array();
 		
-		if (!isset($_POST['featured_image']) or ($_POST['featured_image'] == '')) {
-			$post_id = $_POST['post_id'];
-			$thumpnail = get_post_meta($post_id, 'esa_thumbnail', true);
-			$result['featured_image'] = $thumpnail;
+		$result['debug'] = array();
+		$result['debug'][] = 'check url: ' . $url;
+		
+		$datasources = json_decode(get_option('esa_datasources'));
+		if (!is_array($datasources)) {
+			$datasources  = array();
 		}
-		
-		$result['esa_item'] = do_shortcode(str_replace('\\', '', rawurldecode($_POST['esa_shortcode'])));
+		foreach ($datasources as $ds) {
+			$dso = get_esa_datasource($ds);
 
-		//$result['debug'] = $post;
-		
-		echo json_encode($result);
-		
-		wp_die();
-	}
-	echo "ERROR"; // todo: do something more useful
-	wp_die();
-});
-
-add_action('wp_ajax_esa_set_featured_image', function() {
-	
-	
-	if (isset($_POST['image_url']) and isset($_POST['post'])) {
-		
-		$image_url = $_POST['image_url'];
-		$post_id = $_POST['post'];
+			$result['debug'][] = "check against: $ds";
+			// @todo try & catch
+			$maybe_item = (!$dso->id_is_url) ? $dso->get_by_url($url) : false; 
 			
-		if (!add_post_meta($_POST['post'], 'esa_thumbnail', $image_url, true)) {
-			update_post_meta($_POST['post'], 'esa_thumbnail', $image_url);
+			if ($maybe_item instanceof \esa_item)  {
+				$result['shortcode'] = "[esa source=\"{$maybe_item->source}\" id=\"{$maybe_item->id}\" creator=\"wp_ajax_esa_url_checker\"]";
+				$result['esa_item'] = $maybe_item->html(true);
+				wp_send_json_success($result);
+			}
+			
 		}
-		
-		echo $image_url;
-		wp_die();
-	}
-	echo 'ERROR'; // 
-	wp_die();
-});
 
+		$_POST['shortcode'] = "[embed src=\"$url\"]";
+		wp_ajax_parse_embed();
+
+	}
+	
+	wp_send_json_error(array(
+		'type' => 'esa_error',
+		'subtype' => 'no_url',
+		'message' => 'no esa url'
+	));
+});
 
 
 
 /**
- *  thumbnailing
+ *  ******************************************* thumbnailing
+ *  esa thumbnail > regular thumbnail
+ *  
  */
 
-function esa_thumpnail($post, $return = false) {
+add_action('wp_ajax_esa_set_featured_image', function() {
+
+	if (isset($_POST['image_url']) and isset($_POST['post'])) {
+
+		$image_url = $_POST['image_url'];
+		$post_id = $_POST['post'];
+		
+		delete_post_meta($post_id, 'esa_thumbnail');
+		
+		if (($image_url != '%none%') and !add_post_meta($post_id, 'esa_thumbnail', $image_url, true)) {
+			update_post_meta($post_id, 'esa_thumbnail', $image_url);
+		}
+
+
+		wp_send_json_success(array('image_url' => $image_url));
+
+	}
 	
-	// check if esa thumpnail exists
+	wp_send_json_error(array(
+		'type' => 'esa',
+		'message' => 'set featured image error',
+		'post' => $_POST
+	));
+});
+
+
+function esa_thumbnail($post, $return = false) {
+	
+	// check if esa thumbnail exists
 	if ($esa_thumbnail_url = get_post_meta($post->ID, 'esa_thumbnail', true)) {
 		$thumbnail = "<img src='$esa_thumbnail_url' alt='thumbnail' />";
 	}
 	
-	// check if regular thumpnail exists
+	// check if regular thumbnail exists
 	if (!$thumbnail) {
 		$thumbnail = get_the_post_thumbnail($post->ID, array(150, 150));
 	}
 
 	if (!$return) {
-		echo "<div class='story-thumpnail'>$thumbnail</div>";
+		echo "<div class='story-thumbnail'>$thumbnail</div>";
 	}
 
 	return $thumbnail;
@@ -678,31 +739,43 @@ add_filter('admin_post_thumbnail_html', function($html) {
 	
 	global $post;
 	
-	$thumbnail = '';
-	$style1 = 'style="display: none;"';
-	$style2 = 'style="display: block;"';
-	
-	// check if esa thumpnail exists
-	if ($esa_thumbnail_url = get_post_meta($post->ID, 'esa_thumbnail', true)) {
-		$thumbnail = "";
-		$style2 = 'style="display: none;"';
-		$style1 = 'style="display: block;"';
-	}
 
-	$text1 = "Featured image from embedded content. Use the <img src='' alt='img'>-buttons in the upper right corner of embedded content to select or deselect.</p>";
-	$text2 = "Use this to select a featured image from the media library or to upload images. Alternatively use the <img src='' alt='img'>-buttons in the upper right corner of embedded content to set Images from there as featured image.</p>";	
+	// check if esa or regular thumbnail exists
+	$esa_thumbnail_url = get_post_meta($post->ID, 'esa_thumbnail', true);
+	$class = $esa_thumbnail_url ? 'hasEsathumbnail' : '';
 	
-	return "<span id='esa_thumpnail_content_1' $style1>
-				<img id='esa_thumpnail_admin_picture' src='$esa_thumbnail_url' alt='{$post->post_title}' /> 
-				<p>$text1</p>
-			</span>
-			<span id='esa_thumpnail_content_2' $style2>
-				$text2 $html
-			</span>";
+	$reg_thumbnail = get_the_post_thumbnail($post->ID);
+	$class .= $reg_thumbnail_url ? 'hasthumbnail ' : '';
+	
+
+
+	
+	return "<div id='esa_thumbnail_chooser' class='$class'>
+				<span id='esa_thumbnail_current_esa'>
+					<img id='esa_thumbnail_admin_picture' src='$esa_thumbnail_url' alt='' /></p>
+					<p><a href='#' id='esa_unfeatured_btn'>Remove featured image</a></p>
+				</span>
+				<span id='esa_thumbnail_set_esa' style='display: none;'>
+					<p><a href='#' id='esa_featured_btn'>Use selected item as featured Image</a></p>
+				</span>
+				
+				<span id='esa_thumbnail_set_other'>
+					<p>Select thumbanil from harddrive or media library:</p>
+					$html
+				</span>
+			</div>
+";
 });
 
+
+
+
+
+
+
+
 /**
- * useful functions
+ * ******************************************* useful functions
  */
 function is_esa($post_type) {
 	global $is_esa_story_page;

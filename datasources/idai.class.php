@@ -41,9 +41,13 @@ namespace esa_datasource {
 			$query = urlencode($id);
 			return "http://gazetteer.dainst.org/app/#!/show/$id";
 		}
-			
+
+		
+		
+		public $url_parser = '#https?:\/\/gazetteer\.dainst\.org\/(app\/\#\!\/show|place)\/(.*)\??.?#';
+		
 		function api_url_parser($string) {
-			if (preg_match('#https?:\/\/gazetteer\.dainst\.org\/(app\/\#\!\/show|place)\/(.*)\??.?#', $string, $match)) {
+			if (preg_match($this->url_parser, $string, $match)) {
 				
 				//http://gazetteer.dainst.org/place/2059461 or ttp://gazetteer.dainst.org/app/#!/show/2059461
 				

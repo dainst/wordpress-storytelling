@@ -43,8 +43,13 @@ class esa_item {
 	/**
 	 * put out the html representation of this item
 	 */
-	public function html() {
-				
+	public function html($return = false) {
+		
+		if ($return) {
+			ob_start();
+		}
+		
+		
 		if (!$this->html) {
 			$this->_generator();
 		}
@@ -63,10 +68,14 @@ class esa_item {
 		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_collapsed esa_item_{$this->source} $classes' $css_string>";
 		
 		echo "<div class='esa_item_tools'>";
+		
 		echo "<a href='#' title='expand' class='esa_item_tools_expand'>&nbsp;</a>";
+		
 		echo ($this->url) ? "<a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>&nbsp;</a>" : '';
+		
 		$url = get_bloginfo('url');
 		echo "<a href='$url?s&post_type=story&esa_item_id={$this->id}&esa_item_source={$this->source}' class='esa_item_tools_find' title='Find Stories with this Item'>&nbsp;</a>";
+		
 		echo "</div>";
 		
 		echo "<div class='esa_item_inner'>"; 
@@ -78,7 +87,14 @@ class esa_item {
 		echo "</div>";
 		
 		echo "</div>";
+		
+		if ($return) {
+			return ob_get_clean();
+		}
+		
 	}
+	
+	
 	
 	/**
 	 * generates the html-representation of this item using the corresponding engine 
@@ -181,7 +197,5 @@ class esa_item {
 	}
 	
 }
-
-
 
 ?>

@@ -38,9 +38,10 @@ namespace esa_datasource {
 			return  "https://commons.wikimedia.org/wiki/?curid=$id";
 		}
 			
+		public $url_parser = '#https?\:\/\/commons.wikimedia.org\/wiki\/(.*\#\/media\/)?(File\:.*)#';
 		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/commons.wikimedia.org\/wiki\/(.*\#\/media\/)?(File\:.*)#', $string, $match)) {
-
+			if (preg_match(urldecode($this->url_parser), $string, $match)) {
+				
 				$title = urlencode($match[2]);
 				$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata|mime&iiurlwidth=150&titles=$title";
 				
@@ -51,6 +52,7 @@ namespace esa_datasource {
 				return $url;
 			}
 		}
+		
 		//	pagination functions
 		function api_search_url_next($query, $params = array()) {
 			$this->page += 1;
@@ -83,7 +85,7 @@ namespace esa_datasource {
 			}
 			
 			// workaround because media wiki api is not respoding total amount of pages
-			echo count($this->results);
+
 			if (count($this->results) >= $this->_hits_per_page) {
 				$this->pages = '?';
 			} else {

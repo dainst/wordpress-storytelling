@@ -45,8 +45,10 @@ namespace esa_datasource {
 			return "https://{$this->params['lang']}.wikipedia.org/?curid=$id";
 		}
 		
+		public $url_parser = '#https?\:\/\/(..)\.wikipedia\.org\/wiki\/(.*)#';
+		
 		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/(..)\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
+			if (preg_match($this->url_parser, $string, $match)) {
 				$this->params['lang'] = $match[1];
 				return $this->api_single_url($match[2]);
 			}

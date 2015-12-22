@@ -23,6 +23,7 @@ namespace esa_datasource {
 		public $homeurl; // homepage of this datasource
 		public $examplesearch; // placeholder for search field
 		public $searchbuttonlabel = 'Search'; // label for searchbutton
+		public $id_is_url = false; // is important to know about datasource
 		
 		public $debug = false;
 		
@@ -48,6 +49,9 @@ namespace esa_datasource {
 		// require additional classes -> array of files
 		public $require = array();
 		public $path;
+		
+		// list of regexes to realize regexes of this kind: fale | string | array of string
+		public $url_parser = false;
 		
 		/**
 		 * some initialation
@@ -109,9 +113,9 @@ namespace esa_datasource {
 		 * 
 		 * @return array of result, wich has to be parsed by $this->parse_result_set or false if error
 		 */
-		function search() {
+		function search($query = null) {
 			try {
-				$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : null;
+				$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
 				
 				if (!$query) {
 					return;
@@ -195,14 +199,14 @@ namespace esa_datasource {
 			}
 				
 			$response = $this->_fetch_external_data($url);
-			
-			if (ESA_DEBUG) {
+			/*
+			if ($this->debug) {
 				echo "<pre>";
 				echo "url: ", $url, "\nPOST: ", print_r($_POST,1 ), "\nResponse: ";
 				print_r((array) json_decode($response));
 				echo "</pre>";
 			}
-			
+			*/
 			return $response;
 		}
 		
@@ -226,7 +230,30 @@ namespace esa_datasource {
 		
 		abstract function api_record_url($id);
 		
-		abstract function api_url_parser($id);
+		
+		/**
+		 * 
+		 * checks if the URL pasted comes from this sources and returns the url to this dataset
+		 * 
+		 * in implementation rewrite function or set up the 
+		 * $url_parser array
+		 * 
+		 * 
+		 * @param string $string
+		 */
+		function api_url_parser($string) {
+			if (!$this->url_parser) {
+				return $string;
+			}
+			if (!is_array($this->url_parser)) {
+				$this->url_parser = array($this->url_parser);
+			}
+			foreach ($this->url_parser as $regex) {
+				if (preg_match($regex, $string, $match)) {
+					return $this->api_single_url(array_pop($match));
+				}
+			}
+		}
 		
 		/**
 		 * 
@@ -416,7 +443,7 @@ namespace esa_datasource {
 			
 			if (!$json = file_get_contents($url)) {
 				$this->error('some error');
-				throw new \Exception('no response!');
+				throw new \Exception("no response to $url!");
 				
 			}
 			
@@ -476,8 +503,64 @@ namespace esa_datasource {
 		}
 		
 		
+		function get_by_url($query) {
+			if ($url = $this->api_url_parser($query)) {
+				return $this->parse_result($this->_generic_api_call($url));
+			}
+		}
+		
+		
+		function get_source_name() {
+			return array_pop(explode('\\', get_class($this)));
+		}
+		
+		
+		/**
+		 *
+		 * wordpressstuff wich does'nt belong here but...
+		 * 
+		 * @param unknown $matches
+		 * @param unknown $attr
+		 * @param unknown $url
+		 * @param unknown $rawattr
+		 * @return string
+		 
+		function esa_wordpress_embed($matches, $attr, $url, $rawattr) {
+			
+			error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
+			ini_set('display_errors', 1);
+			/**
+			 *
+			 * Der Plan: Wir schreiben diese funktion jetzt ALS OB wir schon eine Lösung gefunden hätten, die Änderungen dauerhaft zu machen.
+			 *
+			 * Dann wäre es nicht schlimm, api_url_parser laufen zu lassen udn die Abk. die ID direkt aus der url zu ziehen ist egal  (weil included)
+			 *https://commons.wikimedia.org/wiki/Category:Abstract_expressionism#/media/File:Action_painting_1.JPG
+			 *
+			 *
+			 *http://www.europeana.eu/portal/record/2026002/images_artimage_1234_jpg.html
+			 
+				
+			$url = $matches[0];
+			$item = $this->get_by_url($url);
+			
+			//return "<div style='background:red'>$url</div><textarea style='width:  100%; height: 100px'>" . print_r($item,1) . '</textarea>';
+
+			if ($item instanceof \esa_item) {
+				return '[esa source="' . $item->source . '" id="' . $item->id . '"]' ;
+			} else {
+				return "[not esa: $url]";
+			}
+				
+		}
+		
+		*/
+		
 	}
-	
-	
 }
+	
+
+
+
+
+
 ?>

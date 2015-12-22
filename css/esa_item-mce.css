@@ -1,0 +1,35 @@
+/* esa_item @ mce */
+/*
+#tinymce .esa_item{
+	position: absolute;
+	-moz-user-select: none;             
+    -webkit-user-select: none;
+    user-select: none; 
+    width: 100%;
+}
+*/
+#tinymce .esa_item_tools {
+	display: none
+}
+
+#tinymce .wpview-wrap .esa_item {
+	/* background: url('../images/loading.png') center center no-repeat; */
+	min-width: 200px;
+	width: 100%;
+	display: inline-block;
+	position: relative;
+	-moz-user-select: none;             
+    -webkit-user-select: none;
+    user-select: none; 
+    margin: 0px
+}
+
+
+#tinymce .esa_item_map {
+	background: rgba(120,0,0,0.3);
+	padding: 3px;	
+}
+
+#tinymce .esa_item_map:after {
+	content: '(Map will not be displayed inside the editor)'	
+}

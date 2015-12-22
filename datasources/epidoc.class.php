@@ -63,6 +63,8 @@ namespace esa_datasource {
 
 		public $require = array('inc/epidocConverter/epidocConverter.class.php');
 		
+		public $id_is_url = true;
+		
 		
 		function api_search_url($query, $params = array()) {
 			//http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD000015.xml
@@ -83,14 +85,10 @@ namespace esa_datasource {
 			return $id;
 		}
 			
-		function api_url_parser($string) {
-			return $string;
-		}
-			
 		function parse_result_set($response) {
 			return array($this->parse_result($response[0]));
 		}
-
+		
 		function parse_result($response) {
 			
 			$c = \epidocConverter::create('', $this->converter_ffm);

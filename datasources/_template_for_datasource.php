@@ -25,6 +25,10 @@ namespace esa_datasource {
 
 		public $require = array();  // require additional classes -> array of fileanmes	
 		
+		public $url_parser = array(
+				array('#https?\:\/\/(www\.)some_page.de?ID=(.*)#', 1)
+		); // url regex
+		
 		function api_search_url($query, $params = array()) {
 			return "";
 		}
@@ -39,11 +43,7 @@ namespace esa_datasource {
 			return "";
 		}
 			
-		function api_url_parser($string) {
-			if (preg_match('#https?\:\/\/en\.wikipedia\.org\/wiki\/(.*)#', $string, $match)) {
-				return "...{$match[1]}";
-			}
-		}
+
 		/*	pagination functions
 		function api_search_url_next($query, $params = array()) {
 			

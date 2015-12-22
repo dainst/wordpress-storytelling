@@ -16,7 +16,9 @@
 	position: relative;
 	margin-top: 3px;
 	margin-bottom: 3px;
-	overflow: hidden;	
+	overflow: hidden;
+	font-family: "Open Sans",Arial,sans-serif;
+	
 }
 
 .esa_item:hover {

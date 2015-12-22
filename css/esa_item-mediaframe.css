@@ -173,49 +173,5 @@ body {
 	display:none
 }
 
-/* esa_item @ mce */
-
-#tinymce .esa_item{
-	position: absolute;
-	-moz-user-select: none;             
-    -webkit-user-select: none;
-    user-select: none; 
-    width: 100%;
-}
-
-#tinymce .esa_item_overlay .esa_item_tools {
-	display: none
-}
-
-#tinymce .esa_item_overlay:hover .esa_item_tools {
-	display: block
-}
-
-#tinymce .esa_item_wrapper  {
-	/* background: url('../images/loading.png') center center no-repeat; */
-	min-width: 200px;
-	min-height: 200px;
-	width: 100%;
-	display: inline-block;
-	position: relative;
-	-moz-user-select: none;             
-    -webkit-user-select: none;
-    user-select: none; 
-}
-
-#tinymce .esa_item_overlay {
-	background: rgba(255, 100, 100, 0.0);
-	width: 100%;
-	height: 100%;
-	position: absolute
-}
-
-#tinymce .esa_item_overlay_selected  {
-	background: rgba(100, 100, 100, 0.1);
-}
-
-.is_featured {
-	background: url('../images/featuredD.png') center center no-repeat !important;
-}
 
 
