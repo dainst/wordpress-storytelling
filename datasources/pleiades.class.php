@@ -1,9 +1,9 @@
 <?php
 /**
  * @package 	eagle-storytelling
- * @subpackage	Search in Datasources | Subplugin: 
- * @link 		
- * @author 		
+ * @subpackage	Search in Datasources | Subplugin: pleiades
+ * @link 		http://pleiades.stoa.org/
+ * @author 		Philipp Franck
  *
  * Status: Alpha 1
  *
@@ -11,34 +11,33 @@
 
 
 namespace esa_datasource {
-	class __NAME__ extends abstract_datasource {
+	class pleiades extends abstract_datasource {
 
-		public $title = 'Title'; // Label / Title of the Datasource
+		public $title = 'Pleiades'; // Label / Title of the Datasource
 		public $info = false; // get created automatically, or enter text
-		public $homeurl; // link to the dataset's homepage
-		public $debug = false;
-		//public $examplesearch; // placeholder for search field
-		//public $searchbuttonlabel = 'Search'; // label for searchbutton
+		public $homeurl = 'http://pleiades.stoa.org/'; // link to the dataset's homepage
+		public $debug = true;
+		public $examplesearch = 'Search for a ancient place name or insert an URl like this "http://pleiades.stoa.org/places/462218"'; // placeholder for search field
 		
 		public $pagination = false; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
 		public $require = array();  // require additional classes -> array of fileanmes	
 		
-		public $url_parser = '#https?\:\/\/(www\.)some_page.de?ID=(.*)#'; // // url regex (or array)
+		public $url_parser = '#https?\:\/\/pleiades\.stoa\.org\/places\/(.*)\/?.*#'; // url regex (or array)
 		
 		function api_search_url($query, $params = array()) {
 			return "";
 		}
 			
 		function api_single_url($id) {
-			return "";
+			return "http://pleiades.stoa.org/places/$id/json";
 		}
 
 
 		
 		function api_record_url($id) {
-			return "";
+			return "http://pleiades.stoa.org/places/$id";
 		}
 			
 
@@ -61,6 +60,8 @@ namespace esa_datasource {
 		*/	
 		function parse_result_set($response) {
 			$response = json_decode($response);
+			
+			
 			$this->results = array();
 			foreach ($this->results[1] as $i => $name) {
 

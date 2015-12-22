@@ -193,20 +193,19 @@ namespace esa_datasource {
 		 */
 		private function _generic_api_call($url) {
 			
-				
 			if (!$url) {
 				throw new \Exception('No Query: ' . $url);
 			}
 				
 			$response = $this->_fetch_external_data($url);
-			/*
+			
 			if ($this->debug) {
 				echo "<pre>";
 				echo "url: ", $url, "\nPOST: ", print_r($_POST,1 ), "\nResponse: ";
 				print_r((array) json_decode($response));
 				echo "</pre>";
 			}
-			*/
+			
 			return $response;
 		}
 		
@@ -406,10 +405,15 @@ namespace esa_datasource {
 				throw new \Exception('no $url!');
 			}
 				
-			/*
-			if(ESA_CURL & function_exists("curl_init") && function_exists("curl_setopt") && function_exists("curl_exec") && function_exists("curl_close") ) {
+			
+			if(
+				function_exists("curl_init") and 
+				function_exists("curl_setopt") and
+				function_exists("curl_exec") and 
+				function_exists("curl_close")
+			){
 				$ch = curl_init();
-				
+				/*
 				$http_headers = array(
 					"Accept: application/json",
 					"Connection: close",                    // Disable Keep-Alive
@@ -418,14 +422,13 @@ namespace esa_datasource {
 				);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_FAILONERROR, true);
-				curl_setopt($ch, CURLOPT_VERBOSE, true);               // Verbose mode for diagnostics
-				curl_setopt($ch, CURLOPT_POST, true);  
+				curl_setopt($ch, CURLOPT_FAILONERROR, true);*/
+				curl_setopt($ch, CURLOPT_VERBOSE, true);   	// Verbose mode for diagnostics
+				curl_setopt($ch, CURLOPT_POST, false);  
 				curl_setopt($ch, CURLOPT_URL, $url);
 				$response = curl_exec($ch);
 				
-				
-				if (ESA_DEBUG) {
+				if ($this->debug) {
 					echo "<pre class='esa_debug'>";
 					echo "url: ", $url, "\nPOST: ", print_r($_POST,1 ), "\nResponse: ";
 					print_r((array) json_decode($response));
@@ -438,13 +441,11 @@ namespace esa_datasource {
 			}
 		
 
-			*/
+			
 			//echo $url;
 			
 			if (!$json = file_get_contents($url)) {
-				$this->error('some error');
 				throw new \Exception("no response to $url!");
-				
 			}
 			
 			return $json;
@@ -514,46 +515,7 @@ namespace esa_datasource {
 			return array_pop(explode('\\', get_class($this)));
 		}
 		
-		
-		/**
-		 *
-		 * wordpressstuff wich does'nt belong here but...
-		 * 
-		 * @param unknown $matches
-		 * @param unknown $attr
-		 * @param unknown $url
-		 * @param unknown $rawattr
-		 * @return string
-		 
-		function esa_wordpress_embed($matches, $attr, $url, $rawattr) {
-			
-			error_reporting(E_ALL & ~E_STRICT & ~E_NOTICE);
-			ini_set('display_errors', 1);
-			/**
-			 *
-			 * Der Plan: Wir schreiben diese funktion jetzt ALS OB wir schon eine Lösung gefunden hätten, die Änderungen dauerhaft zu machen.
-			 *
-			 * Dann wäre es nicht schlimm, api_url_parser laufen zu lassen udn die Abk. die ID direkt aus der url zu ziehen ist egal  (weil included)
-			 *https://commons.wikimedia.org/wiki/Category:Abstract_expressionism#/media/File:Action_painting_1.JPG
-			 *
-			 *
-			 *http://www.europeana.eu/portal/record/2026002/images_artimage_1234_jpg.html
-			 
-				
-			$url = $matches[0];
-			$item = $this->get_by_url($url);
-			
-			//return "<div style='background:red'>$url</div><textarea style='width:  100%; height: 100px'>" . print_r($item,1) . '</textarea>';
 
-			if ($item instanceof \esa_item) {
-				return '[esa source="' . $item->source . '" id="' . $item->id . '"]' ;
-			} else {
-				return "[not esa: $url]";
-			}
-				
-		}
-		
-		*/
 		
 	}
 }
