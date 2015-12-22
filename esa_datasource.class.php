@@ -405,7 +405,7 @@ namespace esa_datasource {
 				throw new \Exception('no $url!');
 			}
 				
-			
+			/*
 			if(
 				function_exists("curl_init") and 
 				function_exists("curl_setopt") and
@@ -422,7 +422,7 @@ namespace esa_datasource {
 				);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_FAILONERROR, true);*/
+				curl_setopt($ch, CURLOPT_FAILONERROR, true);
 				curl_setopt($ch, CURLOPT_VERBOSE, true);   	// Verbose mode for diagnostics
 				curl_setopt($ch, CURLOPT_POST, false);  
 				curl_setopt($ch, CURLOPT_URL, $url);
@@ -440,7 +440,7 @@ namespace esa_datasource {
 				return $response;
 			}
 		
-
+			*/
 			
 			//echo $url;
 			
