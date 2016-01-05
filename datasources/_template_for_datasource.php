@@ -27,6 +27,14 @@ namespace esa_datasource {
 		
 		public $url_parser = '#https?\:\/\/(www\.)some_page.de?ID=(.*)#'; // // url regex (or array)
 		
+		/**
+		 * constructor
+		 * @see \esa_datasource\abstract_datasource::construct()
+		 */
+		function construct() {
+				
+		}
+		
 		function api_search_url($query, $params = array()) {
 			return "";
 		}

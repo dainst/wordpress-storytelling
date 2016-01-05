@@ -24,13 +24,22 @@ namespace esa_datasource {
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 		private $_hits_per_page = 10;
 
+		/**
+		 * eagle store specific
+		 */
+		public $eagle_store = false;
+		public $eagle_store_user_id;
+		public $eagle_store_data_path;
+		
+		
 		function api_search_url($query, $params = array()) {
-			
+
 			//  identify eagle id
 			if (substr_count($query, '::') == 2) {
 				return $this->api_single_url($query);
 			}
 			
+			// search string
 			$query = str_replace(':', '\:', $query);
 			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
 		}
@@ -48,7 +57,6 @@ namespace esa_datasource {
 		}
 			
 		function api_url_parser($string) {
-			
 			// eagle search has no URIS!
 			return false;
 			
@@ -75,11 +83,120 @@ namespace esa_datasource {
 			$last = 1 + ($this->pages) * $this->_hits_per_page;
 			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$last&q=$query";
 		}
-			
-			
+		
+
+		
+		/**
+		 * Functions making use of the Store function from the eagle serach plugin used in eagle-network.eu
+		 * 
+		 */
+		
+		/**
+		 * is overwritten because we want to acces items from lcoal stash on http://www.eagle-network.eu as well maybe...
+		 * @see \esa_datasource\abstract_datasource::search()
+		 */
+		function search($query) {
+			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
+			if (($query == '') and ($this->eagle_store))  {
+				try {
+					$this->parse_result_set($this->eagle_store_get_object());
+					return true;
+				} catch (\Exception $e) {
+					$this->error($e->getMessage());
+				}
+			}
+			return parent::search($query);
+		}
+		
+		
+		
+		/**
+		 * @see \esa_datasource\abstract_datasource::construct()
+		 */
+		function construct() {
+			// check if we are in wordpress context and have the eagle-serach plugin installes
+			if (function_exists('is_plugin_active') and is_plugin_active('eagle-search/eagle-search.php')) {
+				$this->eagle_store_data_path = WP_CONTENT_DIR;
+				$this->eagle_store_user_id = get_current_user_id();
+				$this->eagle_store = true;
+				require_once '/var/www/eagle/wp-content/plugins/eagle-search' . '/class/EagleSearch.php';
+				require_once '/var/www/eagle/wp-content/plugins/eagle-search' . '/class/EagleSaveSystem.php';
+				$this->info = "<p>Type in a keyword to search in the Eagle database or <a href='http://www.eagle-network.eu/basic-search/' target='_blank'>use the genuine Eagle search Interface</a> and the save function to display them here.</p>";
+			}
+		}
+		
+		/**
+		 * @see \esa_datasource\abstract_datasource::dependency_check()
+		 */
+		function dependency_check() {
+			$this->construct();
+			return 'O. K.' . $this->eagle_store ? ' (Eagle Search Plugin connected)' : '';
+		}
+		
+
+		/**
+		 * get an object or the a list of object from the private storing space, set up in eagle search plugin
+		 * @param string $object_id
+		 * @throws \Exception
+		 * @return string
+		 */
+		function eagle_store_get_object($object_id = false) {
+	        $eagle = new \EagleSearch();
+	        $eagle->setSavePath($this->eagle_store_data_path);
+	        
+	        if ($object_id) {
+	        	if (!$dbRow = \EagleSaveSystem::getObjectFromDB($object_id, $this->eagle_store_user_id)) {
+	        		throw new \Exception('Error in EagleSaveSystem');
+	        	}
+	        	$dbRows = array($dbRow);
+	        } else {
+	        	$dbRows = \EagleSaveSystem::getLastObjectSaved($this->eagle_store_user_id);
+	        }
+	        
+	        $result = array();
+	        
+			foreach($dbRows as $dbRow) {
+	        
+		        try {
+	           		$largelist = json_decode($eagle->getSavedList($dbRow->resource));
+		        } catch (\Exception $e) {
+		        	throw new \Exception('Error in eagle-search ("' . $e->getMessage() . '"). Most likely item ' . $object_id  . ', ' . $user_id . ' is written in db, but cached file ' . $dbRow->resource . ' does not exist.');
+	 	        }
+	                       
+	            // get whole list
+	            /*
+	            foreach ($largelist->grouped->tmid->groups as $groups) {
+	            	$result = array_merge($result, $groups->doclist->docs);
+	            }
+				*/
+	            
+	            $result[] = $largelist->grouped->tmid->groups[0]->doclist->docs[$dbRow->row];
+	            
+			}
+
+		    return json_encode((object) array('response' => array( 'docs' =>  $result)));
+
+		}
+		
+		function show_pagination() {
+			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : '';
+			if (($query == '') and ($this->eagle_store))  {
+				echo "<h3>My item archive<a href='http://www.eagle-network.eu/archives/' target='_blank'>↗</a></h3>";
+			} else {
+				parent::show_pagination();
+			}
+		}
+		 
+		
+		
+		/**
+		 * Render results
+		 * @see \esa_datasource\abstract_datasource::parse_result_set()
+		 */
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			
+					
 			$this->results = array();
 			foreach ($response->response->docs as $page) {
 
@@ -99,7 +216,7 @@ namespace esa_datasource {
 					$this->_artifact($obj->artifact, $data);
 				} else if ($obj->entityType == 'documental') {
 					$data = $this->_document($obj->documentalManifestation, $data);
-				} else 	if ($obj->entityType == 'visual') {
+				} else if ($obj->entityType == 'visual') {
 					$this->_visual($obj->visualRepresentation, $data);
 				}
 				
@@ -108,18 +225,21 @@ namespace esa_datasource {
 					$data->text[] = (string) $obj->description != (string) $obj->title ? (string) $obj->description : 'kein text';
 				}*/
 				//$data->table['type'] = $obj->entityType;
+				
 				$data->table['repositoryname'] = $page->repositoryname;
 								
 				$data->table = array_filter($data->table, function($part) {return $part and (string) $part != '';});
 				
 				$data->title = $obj->title;
-									
-				$this->results[] = new \esa_item('eagle', $page->dnetresourceidentifier, $data->render(), $page->landingpage);
+				
+				$id = (isset($page->dnetresourceidentifier)) ? $page->dnetresourceidentifier : $obj->dnetResourceIdentifier; //wtf
+				
+				$this->results[] = new \esa_item('eagle', $id, $data->render(), $page->landingpage);
 				//break;
 			}
 			
 			$this->pages = round($response->response->numFound / $this->_hits_per_page);
-			
+				
 			return $this->results;
 		}
 

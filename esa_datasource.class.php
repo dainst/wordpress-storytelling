@@ -71,8 +71,16 @@ namespace esa_datasource {
 			
 			//make plugin path available
 			$this->path = __DIR__;
+			
+			// call constructor
+			$this->construct();
+			
 		}
-		
+		/**
+		 * to be overwritten in implementation
+		 */
+		function construct() {
+		}
 		
 		/**
 		 * a generic search dialogue (can be overwitten) 	
@@ -106,7 +114,7 @@ namespace esa_datasource {
 		
 		/**
 		 * 
-		 * Serach given Data Source for Query
+		 * Search given Data Source for Query
 		 * 
 		 * This is a generic function, it can be overwritten in some implementations
 		 * 
@@ -164,7 +172,6 @@ namespace esa_datasource {
 			} catch (\Exception $e) {
 				$this->error($e->getMessage());
 			}
-			
 			
 			
 			return (!count($this->errors));
@@ -270,7 +277,6 @@ namespace esa_datasource {
 		 * 
 		 */
 		function show_result() {
-			
 			$this->show_pagination();
 			
 			echo "<div class='esa_item_list'>";

@@ -1,54 +1,14 @@
-Stand: grunsätzlich funktioniert url pasting und shortcode 
-jetzt mit wp_view
-nur wenn man falsche shortcodes oder 
-nicht bekannte urkls pastet,
-bleibt das nicht unangestastet 
-
-
-
-Zu lösenden Probleme
-
-# url checking before
-~ normales url embed wieder aktivieren
-
-- edit button weg / funktion
-
-# thumpnail wieder möglich
-# sonstige funktionen die weg sind
-
-- esa_item funktionen im editor?!
-
-# epidoc url pasting
-
-- commons mit Sonderzeichen in der URL!
-
-
-
-[Für Epidoc]
-1. prüfung im JS -> ist es eine URL
-2. prüfung im esa -> is es eine URL auf xml?
-3. API call ist es TEI?
-
-
-
-3. Wie macht man das bei Epidoc?
-
-- abprüfen ob content epidoc ist bei allen die auf XML enden?
-najaaaaa, was wenn es TEI ist aber nicht epidoc?
-
-
-- oder epidoc einfach skippen, den muss man
-eben importieren
-
-
-Bugs
 
 
 
 
 
 ---
+Eagle local store
 
+- my saved items beim laden anzeigen, wenn vorhanden
+
+- my saves searches anzeigen als dropdown (?)
 
 
 
