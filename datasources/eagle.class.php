@@ -130,7 +130,7 @@ namespace esa_datasource {
 		 */
 		function dependency_check() {
 			$this->construct();
-			return 'O. K.' . $this->eagle_store ? ' (Eagle Search Plugin connected)' : '';
+			return 'O. K.' . ($this->eagle_store ? ' (Eagle Search Plugin connected)' : '');
 		}
 		
 

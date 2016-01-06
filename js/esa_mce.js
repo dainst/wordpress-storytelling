@@ -87,7 +87,7 @@
 
 		initialize: function() {
 
-			//console.log('url:initialize', this);		
+			console.log('url:initialize', this);		
 			
 			var self = this;
 			
@@ -107,9 +107,9 @@
 				} 
 				
 				// 2. url could be recognized by esa (replace url shortcode and display item)
-				//console.log('esa match');
+				console.log('esa match');
 				self.getNodes(function(editor, node) {
-					//console.log('update');
+					console.log('update');
 					self.update(response.shortcode, editor, node, true);
 				}); 
 
@@ -117,7 +117,7 @@
 				
 			.fail( function( response ) {
 				// it may fail due to two second reasons:
-				//console.log('url checker fail',response);
+				console.log('url checker fail',response);
 				
 				// 1. there is an actual error
 				if (response.type === 'esa_error') {
@@ -128,7 +128,7 @@
 				// 2. the url is not recongnized by esa nor by wp embed and shall remain untouched
 				self.getNodes(function(editor, node, contentNode) {
 					$(node).replaceWith(self.text);
-					console.log(node);						
+					//console.log(node);						
 				});
 				
 				/*

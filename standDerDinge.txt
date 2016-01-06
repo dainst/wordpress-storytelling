@@ -1,18 +1,24 @@
-
-
-
+ - Pleiade: nach umbenennung in pelagios alles broken
+ - introtext
+ 
+ 
+ 
+http://www.fastionline.org/			http://www.fastionline.org/micro_view.php?item_key=fst_cd&fst_cd=AIAC_1752
+http://coins.lib.virginia.edu/		http://coins.lib.virginia.edu/id/2012.117
+http://numismatics.org/crro/		http://numismatics.org/crro/id/rrc-88.6
+http://edh-www.adw.uni-heidelberg.de/	http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD010553
+http://numismatics.org/pella/		
+http://coinhoards.org/
+http://numismatics.org/chrr/
+https://finds.org.uk/
+http://numismatics.org/ocre/
 
 
 ---
-Eagle local store
-
-- my saved items beim laden anzeigen, wenn vorhanden
-
-- my saves searches anzeigen als dropdown (?)
 
 
-
-
-
-
-
+http://atlantides.org/capgrids/%%%
+http://dare.ht.lu.se/places/%%%
+http://www.trismegistos.org/place/%%%
+http://vici.org/vici/%%%
+http://chgis.hmdc.harvard.edu/%%%

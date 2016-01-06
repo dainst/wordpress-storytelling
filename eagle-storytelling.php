@@ -662,7 +662,7 @@ add_action('wp_ajax_esa_url_checker', function() {
 			$maybe_item = (!$dso->id_is_url) ? $dso->get_by_url($url) : false; 
 			
 			if ($maybe_item instanceof \esa_item)  {
-				$result['shortcode'] = "[esa source=\"{$maybe_item->source}\" id=\"{$maybe_item->id}\" creator=\"wp_ajax_esa_url_checker\"]";
+				$result['shortcode'] = "[esa source=\"{$maybe_item->source}\" id=\"{$maybe_item->id}\"]";
 				$result['esa_item'] = $maybe_item->html(true);
 				wp_send_json_success($result);
 			}

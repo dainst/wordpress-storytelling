@@ -109,7 +109,7 @@ namespace esa_datasource {
 					
 				$this->results[] = new \esa_item(__source__, __id__, $data->render(), __url__);
 			}
-			return array();
+			return $this->results;
 		}
 
 		function parse_result($response) {

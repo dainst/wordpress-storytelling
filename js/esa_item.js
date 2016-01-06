@@ -60,11 +60,6 @@
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
             	
-            	// map
-            	if (mapDiv = thisItem.find('.esa_item_map')[0]) {
-            		this_esa_item.map.invalidateSize();
-            	}
-            	
             	// on Expand
             	var isExpanding = false;
             	if (!thisItem.hasClass('esa_item_collapsed')) {
@@ -102,13 +97,15 @@
             		
             	}
             	
+            	// map
+            	if (mapDiv = thisItem.find('.esa_item_map')[0]) {
+            		this_esa_item.map.invalidateSize();
+            		console.log('invalidateSize');
+            	}
 
             });
             
-            // load leaflet if needed           
-            
-            
-            console.log(is_in_editor);
+            // load leaflet if needed
         	if (!is_in_editor && $(this_esa_item).find('.esa_item_map').length) {
         		$.getScript("http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js")
 	       			.done(function() {

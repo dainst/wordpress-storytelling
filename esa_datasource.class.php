@@ -230,9 +230,9 @@ namespace esa_datasource {
 		
 		abstract function parse_result($result);
 		
-		abstract function api_single_url($id);
+		abstract function api_single_url($id, $params = array());
 		
-		abstract function api_search_url($query);
+		abstract function api_search_url($query, $params = array());
 		
 		abstract function api_record_url($id);
 		
@@ -254,9 +254,12 @@ namespace esa_datasource {
 			if (!is_array($this->url_parser)) {
 				$this->url_parser = array($this->url_parser);
 			}
-			foreach ($this->url_parser as $regex) {
+			foreach ($this->url_parser as $regex_id => $regex) {
 				if (preg_match($regex, $string, $match)) {
-					return $this->api_single_url(array_pop($match));
+					return $this->api_single_url(array_pop($match), array(
+						'pasted_url' => $string,
+						'regex_id'	=> $regex_id
+					));
 				}
 			}
 		}

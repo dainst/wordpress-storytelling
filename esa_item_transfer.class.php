@@ -30,6 +30,9 @@ namespace esa_item {
 			if (is_array($image)) {
 				return $this->images[] = new image($image);
 			}
+			if (is_string($image)) {
+				return $this->images[] = new image(array('url' => $image, 'fullres' => $image));
+			}
 		}
 
 		function render() {
@@ -99,6 +102,7 @@ namespace esa_item {
 					'modernFindSpot' =>  'Modern find spot',
 					'origDate' => 'Date',
 					'ImageDescription' => 'Description',
+					'description' => 'Description',
 					'DateTime' => "Created at"
 			);
 		
@@ -114,6 +118,16 @@ namespace esa_item {
 		public $title = '';
 		public $text = '';
 	
+		/**
+		 * create like
+		 * new \esa_item\image(array(
+		 *		'url' => (string) $thumbnail,
+		 *		'title' => (string) $title,
+		 *		'text'=> (string)  $text
+		 *	));
+		 * 
+		 * @param unknown $data
+		 */
 		public function __construct($data) {
 			foreach ($data as $att => $val) {
 				$this->$att = $val;
@@ -133,9 +147,11 @@ namespace esa_item {
 			$text = $this->text ? "<div class='esa_item_subtext'>{$this->text}</div>" : '';
 			
 			switch($this->type) {
+				
 				case 'DRAWING':
 					$class = 'esa_item_svg';
 				case 'BITMAP':
+				
 				case 'IMAGE':
 					$drurl = ($this->fullres) ? $this->fullres : $this->url;
 					$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
@@ -160,7 +176,15 @@ namespace esa_item {
 				
 				case 'DOWNLOAD':
 					$html = "<a target='_blank' href='{$this->fullres}'><div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div></a>";
-				break;	
+				break;
+				
+				case 'MAP':
+					
+					$shape = ($this->shape) ? "data-shape='" . json_encode($this->shape) .  "'" : '';
+					$id = (isset($this->id)) ? $this->id : md5(implode('|', array($this->shape, $this->marker[0], $this->marker[1])));
+					$html = "<div class='esa_item_map' id='esa_item_map-{$id}' data-latitude='{$this->marker[0]}' data-longitude='{$this->marker[1]}' $shape>&nbsp;</div>";
+					
+				break;
 
 			}
 				
