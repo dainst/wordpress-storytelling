@@ -71,6 +71,8 @@ function esa_install () {
 		searchindex TEXT NULL,
 		url TEXT NULL,
 		timestamp DATETIME NOT NULL,
+		latitude FLOAT NULL,
+		longitude FLOAT NULL
 		PRIMARY KEY  (source, id)
 	)
 	COLLATE utf8_general_ci
@@ -232,7 +234,8 @@ add_action('wp_enqueue_scripts', function() {
 		//js
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('thickbox');
-		
+
+		wp_localize_script('esa_item.js', 'esa', array('ajax_url' => admin_url('admin-ajax.php')));
 		//wp_enqueue_script('leaflet.js', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js');
 		
 	}
@@ -317,10 +320,10 @@ add_action('save_post', function($post_id) {
 
 		//echo "<pre>", print_r($shortcodes,1), "</pre>";
 
+		$sql = "delete from {$wpdb->prefix}esa_item_to_post where post_id=$post_id";
+		$wpdb->query($sql);
+		
 		if ($shortcodes) {
-				
-			$sql = "delete from wp_esa_item_to_post where post_id='$post_id'";
-			$wpdb->query($sql);
 				
 			foreach($shortcodes as $shortcode) {
 				if ($shortcode[2] == 'esa') {
@@ -328,12 +331,12 @@ add_action('save_post', function($post_id) {
 					echo "<pre>", print_r($atts,1), "</pre>";
 						
 					$wpdb->insert(
-							$wpdb->prefix . 'esa_item_to_post',
-							array(
-									"post_id" => $post_id,
-									"esa_item_source" => $atts['source'],
-									"esa_item_id" => $atts['id']
-							)
+						$wpdb->prefix . 'esa_item_to_post',
+						array(
+							"post_id" => $post_id,
+							"esa_item_source" => $atts['source'],
+							"esa_item_id" => $atts['id']
+						)
 					);
 						
 						
@@ -434,10 +437,11 @@ add_action('media_upload_esa', function() {
 	
 	
 	add_action('admin_print_scripts-media-upload-popup', function() {
-		$a = wp_enqueue_script('jquery');
+		wp_enqueue_script('jquery');
 		wp_enqueue_script('thickbox');
 		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling/js/esa_mediamenu.js', array('jquery'));
+		
 	});
 	
 	/**
@@ -799,5 +803,60 @@ function get_esa_datasource($engine) {
 	$ed_class = "\\esa_datasource\\$engine";
 	return new $ed_class;
 }
+
+
+function esa_item_map() {
+	echo "<div id='esa_items_overview_map'>Map loading</div>";
+}
+
+add_action('wp_ajax_esa_get_overview_map', function() {
+	
+	global $esa_settings;
+	global $wpdb;
+	
+	$post_types = "'" . implode("', '", $esa_settings['post_types']) . "'";
+	
+	$sql = "
+			select
+			    esa_item.latitude,
+			    esa_item.longitude,
+			    concat (
+			    	'<span class=\"esa_inmap_popup\">',
+	                if (
+						count(post.ID) > 1,
+	                    concat('<h1>', count(post.ID), ' stories here:', '</h1><ul>',
+							group_concat('<li><a href=\"',post.guid ,'\">', post.post_title, '</a>' separator ''),
+						'</ul>'),
+						concat('<a href=\"', post.guid,'\">', '<h1>', post.post_title, '</h1><p class=\"excerpt\">', post.post_excerpt, '</p>', '</a>')
+					),
+					'</span>'
+				) as textbox
+			    
+			from
+				{$wpdb->prefix}esa_item_cache as esa_item
+			    left join {$wpdb->prefix}esa_item_to_post as i2p on (i2p.esa_item_source =  esa_item.source and i2p.esa_item_id =  esa_item.id)
+			    left join {$wpdb->prefix}posts as post on (post.ID = i2p.post_id)
+			
+			where
+				post.post_status = 'publish' and
+				esa_item.latitude is not null and
+				esa_item.latitude != 0  and
+				esa_item.longitude is not null and
+				esa_item.longitude != 0 and
+			    post.post_type in ($post_types)
+			    
+			group by 
+				longitude, 
+                latitude
+			"; 
+	
+
+				
+	$result = $wpdb->get_results($sql);
+
+	echo json_encode($result);
+	
+	wp_die();
+});
 
 ?>

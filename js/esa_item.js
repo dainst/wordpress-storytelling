@@ -147,6 +147,70 @@
     };
 }(jQuery));
 
+(function ($) {
+    $.fn.esa_items_overview_map = function(options) {
+        return this.each(function() {
+			
+        	var mapDiv = this;
+			var mapId = $(mapDiv).attr('id');
+			console.log(esa);
+   				
+    		$.getScript("http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js")
+   			.done(function() {
+    			
+    			// draw maps
+		
+				var map = L.map(mapId).setView([12.483333, 41.883333], 13);
+				
+				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+				}).addTo(map);
+				
+				
+				$.ajax({
+					url: esa.ajax_url,
+					type: 'post',
+					data: {
+						action: 'esa_get_overview_map'
+					},
+					success: function(response) {
+						console.log(response);
+						response = JSON.parse(response);
+						console.log(response);
+						if (response.length == 0) {
+							map.remove();
+							$(mapDiv).hide();
+						}
+						var markers = [];
+						$.each(response, function(k, item) {
+							markers.push(L.marker([item.latitude, item.longitude]).bindPopup(item.textbox).addTo(map));
+						});
+						var group = new L.featureGroup(markers);
+						map.fitBounds(group.getBounds());
+					},
+					error: function(exception) {
+						console.log(exception);
+						map.remove();
+						$(mapDiv).hide();
+					}
+				});
+    				
+
+    		})
+		
+    		.fail(function(jqxhr, settings, exception) {
+    			console.log(exception);
+    			map.remove();
+    			$(mapDiv).hide();
+    		});
+        })
+    };
+}(jQuery));
+
+
 jQuery(document).ready(function(){
 	jQuery('.esa_item').esa_item();	
+	jQuery('#esa_items_overview_map').esa_items_overview_map();	
 });
+
+
