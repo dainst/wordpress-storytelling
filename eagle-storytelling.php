@@ -162,6 +162,10 @@ add_action('admin_menu', function () {
     	echo "<input type='hidden' name='action' value='esa_flush_cache'>";
     	echo "<input type='submit' value='Flush esa_item cache!' class='button'>";
 		echo "</form>";
+		echo "<form method='POST' action='$url'>";
+		echo "<input type='hidden' name='action' value='esa_refresh_cache'>";
+		echo "<input type='submit' value='Refresh esa_item cache!' class='button'>";
+		echo "</form>";
 		
 		echo "</div>";
 	});
@@ -193,6 +197,43 @@ add_action('admin_action_esa_flush_cache', function() {
     exit();
 	
 });
+
+add_action('admin_action_esa_refresh_cache', function() {
+	global $wpdb;
+
+	echo "<ul><li>Cache empty</li>";
+	
+	$sql = "truncate {$wpdb->prefix}esa_item_cache;";
+
+	$wpdb->query($sql);
+	
+	$sql = "
+		select
+			esa_item_source as source,
+			esa_item_id as id
+		from
+			 {$wpdb->prefix}esa_item_to_post
+		 
+		group by
+			esa_item_source,
+			esa_item_id
+	";
+	
+	foreach ($wpdb->get_results($sql) as $row) {
+		$item = new \esa_item($row->source, $row->id);
+		$item->html(true);
+		$e = count($item->errors);
+		echo "<li>{$item->id} of {$item->source} cached with $e errors.</li>";
+	}
+	
+	echo "</ul>";
+
+
+	wp_redirect($_SERVER['HTTP_REFERER']);
+	exit();
+
+});
+
 
 
 add_action('admin_action_esa_save_settings' ,function() {
