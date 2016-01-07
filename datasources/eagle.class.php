@@ -44,7 +44,7 @@ namespace esa_datasource {
 			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
 		}
 			
-		function api_single_url($id) {
+		function api_single_url($id, $params = array()) {
 			//dnetresourceidentifier:UAH\:\:92b78b60f9d00a0ac34898be97d15188\:\:01f8fcf400938969ace9675f86365c2c\:\:visual
 			$id = str_replace(':', '\:', $id);
 			//$id = rawurlencode($id);
@@ -52,7 +52,7 @@ namespace esa_datasource {
 		}
 
 		
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			return "";
 		}
 			

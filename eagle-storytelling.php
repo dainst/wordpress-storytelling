@@ -275,6 +275,11 @@ function esa_item_special_styles() {
 	$css = array();
 	foreach ($datasources as $ds) {
 		$dso = get_esa_datasource($ds);
+		
+		if (!$dso) {
+			continue;
+		}
+		
 		// stylsheets
 		$cssInfo = $dso->stylesheet();
 		if (isset($cssInfo['css']) and $cssInfo['css']) {

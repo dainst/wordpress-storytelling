@@ -30,11 +30,11 @@ namespace esa_datasource {
 			return "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mime|mediatype|extmetadata&iiurlwidth=150&generator=search&gsrsearch=$query&gsrnamespace=6&gsrlimit={$this->_hits_per_page}&gsroffset={$offset}";
 		}
 			
-		function api_single_url($id) {
+		function api_single_url($id, $params = array()) {
 			return "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata|mime&iiurlwidth=150&pageids=$id";
 		}
 		
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			return  "https://commons.wikimedia.org/wiki/?curid=$id";
 		}
 			

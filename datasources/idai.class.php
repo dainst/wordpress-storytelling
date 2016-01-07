@@ -26,7 +26,7 @@ namespace esa_datasource {
 			return "http://gazetteer.dainst.org/search.json?q={$query}";
 		}
 			
-		function api_single_url($id) {
+		function api_single_url($id, $params = array()) {
 			$query = urlencode($id);
 			/*Ich bekomme einen 400er Bad Request wenn ich die API anspreche, um einen einzelnen Record
  			* zu bekommen. Eine URL wie http://gazetteer.dainst.org/doc/2281530.json, die im Browser ein Ergebnis liefert, klappt mit PHP über curl oder
@@ -37,7 +37,7 @@ namespace esa_datasource {
 			//return "http://gazetteer.dainst.org/doc/$id.json";
 		}
 
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			$query = urlencode($id);
 			return "http://gazetteer.dainst.org/app/#!/show/$id";
 		}

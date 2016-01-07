@@ -103,7 +103,8 @@ namespace esa_item {
 					'origDate' => 'Date',
 					'ImageDescription' => 'Description',
 					'description' => 'Description',
-					'DateTime' => "Created at"
+					'DateTime' => "Created at",
+					'place_category' => 'Place Category'
 			);
 		
 			return (isset($labels[$of])) ? $labels[$of] : $of;

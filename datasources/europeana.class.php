@@ -24,7 +24,7 @@ namespace esa_datasource {
 			return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=1&rows={$this->_hits_per_page}&profile=standard" . $this->_api_params_url_part($params);
 		}
 		
-		function api_single_url($id) {
+		function api_single_url($id, $params = array()) {
 			return "http://www.europeana.eu/api/v2/record{$id}.json?wskey=ydRg6Ujho&profile=standard";
 		}
 		
@@ -55,7 +55,7 @@ namespace esa_datasource {
 			return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=$last&rows={$this->_hits_per_page}&profile=standard" . $this->_api_params_url_part($params);
 		}
 		
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			return "http://www.europeana.eu/portal/record$id.html";
 		}
 		

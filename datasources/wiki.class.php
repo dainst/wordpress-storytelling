@@ -27,20 +27,20 @@ namespace esa_datasource {
 		);
 				
 		//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
-		function api_search_url($query) {
+		function api_search_url($query, $params = array()) {
 			$query = urlencode($query);
 			$offset = $this->_hits_per_page * ($this->page - 1);
 			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&generator=search&redirects=&gsrsearch=$query&gsrwhat=text&exlimit=max&pilimit=max&gsrlimit={$this->_hits_per_page}&gsroffset={$offset}";
 		}                                                                          
 		
-		function api_single_url($id) {
+		function api_single_url($id, $params = array()) {
 			$id = $this->real_id($id);
 			$id = urlencode($id);
 			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&redirects=&titles=$id";
 
 		}
 
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			$id = $this->real_id($id);
 			return "https://{$this->params['lang']}.wikipedia.org/?curid=$id";
 		}

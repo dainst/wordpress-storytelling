@@ -234,7 +234,7 @@ namespace esa_datasource {
 		
 		abstract function api_search_url($query, $params = array());
 		
-		abstract function api_record_url($id);
+		abstract function api_record_url($id, $params = array());
 		
 		
 		/**

@@ -14,10 +14,26 @@ namespace esa_datasource {
 	class pelagios extends abstract_datasource {
 
 		public $title = 'Pelagios'; // Label / Title of the Datasource
-		public $info = false; // get created automatically, or enter text
+		public $info = "<p>
+							<a href='http://pelagios-project.blogspot.co.uk/' target='_blank'>Pelagios</a> is a
+							aggregator of a vast selection of open linked data concerning the ancient world
+							including a lot of gazetteers such as <a href='http://pleiades.stoa.org/' target='_blank'>Pleiades</a>.
+						</p>
+						<p>
+							You search for a keyword or placename in Pelagios or paste an URL of a place from any 
+							<a href='#' class='toggle' data-toggle='epidoclist'>of the linked ancient world gazetteers.</a>
+						</p>
+						<ul class='toggleable toggled' id='epidoclist'>
+							<li><a href='http://pleiades.stoa.org/'  target='_blank'>Pleiades</a></li>
+							<li><a href='http://atlantides.org/'  target='_blank'>Atlantides - Barrington Atlas Map Grids</a></li>
+							<li><a href='http://dare.ht.lu.se/'  target='_blank'>Digital Atlas of the Roman Empire (Lund University)</a></li>
+							<li><a href='http://www.trismegistos.org/'  target='_blank'>Trismegistos (Gazetteer)</a></li>
+							<li><a href='http://vici.org/vici/'  target='_blank'>Vici.org - Atlas zur Archäologie des Altertums</a></li>
+						</ul>
+						";
 		public $homeurl = 'http://pleiades.stoa.org/'; // link to the dataset's homepage
 		public $debug = false;
-		public $examplesearch = 'Search for a ancient place name or insert an URl like this "http://pleiades.stoa.org/places/462218"'; // placeholder for search field
+		public $examplesearch = 'Insert a serach term like "gold coin", a place name or an URL like this "http://pleiades.stoa.org/places/462218"'; // placeholder for search field
 		
 		public $pagination = true; // are results paginated?
 		private $_hits_per_page = 20;
@@ -55,7 +71,7 @@ namespace esa_datasource {
 			//return "http://pleiades.stoa.org/places/$id/json";
 		}
 
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			return "http://pleiades.stoa.org/places/$id";
 		}
 			
@@ -205,7 +221,6 @@ namespace esa_datasource {
 			}
 			*/
 			if(isset($item->depictions)) {
-				$data->addTable('debug', 'yes' . count($item->depictions));
 				foreach($item->depictions as $dp) {
 					$data->addImages($dp);
 				}
