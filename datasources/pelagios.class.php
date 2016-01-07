@@ -237,7 +237,7 @@ namespace esa_datasource {
 			
 			$source_url = $type_map[$item->object_type] . '/' . urlencode($item->identifier);
 	
-			return new \esa_item('pleiades', $source_url, $data->render(), $record_url);
+			return new \esa_item('pelagios', $source_url, $data->render(), $record_url, array(), array(), $latitude, $longitude);
 			
 				
 		}
