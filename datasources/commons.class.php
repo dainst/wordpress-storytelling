@@ -81,7 +81,8 @@ namespace esa_datasource {
 			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}
 			
 			foreach ($response->query->pages as $pageId => $page) {
-				$this->results[] = new \esa_item('commons', $pageId, $this->fetch_information($page)->render(), $page->imageinfo[0]->descriptionurl);
+				$data = $this->fetch_information($page);
+				$this->results[] = new \esa_item('commons', $pageId, $data->render(), $page->imageinfo[0]->descriptionurl, array(), array(), $data->latitude, $data->longitude);
 			}
 			
 			// workaround because media wiki api is not respoding total amount of pages
@@ -129,7 +130,17 @@ namespace esa_datasource {
 					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
 				));
 			}
-			//
+			// coordinates
+			$data->latitude = null;
+			$data->longitude = null;
+			if (isset($page->imageinfo[0]->extmetadata->GPSLatitude) and 
+				isset($page->imageinfo[0]->extmetadata->GPSLongitude) and 
+				$page->imageinfo[0]->extmetadata->GPSMapDatum->value == 'WGS-84') { //because we cannot recalculate other coordinate systems
+					
+				$data->latitude = (float) $page->imageinfo[0]->extmetadata->GPSLatitude->value;
+				$data->longitude = (float) $page->imageinfo[0]->extmetadata->GPSLongitude->value;
+				$data->addTable('Position', $data->latitude . ' | ' . $data->longitude);
+			}
 
 			// rest
 			foreach ($page->imageinfo[0]->extmetadata as $meta => $val) {

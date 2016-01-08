@@ -85,7 +85,8 @@ namespace esa_datasource {
 			
 			$this->results = array(); 
 			foreach ($response->items as $item) {
-				$this->results[] = new \esa_item('europeana', $item->id, $this->_item2html($item, $item->id), $item->guid);
+				$data = $this->_item2html($item, $item->id);
+				$this->results[] = new \esa_item('europeana', $item->id, $data->render(), $item->guid, array(), array(), $data->latitude, $data->longitude);
 			}
 			
 			// set up pagination data
@@ -109,7 +110,8 @@ namespace esa_datasource {
 				$this->id = $response->object->about;
 			}
 			
-			return new \esa_item('europeana', $this->id, $this->_item2html($response->object, $this->id), $this->api_record_url($this->id));
+			$data = $this->_item2html($response->object, $this->id);
+			return new \esa_item('europeana', $this->id, $data->render(), $this->api_record_url($this->id), array(), array(), $data->latitude, $data->longitude);
 			
 		}
 		
@@ -145,10 +147,12 @@ namespace esa_datasource {
 			$images = array();
 			if (isset($item->aggregations)) {
 				foreach ($item->aggregations as $aggregation) {
-					$images[] = isset($aggregation->edmIsShownBy) ? $aggregation->edmIsShownBy : '';
+					$images[]  = 
+						isset($aggregation->edmObject) ?
+						$aggregation->edmObject :
+						(isset($aggregation->edmIsShownBy) ? $aggregation->edmIsShownBy : '');
 				}
 			}
-			
 			foreach ($thumbnails as $i => $thumb) { //todo: is more fetchable
 				$data->addImages(array(
 					'url' => $thumb,
@@ -161,7 +165,26 @@ namespace esa_datasource {
 			
 			// other
 			if (isset($item->year)) {
-				$data->addTable('Year', $item->year);
+				if (is_array($item->year) and count($item->year) == 4) {
+					$data->addTable('Year', "<a target='_blank' href='{$item->year[2]}'>{$item->year[0]}</a> - <a target='_blank' href='{$item->year[3]}'>{$item->year[1]}</a>");
+				} else {
+					$data->addTable('Year', $item->year);
+				}
+			}
+			
+			$data->latitude  = null;
+			$data->longitude = null;
+			if (isset($item->edmPlaceLatitude) and isset($item->edmPlaceLongitude)) {
+				$data->latitude  = (float) $item->edmPlaceLatitude[0]; //europeana itself is only displaing the frist one hihi
+				$data->longitude = (float) $item->edmPlaceLongitude[0];
+				$data->addTable('Position', "{$data->latitude}, {$data->longitude}");
+			}
+			if (isset($item->places)) {
+				$data->latitude  = (float) $item->places[0]->latitude; //europeana itself is only displaing the frist one hihi
+				$data->longitude = (float) $item->places[0]->longitude;
+				$place = isset($item->places[0]->prefLabel->en) ? $item->places[0]->prefLabel->en[0] : $item->places[0]->prefLabel->def[0];
+				$data->addTable('Place', "<a href='{$item->places[0]->about}' target='_blank'>$place</a>");
+				$data->addTable('Position', "{$data->latitude}, {$data->longitude}");
 			}
 			
 			$data->addTable('Type', ucfirst(strtolower($item->type)));
@@ -205,6 +228,9 @@ namespace esa_datasource {
 					foreach ($proxy as $prop => $pval) {
 						if (preg_match('#dc(terms)?(.*)#', $prop, $match)) {
 							foreach ($this->_LangMap($pval) as $v) {
+								if (in_array($match[2], array('Spatial', 'Title'))) {
+									continue;
+								}
 								if (filter_var($v, FILTER_VALIDATE_URL)) {
 									$v = "<a href='$v' target='_blank'>$v</a>";
 								}
@@ -222,7 +248,7 @@ namespace esa_datasource {
 
 			//$data->addTable('id', $this->api_single_url($id));
 			
-			return $data->render();
+			return $data;
 		}
 		
 		

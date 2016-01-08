@@ -375,5 +375,7 @@
 .esa_inmap_popup .excerpt {
 	margin-top: 2px;
 	margin-bottom: 2px;	
-	font-weight: normal
+	font-weight: normal;
+	max-height: 50px;
+	overflow: auto
 }

@@ -122,7 +122,7 @@ namespace esa_datasource {
 				
 				$html .= "</div>";
 					
-				$this->results[] = new \esa_item('idai', $result->gazId, $html, $this->api_record_url($result->gazId));
+				$this->results[] = new \esa_item('idai', $result->gazId, $html, $this->api_record_url($result->gazId), array(), array(), $lat, $long);
 			}
 			return $this->results;
 		}
