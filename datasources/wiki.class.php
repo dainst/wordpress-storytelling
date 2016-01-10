@@ -20,7 +20,7 @@ namespace esa_datasource {
 		public $pagination = true; // are results paginated?
 		private $_hits_per_page = 9;
 		
-		public $debug = true;
+		public $debug = false;
 		
 		public $params = array(
 			'lang'  => 'en'

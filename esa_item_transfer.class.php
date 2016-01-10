@@ -147,6 +147,8 @@ namespace esa_item {
 			
 			$text = $this->text ? "<div class='esa_item_subtext'>{$this->text}</div>" : '';
 			
+			$this->title = str_replace(array('"', "'"), '', $this->title);
+			
 			switch($this->type) {
 				
 				case 'DRAWING':
@@ -155,9 +157,10 @@ namespace esa_item {
 				
 				case 'IMAGE':
 					$drurl = ($this->fullres) ? $this->fullres : $this->url;
+					$encurl = $drurl;
 					$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
 					if($this->fullres or ($this->type == 'DRAWING')) {
-						$image = "<a href='$drurl' title='{$this->title}' class='thickbox'>$image<img class='esa_item_fullres $class' src='' data-fullsize='$drurl' alt='{$this->title}' /></a>";
+						$image = "<a href='$encurl' title='{$this->title}' class='thickbox'>$image<img class='esa_item_fullres $class' src='' data-fullsize='$drurl' alt='{$this->title}' /></a>";
 					} else {
 						$image = "$image<img class='esa_item_fullres' src='' data-fullsize='$drurl' alt='{$this->title}' />";
 					}

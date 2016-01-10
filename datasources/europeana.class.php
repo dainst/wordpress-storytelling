@@ -137,31 +137,42 @@ namespace esa_datasource {
 			$data->title = $item->title[0];
 			
 			// images
+			
+			
+			
 			$thumbnails = isset($item->edmPreview) ?
 				$item->edmPreview : (
 				isset($item->europeanaAggregation->edmPreview) ?
 					$item->europeanaAggregation->edmPreview :
 					'');
-			$thumbnails = (!is_array($thumbnails)) ? array($thumbnails) : $thumbnails;
 			
-			$images = array();
+			$img = false;
 			if (isset($item->aggregations)) {
 				foreach ($item->aggregations as $aggregation) {
-					$images[]  = 
+					$img  = 
 						isset($aggregation->edmObject) ?
 						$aggregation->edmObject :
-						(isset($aggregation->edmIsShownBy) ? $aggregation->edmIsShownBy : '');
+						(isset($aggregation->edmIsShownBy) ? $aggregation->edmIsShownBy : false);
+					//$data->addTable('DEBUGG', $aggregation->edmIsShownBy . '|' . $aggregation->edmObjec);			
+					if ($img) {
+						$data->addImages(array(
+							'url' => $img,
+							'fullres' => $img,
+							'title' => $data->title 
+						));
+					}
+					 
 				}
 			}
-			foreach ($thumbnails as $i => $thumb) { //todo: is more fetchable
+			
+			if (!count($data->images)) {
 				$data->addImages(array(
-					'url' => $thumb,
-					'fullres' => $images[$i],
-					'title' => $data->title 
+						'url' => (is_array($thumbnails)) ? $thumbnails[0] : $thumbnails,
+						'title' => $data->title
 				));
 			}
-			 
 
+			
 			
 			// other
 			if (isset($item->year)) {
@@ -209,6 +220,7 @@ namespace esa_datasource {
 			if (isset($item->concepts) and count($item->concepts)) {
 				$tags = array();
 				$d = array();
+				$d = array();
 				foreach ($item->concepts as $concept) {
 					if (isset($concept->prefLabel)) {
 						$tags[] = isset($concept->prefLabel->en) ? $concept->prefLabel->en[0] : isset($concept->altLabel->en) ? $concept->altLabel->en[0] : array_values((array) $concept->prefLabel)[0][0];
@@ -227,19 +239,11 @@ namespace esa_datasource {
 				foreach ($item->proxies as $proxy) {
 					foreach ($proxy as $prop => $pval) {
 						if (preg_match('#dc(terms)?(.*)#', $prop, $match)) {
-							foreach ($this->_LangMap($pval) as $v) {
-								if (in_array($match[2], array('Spatial', 'Title'))) {
-									continue;
-								}
-								if (filter_var($v, FILTER_VALIDATE_URL)) {
-									$v = "<a href='$v' target='_blank'>$v</a>";
-								}
-								if (!isset($no_repeat[$match[2]]) or ($no_repeat[$match[2]] != $v)) {
-									$data->addTable($match[2], $v);
-									$no_repeat[$match[2]] = $v;
-								}
-								
-							}
+							$cat = $match[2];
+
+
+							$data->addTable($cat, $this->_LangMap($pval));
+
 						}
 					}
 				}
@@ -260,6 +264,38 @@ namespace esa_datasource {
 		 */
 		
 		private function _LangMap($p) {
+
+			if (isset($p->def) ) { //and 
+				$def = $p->def;
+				unset($p->def);
+			}
+			
+			if (isset($p->en)) {
+				$vals = array_unique($p->en);
+			} elseif (count((array) $p)) {
+				$vals = array_unique(array_values((array) $p)[0]);
+			}
+			
+
+			if ($def) {
+				$def = array_unique($def);
+				$i = 0;
+				foreach ($def as $d) {
+					if (filter_var($d, FILTER_VALIDATE_URL)) {
+						$i++;						
+						$defstring .= " <a href='$d' title='$d' target='_blank'>[{$i}]</a>";
+					} else {
+						$vals[] = $d;
+					}
+				}
+			}
+			
+			return implode(', ', $vals) . $defstring;
+			
+		}
+		
+		/*
+		private function _LangMap($p) {
 			if (!is_object($p) and !is_array($p)) {
 				return array($p);
 			}
@@ -269,6 +305,11 @@ namespace esa_datasource {
 			$collector = array();
 			
 			foreach($p as $lng => $token) {
+				if ($lng == 'def') {
+					
+				}
+				
+				
 				if (!is_array($token)) {
 					$collector[] = $token;
 				} else {
@@ -278,9 +319,8 @@ namespace esa_datasource {
 			
 			return $collector;
 			
-			
 		}
-		
+		*/
 		
 		function stylesheet() {
 			$css = "

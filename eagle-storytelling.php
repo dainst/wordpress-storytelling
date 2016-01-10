@@ -718,7 +718,7 @@ add_action('wp_ajax_esa_url_checker', function() {
 			}
 			
 		}
-
+		//wp_send_json_error($result);wp_die();
 		$_POST['shortcode'] = "[embed src=\"$url\"]";
 		wp_ajax_parse_embed();
 
