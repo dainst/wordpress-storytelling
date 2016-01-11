@@ -249,6 +249,12 @@ namespace esa_datasource {
 				}
 			}
 			$data->addTable('id', $id);
+			
+			if (!$data->title and isset($data->table['Title'])) {
+				$data->title = $data->table['Title'];
+				unset($data->table['Title']);
+			}
+			
 
 			//$data->addTable('id', $this->api_single_url($id));
 			
@@ -289,7 +295,7 @@ namespace esa_datasource {
 					}
 				}
 			}
-			
+			$vals = is_array($vals) ? $vals : array();
 			return implode(', ', $vals) . $defstring;
 			
 		}
