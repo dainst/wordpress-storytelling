@@ -174,12 +174,13 @@
 						action: 'esa_get_overview_map'
 					},
 					success: function(response) {
-						console.log(response);
+						//console.log(response);
 						response = JSON.parse(response);
-						console.log(response);
-						if (response.length == 0) {
+						//console.log(response);
+						if ((response.length == 0) || (!response.length)) {
 							map.remove();
 							$(mapDiv).hide();
+							return;
 						}
 						var markers = [];
 						$.each(response, function(k, item) {

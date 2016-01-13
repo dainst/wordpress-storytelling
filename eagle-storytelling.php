@@ -304,8 +304,8 @@ add_action('admin_init', function() {
 		return $buttons;
 	});
 
-	// stylesteeht
-	wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
+	// stylesheet
+	//wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
 	esa_item_special_styles();
 });
 
