@@ -14,6 +14,7 @@ namespace esa_datasource {
 	class eagle extends abstract_datasource {
 
 		public $title = 'Eagle'; // Label / Title of the Datasource
+		public $index = 10; // where to appear in the menu
 		public $info = '<p>Search the Eagle Database</p>'; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package eagle-storytelling
- * @version 1.0 BETA Tester Version
+ * @version 2.0 Alpha
  */
 /*
 Plugin Name: Eagle Storytelling Application
@@ -9,7 +9,7 @@ Plugin URI:  http://www.eagle-network.eu/stories/
 Description: Create your own EAGLE story! 
 Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     1.0 BETA Tester Version
+Version:     2.0 Alpha
 */
 /*
 
@@ -132,6 +132,8 @@ add_action('admin_menu', function () {
 		echo "<form method='POST' action='$url'>";
 		echo "<h4>Available Data Sources</h4>";
 		$labels = array();
+		$optionlist = array();
+		$index = array();
 		foreach ($dsfiles as $filename) {
 			$name = basename($filename, '.class.php');
 			$ds = get_esa_datasource($name);
@@ -147,8 +149,10 @@ add_action('admin_menu', function () {
 			$status = ($is_ok === true) ? "<span style='color:green'>($status)</span>" : "<span style='color:red'>(Error: $status)</span>";
 			$checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';
 			$disabled = ($is_ok === true) ? '' : 'disabled="disabled"';
-			echo "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label $status</label></div>";
+			$optionlist[$ds->index] = "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label $status</label></div>";
 		}
+		ksort($optionlist);
+		echo implode("\n", $optionlist);
 		update_option('esa_datasource_labels', json_encode($labels));
 		wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');
 		echo "<input type='hidden' name='action' value='esa_save_settings'>";

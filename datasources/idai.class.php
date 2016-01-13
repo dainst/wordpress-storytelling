@@ -17,6 +17,7 @@ namespace esa_datasource {
 
 
 		public $title = 'iDAI Gazetteer';
+		public $index = 55; // where to appear in the menu
 		public $homeurl = "http://gazetteer.dainst.org/";
 		
 		public $pagination = false;

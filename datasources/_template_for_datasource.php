@@ -14,6 +14,7 @@ namespace esa_datasource {
 	class __NAME__ extends abstract_datasource {
 
 		public $title = 'Title'; // Label / Title of the Datasource
+		public $index = 50; // where to appear in the menu
 		public $info = false; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;

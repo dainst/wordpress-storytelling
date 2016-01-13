@@ -13,6 +13,7 @@ namespace esa_datasource {
 		public $debug = false;
 
 		public $title = "Europeana";
+		public $index = 20; // where to appear in the menu
 		public $homeurl = "http://www.europeana.eu/portal/";
 
 		private $_hits_per_page = 24;

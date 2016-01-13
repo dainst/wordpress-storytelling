@@ -19,6 +19,7 @@ namespace esa_datasource {
 		
 		// infotext to this data source
 		public $title; // title
+		public $index = 50; // where to appear in the menu
 		public $info; // infotext
 		public $homeurl; // homepage of this datasource
 		public $examplesearch; // placeholder for search field

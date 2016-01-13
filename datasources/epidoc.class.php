@@ -21,6 +21,7 @@ namespace esa_datasource {
 		public $converter_ffm = false; // force fallback mode of EpidocConverter ? 
 
 		public $title = 'Epidoc'; // Label / Title of the Datasource
+		public $index = 25; // where to appear in the menu
 		public $info = "<p>
 							<a href='http://sourceforge.net/projects/epidoc/' target='_blank'>EpiDoc</a> is an international, 
 							collaborative effort that provides guidelines and tools 

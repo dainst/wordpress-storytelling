@@ -14,6 +14,7 @@ namespace esa_datasource {
 	class commons extends abstract_datasource {
 
 		public $title = 'Wikimedia Commons'; // Label / Title of the Datasource
+		public $index = 70; // where to appear in the menu
 		public $info = false; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;
