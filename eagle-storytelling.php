@@ -831,9 +831,13 @@ add_filter('admin_post_thumbnail_html', function($html) {
 /**
  * ******************************************* useful functions
  */
-function is_esa($post_type) {
+function is_esa($post_type = false) {
 	global $is_esa_story_page;
 	global $esa_settings;
+	if (!$post_type) {
+		global $post;
+		$post_type = $post->post_type;
+	}
 	//print_r($esa_settings['post_types'] );die();
 	return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page;
 }
