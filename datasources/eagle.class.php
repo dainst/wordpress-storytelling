@@ -306,11 +306,12 @@ namespace esa_datasource {
 			if ($visu->hasTranscription) {
 				$this->_transcription($visu->hasTranscription, $data);
 			}
-			
+
 			$data->images[] = new \esa_item\image(array(
 					'url' => (string) $visu->thumbnail,
 					'title' => (string) $visu->visualRepresentationIpr,
-					'text'=> (string)  $visu->description
+					'text'=> (string)  $visu->description,
+					'fullres' => (string) $visu->url
 			));
 			return $data;
 		}
