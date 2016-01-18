@@ -88,10 +88,11 @@
             		//load fullres images of not allready  (because good guy me always tries to save some traffic)
             		$.each(thisItem.find('.esa_item_fullres'), function(i, item) {
             			if (typeof $(item).src === 'undefined') {
-            				$(item).attr('src', $(item).data('fullsize'));
+            				if (!$(item).attr('src')) {
+            					$(item).attr('src', $(item).data('fullsize'));
+            				}
             			}
             			//console.log(jQuery(item).src, jQuery(item).data('fullsize'));
-
             		});
             		
             		
@@ -102,8 +103,36 @@
             		this_esa_item.map.invalidateSize();
             		console.log('invalidateSize');
             	}
-
+            	
             });
+            
+        	// thickbox
+            if (!is_in_editor) {
+            	$(this_esa_item).on('click', '.esa_item_media_box', function() {
+            		var thickboxObj = $(this).find('.esa_thickbox');
+            		var thickboxId = thickboxObj.attr('id');
+            		if (!thickboxObj) {
+            			return;
+            		}
+            		var fullsizeObj = $(this).find('.esa_item_fullres');
+            		var fullsize = fullsizeObj.data('fullsize');
+            		function esa_tb() {
+            			var width = Math.min($(window).width() - 55, fullsizeObj.get(0).naturalWidth);
+            			var height = Math.min($(window).height() - 55, fullsizeObj.get(0).naturalHeight);
+            			var title = $(this_esa_item).find('h4').text();
+            			tb_show(title, '#TB_inline?inlineId=' + thickboxId + '&width=' + width + '&height=' + height);
+            		}
+            		fullsizeObj.load(esa_tb);
+            		if (!fullsizeObj.attr('src')) {
+            			fullsizeObj.attr('src', fullsize);
+            		} else {
+            			esa_tb();
+            		}
+            		
+            	});
+            }
+
+            
             
             // load leaflet if needed
         	if (!is_in_editor && $(this_esa_item).find('.esa_item_map').length) {

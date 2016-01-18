@@ -52,12 +52,13 @@
 		},
 
 		edit: function(text, update) {
-			console.log('shortcode edit overwritten');
-			console.log(this, update);
-			
 			var source = this.shortcode.attrs.named.source;
 			var id = this.shortcode.attrs.named.id;
+			
 			tb_show('Eagle Storytelling Application', 'media-upload.php?tab=esa&esa_source='+source+'&amp;esa_id='+id+'&amp;TB_iframe=true');
+			$('#TB_window').css('z-index', '160000'); //sad but true			
+			return;
+
 		}
 	}))
 
@@ -87,7 +88,7 @@
 
 		initialize: function() {
 
-			console.log('url:initialize', this);		
+			//console.log('url:initialize', this);		
 			
 			var self = this;
 			

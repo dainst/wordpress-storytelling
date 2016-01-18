@@ -855,7 +855,7 @@ function get_esa_datasource($engine) {
 
 
 function esa_item_map() {
-	echo "<div id='esa_items_overview_map'>Map loading</div>";
+	echo "<div id='esa_items_overview_map'>&nbsp;</div>";
 }
 
 add_action('wp_ajax_esa_get_overview_map', function() {

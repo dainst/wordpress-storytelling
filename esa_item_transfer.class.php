@@ -154,17 +154,14 @@ namespace esa_item {
 				case 'DRAWING':
 					$class = 'esa_item_svg';
 				case 'BITMAP':
-				
 				case 'IMAGE':
 					$drurl = ($this->fullres) ? $this->fullres : $this->url;
 					$encurl = $drurl;
-					$image = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
-					if($this->fullres or ($this->type == 'DRAWING')) {
-						$image = "<a href='$encurl' title='{$this->title}' class='thickbox'>$image<img class='esa_item_fullres $class' src='' data-fullsize='$drurl' alt='{$this->title}' /></a>";
-					} else {
-						$image = "$image<img class='esa_item_fullres' src='' data-fullsize='$drurl' alt='{$this->title}' />";
-					}
-					$html = $image; 
+					$image_a = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
+					$image_b = "<img class='esa_item_fullres' src='' data-fullsize='$drurl' alt='{$this->title}' />";
+					$id = md5($drlink);
+					$image_b = ($this->fullres or ($this->type == 'DRAWING')) ? "<span class='esa_thickbox' id='esa_tb_$id'>$image_b</span>" : $image_b;
+					$html = $image_a . $image_b; 
 				break;
 				
 				case 'AUDIO': 
