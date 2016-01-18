@@ -146,7 +146,7 @@ namespace esa_datasource {
 				$this->params = array_merge($this->params, $params);
 				
 				// go
-				
+
 				// is url pasted?
 				if ($url = $this->api_url_parser($query)) {
 					//print_r($url);

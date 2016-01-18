@@ -72,7 +72,13 @@ namespace esa_datasource {
 		}
 
 		function api_record_url($id, $params = array()) {
-			return "http://pleiades.stoa.org/places/$id";
+			$chunks = explode('/', $id);
+			$type = array_pop($chunks);
+			if ($type == 'places') {
+				return "http://pleiades.stoa.org/places/$id";
+			} else {
+				return '';
+			}
 		}
 			
 		private function _api_params_url_part($params) {
