@@ -509,7 +509,7 @@ function media_esa_dialogue() {
 	
 	$post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
 	$item_id = isset($_GET['esa_id']) ? $_GET['esa_id'] : null;
-	
+	$engine  = isset($_GET['esa_source']) ? $_GET['esa_source'] : $esa_datasources[0];
 	//media_upload_header();
 	
 	echo "<div id='esa-mediaframe'>";
