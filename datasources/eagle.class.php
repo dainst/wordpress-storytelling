@@ -230,7 +230,7 @@ namespace esa_datasource {
 				$data->table['repositoryname'] = $page->repositoryname;
 								
 				$data->table = array_filter($data->table, function($part) {return $part and (string) $part != '';});
-				
+	
 				$data->title = $obj->title;
 				
 				$id = (isset($page->dnetresourceidentifier)) ? $page->dnetresourceidentifier : $obj->dnetResourceIdentifier; //wtf
@@ -260,7 +260,7 @@ namespace esa_datasource {
 					$this->_artifact($artifact, $data);
 				}
 			}
-			
+
 			if ($epi->transcription) {
 				$this->_transcription($epi->transcription, $data);
 			}
@@ -316,7 +316,9 @@ namespace esa_datasource {
 		}
 		
 		private function _transcription($trans, &$data) {
-			$data->text['transcription'] = $trans->text;
+			if ($trans->text and ($trans->text != '/')) {
+				$data->text['transcription'] = $trans->text;
+			}
 			//$data->text['transcription'] = $trans->textHtml->asXML();
 			//$data->text['transcription'] = $trans->textEpidoc->asXML();
 			$xml = $trans->textEpidoc->asXML();
@@ -339,7 +341,10 @@ namespace esa_datasource {
 						if ($firstchild->nodeName == 'br') {
 							$firstchild->parentNode->removeChild($firstchild);
 						}
-						$data->text['transcription'] = trim($epiDom->saveHTML($div));
+						$out = trim($epiDom->saveHTML($div));
+						if ($out and strip_tags($out)) {
+							$data->text['transcription'] = $out;
+						}
 					}
 					
 					//$data->table['debug'] = $c->status();

@@ -179,12 +179,10 @@ namespace esa_item {
 					$html = "<a target='_blank' href='{$this->fullres}'><div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div></a>";
 				break;
 				
-				case 'MAP':
-					
+				case 'MAP':			
 					$shape = ($this->shape) ? "data-shape='" . json_encode($this->shape) .  "'" : '';
 					$id = (isset($this->id)) ? $this->id : md5(implode('|', array($this->shape, $this->marker[0], $this->marker[1])));
-					$html = "<div class='esa_item_map' id='esa_item_map-{$id}' data-latitude='{$this->marker[0]}' data-longitude='{$this->marker[1]}' $shape>&nbsp;</div>";
-					
+					$html = "<div class='esa_item_map' id='esa_item_map-{$id}' data-latitude='{$this->marker[0]}' data-longitude='{$this->marker[1]}' $shape>&nbsp;</div>";		
 				break;
 
 			}
