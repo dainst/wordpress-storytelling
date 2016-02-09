@@ -18,9 +18,7 @@ namespace esa_datasource {
 		public $info = '<p>Search the Eagle Database</p>'; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;
-		
-		public $converter_ffm = false; // force fallback mode of EpidocConverter ?
-		
+				
 		public $pagination = true; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 		private $_hits_per_page = 10;
@@ -123,6 +121,11 @@ namespace esa_datasource {
 				require_once '/var/www/eagle/wp-content/plugins/eagle-search' . '/class/EagleSearch.php';
 				require_once '/var/www/eagle/wp-content/plugins/eagle-search' . '/class/EagleSaveSystem.php';
 				$this->info = "<p>Type in a keyword to search in the Eagle database or <a href='http://www.eagle-network.eu/basic-search/' target='_blank'>use the genuine Eagle search Interface</a> and the save function to display them here.</p>";
+				/*
+				require_once '/var/www/html/eagle/wp-content/plugins/eagle-search' . '/class/EagleSearch.php';
+				require_once '/var/www/html/eagle/wp-content/plugins/eagle-search' . '/class/EagleSaveSystem.php';
+				$this->info = "<p> Type in a keyword to search in the Eagle database <i>or <a href='http://www.eagle-network.eu/basic-search/' target='_blank'>use the genuine Eagle search Interface</a> and the save function to display them here. (Experimental Function)</i></p>";
+				*/
 			}
 		}
 		
@@ -170,6 +173,12 @@ namespace esa_datasource {
 	            	$result = array_merge($result, $groups->doclist->docs);
 	            }
 				*/
+
+				/*
+				if (!count($largelist->grouped->tmid->groups)) {
+					throw new \Exception('<textarea>' . print_r($dbRow, 1) . '</textarea>');
+				}
+				*/
 	            
 	            $result[] = $largelist->grouped->tmid->groups[0]->doclist->docs[$dbRow->row];
 	            
@@ -197,11 +206,16 @@ namespace esa_datasource {
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			
-					
+			
 			$this->results = array();
 			foreach ($response->response->docs as $page) {
 
+				if (!$page)  {
+					continue;
+				}
+
 				$ob = new \SimpleXMLElement($page->__result[0]);
+				
 				$obj = $ob->metadata->eagleObject;
 				
 				if ($this->debug) {
@@ -327,10 +341,19 @@ namespace esa_datasource {
 				try {
 					$this->_require('inc/epidocConverter/epidocConverter.class.php');
 					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
-					$c = \epidocConverter::create($xml,$this->converter_ffm);
-
+					$c = \epidocConverter::create($xml, $this->epidoc_settings['mode'], $this->epidoc_settings['settings']);
 					$epi = $c->convert();
 					
+					/*
+					$this->_require('inc/epidocConverter/epidocConverterRemote.class.php');
+					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
+					$c = new \epidocConverterRemote($xml);
+            				$c->apiurl = 'http://195.37.232.186/epidocConverter/remoteServer.php';
+
+					$epi = $c->convert();
+					//$data->addTable('xxx', $epi);
+					*/
+
 					// remove trailing <br> tag
 					$epi = preg_replace("/>\s+</", "><", $epi);
 					$epiDom = new \DOMDocument();
@@ -428,8 +451,9 @@ namespace esa_datasource {
 		
 		function stylesheet() {
 			$this->_require('inc/epidocConverter/epidocConverter.class.php');
-			$c = \epidocConverter::create('', $this->converter_ffm);
+			$c = \epidocConverter::create('', $this->epidoc_settings['mode'], $this->epidoc_settings['settings']);
 			$css =
+				//file_get_contents($c->workingDir . '/xsl/global.css') . "
 				$c->getStylesheet() . "
 				
 				.esa_item_collapsed .textpart  {

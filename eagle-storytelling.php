@@ -44,7 +44,13 @@ define('ESA_DEBUG', false);
 
 $esa_settings = array(
 	'post_types' => array('post', 'page'),
-	'add_media_entry' => 'Eagle Storytelling Application'
+	'add_media_entry' => 'Eagle Storytelling Application',
+	'epidoc' => array(
+		'mode' => 'remote:saxon',
+		'settings' =>  array(
+			'apiurl' => 'http://195.37.232.186/epidocConverter/remoteServer.php'
+		)
+	)
 );
 
 require_once('esa_datasource.class.php');
@@ -777,7 +783,7 @@ function esa_thumbnail($post, $return = false) {
 	}
 	
 	// check if regular thumbnail exists
-	if (!$thumbnail) {
+	if (empty($thumbnail)) {
 		$thumbnail = get_the_post_thumbnail($post->ID, array(150, 150));
 	}
 
@@ -836,7 +842,7 @@ function is_esa($post_type = false) {
 	global $esa_settings;
 	if (!$post_type) {
 		global $post;
-		$post_type = $post->post_type;
+		$post_type = (is_object($post)) ? $post->post_type : '';
 	}
 	//print_r($esa_settings['post_types'] );die();
 	return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page;
@@ -858,7 +864,7 @@ function esa_item_map() {
 	echo "<div id='esa_items_overview_map'>&nbsp;</div>";
 }
 
-add_action('wp_ajax_esa_get_overview_map', function() {
+function wp_ajax_esa_get_overview_map() {
 	
 	global $esa_settings;
 	global $wpdb;
@@ -906,6 +912,9 @@ add_action('wp_ajax_esa_get_overview_map', function() {
 	echo json_encode($result);
 	
 	wp_die();
-});
+}
+
+add_action('wp_ajax_esa_get_overview_map','wp_ajax_esa_get_overview_map');
+add_action('wp_ajax_nopriv_esa_get_overview_map','wp_ajax_esa_get_overview_map');
 
 ?>

@@ -44,7 +44,7 @@ namespace esa_datasource {
 		public $url_parser = array(
 			'pleiades'		=>	'#https?\:\/\/pleiades\.stoa\.org\/places\/(.*)[\/\.\?]?#',
 			'atlantides'	=>	'#https?\:\/\/atlantides\.org\/capgrids\/(.*)[\/\.\?]?#',
-			'dare' 			=>	'#https?\:\/\/dare\.ht\.lu\.se\/places\/(.*?)[\/\.\?]#',
+			'dare' 			=>	'#https?\:\/\/dare\.ht\.lu\.se\/places\/(\w*)[\/\.\?]?#',
 			'trismegistos'	=>	'#https?\:\/\/w?w?w?\.?trismegistos\.org\/place\/(.*)[\/\.\?]?#',
 			'vici'			=>	'#https?\:\/\/vici\.org\/vici\/(.*?)[\/\.\?]#'
 		); //http://pleiades.stoa.org/places/600230

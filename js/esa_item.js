@@ -19,6 +19,7 @@
             }, options);
 			*/
             var this_esa_item = this;
+			this_esa_item.map = false;
             var is_in_editor = (typeof window.tinymce !== 'undefined');
             
             //console.log('init', this_esa_item);
@@ -60,6 +61,12 @@
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
             	
+		// map
+            	if (this_esa_item.map) {
+            		this_esa_item.map.invalidateSize();
+            		console.log('invalidateSize');
+            	}
+
             	// on Expand
             	var isExpanding = false;
             	if (!thisItem.hasClass('esa_item_collapsed')) {
@@ -97,12 +104,8 @@
             		
             		
             	}
-            	
-            	// map
-            	if (mapDiv = thisItem.find('.esa_item_map')[0]) {
-            		this_esa_item.map.invalidateSize();
-            		console.log('invalidateSize');
-            	}
+
+
             	
             });
             

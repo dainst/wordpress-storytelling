@@ -18,8 +18,6 @@
 namespace esa_datasource {
 	class epidoc extends abstract_datasource {
 		
-		public $converter_ffm = false; // force fallback mode of EpidocConverter ? 
-
 		public $title = 'Epidoc'; // Label / Title of the Datasource
 		public $index = 25; // where to appear in the menu
 		public $info = "<p>
@@ -62,7 +60,9 @@ namespace esa_datasource {
 		public $pagination = false; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
-		public $require = array('inc/epidocConverter/epidocConverter.class.php');
+		public $require = array(
+		    'inc/epidocConverter/epidocConverter.class.php'
+		);
 		
 		public $id_is_url = true;
 		
@@ -91,10 +91,9 @@ namespace esa_datasource {
 		}
 		
 		function parse_result($response) {
-			
-			$c = \epidocConverter::create('', $this->converter_ffm);
-			$c->workingDir = $this->path . '/inc/epidocConverter';
-			$c->set($response);
+			error_reporting(true);
+			ini_set('display_errors', '1');
+			$c = \epidocConverter::create($response, $this->epidoc_settings['mode'], $this->epidoc_settings['settings']);
 			$epi = $c->convert(true);
 			
 			$map = array(
@@ -302,21 +301,15 @@ namespace esa_datasource {
 		
 		
 		function dependency_check() {
-			
-
-			$c = \epidocConverter::create();
-			
+			$c = \epidocConverter::create('', $this->epidoc_settings['mode']);
 			return $c->status();
-
-			
 		}
 		
 		function stylesheet() {
-			
-			$c = \epidocConverter::create('', $this->converter_ffm);
+
+			$c = \epidocConverter::create('', $this->epidoc_settings['mode']);
 			$css =
 				$c->getStylesheet() . "
-				
 				.esa_item_collapsed .textpart  {
 					left: 0em;
 				}

@@ -54,6 +54,9 @@ namespace esa_datasource {
 		// list of regexes to realize regexes of this kind: fale | string | array of string
 		public $url_parser = false;
 		
+		// some global epidoc settings
+		public $epidoc_settings;
+		
 		/**
 		 * some initialation
 		 */
@@ -70,8 +73,13 @@ namespace esa_datasource {
 				}
 			}
 			
-			//make plugin path available
+			// make plugin path available
 			$this->path = __DIR__;
+			
+			// get some epidoc settings
+			global $esa_settings;
+			$this->epidoc_settings = !empty($esa_settings['epidoc']) ? $esa_settings['epidoc'] : array('mode' => '', 'settings' => array());
+			$this->epidoc_settings['settings']['workingDir'] = $this->path . '/inc/epidocConverter';
 			
 			// call constructor
 			$this->construct();
