@@ -45,12 +45,6 @@ define('ESA_DEBUG', false);
 $esa_settings = array(
 	'post_types' => array('post', 'page'),
 	'add_media_entry' => 'Eagle Storytelling Application',
-	'epidoc' => array(
-		'mode' => 'remote:saxon',
-		'settings' =>  array(
-			'apiurl' => 'http://195.37.232.186/epidocConverter/remoteServer.php'
-		)
-	)
 );
 
 require_once('esa_datasource.class.php');

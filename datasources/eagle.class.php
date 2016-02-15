@@ -118,14 +118,11 @@ namespace esa_datasource {
 				$this->eagle_store_data_path = WP_CONTENT_DIR;
 				$this->eagle_store_user_id = get_current_user_id();
 				$this->eagle_store = true;
-				require_once '/var/www/eagle/wp-content/plugins/eagle-search' . '/class/EagleSearch.php';
-				require_once '/var/www/eagle/wp-content/plugins/eagle-search' . '/class/EagleSaveSystem.php';
+
+				require_once $this->settings['eagle']['classpath'] . '/class/EagleSearch.php';
+				require_once $this->settings['eagle']['classpath'] . '/class/EagleSaveSystem.php';
 				$this->info = "<p>Type in a keyword to search in the Eagle database or <a href='http://www.eagle-network.eu/basic-search/' target='_blank'>use the genuine Eagle search Interface</a> and the save function to display them here.</p>";
-				/*
-				require_once '/var/www/html/eagle/wp-content/plugins/eagle-search' . '/class/EagleSearch.php';
-				require_once '/var/www/html/eagle/wp-content/plugins/eagle-search' . '/class/EagleSaveSystem.php';
-				$this->info = "<p> Type in a keyword to search in the Eagle database <i>or <a href='http://www.eagle-network.eu/basic-search/' target='_blank'>use the genuine Eagle search Interface</a> and the save function to display them here. (Experimental Function)</i></p>";
-				*/
+
 			}
 		}
 		
@@ -341,18 +338,8 @@ namespace esa_datasource {
 				try {
 					$this->_require('inc/epidocConverter/epidocConverter.class.php');
 					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
-					$c = \epidocConverter::create($xml, $this->epidoc_settings['mode'], $this->epidoc_settings['settings']);
+					$c = \epidocConverter::create($xml, $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 					$epi = $c->convert();
-					
-					/*
-					$this->_require('inc/epidocConverter/epidocConverterRemote.class.php');
-					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
-					$c = new \epidocConverterRemote($xml);
-            				$c->apiurl = 'http://195.37.232.186/epidocConverter/remoteServer.php';
-
-					$epi = $c->convert();
-					//$data->addTable('xxx', $epi);
-					*/
 
 					// remove trailing <br> tag
 					$epi = preg_replace("/>\s+</", "><", $epi);
@@ -451,9 +438,9 @@ namespace esa_datasource {
 		
 		function stylesheet() {
 			$this->_require('inc/epidocConverter/epidocConverter.class.php');
-			$c = \epidocConverter::create('', $this->epidoc_settings['mode'], $this->epidoc_settings['settings']);
+			$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 			$css =
-				//file_get_contents($c->workingDir . '/xsl/global.css') . "
+			
 				$c->getStylesheet() . "
 				
 				.esa_item_collapsed .textpart  {

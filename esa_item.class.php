@@ -78,7 +78,7 @@ class esa_item {
 		
 		echo "<div class='esa_item_tools'>";
 		
-		echo "<a href='#' title='expand' class='esa_item_tools_expand'>&nbsp;</a>";
+		echo "<a title='expand' class='esa_item_tools_expand'>&nbsp;</a>";
 		
 		echo ($this->url) ? "<a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>&nbsp;</a>" : '';
 		

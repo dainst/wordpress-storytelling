@@ -93,7 +93,7 @@ namespace esa_datasource {
 		function parse_result($response) {
 			error_reporting(true);
 			ini_set('display_errors', '1');
-			$c = \epidocConverter::create($response, $this->epidoc_settings['mode'], $this->epidoc_settings['settings']);
+			$c = \epidocConverter::create($response, $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 			$epi = $c->convert(true);
 			
 			$map = array(
@@ -301,14 +301,13 @@ namespace esa_datasource {
 		
 		
 		function dependency_check() {
-			$c = \epidocConverter::create('', $this->epidoc_settings['mode']);
+			$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 			return $c->status();
 		}
 		
 		function stylesheet() {
 
-			$c = \epidocConverter::create('', $this->epidoc_settings['mode']);
-			$css =
+			$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 				$c->getStylesheet() . "
 				.esa_item_collapsed .textpart  {
 					left: 0em;

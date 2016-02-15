@@ -54,13 +54,22 @@ namespace esa_datasource {
 		// list of regexes to realize regexes of this kind: fale | string | array of string
 		public $url_parser = false;
 		
-		// some global epidoc settings
-		public $epidoc_settings;
+		// some settings
+		public $settings = array('epidoc' => array());
 		
 		/**
 		 * some initialation
 		 */
 		final function __construct() {
+			// make plugin path available
+			$this->path = __DIR__;
+			
+			// get some settings
+			include('esa_datasource.local_settings.php');
+			$this->settings = $settings;
+			$this->settings['epidoc'] = !empty($settings['epidoc']) ? $settings['epidoc'] : array('mode' => '', 'settings' => array());
+			$this->settings['epidoc']['settings']['workingDir'] = $this->path . '/inc/epidocConverter';	
+			
 			// generate a generic info text
 			if (!$this->info) {
 				$this->info = "<p>Insert anything you want to search for <strong>or</strong> <a href='{$this->homeurl}' target='_blank'> search at the {$this->title} itself</a> and paste the URL of one record in the field below.<p>";
@@ -72,14 +81,6 @@ namespace esa_datasource {
 					$this->_require($require);
 				}
 			}
-			
-			// make plugin path available
-			$this->path = __DIR__;
-			
-			// get some epidoc settings
-			global $esa_settings;
-			$this->epidoc_settings = !empty($esa_settings['epidoc']) ? $esa_settings['epidoc'] : array('mode' => '', 'settings' => array());
-			$this->epidoc_settings['settings']['workingDir'] = $this->path . '/inc/epidocConverter';
 			
 			// call constructor
 			$this->construct();
