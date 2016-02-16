@@ -9,11 +9,11 @@ Plugin URI:  http://www.eagle-network.eu/stories/
 Description: Create your own EAGLE story! 
 Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
-Version:     2.0 Alpha
+Version:     2.1
 */
 /*
 
-Copyright (C) 2015  Deutsches Archäologisches Institut
+Copyright (C) 2015, 2016  Deutsches Archäologisches Institut
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -45,6 +45,7 @@ define('ESA_DEBUG', false);
 $esa_settings = array(
 	'post_types' => array('post', 'page'),
 	'add_media_entry' => 'Eagle Storytelling Application',
+
 );
 
 require_once('esa_datasource.class.php');
@@ -124,10 +125,11 @@ add_action('admin_menu', function () {
 		
 		$dsfiles = glob(dirname(__file__) . "/datasources/*.class.php");
 		
-		echo "<div class='wrap'><h2>Eagle Storytelling Application</h2>";
+		echo "<div class='wrap'>";
 		
+		include('info.php');
 		
-		echo "<h3>Settings</h3>";
+		echo "<h2>Settings</h2>";
 	
 		echo "<form method='POST' action='$url'>";
 		echo "<h4>Available Data Sources</h4>";
@@ -139,6 +141,7 @@ add_action('admin_menu', function () {
 			$ds = get_esa_datasource($name);
 			$label = $ds->title;
 			$labels[$name] = $label;
+			echo $name;
 			try  {
 				$is_ok = true;
 				$status = $ds->dependency_check();
@@ -158,9 +161,7 @@ add_action('admin_menu', function () {
 		echo "<input type='hidden' name='action' value='esa_save_settings'>";
 		echo "<input type='submit' value='Save' class='button button-primary'>";
 		echo "</form>";
-		
-		
-		
+
 		echo "<h3>Cache</h3>";
 		echo "<form method='POST' action='$url'>";
     	echo "<input type='hidden' name='action' value='esa_flush_cache'>";
@@ -295,13 +296,11 @@ add_action('admin_init', function() {
 	add_filter("mce_external_plugins", function($plugin_array) {
 		$plugin_array['esa_mce'] = plugins_url() . '/eagle-storytelling/js/esa_mce.js';
 		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling/js/esa_item.js';
-		//$plugin_array['noneditable'] = plugins_url() . '/eagle-storytelling/js/mce_noneditable.js';
 		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item.css');
 		add_editor_style(plugins_url() .'/eagle-storytelling/css/esa_item-mce.css');
 		return $plugin_array;
 	});
 	
-	//wp_enqueue_script('leaflet.js', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js');
 
 	add_filter('mce_buttons', function($buttons) {
 		array_push($buttons, 'whatever');
@@ -309,7 +308,7 @@ add_action('admin_init', function() {
 	});
 
 	// stylesheet
-	//wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-admin.css');
+	wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_item-mediaframe.css');
 	esa_item_special_styles();
 });
 
@@ -504,12 +503,14 @@ function media_esa_dialogue() {
 	global $esa_settings;
 	$esa_datasources = json_decode(get_option('esa_datasources'));
 	$labels = (array) json_decode(get_option('esa_datasource_labels'));
-	// get current search engine
-	$eds = get_esa_datasource(isset($_GET['esa_source']) ? $_GET['esa_source'] : $esa_datasources[0]);
 	
 	$post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
 	$item_id = isset($_GET['esa_id']) ? $_GET['esa_id'] : null;
 	$engine  = isset($_GET['esa_source']) ? $_GET['esa_source'] : $esa_datasources[0];
+	
+	// get current search engine
+	$eds = ($engine != '_info') ? get_esa_datasource($engine) : '';
+	
 	//media_upload_header();
 	
 	echo "<div id='esa-mediaframe'>";
@@ -523,72 +524,77 @@ function media_esa_dialogue() {
 		$label = $labels[$source];
 		echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=$source'>$label</a>";
 	}
+	echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=_info'>?</a>";
 	echo "</div>";
-	echo "</div>"; //esa_item_list_sidebar
+	echo "</div>"; //media-router
 	
 	
-	//Sidebar
-	echo "<div id='esa_item_list_sidebar'>";
-	echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
-	
-	echo '<div id="esa_item_settings"><form>';
-	echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for <a title="reset to default settings" href="#" onclick="esa_ds.reset_form()"> default</a>.</p>';
-	
-	echo '<div class="esa_item_setting">';
-	echo '<label for="height">' . __('Height') . '</label>';
-	echo '<input type="number" min="0" name="height" value="">';
-	echo "</div>";
-	
-	echo '<div class="esa_item_setting">';
-	echo '<label for="width">' . __('Width') . '</label>';
-	echo '<input type="number" min="0" name="width" value="">';
-	echo "</div>";
-	
-	echo '<div class="esa_item_setting">';
-	echo '<label for="align">' . __('Align') . '</label>';
-	echo '<select height="1" name="align">
-			<option value="" selected>none</option>
-			<option value="left">Left</option>
-			<option value="right">Right</option>
-		</select>';
-	echo "</div>";
-	
-	if (count($eds->optional_classes)) {
-		echo '<div class="esa_item_setting">';
-		echo '<label for="mode">' . __('Modus') . '</label>';
-		echo '<select height="1" name="mode">
-				<option value="" selected>none</option>';
-		foreach ($eds->optional_classes as $key => $caption) {
-			echo "<option value='$key'>$caption</option>";
-		}
-		echo '</select>';
-	
-		echo "</div>";
-	}
-	
-	echo "</form></div>";
-	
-	
-	echo "</div>"; //esa_item_list_sidebar
-	
-	echo "<div class='media-frame-content'>";
-	
-	echo "<div class='attachments-browser'>";
 
-	
-	//echo "<h3 class='media-title'>{$eds->title}</h3>";
-	$query = $item_id ? $eds->api_record_url($item_id) : null;
-	$success = $eds->search($query);	
-	$eds->search_form();
-	echo '<div id="media-items">';
-	if ($success) {
-		$eds->show_result();
+	if ($engine == '_info') {
+		include('info.php');
 	} else {
-		$eds->show_errors();
-	}
-	echo '</div>'; //media-items
+		//Sidebar
+		echo "<div id='esa_item_list_sidebar'>";
+		echo "<div id='esa_item_preview' class='esa_item esa_item_$engine'></div>";
+		
+		echo '<div id="esa_item_settings"><form>';
+		echo '<p>Some <strong>optional</strong> parameters to define <br />the looks of your Item. Leave out for <a title="reset to default settings" href="#" onclick="esa_ds.reset_form()"> default</a>.</p>';
+		
+		echo '<div class="esa_item_setting">';
+		echo '<label for="height">' . __('Height') . '</label>';
+		echo '<input type="number" min="0" name="height" value="">';
+		echo "</div>";
+		
+		echo '<div class="esa_item_setting">';
+		echo '<label for="width">' . __('Width') . '</label>';
+		echo '<input type="number" min="0" name="width" value="">';
+		echo "</div>";
+		
+		echo '<div class="esa_item_setting">';
+		echo '<label for="align">' . __('Align') . '</label>';
+		echo '<select height="1" name="align">
+				<option value="" selected>none</option>
+				<option value="left">Left</option>
+				<option value="right">Right</option>
+			</select>';
+		echo "</div>";
+		
+		if (count($eds->optional_classes)) {
+			echo '<div class="esa_item_setting">';
+			echo '<label for="mode">' . __('Modus') . '</label>';
+			echo '<select height="1" name="mode">
+					<option value="" selected>none</option>';
+			foreach ($eds->optional_classes as $key => $caption) {
+				echo "<option value='$key'>$caption</option>";
+			}
+			echo '</select>';
+		
+			echo "</div>";
+		}
+		
+		echo "</form></div>";
+		
 	
-	echo '</div>'; //attachments-browser
+		echo "</div>"; //esa_item_list_sidebar
+		
+		// main
+		echo "<div class='media-frame-content'>";
+
+		echo "<div class='attachments-browser'>";
+	
+		$query = $item_id ? $eds->api_record_url($item_id) : null;
+		$success = $eds->search($query);	
+		$eds->search_form();
+		echo '<div id="media-items">';
+		if ($success) {
+			$eds->show_result();
+		} else {
+			$eds->show_errors();
+		}
+	
+		echo '</div>'; //media-items
+		echo '</div>'; //attachments-browser
+	}
 	
 	echo "</div>"; //media-frame-content
 	
