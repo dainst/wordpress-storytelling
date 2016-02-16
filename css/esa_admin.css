@@ -1,0 +1,27 @@
+@CHARSET "UTF-8";
+
+/* infopage */
+
+
+#esa_infotable {
+	margin: 20px;
+}
+
+#esa_infotable td {
+	paddin: 3em;
+	vertical-align: middle;
+	font-size: 150%
+}
+
+
+.wrap #esa_item_list_sidebar {
+	border: none;
+	padding: 6px;
+	margin-top: 40px;
+	height: 100%;
+	overflow: auto;
+	float: right;
+	height: 100%;
+	background-color: #FCFCFC;
+	width: 350px;
+}

@@ -268,12 +268,14 @@
 	margin: 0px !important
 }
 
+.esa_item_iframe,
 .esa_item_map {
 	width:  100%;
 	height: 400px;
 	/*margin-bottom: 15px;*/
 }
 
+.esa_item_collapsed .esa_item_iframe,
 .esa_item_collapsed .esa_item_map {
 	width: 150px;
 	height: 150px;
@@ -380,5 +382,3 @@
 	overflow: auto;
 	line-height: normal
 }
-
-

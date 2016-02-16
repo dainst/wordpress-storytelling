@@ -96,6 +96,7 @@ body {
 	height: 100%;
 	border-top: 1px solid #CCC;
 	background-color: #FCFCFC;
+	width: 350px;
 }
 
 #esa_item_preview {
@@ -152,9 +153,11 @@ body {
 	line-height: 26px;
 }
 
+.media-frame-content h1,
+.media-frame-content h2,
 .media-frame-content ul,
 .media-frame-content p {
-	margin: 1em
+	margin: 15px
 }
 
 .toggled {
@@ -173,5 +176,15 @@ body {
 	display:none
 }
 
+/* infopage */
 
 
+#esa_infotable {
+	margin: 20px;
+}
+
+#esa_infotable td {
+	paddin: 3em;
+	vertical-align: middle;
+	font-size: 150%
+}
