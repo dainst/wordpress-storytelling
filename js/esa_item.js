@@ -61,23 +61,22 @@
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
             	
-		// map
+            	// map
             	if (this_esa_item.map) {
             		this_esa_item.map.invalidateSize();
             		console.log('invalidateSize');
             	}
 
             	// on Expand
-            	var isExpanding = false;
-            	if (!thisItem.hasClass('esa_item_collapsed')) {
-            		
+            	
+            	function reArrangeMediaboxes() {
             		var mediaBoxes = thisItem.find('.esa_item_media_box');
-            		//console.log('expansion', mediaBoxes.length);
+            		console.log('rearragane', mediaBoxes);
             		
             		if (mediaBoxes.length == 0) {
             			return;
             		}
-
+            		
             		var itmWidth = thisItem.width();
             			
             		thisItem.removeClass('esa_item_media_size_1');
@@ -91,17 +90,26 @@
             		//console.log(itmWidth, b, p, s);
 
             		thisItem.addClass('esa_item_media_size_' + s);
-
+            	}
+            	
+            	if (!thisItem.hasClass('esa_item_collapsed')) {
+            		
             		//load fullres images of not allready  (because good guy me always tries to save some traffic)
             		$.each(thisItem.find('.esa_item_fullres'), function(i, item) {
             			if (typeof $(item).src === 'undefined') {
             				if (!$(item).attr('src')) {
+            					$(item).on('error', function() {
+            						$(item).parents('.esa_item_media_box').remove();
+            						reArrangeMediaboxes();
+            					});
             					$(item).attr('src', $(item).data('fullsize'));
             				}
             			}
             			//console.log(jQuery(item).src, jQuery(item).data('fullsize'));
             		});
             		
+            		reArrangeMediaboxes();
+          		
             		
             	}
 

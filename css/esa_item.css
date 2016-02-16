@@ -268,11 +268,19 @@
 	margin: 0px !important
 }
 
-.esa_item_iframe,
 .esa_item_map {
 	width:  100%;
 	height: 400px;
 	/*margin-bottom: 15px;*/
+}
+
+.esa_item_iframe {
+	width:  100%;
+	max-height: 350px;
+}
+
+.esa_item_iframe iframe {
+	width:  100%;
 }
 
 .esa_item_collapsed .esa_item_iframe,

@@ -40,13 +40,13 @@ namespace esa_datasource {
 			return "";
 		}
 			
-		function api_single_url($id) {
+		function api_single_url($id, $params = array()) {
 			return "";
 		}
 
 
 		
-		function api_record_url($id) {
+		function api_record_url($id, $params = array()) {
 			return "";
 		}
 			

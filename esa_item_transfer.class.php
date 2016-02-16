@@ -184,6 +184,13 @@ namespace esa_item {
 					$id = (isset($this->id)) ? $this->id : md5(implode('|', array($this->shape, $this->marker[0], $this->marker[1])));
 					$html = "<div class='esa_item_map' id='esa_item_map-{$id}' data-latitude='{$this->marker[0]}' data-longitude='{$this->marker[1]}' $shape>&nbsp;</div>";		
 				break;
+				
+				case 'SKETCHFAB':
+					$html = "<div class='esa_item_iframe'>
+								<iframe src='https://sketchfab.com/models/{$this->url}/embed' frameborder='0' allowfullscreen mozallowfullscreen='true' webkitallowfullscreen='true' onmousewheel=''></iframe>
+							</div>";
+				
+				break;
 
 			}
 				

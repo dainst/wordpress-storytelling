@@ -340,7 +340,7 @@ namespace esa_datasource {
 					$xml = "<TEI><text><body><div type='edition'>$xml</div></body></text></TEI>";
 					$c = \epidocConverter::create($xml, $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 					$epi = $c->convert();
-
+					
 					// remove trailing <br> tag
 					$epi = preg_replace("/>\s+</", "><", $epi);
 					$epiDom = new \DOMDocument();

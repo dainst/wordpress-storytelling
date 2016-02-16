@@ -19,7 +19,7 @@ namespace esa_datasource {
 		
 		// infotext to this data source
 		public $title; // title
-		public $index = 50; // where to appear in the menu
+		public $index = 3; // where to appear in the menu
 		public $info; // infotext
 		public $homeurl; // homepage of this datasource
 		public $examplesearch; // placeholder for search field
@@ -56,6 +56,7 @@ namespace esa_datasource {
 		
 		// some settings
 		public $settings = array('epidoc' => array());
+		public $force_curl = false;
 		
 		/**
 		 * some initialation
@@ -158,7 +159,7 @@ namespace esa_datasource {
 
 				// is url pasted?
 				if ($url = $this->api_url_parser($query)) {
-					//print_r($url);
+					//print_r('url: ' . $url);
 					$this->results = array($this->parse_result($this->_generic_api_call($url)));
 					
 				} else {
@@ -208,7 +209,7 @@ namespace esa_datasource {
 		 * @param string $api
 		 * @param string $param
 		 */
-		private function _generic_api_call($url) {
+		function _generic_api_call($url) {
 			
 			if (!$url) {
 				throw new \Exception('No Query: ' . $url);
@@ -424,44 +425,37 @@ namespace esa_datasource {
 				throw new \Exception('no $url!');
 			}
 				
-			/*
 			if(
 				function_exists("curl_init") and 
 				function_exists("curl_setopt") and
 				function_exists("curl_exec") and 
-				function_exists("curl_close")
+				function_exists("curl_close") and
+				$this->force_curl
 			){
 				$ch = curl_init();
-				/*
-				$http_headers = array(
-					"Accept: application/json",
-					"Connection: close",                    // Disable Keep-Alive
-					"Expect:",                              // Disable "100 Continue" server response
-					"Content-Type: application/json"        // Content Type json
-				);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
+				
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_FAILONERROR, true);
-				curl_setopt($ch, CURLOPT_VERBOSE, true);   	// Verbose mode for diagnostics
-				curl_setopt($ch, CURLOPT_POST, false);  
 				curl_setopt($ch, CURLOPT_URL, $url);
 				$response = curl_exec($ch);
 				
 				if ($this->debug) {
-					echo "<pre class='esa_debug'>";
-					echo "url: ", $url, "\nPOST: ", print_r($_POST,1 ), "\nResponse: ";
-					print_r((array) json_decode($response));
-					echo "\nerror:" . curl_error($ch);
-					echo "</pre>";
+					echo "<pre>mode: curl</pre>";
+				}
+				
+				if(!curl_errno($ch)) {
+					$info = curl_getinfo($ch);
+					if ($this->debug) {
+						echo '<pre>Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'] . '</pre>';
+					}
+				} else {
+					throw new \Exception('Curl error: ' . curl_error($ch));
 				}
 				
 				curl_close($ch);
+
 				return $response;
 			}
 		
-			*/
-			
-			//echo $url;
 			
 			if (!$json = file_get_contents($url)) {
 				throw new \Exception("no response to $url!");

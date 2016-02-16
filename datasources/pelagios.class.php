@@ -31,6 +31,7 @@ namespace esa_datasource {
 							<li><a href='http://vici.org/vici/'  target='_blank'>Vici.org - Atlas zur Archäologie des Altertums</a></li>
 						</ul>
 						";
+		public $index = 57; // where to appear in the menu
 		public $homeurl = 'http://pleiades.stoa.org/'; // link to the dataset's homepage
 		public $debug = false;
 		public $examplesearch = 'Insert a serach term like "gold coin", a place name or an URL like this "http://pleiades.stoa.org/places/462218"'; // placeholder for search field

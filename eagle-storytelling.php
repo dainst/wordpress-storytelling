@@ -155,7 +155,7 @@ add_action('admin_menu', function () {
 			$optionlist[$ds->index] = "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label $status</label></div>";
 		}
 		ksort($optionlist);
-		echo implode("\n", $optionlist);
+
 		update_option('esa_datasource_labels', json_encode($labels));
 		wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');
 		echo "<input type='hidden' name='action' value='esa_save_settings'>";
@@ -524,6 +524,7 @@ function media_esa_dialogue() {
 		$label = $labels[$source];
 		echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=$source'>$label</a>";
 	}
+	$sel = ('_info' == $engine) ? 'active' : '';
 	echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=_info'>?</a>";
 	echo "</div>";
 	echo "</div>"; //media-router
