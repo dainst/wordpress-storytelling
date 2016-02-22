@@ -1,12 +1,12 @@
 <?php
 /**
  * @package eagle-storytelling
- * @version 2.0 Alpha
+ * @version 2.1
  */
 /*
 Plugin Name: Eagle Storytelling Application
 Plugin URI:  http://www.eagle-network.eu/stories/
-Description: Create your own EAGLE story! 
+Description: The EAGLE Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content. It was created in the context of the EAGLE project, a European project which started in 2013 and aimed to connect and collect data sources and projects related to the topic of digital epigraphy, ancient history or archeology. 
 Author:	     Philipp Franck
 Author URI:	 http://www.dainst.org/
 Version:     2.1
@@ -80,21 +80,22 @@ function esa_install () {
 	ENGINE = MYISAM
 	;";
 
-	dbDelta( $sql );
+	dbDelta($sql);
 
-	// because esa_item has wo columns as index, we can't solve this with a taxonomy...
+	// because esa_item has two columns as index, we can't solve this with a taxonomy...
 	$table_name = $wpdb->prefix . "esa_item_to_post";
 	$sql =
 	"CREATE TABLE $table_name (
 		post_id BIGINT(20) UNSIGNED NOT NULL,
 		esa_item_source VARCHAR(12) NOT NULL,
 		esa_item_id VARCHAR(200) NOT NULL
+		PRIMARY KEY (post_id)
 	)
 	COLLATE utf8_general_ci
 	ENGINE = MYISAM
 	;";
 
-	dbDelta( $sql );
+	dbDelta($sql);
 
 }
 
@@ -527,10 +528,17 @@ function media_esa_dialogue() {
 	
 	//media_upload_header();
 	
+	if(empty($esa_datasources)) {
+		echo "<p>Error: No Sub-Plugins found. In the admin menu under 'Eagle Storytelling Application' you can activate some.</p>";
+		return;
+	}
+	
 	echo "<div id='esa-mediaframe'>";
 	
 	echo "<div class='media-frame-router'>";
 	echo "<div class='media-router'>";
+	
+
 	
 	// create search engine menu
 	foreach ($esa_datasources as $source) {

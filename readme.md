@@ -5,7 +5,7 @@ Plugin URI:  http://www.eagle-network.eu/stories/
 Description: Create your own EAGLE story! 
 Author:	     Deutsches Archäologisches Institut
 Author URI:	 http://www.dainst.org/
-Version:     1.5
+Version:     2.1
 
 Contributors: Philipp Franck 
 Tags: Web-APIs, epigraphy, links, data, linked data, semantic, ancient world, history, science, wikipedia, pleiades, perseus, pelagios, finds-org,
