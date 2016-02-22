@@ -48,7 +48,16 @@ a) Libxml >= 2.7.8 (as of PHP >= 5.4.0) installed
 or
 b) PHP Module [Saxon/c Processor](http://www.saxonica.com/html/saxon-c/index.html) installed
 or
-c) set up a Epidoc Render Server (We are currently building a Webservice like that but it's not ready now. You can still set it up by yourself, using [this](https://github.com/paflov/epidocConverter).
+c) set up a remote Epidoc Render Server (We are currently building a Webservice like that but it's not ready now. You can set it up by yourself, using [this](https://github.com/paflov/epidocConverter) but than you need libxml or saxon/c as well.
 
+So set up the epidoc rendering mode, create file called 'esa_datasource.settings.local.php' in the plugin directory
+an fill it with:  
+$settings['epidoc'] = array(
+	'mode' => {{mode}},
+	'settings' =>  array(
+		'apiurl' => '{{url}}/epidocConverter/remoteServer.php'
+	)
+);
 
+{{mode}} can be 'saxon', 'libxml', 'remote:saxon', 'remote:libxml' etc. Url is only required when using remote.
 
