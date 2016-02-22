@@ -5,7 +5,7 @@
  * @link 		https://finds.org.uk/
  * @author 		Philipp Franck
  *
- * Status: 1
+ * Status: Beta
  *
  */
 
@@ -15,31 +15,18 @@ namespace esa_datasource {
 	class finds_org extends abstract_datasource {
 
 		public $title = 'Finds.org'; // Label / Title of the Datasource
-		public $index = 1; // where to appear in the menu
+		public $index = 110; // where to appear in the menu
 		public $info = false; // get created automatically, or enter text
-		public $homeurl; // link to the dataset's homepage
+		public $homeurl = 'https://finds.org.uk/database/search'; // link to the dataset's homepage
 		public $debug = false;
-		public $examplesearch = 'https://finds.org.uk/database/artefacts/record/id/627280'; // placeholder for search field
-		// public $searchbuttonlabel = 'Search'; // label for searchbutton
+		public $examplesearch = 'Bronze Age hoard found in the Forest of Dean'; // placeholder for search field
 
 		public $pagination = true; // are results paginated?
-		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
-		public $require = array();  // require additional classes -> array of fileanmes	
-		
-		
-		// https://finds.org.uk/database/artefacts/record/id/767518
 		public $url_parser = '#https?\:\/\/(www\.)?finds\.org\.uk\/database\/artefacts\/record\/id\/(.*)#'; // url regex (or array)
 		
 		public $force_curl = true;
 		
-		
-		/**
-		 * constructor
-		 * @see \esa_datasource\abstract_datasource::construct()
-		 */
-		function construct() {
-		}
 		
 		function api_search_url($query, $params = array()) {
 			$query = rawurlencode($query);
@@ -47,7 +34,13 @@ namespace esa_datasource {
 		}
 
 		function api_single_url($id, $params = array()) {
-			return "https://finds.org.uk/database/artefacts/record/id/$id/format/json";
+			return "https://finds.org.uk/database/search/results/q?id=570344&format=json";
+			/*
+			 * Why not going directly to the artifact like below page but using the serach?
+			 * Because the artifact page
+			 * https://finds.org.uk/database/artefacts/record/id/767518
+			 * sometimes misses some fields, like 3D.
+			 */ 
 		}
 
 		function api_record_url($id, $params = array()) {
@@ -104,7 +97,7 @@ namespace esa_datasource {
 			
 			$latitude = !empty($item->fourFigureLat) ? (float) $item->fourFigureLat : false;
 			$longitude =!empty($item->fourFigureLon) ? (float) $item->fourFigureLon : false;
-			$data->addTable('schwabbel', "$latitude | $longitude");
+			//$data->addTable('schwabbel', "$latitude | $longitude");
 			
 			if (!empty($item->filename)) {
 				$imgurl = "https://finds.org.uk/{$item->imagedir}medium/{$item->filename}";
@@ -156,6 +149,9 @@ namespace esa_datasource {
 		}
 		
 		function parse_result($response) {
+			$a = $this->parse_result_set($response);
+			return array_pop($a); // there will be only one because we're seaching for ujnique id
+			
 			$response = json_decode($response);
 			$this->results = array();
 			foreach ($response[1] as $item) {
