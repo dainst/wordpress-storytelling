@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.stoa.org/epidoc/schema/latest/tei-epidoc.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.stoa.org/epidoc/schema/dev/ircyr-checking.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title xml:lang="ru">Строительная надпись Феодосия и Аркадия</title>
+            <title xml:lang="en">Building inscription of Theodosios and Arkadios</title>
+            <editor xml:id="ayv2012">
+               <persName xml:lang="ru"><forename>А.Ю.</forename><surname>Виноградов</surname></persName>
+               <persName xml:lang="en"><forename>A.Yu.</forename><surname>Vinogradov</surname></persName>
+            </editor>
+         </titleStmt>
+         <publicationStmt><authority>King's College London</authority>
+            <idno type="filename">5.5</idno>
+            <idno type="AYV2012-number">byz004</idno>
+         </publicationStmt>
+         <sourceDesc>
+            <msDesc>
+               <msIdentifier><country/>
+                  <altIdentifier xml:lang="ru">
+                     <repository>Национальный заповедник "Херсонес Таврический"</repository>
+                     <idno>3690</idno>
+                  </altIdentifier>
+                  <altIdentifier xml:lang="en">
+                     <repository>National Preserve of Tauric Chersonesos</repository>
+                     <idno>3690</idno>
+                  </altIdentifier>
+               </msIdentifier>
+               <msContents>
+                  <summary corresp="document-search.xml#doc1">
+                     <seg xml:lang="ru">Строительная надпись.</seg>
+                     <seg xml:lang="en">Building inscription.</seg>
+                  </summary>
+               </msContents>
+               <physDesc>
+                  <objectDesc>
+                     <supportDesc>
+                        <support>
+                           <objectType xml:lang="ru" ref="monument-search.xml#mon1">Плита.</objectType>
+                           <objectType xml:lang="en">Panel.</objectType>
+                           <material xml:lang="ru" ref="material-search.xml#m2">Известняк.</material>
+                           <material xml:lang="en">Limestone.</material>
+                           <p xml:lang="ru">Стесана сверху и снизу, поверхность сильно расслоилась.</p>
+                           <p xml:lang="en">Cut at the top and bottom; the surface has flaked considerably.</p> 
+                           <dimensions>
+                              <height>39,0</height>
+                              <width>80,0</width>
+                              <depth>34,0</depth>
+                           </dimensions>
+                        </support>
+                     </supportDesc>
+                     <layoutDesc>
+                        <layout ana="f1">
+                           <seg xml:lang="ru">На лицевой стороне.</seg>
+                           <seg xml:lang="en">On the front.</seg>
+                        </layout>
+                     </layoutDesc>
+                  </objectDesc>
+                  <handDesc>
+                     <handNote>
+                        <seg xml:lang="ru"><rs type="execution" ref="execution.xml#scalpro">Лапидарный</rs>; буквы неравной высоты, 
+                           уменьшаются в первой и последних строках. 
+                           Альфа с наклонной перекладиной, бета с увеличенным и заостренным нижним полукружием, эпсилон, 
+                           сигма и омега лунарные (1–4-я строки) и прямоугольные (1–8-я строки), мю с приподнятой серединой, 
+                           кси курсивное, фи выступает за пределы строки.</seg>
+                        <seg xml:lang="en">Lapidary; letters are of uneven height, smaller in the first and last lines than in the rest of the text. Alpha with a slanting 
+                           crossbar, beta with enlarged and pointy bottom loop; epsilon, sigma and omega are both lunate (lines 1-4) and rectangular (lines 1-8); mu with short
+                           central hastae; cursive ksi; the vertical of phi projects above the line of writing.</seg>
+                        <height unit="cm">2,0–3,0.</height>
+                     </handNote>
+                  </handDesc>
+               </physDesc>
+               <history>
+                  <origin>
+                     <origPlace ref="origPlace.xml#p003">
+                        <seg xml:lang="ru">Херсон.</seg>
+                        <seg xml:lang="en">Cherson.</seg>
+                     </origPlace>
+                     <origDate notBefore="0392" notAfter="0393" evidence="просопография">
+                        <seg xml:lang="ru">392–393 гг.</seg>
+                        <seg xml:lang="en">392–393 C.E.</seg>
+                     </origDate>
+                  </origin>
+                  <provenance type="observed" subtype="autopsy">
+                     <seg xml:lang="ru"><date when="1999-05">Май 1999</date>, <date when="2001-08"> август 2001</date>, <date when="2002-09"> сентябрь 2002</date>, <date when="2003-09"> сентябрь 2003</date>, <date when="2004-09"> сентябрь 2004</date>, <date when="2005-09"> сентябрь 2005</date>, <date when="2006-09"> сентябрь 2006</date>, <date when="2007-09"> сентябрь 2007</date>.</seg>
+                     <seg xml:lang="en"> <date when="1999-05">May 1999</date>, <date when="2001-08"> August 2001</date>, <date when="2002-09"> September 2002</date>, <date when="2003-09"> September 2003</date>, <date when="2004-09"> September 2004</date>, <date when="2005-09"> September 2005</date>, <date when="2006-09">September 2006</date>, <date when="2007-09"> September 2007</date>.</seg>
+                  </provenance>
+                  <provenance type="found">
+                     <seg xml:lang="ru">
+                        <placeName type="ancientFindspot">Севастополь (Херсонес).</placeName>
+                        <rs type="circumstances">1899 г., раскопки К.К. Косцюшко-Валюжинича.</rs>
+                        <rs type="context">Оборонительная стена, южный участок, внутренняя сторона, пом. 25 и 26, кладка.</rs>
+                     </seg>
+                     <seg xml:lang="en">
+                        <placeName type="ancientFindspot">Sevastopol (Chersonesos).</placeName>
+                        <rs type="circumstances">1899, excavations of  K.K. Kostsyushko-Valyuzhinich</rs>
+                        <rs type="context">City wall, southern sector, inner face of the wall, rooms 25 and 26, masonry.</rs>
+                     </seg>
+                  </provenance>
+                  <provenance type="observed">
+                     <seg xml:lang="ru">Севастополь, Крым.</seg>
+                     <seg xml:lang="en">Sevastopol, Crimea.</seg>
+                  </provenance>
+               </history>
+            </msDesc>
+         </sourceDesc>
+      </fileDesc><encodingDesc><listPrefixDef><prefixDef matchPattern="(.+)" replacementPattern="../alists/bibliography.xml#$1" ident="bib"/></listPrefixDef></encodingDesc>
+      <revisionDesc>
+          <change when="2013-02-20" who="ΝG">minor correction in Greek lemmata</change>
+          <change when="2012-10-27" who="AL">inserted English toponyms in commentary</change>
+         <change when="2012-08-16" who="AG">Greek lemmata corrected</change>
+         <change when="2012-08-10" who="GB">inserted Greek lemmata (and normalized unicode)</change>
+         <change when="2012-08-09" who="GB">inserted full Greek lemmata</change>
+         <change when="2012-07-19" who="GB">lemmatized Greek</change>
+         <change when="2012-04-24" who="AG">several lines translated, bibliography corrected</change>
+         <change when="2012-04-18" who="AG">bibliography updated</change>
+         <change when="2012-04-17" who="AG">some corrections in date, apparatus and bibliography, editor added</change>
+         <change when="2012-03-21" who="AG">some corrections in apparatus</change>
+         <change when="2012-02-27" who="AG">apparatus tagged</change>
+         <change when="2012-01-23" who="AG">several lines translated</change>
+         <change when="2012-01-17" who="AG">updated, 1 line translated</change>
+         <change when="2011-12-12" who="AG">tag added to the Greek text, updated</change>
+         <change when="2011-12-01" who="AG">tagging of the Greek text</change>
+         <change when="2011-11-28" who="AG">tidied XML and copied Greek text from Paola's version, different minor corrections</change>
+   </revisionDesc>
+   </teiHeader>
+   <facsimile>
+      <surface>
+         <graphic url="5.5-1">
+            <desc xml:lang="en">Inked estampage (from ??)</desc>
+            <desc xml:lang="ru"/>
+         </graphic>
+         <graphic url="5.5-2">
+            <desc xml:lang="en">Photograph (Vinogradov 20??)</desc>
+             <desc xml:lang="ru">Фотография (Виноградов 20??)</desc>
+         </graphic>
+      </surface>
+   </facsimile>
+   <text>
+      <body>
+         <div type="bibliography">
+            <listBibl>
+               <bibl n="L1"><!--Латышев, 1901c--><ptr target="bib:b0140"/>,  <citedRange unit="page">56–59</citedRange></bibl>
+               <bibl n="1.1"><!--IOSPE--><ptr target="bib:IOSPE"/> <citedRange>IV 464</citedRange></bibl>
+               <bibl n="1.1.1"><!--Шестаков, 1907--><ptr target="bib:b0240"/>, <citedRange>7</citedRange></bibl>
+               <bibl n="1.2"><!--IOSPE--><ptr target="bib:IOSPE2"/> <citedRange>450</citedRange></bibl>
+               <bibl n="1.3"><!--Цукерманн, 1994--><ptr target="bib:b0234"/>,  <citedRange>550</citedRange></bibl>
+               <bibl n="1.4"><!--Зубарь, 1994--><ptr target="bib:b0077"/>, <citedRange>142–143</citedRange></bibl>
+               <bibl n="2"><!--Vinogradov, 2007--><ptr target="bib:b0376"/>, 255–257, № <citedRange>1</citedRange></bibl>
+               <bibl n="2.1"><!--Виноградов, 2010a--><ptr target="bib:b0399"/>,  100-107, № <citedRange>c</citedRange></bibl> 
+            </listBibl>
+         </div>
+         <div type="apparatus">
+            <listApp>
+               <app loc="1"><rdg source="bib:b0240"><supplied reason="lost">Ἐ</supplied>πὶ</rdg> <note> et alii</note>
+                  <rdg source="bib:b0140 bib:IOSPE"><supplied reason="lost">Ὑπ</supplied>ὲ<supplied reason="lost">ρ</supplied></rdg>
+               </app> 
+               <app loc="8"><rdg source="bib:b0240"><supplied reason="lost">τῆς Χερ</supplied>σόν<supplied reason="lost">ος</supplied></rdg> <note> et alii</note>
+                  <rdg source="bib:IOSPE"><gap reason="lost" extent="unknown" unit="character"/>εον<supplied reason="lost">τος</supplied></rdg>
+               </app> 
+               <app loc="8"><rdg source="bib:b0376">vac. <note>Feissel apud </note></rdg>
+                  <rdg source="bib:b0140">δι᾿</rdg> <note> et alii</note>
+                  <rdg source="bib:b0234"><supplied reason="lost">ἐπὶ</supplied></rdg></app>
+               <app loc="9"><lem source="bib:IOSPE2">κόμητος ?</lem> <note> et alii</note>
+                  <rdg source="bib:b0077">ἄρχοντος <note>vel</note> πρωτεύοντος</rdg></app>
+            </listApp>
+         </div>
+         
+         <div type="translation" xml:lang="ru">
+               <p>
+                  При владыках наших, вечных августах, непобедимых, Флавиях Фе<supplied reason="lost">о</supplied>досии 
+                  и Аркадии и при содействии много потрудившегося Флавия Вита трибуна и строителей построена стена 
+                  Х<supplied reason="lost">ер</supplied>сона, при <gap reason="lost" extent="3" unit="character"/> Евферия, 
+                  велико<supplied reason="lost">лепнейшего комита (?)</supplied>.
+                  </p>
+         </div>
+         <div type="translation" xml:lang="en">
+               <p>In the reign of our Rulers, eternal Augusti, the invincible Flavii Theodosios and Arkadios, 
+		through the assistance of Flavius Vitus, the tribune, who has laboured much, as well as of the master builders, 
+		the wall of Cherson was erected with [...] of the most magnificent comes Eutherios…</p>
+         </div>
+         
+         <div type="commentary" xml:lang="ru">
+               <p> Относительно находки камня см. Косцюшко-Валюжинич 1901b, 40. Поверхность камня сильно расслаивается, поэтому в настоящее время на нем читаются лишь 1–5-я строки.</p>
+                <p> С точки зрения палеографии интересно сочетание лунарной формы эпсилона, сигмы и омеги в 1–4-й строках с прямоугольной в 5–8-й строках. 
+                   Форма альфы с ломаной перекладиной в 5-й строке на прорисовке Латышева — ошибка: на камне ясно читается альфа с наклонной перекладиной.</p>
+                <p> Обращает на себя внимание очень низкий уровень исполнения надписи: множество орфографических ошибок (итацизм, гаплография), вплоть до 
+                   пропуска букв; сами буквы неровные, их высота уменьшается ближе к концу. Последняя деталь находит себе параллель в надписи IV в. из 
+                   Спарты (до 333 г.; Feissel, Philippidis-Braat 1985, № 22). Создается впечатление, что текст был высечен непривычным к этой работе человеком: возможно, 
+                   кем-то из гарнизона, причем даже негреческого происхождения (см. ниже, комм. к 3-й строке).  </p>
+            <p> 1. Относительно титула δεσπότης ἡμῶν см. Rösch 1978, 39–40, а также <ref type="inscription">V 7</ref><!--byz006-->.  </p>
+                <p> 1–2. Титул αἰώνιοι Αὔγουστοι Феодосий I и Аркадий носят в I.Portes 19, Robert 1948, № 51 (см. Rösch 1978, 34–35).</p>
+                <p> 2–3. Титул ἀνίκητοι (см. Rösch 1978, 45–46) вообще характерен больше для начала, чем для конца IV в.: в сочетании с αἰώνιοι и Αὔγουστοι он 
+                   встречается в SEG 8.19; впрочем, его латинский эквивалент invictus прилагается к Феодосию в CIL VI 1187; IX 333. Наиболее близкая к данной 
+                   надписи титулатура известна для Феодосия II (Rösch 1978, 164)</p>
+                <p> 3. Сокращение ΦΦΛΛ, не характерное для греческих надписей (единственное исключение — LBW 2537b), соответствует латинскому FFLL, 
+                   использовавшемуся как дуалис на  протяжении IV–VI вв. (Gordon 1977, 78).  </p>
+                <p> 3–4. Строительная надпись Феодосия и Аркадия относится к годам совместного правления двух этих императоров (383–395). PLRE I 315, 972 уточняет 
+                   этот хронологический отрезок и датирует надпись 392 г., т.е. временем между смертью Валентиниана в мае 392 г. и провозглашением августом 
+                   Гонория в январе 393 г. Точно так же датированы две надписи из Сирии (IGLS 1587, 1588).</p>
+                <p> 4–5. В пользу нетрадиционности в составлении надписи говорит и гапаксность формулы ἐπὶ τῆς πράξεως.  </p>
+                <p> 6. Трибун Флавий Вит из других источников неизвестен</p>
+                <p> 7. Отметим также, что строительная формула с ᾠκοδομήθη известна в ранневизантийское время преимущественно  в Сирии (10 случаев, 
+                   согласно PHI7 Database; также 2 раза в Египте и 1 — в Месопотамии), причем и в отношении стены (IGLS 1739).</p>
+                <p> 8. Комит (?) Евферий из других источников неизвестен. Титул Евферия указывает на то, что он был vir illustris, возможно, также magister 
+                   militum (PLRE I, 315): такой же чиновник фигурирует в надписи времен Валента (Соломоник 1983, 28–30, № 3). И реконструкция Латышева «Евферием», 
+                   и предложение Цукерманна восстанавливать «при Евферии», якобы для исправления субординации (комит идет после трибуна), неосновательны: как верно 
+                   заметил в частной беседе с нами Д. Фейссель, на старом эстампаже четко виден вакат, так что здесь следует видеть скорее формулу с genitivus absolutus.</p>
+            <p>Об историческом контексте надписи см. Виноградов 2010а, 103-107.</p>
+            </div>
+         <div type="commentary" xml:lang="en">
+             <p>On the circumstances of find, see Kostsyushko-Valyuzhinich 1901b, 40. The surface of the stone has flaked since the time of its find, and today only lines 1-5 can be 
+             made out.</p>
+             <p>Of palaeographic interest is the juxtaposition of the lunate shapes of epsilon, sigma and omega in lines 1-4 with the rectangular shapes in lines 5-8.
+                Alpha with broken crossbar on Latyshev's drawing is a mistake: the slanting crossbar is clearly visible on the stone.</p>
+             <p>The poor quality of this inscription is striking in many respects: there are numerous orthographic mistakes (itacism, haplography) and some missed letters; the
+                letters are uneven, their size diminishing towards the end. The latter characteristic is similar to the inscription of the IVth century (before 333 C.E.) 
+                from Sparta (Feissel, Philippidis-Braat 1985, no. 22). One is left under the impression that the inscription was carved by someone unaccustomed to stone-working, 
+                and/or writing, perhaps by someone from the garrison, who was probably of non-Greek origin (see below, comments on line 3).</p>
+            <p>1. On the title δεσπότης ἡμῶν see Rösch 1978, 39–40, as well as <ref type="inscription">V 7</ref><!--byz006-->.</p>
+            <p>1-2. The title αἰώνιοι Αὔγουστοι is applied to Theodosios I and Arkadios in I.Portes 19, Robert 1948, no. 51 (see Rösch 1978, 34–35). </p>
+            <p>2-3. The title ἀνίκητοι (see Rösch 1978, 45–46) is more typical for the beginning rather than the end of the IVth century: in combination with αἰώνιοι и Αὔγουστοι
+               it is attested in SEG 8.19; its Latin equivalent invictus is applied to Theodosios in CIL VI, 1187; IX, 333. The closest parallel to the titulature attested in
+               our inscription is known with respect to Theodosios II (Rösch 1978, 164).</p>
+            <p>The abbreviation  ΦΦΛΛ, uncommon in Greek inscriptions (one exception is LBW 2537b), corresponds to the Latin FFLL, used as the dual form in the 
+               IV-VIth centuries (Gordon 1977, 78).</p>
+            <p>3-4. The building inscription of Theodosios and Arkadios belongs to the years of their joint rule (383-395 C.E.). PLRE I 315, 972 narrows down the chronological
+            window and dates the inscription to 392 C.E., that is, the time period between the death of Valentinian in May 392 C.E. and the proclamation of Honorius as Augustus in 
+            January 393 C.E. Two inscriptions from Syria (IGLS 1587, 1588) are dated in the same way.</p>
+            <p>4-5. The unusual manner of composition of this inscription is coupled with the hapax use of the phrase ἐπὶ τῆς πράξεως.</p>
+             <p>6. Tribune Flavius Vitus is not attested in other sources.</p>
+            <p>7. The building formula ᾠκοδομήθη is known in Early Byzantine period mainly in Syria (10 times, according to PHI7 Database; and twice in Egypt, once in
+               Mesopotamia), including a use specifically with respect to a wall (IGLS 1739).</p>
+            <p>Comes Eutherios (here Euthereos) is otherwise unknown. His title indicates that he was vir illustris, perhaps also magister militum (PLRE I, 315): such an 
+               official is known from an inscription of the time of Valens (Solomonik 1983, 28–30, no. 3). Restorations proposed by Latyshev ("by Eutherios") and
+               Zuckermann ("under Eutherios," so as to rectify the order of subordination: tribune should have come after comes) are not viable, because vacat is clearly 
+               visibly on the old estampage (as has been pointed out to me by D. Feissel in a private conversation): thus, we should rather identify here a formula with 
+               the Genitive Absolute.</p>
+            <p>For the historical context, see Vinogradov 2010а, 103-107. </p>             
+         </div>
+         
+         <div type="edition" xml:lang="grc" xml:space="preserve">
+                <ab>
+                <lb n="1"/><w lemma="ἐπί"><supplied reason="lost">Ἐ</supplied>πεὶ</w> <w lemma="ὁ">τῶν</w> <w lemma="δεσπότης">δεσποτῶν</w> <w lemma="ἐγώ">ἡμῶν</w>,
+                   <w lemma="ὁ">τῶν</w> <w lemma="αἰώνιος"><expan><abbr>ἐων</abbr><ex>ίων</ex></expan></w>
+                <lb n="2"/><rs type="month" ref="aug"><w lemma="Αὔγουστος">Αὐγού<surplus>σ</surplus>των</w></rs>, <w lemma="ὁ">τῶν</w> <w lemma="ἀνίκητος">ἀνεικ<supplied reason="lost">ή</supplied><lb n="3" break="no"/>των</w> <w lemma="καί">κὲ</w> <persName type="ruler" key="theodosius1"><name nymRef="Φλάβιος"><expan><abbr>Φλ</abbr><ex>αβίων</ex></expan></name>
+                   <name nymRef="Θεοδόσιος">Θεοδ<supplied reason="lost">ο</supplied><lb n="4" break="no"/>σίου</name></persName> <w lemma="καί">κὲ</w> <persName type="ruler" key="arcadius"><name nymRef="Ἀρκάδιος">Ἀρκαδίου</name></persName> <w lemma="καί">καὶ</w> <w lemma="ἐπί">ἐ<lb n="5" break="no"/>πεὶ</w> <w lemma="ὁ">τῆς</w> <w lemma="πρᾶξις">πράξεως</w> <w lemma="ὁ">τοῦ</w> <w lemma="πολύς">πολὰ</w>
+                <lb n="6"/><w lemma="κάμνω">καμόντος</w> <persName type="attested" ref="#person6"><name nymRef="Φλάβιος"><expan><abbr>Φλ</abbr><ex>αβίου</ex></expan></name> <name nymRef="Βίτος">Βίτου</name></persName> <w lemma="τριβοῦνος"><expan><abbr>τριβού</abbr><ex>νου</ex></expan></w> <w lemma="καί">καὶ</w>
+                <lb n="7"/><w lemma="ὁ">τῶν</w> <w lemma="μηχανικός"><expan><abbr>μηχανι</abbr><ex>κῶν</ex></expan></w> <w lemma="οἰκοδομέω">οἰκ<supplied reason="lost">ο</supplied>δομήθη</w> <w lemma="ὁ">τὸ</w>
+                <w lemma="τεῖχος">τῖχ<supplied reason="lost">ος</supplied></w>
+                <lb n="8"/><placeName key="cherson" nymRef="Χερσών"><unclear>Χ</unclear><supplied reason="lost">ερ</supplied>σόν<unclear>ο</unclear><supplied reason="lost">ς</supplied></placeName>,
+                <space unit="character"/> 
+                <persName type="attested" ref="#person7"><name nymRef="Εὐθήριος"><unclear>Ε</unclear>ὐθηρ<unclear>ή</unclear>ου</name></persName>
+                   <w lemma="ὁ">τοῦ</w> <w lemma="μεγαλοπρεπής"><supplied reason="lost">μ</supplied>εγαλο<lb n="9" break="no"/><supplied reason="lost" cert="low">πρεπεστάτου</supplied></w> <w lemma="κόμης"><supplied reason="lost" cert="low">κόμητος</supplied></w> 
+                <gap reason="lost" extent="unknown" unit="character"/>
+            </ab>
+         </div>
+      </body>
+   </text>
+</TEI>

@@ -1,0 +1,133 @@
+<?xml-model href="http://www.stoa.org/epidoc/schema/latest/tei-epidoc.rng" schematypens="http://relaxng.org/ns/structure/1.0" ?>
+<TEI 
+    xml:space="preserve" 
+    xml:lang="fr" 
+    xml:base="ex-epidoctemplate.xml" 
+    xmlns="http://www.tei-c.org/ns/1.0" >
+
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Dédicace d'une bractéole d'argent à la puissance divine de l'Auguste et à Jupiter Sabasios par un particulier en accomplissement d'un vœu</title>
+	</titleStmt>
+	<publicationStmt>
+		<authority>PETRAE - AUSONIUS</authority>
+       	<idno type="URI">http://petrae.huma-num.fr/index.php/inscriptions/liste?p01=160100200083</idno>
+       	<idno type="localID">160100200083</idno>
+       <availability>
+           <licence target="http://creativecommons.org/publicdomain/zero/1.0/">Licensed 
+               under a Creative Commons CC0 1.0 Universal  Public Domain Dedication licence.
+           </licence>
+       </availability>
+	</publicationStmt>
+       <sourceDesc>
+           <msDesc>
+               <msIdentifier>
+                   <country>
+                       <placeName type="modern" ref="">France</placeName>
+                   </country>
+                   <region>
+                       <placeName type="modern" ref="">Auvergne</placeName>
+                   </region>
+                   <settlement>
+                       <placeName ref=""></placeName>                     
+                   </settlement>
+                   <repository>Musée de Moulins</repository>
+                   <collection></collection>
+                   <idno>5.2.342</idno>
+               </msIdentifier>
+               <physDesc>
+                   <objectDesc>
+                       <supportDesc>
+                           <support>
+                               <objectType ref="www.eagle-network.eu/voc/objtyp/lod/260">Plaque</objectType>
+                               <material ref="">Argent</material>
+							<p> Bractéole d'argent, martelée et décorée au repoussé, brisée en haut à gauche et en bas</p>
+                               <dimensions unit="cm">
+                                   <height>9,6</height>
+                                   <width>6,1</width>
+                                   <depth>0,1</depth>
+                               </dimensions>
+                               <rs type="decoration">feuille </rs>
+
+   								<rs type="statPreserv">Bractéole d'argent, martelée et décorée au repoussé, brisée en haut à gauche et en bas   Texte de trois lignes dans un cartouche simple, encadré d'un décor arboriforme stylisé </rs>
+                           </support>
+                       </supportDesc>
+                       <layoutDesc>
+                           <layout>
+                               <rs type="execution">Points ronds Le lapicide a fait un effort de mise en page (lettres initiales alignées, coupe syllabique des mots), mais les lettres sont mal alignées sur les lignes. Lettres avec une très nette tendance à la cursive (notamment les A non barrés et en forme de X, le B réduit quasiment à une haste verticale et les L, à barre tombante)</rs>
+                               <dimensions>
+                                   <width unit="cm"></width>
+                                   <height unit="cm"></height>
+                               </dimensions>
+                               <rs type="metre"></rs>
+                           </layout>
+                       </layoutDesc>
+                   </objectDesc>
+                   <handDesc>
+                       <handNote>
+                           <height unit="cm"></height>
+                       </handNote>
+                   </handDesc>
+               </physDesc>
+
+               <history>
+                   <origin>
+                       <origPlace>
+                           <placeName type="ancientFindspot"></placeName>
+                       </origPlace>
+                       <origDate 
+                           notBefore-custom="151" 
+                           notAfter-custom="220" 
+                           evidence="context" 
+                           datingMethod="http://en.wikipedia.org/wiki/Julian_calendar">L&#039;association des formules Numin. Aug. et deo pourrait peut-être permettre de dater ces deux documents de la seconde moitié du IIᵉ s. ou du début du IIIᵉ (Raepsaet-Charlier 1993, p. 12-17 et 43-47)
+                       </origDate>
+
+                   </origin>
+                   <provenance type="found">  
+                       <placeName type="modern" ref=""></placeName>
+                       <placeName type="modern" ref="">Vichy</placeName>
+                   </provenance>
+               </history>
+           </msDesc>
+       </sourceDesc>
+   </fileDesc>
+<revisionDesc status="draft">
+        <change status="draft"
+            when="2015-02-04" 
+            who="nprevot">
+        </change>
+   </revisionDesc>
+</teiHeader>
+<facsimile>
+
+
+<graphic url="http://petrae.huma-num.fr//photos/ILA_Arvernes/160100200083.png"/>
+</facsimile>
+<text>
+<body>
+<div type="edition" xml:lang="la">
+<head>Text</head>
+<ab><lb n="1"/>Numin<expan><ex>i</ex></expan> Aug<expan><ex>usti</ex></expan> , deo Ioui Sa-<lb n="3"/>basio , G<expan><ex>aius</ex></expan> Iul<expan><ex>ius</ex></expan> Caras-<lb n="5"/>sounus u<expan><ex>otum</ex></expan> s<expan><ex>oluit</ex></expan> l<expan><ex>ibens</ex></expan> m<expan><ex>erito</ex></expan> 
+	</ab>
+</div>
+<div type="apparatus">
+<p>L. 1 : comme le remarque Raepsaet-Charlier 1993, p. 47, on pourrait peut-être tout aussi bien proposer le développement NVMIN(IBVS) AVG(VSTORVM). Voir aussi H. Nesselhauf-H. Lieb, BRGK, 40, 1959, p. 134, n° 30</p>
+</div>
+<div type="translation" xml:lang="French">
+<p>A la puissance divine de l&#039;Auguste, au dieu Jupiter Sabasios, Gaius Iulius Carassounus s&#039;est acquitté volontiers de son vœu et à juste titre</p>
+<desc>
+<ref type="license"
+target="http://creativecommons.org/licenses/by-sa/3.0/">Licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported licence.</ref>
+</desc>		
+</div>
+<div type="commentary">
+<p>Sans doute fabriqués en série, les ex-voto métalliques de ce type se retrouvent en plusieurs points du monde romain, notamment au Grand-Saint-Bernard (CIL, V, 6865, 6894 et R. Mollo-Mezzena, Archéologie en vallée d&#039;Aoste, Aoste, 1982, p. 157, avec figure, p. 159), au Petit-Saint-Bernard (R. Mollo-Mezzena, ouv. cit., p. 163, avec figures, p. 167-169, G. Walser, Archéologie suisse, 6, 1983, p. 87-89 ...), en Germanie supérieure (CIL, XIII, 7342b ; P. Merlat, Répertoire des inscriptions et monuments figurés du culte de Jupiter Dolichenus, Rennes, 1951, p. 306-308, n° 315 à Heddernheim), en Norique (P. Merlat, ouv. cit., p. 141-144, n° 157-161 et R. Noll, Das Inventar des Dolichenusheiligtums von Mauer an der Url (Noricum), I et II, Vienne, 1980, à Mauer-en-der-Url) et en Grande-Bretagne (H. B. Walters, British Museum. Catalogue of Silver Plates, Londres, 1921, n° 230-237). Selon E. Will (Le relief culturel gréco-romain. Contribution à l&#039;histoire de l&#039;art de l&#039;Empire romain, Rome, 1955, p. 39 sq.), ces plaquettes évoquant l&#039;arbre de vie seraient d&#039;inspiration orientale, mais I. Piso (Latomus, 52, 1993, p. 826-841), en se fondant sur les lieux de trouvaille, pense qu&#039;elles seraient une manifestation religieuse d&#039;origine celtique, comme sur une plaque de bronze d&#039;Ampurias, découverte dans une sépulture (M. Amalgro, Las necropolis de Ampurias, II, Barcelone, 1955, p. 199) où Jupiter Sabasios brandit le foudre de la main droite. Avec Benoît (1959, p. 116-117), il faut donc probablement penser que le foudre, comme la pomme de pin, attribut habituel de Sabasios et emblème de l&#039;immortalité, a une valeur apotropaïque, protège de la mort et promet aussi la résurrection. Porteur des tria nomina du citoyen romain, le dédicant était manifestement un indigène, comme l&#039;atteste son surnom gaulois, qui se retrouve à Vichy sur une estampille de céramique sigillée (CIL, XIII, 10011, 452a. Voir CAG, 03, p. 154). Peut-être dans un souci de plus grande efficacité, avait-il lui aussi associé dans son vœu le numen de l&#039;empereur vivant ou les numina de l&#039;ensemble des empereurs vivants ou morts. Pour sa part, avec de bons arguments, Fishwick (1991, p. 412) propose avec une certaine prudence de développer Num. Aug. en Num(inibus) Aug(ustorum). Son souhait exaucé, il s&#039;en est acquitté</p>
+</div>
+<div type="bibliography">
+<p>CIL, XIII, 1496 ; Corrocher 1981, p. 254-255 (CAG, 03, p. 153/192)  ; ILA, Arvernes, 83, photo du support</p>
+<p></p>
+</div>
+</body>
+</text>
+</TEI>
