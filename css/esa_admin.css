@@ -25,3 +25,18 @@
 	background-color: #FCFCFC;
 	width: 350px;
 }
+
+#wpwrap {
+	background: white;
+}
+
+.wrap {
+	max-width: 1024px;
+}
+
+#dai_name {
+	line-height: 1.2em;
+	color: #2E2E2E;
+	font-family: "Source Sans Pro",Arial,Helvetica,sans-serif;
+	text-decoration: none
+}

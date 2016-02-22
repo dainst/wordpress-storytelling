@@ -66,9 +66,13 @@ namespace esa_datasource {
 			$this->path = __DIR__;
 			
 			// get some settings
-			include('esa_datasource.local_settings.php');
+			if (file_exists('esa_datasource.settings.local.php')) {
+				$settings = array();
+				$settings['epidoc'] = array('mode' => '');
+			} else {
+				include('esa_datasource.settings.local.php');
+			}
 			$this->settings = $settings;
-			$this->settings['epidoc'] = !empty($settings['epidoc']) ? $settings['epidoc'] : array('mode' => '', 'settings' => array());
 			$this->settings['epidoc']['settings']['workingDir'] = $this->path . '/inc/epidocConverter';	
 			
 			// generate a generic info text

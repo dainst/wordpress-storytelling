@@ -188,3 +188,12 @@ body {
 	vertical-align: middle;
 	font-size: 150%
 }
+
+
+/* else */
+#dai_name {
+	line-height: 1.2em;
+	color: #2E2E2E;
+	font-family: "Source Sans Pro",Arial,Helvetica,sans-serif;
+	text-decoration: none
+}

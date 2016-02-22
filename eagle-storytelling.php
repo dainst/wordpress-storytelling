@@ -127,12 +127,13 @@ add_action('admin_menu', function () {
 		
 		echo "<div class='wrap'>";
 		
-		include('info.php');
+		esa_info();
 		
 		echo "<h2>Settings</h2>";
 	
 		echo "<form method='POST' action='$url'>";
 		echo "<h4>Available Data Sources</h4>";
+		echo "<p>Here you can see all currently installed subplugins, wich are connectors to several epigraphic / other datasources.";
 		$labels = array();
 		$optionlist = array();
 		$index = array();
@@ -141,13 +142,12 @@ add_action('admin_menu', function () {
 			$ds = get_esa_datasource($name);
 			$label = $ds->title;
 			$labels[$name] = $label;
-			echo $name;
 			try  {
 				$is_ok = true;
 				$status = $ds->dependency_check();
 			} catch(\exception $e) {
 				$is_ok = false;
-				$status = $e->getMessage();
+				$status = 'Error:' . $e->getMessage();
 			}
 			$status = ($is_ok === true) ? "<span style='color:green'>($status)</span>" : "<span style='color:red'>(Error: $status)</span>";
 			$checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';
@@ -155,6 +155,7 @@ add_action('admin_menu', function () {
 			$optionlist[$ds->index] = "<div><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label $status</label></div>";
 		}
 		ksort($optionlist);
+		echo implode("\n", $optionlist);
 
 		update_option('esa_datasource_labels', json_encode($labels));
 		wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');
@@ -162,14 +163,16 @@ add_action('admin_menu', function () {
 		echo "<input type='submit' value='Save' class='button button-primary'>";
 		echo "</form>";
 
-		echo "<h3>Cache</h3>";
+		echo "<h3>Cache debug functions</h3>";
+		echo "<p><b>These are debug functions you most likely not need!</b><br> Explanation: Normally embedded content from epigraphic datasources ('Esa-Items') is stored in cache and gets refreshed (causing a new API call) in the moment it get displayed when it was not refreshed by more than two weeks.<br>";
+		echo "But you can force to empty the cache and also force to refresh all items at once (You may want to do that after an update for example).</p>";
 		echo "<form method='POST' action='$url'>";
     	echo "<input type='hidden' name='action' value='esa_flush_cache'>";
-    	echo "<input type='submit' value='Flush esa_item cache!' class='button'>";
+    	echo "<input type='submit' value='Delete all cached content!' class='button'>";
 		echo "</form>";
 		echo "<form method='POST' action='$url'>";
 		echo "<input type='hidden' name='action' value='esa_refresh_cache'>";
-		echo "<input type='submit' value='Refresh esa_item cache!' class='button'>";
+		echo "<input type='submit' value='Refresh all cached content! (May take extremly long time).' class='button'>";
 		echo "</form>";
 		
 		echo "</div>";
@@ -308,9 +311,20 @@ add_action('admin_init', function() {
 	});
 
 	// stylesheet
-	wp_enqueue_style('esa_item-admin', plugins_url() .'/eagle-storytelling/css/esa_admin.css');
-	esa_item_special_styles();
+	
+
 });
+	
+add_action('admin_enqueue_scripts', function($hook) {
+	if ($hook == 'toplevel_page_eagle-storytelling/eagle-storytelling') {
+		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling/css/esa_item.css');
+		esa_item_special_styles();
+		wp_enqueue_style('esa_admin', plugins_url() .'/eagle-storytelling/css/esa_admin.css');
+		wp_enqueue_script('esa_item', plugins_url() . '/eagle-storytelling/js/esa_item.js');
+	}
+});
+	
+
 
 // registers additional stylesheet for enabled datasources
 function esa_item_special_styles() {
@@ -532,7 +546,7 @@ function media_esa_dialogue() {
 	
 
 	if ($engine == '_info') {
-		include('info.php');
+		esa_info();
 	} else {
 		//Sidebar
 		echo "<div id='esa_item_list_sidebar'>";
@@ -917,5 +931,15 @@ function wp_ajax_esa_get_overview_map() {
 
 add_action('wp_ajax_esa_get_overview_map','wp_ajax_esa_get_overview_map');
 add_action('wp_ajax_nopriv_esa_get_overview_map','wp_ajax_esa_get_overview_map');
+
+
+
+function esa_info() {
+	ob_start();
+	include('info.php');
+	$info = ob_get_clean();
+	echo do_shortcode($info);
+}
+
 
 ?>

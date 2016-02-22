@@ -1,11 +1,11 @@
 <div id='esa_item_list_sidebar'>
 	<table id='esa_infotable'>
 		<tr>
-			<td colspan='2'><img style='width:230px' src='http://www.eagle-network.eu/wp-content/uploads/2013/06/egl_web_logo.png' alt='eagle logo' /></td>
+			<td colspan='2'><a href='http://www.eagle-network.eu/' target='_blank'><img style='width:230px' src='http://www.eagle-network.eu/wp-content/uploads/2013/06/egl_web_logo.png' alt='eagle logo' /></a></td>
 		</tr>
 		<tr>
-			<td><img style='width:120px' src='https://www.dainst.org/image/company_logo?img_id=11201&t=1454494336195' alt='dai logo' /></td>
-			<td>Deutsches<br>Archäologisches<br>Institut</td>
+			<td><a href='https://www.dainst.org/' target='_blank'><img style='width:120px' src='https://www.dainst.org/image/company_logo?img_id=11201&t=1454494336195' alt='dai logo' /></a></td>
+			<td><a id='dai_name' href='https://www.dainst.org/' target='_blank'>Deutsches<br>Archäologisches<br>Institut</a></td>
 		</tr>
 	</table>
 </div>
@@ -13,23 +13,30 @@
 <div class='media-frame-content'>
 	<h1>Eagle Storytelling Application</h1>
 	<p>
-		The Flagship Storytelling Application (FSA) is a web-based tool designed to allow users to 
-		create multimedia narratives on epigraphic content and share them on the web.
+		The EAGLE Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content. 
+		It was created in the context of the EAGLE project, a European project which started in 2013 and aimed to connect and collect data 
+		sources and projects related to the topic of digital epigraphy, ancient history or archeology. 
 	</p>
 	<p>
-		With the help of a friendly interface, users are able to write texts and include content in different 
-		format into their narratives. In particular, the FSA is designed so as to help authors with special interest 
-		in epigraphy and in ancient history or archaeology to get easy access to the main resources for multimedia 
-		content on the Ancient World. With the FSA we intend to create a tool that will ultimately enable users 
-		to include images and videos from popular hosts (such as YouTube or Europeana), excerpts from Ancient texts, 
-		maps locating ancient places and, especially, the vast collection of inscriptions from the EAGLE network.
+		Being a Plug-In for Wordpress the ESA allows you to embed multimedia content from a wide variety of data sources in your posts in a 
+		form of nicely drawn boxes ESA-Items. For example, you can paste a Wikipedia-URL to your text and it is rendered as a preview Box to 
+		the Wikipedia page. But It does not only extend the built-in embed (and oEmbed) functions that are well knows and beloved for working 
+		with services like Youtube, Flickr much more.
 	</p>
-	<p>
-		The FSA is thus a useful resource to spread the knowledge about monuments and inscriptions in the collections of 
-		the EAGLE network, or to suggest unexplored paths through themes and objects. All the users of the EAGLE services, 
-		the members of the EAGLE Best Practices Network and the whole community of persons interested in cultural heritage 
-		and history, whether specialists or amateurs, are encouraged to unleash their creativity and experiment with the 
-		potential of this tool.
+	<p>		
+		The ESA-Items are neither iframes nor are they generated with ajax or any other way that would result in API calls to the corresponding 
+		web service every time the containing post is displayed. Instead, the embedded content is stored in cache table and refreshed automatically 
+		after two weeks. That makes the items also usable for searching, drawing a map of used ESA-Items in the database and so on.
+	</p>
+	<p>		
+		You can not only embed content as ESA-Items by posting URLs from known data sources but also search the data sources directly from the 
+		Wordpress text editor.
+	</p>
+	<p>	
+		In this way you can integrate Maps, Wikipedia Articles, Images from Wikimedia Commons and a lot of specialized data sources for epigraphy. 
+		The ESA has has a modular sub-plugin architecture which makes it quite easy for developers to add some other data sources via their 
+		Web-APIs. Thus it might be no only of interest for those who work in epigraphy or the ancient world but also for those who want to show 
+		the content of any Web-API in their blog.
 	</p>
 	<h2>Tutorial</h2>
 	<p>
@@ -63,8 +70,6 @@
 	</ul>
 	<h2>Legal Notice</h2>
 	<p>	
-		Written by Philipp Franck (philipp.franck@dainst.org)<br>
-		<br>
 		Copyright (C) 2015, 2016 by Deutsches Archäologisches Institut<br>
 		<br>
 		This program is free software; you can redistribute it and/or
@@ -72,17 +77,16 @@
 		as published by the Free Software Foundation; either version 2
 		as published by the Free Software Foundation; either version 2
 		of the License, or (at your option) any later version.<br>
-		<br>
 		This program is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 		GNU General Public License for more details.<br>
-		<br>
 		You should have received a copy of the GNU General Public License
 		along with this program; if not, write to the Free Software
 		Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.<br>
+		<a target='_blank' href='http://www.gnu.org/licenses/gpl-2.0.html'>(GPL)</a><br>
 		<br>
-		<a target='_blank' href='http://www.gnu.org/licenses/gpl-2.0.html'>(GPL)</a>
+		Written by Philipp Franck (philipp.franck@dainst.org)
 	</p>
 	
 	
