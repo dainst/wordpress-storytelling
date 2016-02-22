@@ -89,7 +89,6 @@ function esa_install () {
 		post_id BIGINT(20) UNSIGNED NOT NULL,
 		esa_item_source VARCHAR(12) NOT NULL,
 		esa_item_id VARCHAR(200) NOT NULL
-		PRIMARY KEY (post_id)
 	)
 	COLLATE utf8_general_ci
 	ENGINE = MYISAM
