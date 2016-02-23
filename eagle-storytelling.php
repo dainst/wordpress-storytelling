@@ -73,8 +73,8 @@ function esa_install () {
 		url TEXT NULL,
 		timestamp DATETIME NOT NULL,
 		latitude FLOAT NULL,
-		longitude FLOAT NULL
-		PRIMARY KEY  (source, id)
+		longitude FLOAT NULL,
+		PRIMARY KEY (source, id)
 	)
 	COLLATE utf8_general_ci
 	ENGINE = MYISAM
