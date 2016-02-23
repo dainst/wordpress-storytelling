@@ -68,7 +68,7 @@ namespace esa_datasource {
 			// get some settings
 			if (file_exists('esa_datasource.settings.local.php')) {
 				$settings = array();
-				$settings['epidoc'] = array('mode' => '');
+				$settings['epidoc'] = array('mode' => 'libxml');
 			} else {
 				include('esa_datasource.settings.local.php');
 			}

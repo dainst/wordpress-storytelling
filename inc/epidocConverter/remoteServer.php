@@ -44,7 +44,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * 
  */
 
-$allowedIps		= array('195.37.232.186', '95.110.197.48'); 
+$allowedIps		= array(); 
 
 
 /** 
