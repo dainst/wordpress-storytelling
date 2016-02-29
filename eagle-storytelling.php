@@ -43,14 +43,19 @@ if (!defined('ABSPATH')) {
 define('ESA_DEBUG', false);
 
 $esa_settings = array(
-	'post_types' => array('post', 'page'),
-	'add_media_entry' => 'Eagle Storytelling Application',
+	'post_types' => array('post', 'page'), // post types which can contain embedded epigraphic content (esa items)
+	'add_media_entry' => 'Eagle Storytelling Application', // how is the entry called  in the add media dialogue
 
 );
 
+
+/**
+ * ******************************************* require classes
+ */
 require_once('esa_datasource.class.php');
 require_once('esa_item.class.php');
 require_once('esa_item_transfer.class.php');
+require_once('esa_map_widget.class.php');
 
 
 /**
@@ -850,17 +855,36 @@ add_filter('admin_post_thumbnail_html', function($html) {
 });
 
 
+/**
+ * ******************************************* misc
+ */
 
 
-
+/**
+ * loads esa info page and return it's contents
+ */
+function esa_info() {
+	ob_start();
+	include('info.php');
+	$info = ob_get_clean();
+	echo do_shortcode($info);
+}
 
 
 
 /**
- * ******************************************* useful functions
+ * ******************************************* useful functions (for templates)
+ */
+
+/**
+ * checks wheter actual selected post is of a post type wich is selected for the esa functions
+ * if this in templates
+ * 
+ * @param string $post_type
+ * @return boolean
  */
 function is_esa($post_type = false) {
-	global $is_esa_story_page;
+	global $is_esa_story_page; // if you want to set manually a page as esa page in template use this
 	global $esa_settings;
 	if (!$post_type) {
 		global $post;
@@ -870,6 +894,12 @@ function is_esa($post_type = false) {
 	return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page;
 }
 
+/**
+ * returns an object instance of a datasource called by slug
+ * 
+ * @param string $engine
+ * @return esa_datasource
+ */
 function get_esa_datasource($engine) {
 	// get engine interface
 	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
@@ -881,7 +911,17 @@ function get_esa_datasource($engine) {
 	return new $ed_class;
 }
 
-
+/**
+ *
+ * Displays a map of all posts with esa_items which have geographic coordinates.
+ *
+ * can be used in template like <?php esa_item_map(); ?>
+ *
+ * or as widget  (see below)
+ * 
+ * the map will be filled per ajax
+ *
+ */
 function esa_item_map() {
 	echo "<div id='esa_items_overview_map'>&nbsp;</div>";
 }
@@ -939,14 +979,8 @@ function wp_ajax_esa_get_overview_map() {
 add_action('wp_ajax_esa_get_overview_map','wp_ajax_esa_get_overview_map');
 add_action('wp_ajax_nopriv_esa_get_overview_map','wp_ajax_esa_get_overview_map');
 
-
-
-function esa_info() {
-	ob_start();
-	include('info.php');
-	$info = ob_get_clean();
-	echo do_shortcode($info);
-}
-
+add_action('widgets_init', function(){
+	register_widget('esa_map_widget');
+});
 
 ?>
