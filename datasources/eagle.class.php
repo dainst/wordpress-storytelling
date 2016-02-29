@@ -438,7 +438,11 @@ namespace esa_datasource {
 		
 		function stylesheet() {
 			$this->_require('inc/epidocConverter/epidocConverter.class.php');
-			$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
+			try {
+				$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
+			} catch (\Exception $e) {
+				return;
+			}
 			$css =
 			
 				$c->getStylesheet() . "

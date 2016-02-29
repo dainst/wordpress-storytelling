@@ -306,9 +306,12 @@ namespace esa_datasource {
 		}
 		
 		function stylesheet() {
-
-			$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
-				$c->getStylesheet() . "
+			try {
+				$c = \epidocConverter::create('', $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
+			} catch (\Exception $e) {
+				return;
+			}
+			$c->getStylesheet() . "
 				.esa_item_collapsed .textpart  {
 					left: 0em;
 				}

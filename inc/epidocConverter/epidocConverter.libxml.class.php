@@ -76,6 +76,10 @@ namespace epidocConverter {
 			
 			$this->workingDir = __DIR__;
 			
+			if (!class_exists('\XSLTProcessor')) {
+				throw new \Exception('PHP XSLT Extension not installed');
+			}
+			
 			$this->proc = new \XSLTProcessor();
 			$this->proc->registerPHPFunctions(); // that's why we love php
 			
