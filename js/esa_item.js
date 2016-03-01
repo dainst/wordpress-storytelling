@@ -60,11 +60,11 @@
             $(this_esa_item).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
-            	console.log('dd');
+
             	// map
             	if (this_esa_item.map) {
             		this_esa_item.map.invalidateSize();
-            		console.log('invalidateSize');
+            		//console.log('invalidateSize');
             	}
 
             	// on Expand

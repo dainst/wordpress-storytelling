@@ -1,9 +1,9 @@
 <?php
 /**
  * @package 	eagle-storytelling
- * @subpackage	Search in Datasources | Subplugin: 
- * @link 		
- * @author 		
+ * @subpackage	Search in Datasources | Subplugin: ancient_eu
+ * @link 		http://www.ancient.eu/
+ * @author 		Philipp Franck
  *
  * Status: Alpha 1
  *
@@ -11,22 +11,24 @@
 
 
 namespace esa_datasource {
-	class __NAME__ extends abstract_datasource {
+	class ancient_eu extends abstract_datasource {
 
-		public $title = 'Title'; // Label / Title of the Datasource
-		public $index = 50; // where to appear in the menu
+		public $title = 'Ancient History Encyclopedia'; // Label / Title of the Datasource
+		public $index = 130; // where to appear in the menu
 		public $info = false; // get created automatically, or enter text
 		public $homeurl; // link to the dataset's homepage
 		public $debug = false;
 		//public $examplesearch; // placeholder for search field
 		//public $searchbuttonlabel = 'Search'; // label for searchbutton
 		
-		public $pagination = false; // are results paginated?
+		public $pagination = true; // are results paginated?
 		public $optional_classes = array(); // some classes, the user may add to the esa_item
 
 		public $require = array();  // require additional classes -> array of fileanmes	
 		
 		public $url_parser = '#https?\:\/\/(www\.)some_page.de?ID=(.*)#'; // // url regex (or array)
+		
+		public $force_curl = false;
 		
 		/**
 		 * constructor
@@ -37,21 +39,27 @@ namespace esa_datasource {
 		}
 		
 		function api_search_url($query, $params = array()) {
-			return "";
+			$query = str_replace(' ', ' AND ', $query);
+			//$query = str_replace(' ', '+AND+', $query);
+			$query = str_replace(':', '\:', $query);
+			$query = rawurlencode($query);
+			return "http://www.ancient.eu/api/search.php?query=$query&limit=12";
 		}
 			
 		function api_single_url($id, $params = array()) {
-			return "";
+			return "http://www.ancient.eu/api/search.php?query=id:$id";
 		}
 
 
 		
 		function api_record_url($id, $params = array()) {
-			return "";
+			$x = explode('-', $id);
+			$x = array_pop($x);
+			return "http://www.ancient.eu/article/$x";
 		}
 			
 
-		/*	pagination functions
+		/*	pagination functions  */
 		function api_search_url_next($query, $params = array()) {
 			$this->page += 1;
 			return $this->api_search_url($query) . '&page=' . $this->page;
@@ -68,56 +76,49 @@ namespace esa_datasource {
 		}
 			
 		function api_search_url_last($query, $params = array()) {
-			$this->page += $this->pages;
+			$this->page = $this->pages;
 			return $this->api_search_url($query) . '&page=' . $this->page;
 		}
-		*/	
+			
 		function parse_result_set($response) {
+			
+			$types = array(
+				'Encyclopedia Entry',
+				'Article',
+				'Image',
+				'',
+				'Blog Entry',
+				'Video',
+				'Link',
+				'Review'
+			);
+			
 			$response = json_decode($response);
 			$this->results = array();
-			foreach ($response->items as $item) {
-
-				
-				/* old way of doint it 
-				
-				$title = $this->results[2];
-				$url = $this->results[3];
-				$html  = "<div class='esa_item_left_column'>";
-				$html .= "<div class='esa_item_main_image' style='background-image:url(\"{ image url }\")'>&nbsp;</div>";
-				$html .= "</div>";
-					
-				$html .= "<div class='esa_item_right_column'>";
-				$html .= "<h4>{ title }</h4>";
-
-				$html .= "<ul class='datatable'>";
-				$html .= "<li><strong>{ field }: </strong>{ data }</li>";
-				$html .= "</ul>";
-				
-				$html .= "</div>";
-				*/
+			foreach ($response->documents as $doc) {		
 				
 				$data = new \esa_item\data();
 				
-				$data->title = __title__;
-				$data->addText($key, $value);
-				$data->addTable($key, $value);
-				$data->addImages(array(
-					'url' 		=> '',
-					'fullres' 	=> '',
-					'type' 		=> 'BITMAP',
-					'mime' 		=> '',
-					'title' 	=> '',
-					'text' 		=> ''
-				));
+				$url = $this->_url($doc->url);
 				
-				
-					
-				$this->results[] = new \esa_item(__source__, __id__, $data->render(), __url__);
+				$data->title = $doc->title;
+				$data->addTable('', str_replace("\n", '<br>', $doc->description) . "<br><br><a href='{$url}' target='_blank'>Read Full Article</a>");
+				$data->addTable('Keywords', str_replace('_', ' ', implode(', ',$doc->tags)));
+				$data->addTable('Type', $types[$doc->type -1]);
+
+				if ($doc->thumbnail and $doc->image) {
+					$data->addImages(array(
+						'url' 		=> $this->_url($doc->thumbnail),
+						'fullres' 	=> $this->_url($doc->image),
+						'type' 		=> 'BITMAP',
+						'title' 	=> $doc->title
+					));
+				}
+				$this->results[] = new \esa_item('ancient_eu', $doc->id, $data->render(), $url);
 			}
-			
+						
 			// pagination
-			$this->pages = 1 + (int) ($response->meta->totalResults / $response->meta->resultsPerPage);
-			$this->page  = $response->meta->currentPage;
+			$this->pages = 1 + (int) ($response->nb_results / 12);
 			
 			return $this->results;
 		}
@@ -134,6 +135,10 @@ namespace esa_datasource {
 				'css' => ''
 			);
 		}
+		
+		private function _url($url) {
+			return (substr($url, 0, 1) == '/') ? 'http://www.ancient.eu' . $url : $url;
+		} 
 
 	}
 }
