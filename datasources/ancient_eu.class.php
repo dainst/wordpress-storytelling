@@ -26,17 +26,15 @@ namespace esa_datasource {
 
 		public $require = array();  // require additional classes -> array of fileanmes	
 		
-		public $url_parser = '#https?\:\/\/(www\.)some_page.de?ID=(.*)#'; // // url regex (or array)
-		
-		public $force_curl = false;
-		
-		/**
-		 * constructor
-		 * @see \esa_datasource\abstract_datasource::construct()
-		 */
-		function construct() {
-				
-		}
+		public $url_parser = array(
+				// 'entry' 	=>	'#https?\:\/\/(www\.)ancient\.eu\/(\w*)\/?$#', //type 1  // does not work because no id included!
+				'article'	=>	'#https?\:\/\/(www\.)ancient\.eu\/article\/(\w*)\/?#',  // type 2
+				'image'		=>	'#https?\:\/\/(www\.)ancient\.eu\/image\/(\w*)\/?#', // type 3
+				'blog'		=>	'#https?\:\/\/(www\.)ancient\.eu\/blog\/(\w*)\/?#' // type 4
+				//'blog2'		=>	'#https?\:\/\/etc\.ancient\.eu\/\d*\/\d*\/\d*\/([\w-]*)\/?$#', // does not work because no id included!
+		);				
+
+			
 		
 		function api_search_url($query, $params = array()) {
 			$query = str_replace(' ', ' AND ', $query);
@@ -47,6 +45,23 @@ namespace esa_datasource {
 		}
 			
 		function api_single_url($id, $params = array()) {
+			if (isset($params['pasted_url'])) {
+				switch ($params['regex_id']) {
+					case 'entry': 
+						$id = "1-$id";
+					break;
+					case 'article': 
+						$id = "2-$id";
+					break;
+					case 'image': 
+						$id = "3-$id";
+					break;
+					case 'blog':
+						$id = "5-$id";
+					break;
+				}
+			}
+			
 			return "http://www.ancient.eu/api/search.php?query=id:$id";
 		}
 
@@ -129,12 +144,6 @@ namespace esa_datasource {
 			return $res[0];
 		}
 
-		function stylesheet() {
-			return array(
-				'name' => get_class($this),
-				'css' => ''
-			);
-		}
 		
 		private function _url($url) {
 			return (substr($url, 0, 1) == '/') ? 'http://www.ancient.eu' . $url : $url;
