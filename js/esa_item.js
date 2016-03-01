@@ -60,7 +60,7 @@
             $(this_esa_item).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
-            	
+            	console.log('dd');
             	// map
             	if (this_esa_item.map) {
             		this_esa_item.map.invalidateSize();
@@ -71,7 +71,7 @@
             	
             	function reArrangeMediaboxes() {
             		var mediaBoxes = thisItem.find('.esa_item_media_box');
-            		console.log('rearragane', mediaBoxes);
+            		//console.log('rearragane', mediaBoxes);
             		
             		if (mediaBoxes.length == 0) {
             			return;
@@ -142,8 +142,6 @@
             		
             	});
             }
-
-            
             
             // load leaflet if needed
         	if (!is_in_editor && $(this_esa_item).find('.esa_item_map').length) {
@@ -161,7 +159,7 @@
 	        			
 	        				window.leaflet_document = $(mapDiv).context.ownerDocument;
 	        				//console.log(window.leaflet_document);
-	        				
+
 	        				var map = this_esa_item.map = L.map(mapId).setView([lat, long], 13);
 	        				
 	        				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

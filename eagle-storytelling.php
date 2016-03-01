@@ -359,7 +359,7 @@ function esa_item_special_styles() {
 	}
 
 	wp_add_inline_style('esa_item', implode('\n', $css));
-
+	return implode('\n', $css);
 };
 
 
