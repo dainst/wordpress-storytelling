@@ -61,11 +61,7 @@
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
 
-            	// map
-            	if (this_esa_item.map) {
-            		this_esa_item.map.invalidateSize();
-            		//console.log('invalidateSize');
-            	}
+
 
             	// on Expand
             	
@@ -110,10 +106,14 @@
             		
             		reArrangeMediaboxes();
           		
-            		
+
             	}
 
-
+            	// map
+            	if (this_esa_item.map) {
+            		this_esa_item.map.invalidateSize();
+            		//console.log('invalidateSize', this_esa_item.map);
+            	}
             	
             });
             

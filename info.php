@@ -40,6 +40,16 @@
 	</p>
 	<h2>Usage</h2>
 	<p>
+		To add such embedded content paste an URL to your post or click "Add Media" an your content editor and goto "Eagle Storytelling Application". There you can post URLs or serach directly in the various datasources via their APIs.
+	</p>
+	<p>
+		Internally theese embedded contents are represented by Wordpresses shortcodes and look like that:<br>
+		<code>[[esa source="wiki" id="Epigraphy@en"]]</code>
+	</p>
+	<p>
+		There is also a widget wich displays a map of all posts with embedded content wich has geographic coordinates. You can find it in the widget area. 
+	</p>
+	<p>
 		By default, all the embedded contents (excerpts from Wikipedia pages, interactive maps or objects from the EAGLE 
 		collection or Europeanaand so on) are displayed in a compact view. By clicking on the buttons, an excerpt can be expanded 
 		(downward arrow at the bottom of the item) and visualized in its original web page (the eye icon on the top-right corner). 
@@ -52,16 +62,6 @@
 		[esa source="eagle" id="EDB::ecacd215c0e820d5407b32369cd33b9b::7e3028a2329c7e1e0432cc11b965e21c::visual"]
 		<br>And finally, here is a Wikipedia page: the first paragraph of the embedded voice from the free encyclopedia is reported. Of course, by clicking on the eye you can continue reading the page in its original context.<br>
 		[esa source="wiki" id="Epigraphy@en"]
-	</p>
-	<p>
-		To add such embedded content paste an URL to your post or click "Add Media" an your content editor and goto "Eagle Storytelling Application". There you can post URLs or serach directly in the various datasources via their APIs.
-	</p>
-	<p>
-		Internally theese embedded contents are represented by Wordpresses shortcodes and look like that:		<br>
-		<code>[[esa source="wiki" id="Epigraphy@en"]]</code>
-	</p>
-	<p>
-		There is also a widget wich displays a map of all posts with embedded content wich has geographic coordinates. You can find it in the widget area. 
 	</p>
 	<h2>What is the "Epidoc reader"?</h4>
 	<p>
