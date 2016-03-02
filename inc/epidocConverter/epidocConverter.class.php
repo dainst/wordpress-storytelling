@@ -15,8 +15,10 @@
  *
  * @tutorial
  *
+ * $mode = 'saxon'; //'libxml', 'remote:saxon', 'remote:libxml'
+ *
  * try {
- * 	$conv = epidocConverter::create($xmlData);
+ * 	$conv = epidocConverter::create($xmlData, $mode);
  * } catch (Exception $e) {
  * 	echo $e->getMessage();
  * }
@@ -68,8 +70,7 @@ abstract class epidocConverter {
 	 * @return epidocConverterFallback|epidocConverterSaxon
 	 */
 	function create($epidoc = false, $mode = 'libxml', $settings  = array()) {
-		error_reporting(true);
-		ini_set('display_errors', '1');
+
 		list($mode, $mode2) = explode(':', $mode);
 
 		$file = dirname(__FILE__) . "/epidocConverter.$mode.class.php";

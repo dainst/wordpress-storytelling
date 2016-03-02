@@ -81,7 +81,7 @@ namespace epidocConverter {
 			}
 			
 			if(LIBXML_VERSION < 20708) {
-				throw new \Exception('libxml version too old - you need at least version 2.7.8 (as shipped with PHP 5.4.0');
+				throw new \Exception('libxml version too old - you need at least version 2.7.8 (as shipped with PHP 5.4.0)');
 			}
 			
 			$this->proc = new \XSLTProcessor();

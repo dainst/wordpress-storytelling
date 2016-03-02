@@ -1,7 +1,9 @@
 # epidocConverter
 
 @version 1.0
+
 @year 2015
+
 @author Philipp Franck
 
 @desc
