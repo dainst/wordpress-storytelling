@@ -37,21 +37,23 @@ Currently available Sub-Plugins are:
  * Entry from [Eagle Inscription Database](http://www.eagle-network.eu/)
  * Entry from [Pelagios.org](http://pelagios.dme.ait.ac.at/) (and with this [Pleaides](http://pleiades.stoa.org/), and some more sources which are collected there)
  * Entry from [Finds.org](https://finds.org.uk/)
+ * Entry from [ancient.eu](https://ancient.eu/)
 
 == Installation ==
 
+ * PHP >= 5.3.0 is required
  * Install from Plugin Repository / extract to wp-content/plugins and activate via wp-admin/plugins
  * In admin menu go to the “Eagle Storytelling Application”, activate the data sources you want to use and click save
 
 To use the Epidoc-Reader you need
-a) Libxml >= 2.7.8 (as of PHP >= 5.4.0) installed
+a) Libxml >= 2.7.8 (as of PHP >= 5.4.0) to be installed
 or
-b) PHP Module [Saxon/c Processor](http://www.saxonica.com/html/saxon-c/index.html) installed
+b) PHP Module [Saxon/c Processor](http://www.saxonica.com/html/saxon-c/index.html) to be installed
 or
-c) set up a remote Epidoc Render Server (We are currently building a Webservice like that but it's not ready now. You can set it up by yourself, using [this](https://github.com/paflov/epidocConverter) but than you need libxml or saxon/c as well.
+c) set up a remote Epidoc Render Server (We are currently building a Webservice like that but it's not ready now. You can set it up by yourself, using [this](https://github.com/paflov/epidocConverter) but than you need libxml 2.7.8 or saxon/c as well.
 
-So set up the epidoc rendering mode, create file called 'esa_datasource.settings.local.php' in the plugin directory
-an fill it with:  
+To set up the epidoc rendering mode, create file called 'esa_datasource.settings.local.php' in the plugin directory
+and fill it with:  
 $settings['epidoc'] = array(
 	'mode' => {{mode}},
 	'settings' =>  array(
@@ -59,5 +61,5 @@ $settings['epidoc'] = array(
 	)
 );
 
-{{mode}} can be 'saxon', 'libxml', 'remote:saxon', 'remote:libxml' etc. Url is only required when using remote.
+{{mode}} can be 'saxon', 'libxml', 'remote:saxon', 'remote:libxml' etc. 'apiurl' is only required when using remote.
 

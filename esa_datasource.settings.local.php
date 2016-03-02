@@ -1,6 +1,6 @@
 <?php
 $settings['epidoc'] = array(
-		'mode' => 'remote:saxon',
+		'mode' => 'libxml',
 		'settings' =>  array(
 			'apiurl' => 'http://195.37.232.186/epidocConverter/remoteServer.php'
 		)

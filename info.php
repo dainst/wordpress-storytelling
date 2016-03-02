@@ -41,24 +41,39 @@
 	<h2>Tutorial</h2>
 	<p>
 		By default, all the embedded contents (excerpts from Wikipedia pages, interactive maps or objects from the EAGLE 
-		collection or Europeana) are displayed in a compact view. By clicking on the buttons, an excerpt can be expanded 
+		collection or Europeanaand so on) are displayed in a compact view. By clicking on the buttons, an excerpt can be expanded 
 		(downward arrow at the bottom of the item) and visualized in its original web page (the eye icon on the top-right corner). 
 		Finally, you can search for all the stories that embed the same item in our EAGLE collection.
 	</p>
 	<p>
-		<strong>Try it yourself!</strong> Here is a <strong>map</strong> of Berlin. When you expand it using the downward arrow, the interactive map will become available for browsing!<br>
+		Here is a <strong>map</strong> of Berlin. When you expand it using the downward arrow, the interactive map will become available for browsing!<br>
 		[esa source="idai" id="2282601"]
 		<br>Here is an <strong>inscription</strong> from the huge EAGLE collection.<br>
 		[esa source="eagle" id="EDB::ecacd215c0e820d5407b32369cd33b9b::7e3028a2329c7e1e0432cc11b965e21c::visual"]
 		<br>And finally, here is a Wikipedia page: the first paragraph of the embedded voice from the free encyclopedia is reported. Of course, by clicking on the eye you can continue reading the page in its original context.<br>
 		[esa source="wiki" id="Epigraphy@en"]
 	</p>
+	<p>
+		Internally theese embedded contents are represented by Wordpresses shortcodes and look like that:		<br>
+		<code>[[esa source="wiki" id="Epigraphy@en"]]</code>
+	</p>
 	<h2>What is the "Epidoc reader"?</h4>
 	<p>
 		EAGLE is very proud of putting together the largest collection of Graeco-Roman digitized inscriptions on the web. Moreover, we're promoting the use of <a href="http://sourceforge.net/p/epidoc/wiki/Home/">EpiDoc</a> as a standard for the digital encoding of epigraphic content.<br>
 		If you want to make reference to an inscription that is published in the web in EpiDoc format but it's not included in our collection, our Storytelling App is the right tool! Just launch click on "Add Media" from within the editor, select the <strong>EAGLE Storytelling Application</strong>  gallery (just like for any other content) and then click on the <strong>Epidoc</strong> tab.<br>
 		Paste the URL of the XML edition of the inscription you want to insert in the search bar and hit the "Search" button. If you want, the App will suggest a series of repositories where you can find EpiDoc xml. The result will look something like this (from <a href="http://iospe.kcl.ac.uk/index.html">IOSPE, Ancient Inscriptions of the Northern Black Sea</a>):<br>	
-		[esa source="epidoc" id="http://iospe.kcl.ac.uk/5.140.xml"]
+		<div data-id="http://iospe.kcl.ac.uk/5.140.xml" data-source="epidoc" class="esa_item esa_item_epidoc esa_item_cached esa_item_collapsed"><div class="esa_item_tools"><a title="expand" class="esa_item_tools_expand">&nbsp;</a><a href="http://195.37.232.186/eagle?s&amp;post_type=story&amp;esa_item_id=http://iospe.kcl.ac.uk/5.140.xml&amp;esa_item_source=epidoc" class="esa_item_tools_find" title="Find Stories with this Item">&nbsp;</a></div><div class="esa_item_inner"><div class="esa_item_left_column_max_left"><div class="esa_item_text edition"><div id="edition" lang="grc">  <span class="textpartnumber" id="ab1">1</span>  <div class="textpart">  <a id="a1-l1"><!--0--></a>Ἐκημίθυ <br id="a1-l2">ἡ δούλ(η) τοῦ <br id="a1-l3">θεοῦ Ἀγ̣ά̣τη, <br id="a1-l4">υἱὸς τῆς Παλ- <br id="a1-l5"><span class="linenumber">5</span>κου ἔτους ͵ς- <br id="a1-l6">Ϡκθ´ </div>  <span class="textpartnumber" id="ab2">2</span>  <div class="textpart">  <a id="a2-l1"><!--0--></a>((stauros)) Ἐγώ, Γιάσων ((stauros)) </div>  </div></div><div class="esa_item_text translation"><div id="translation">  <div>
+			<h2>textpart</h2>  <p>Fell asleep: a servant of God, Agathe, son of Palkos(?), in the year 6925.</p>  </div>  <div>  <p>I, Jason (?)</p>  </div>  </div></div></div><div class="esa_item_right_column_max_left"><h4>Надгробие Агаты, Epitaph of Agathe</h4><br><ul class="datatable"><li><strong>Content Provider: </strong> King's College London</li><li><strong>Type: </strong> <a target="_blank" href="monument-search.xml#mon8">Квадр.</a>, Wall block.</li><li><strong>Material: </strong> <a target="_blank" href="material-search.xml#m2">Известняк.</a>, Limestone.</li><li><strong>Ancient find spot: </strong> <a target="_blank" href="origPlace.xml#p012">
+            </a></li><li><strong>urls: </strong> 5.140, PE5000140, byz135</li><li><strong>xslt: </strong> Remote (saxon)</li></ul></div></div><div style="display: none;" class="esa_item_resizebar">&nbsp;</div>
+		</div>
+	</p>
+	<p>
+		This feature needs
+		<ul>
+			<li>either PHP Module Libxml >= 2.7.8 (as of PHP >= 5.4.0)</li>
+			<li>or PHP Module <a href='http://www.saxonica.com/html/saxon-c/index.html'>Saxon/c Processor</a> to be installed</li>
+			<li>or a remote Epidoc Render Server set up. <i>(We are currently building a webservice for that but it's not ready now.)</i></li>
+		</ul>
 	</p>
 	<h2>Links</h2>
 	<ul>
