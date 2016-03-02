@@ -38,7 +38,7 @@
 		Web-APIs. Thus it might be no only of interest for those who work in epigraphy or the ancient world but also for those who want to show 
 		the content of any Web-API in their blog.
 	</p>
-	<h2>Tutorial</h2>
+	<h2>Usage</h2>
 	<p>
 		By default, all the embedded contents (excerpts from Wikipedia pages, interactive maps or objects from the EAGLE 
 		collection or Europeanaand so on) are displayed in a compact view. By clicking on the buttons, an excerpt can be expanded 
@@ -54,8 +54,14 @@
 		[esa source="wiki" id="Epigraphy@en"]
 	</p>
 	<p>
+		To add such embedded content paste an URL to your post or click "Add Media" an your content editor and goto "Eagle Storytelling Application". There you can post URLs or serach directly in the various datasources via their APIs.
+	</p>
+	<p>
 		Internally theese embedded contents are represented by Wordpresses shortcodes and look like that:		<br>
 		<code>[[esa source="wiki" id="Epigraphy@en"]]</code>
+	</p>
+	<p>
+		There is also a widget wich displays a map of all posts with embedded content wich has geographic coordinates. You can find it in the widget area. 
 	</p>
 	<h2>What is the "Epidoc reader"?</h4>
 	<p>

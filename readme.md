@@ -63,3 +63,5 @@ $settings['epidoc'] = array(
 
 {{mode}} can be 'saxon', 'libxml', 'remote:saxon', 'remote:libxml' etc. 'apiurl' is only required when using remote.
 
+== Usage ==
+See Settinsg page after installing plugin.
