@@ -1,10 +1,10 @@
 <div id='esa_item_list_sidebar'>
 	<table id='esa_infotable'>
 		<tr>
-			<td colspan='2'><a href='http://www.eagle-network.eu/' target='_blank'><img style='width:230px' src='http://www.eagle-network.eu/wp-content/uploads/2013/06/egl_web_logo.png' alt='eagle logo' /></a></td>
+			<td colspan='2'><a href='http://www.eagle-network.eu/' target='_blank'><img style='width:230px' src='<?php echo plugins_url( 'images/eagle_logo.png', __FILE__ ) ?>' alt='eagle logo' /></a></td>
 		</tr>
 		<tr>
-			<td><a href='https://www.dainst.org/' target='_blank'><img style='width:120px' src='https://www.dainst.org/image/company_logo?img_id=11201&t=1454494336195' alt='dai logo' /></a></td>
+			<td><a href='https://www.dainst.org/' target='_blank'><img style='width:120px' src='<?php echo plugins_url( 'images/dai_logo.png', __FILE__ ) ?>' alt='dai logo' /></a></td>
 			<td><a id='dai_name' href='https://www.dainst.org/' target='_blank'>Deutsches<br>Archäologisches<br>Institut</a></td>
 		</tr>
 	</table>
@@ -63,7 +63,7 @@
 		<br>And finally, here is a Wikipedia page: the first paragraph of the embedded voice from the free encyclopedia is reported. Of course, by clicking on the eye you can continue reading the page in its original context.<br>
 		[esa source="wiki" id="Epigraphy@en"]
 	</p>
-	<h2>What is the "Epidoc reader"?</h4>
+	<h2>What is the "Epidoc reader"?</h2>
 	<p>
 		EAGLE is very proud of putting together the largest collection of Graeco-Roman digitized inscriptions on the web. Moreover, we're promoting the use of <a href="http://sourceforge.net/p/epidoc/wiki/Home/">EpiDoc</a> as a standard for the digital encoding of epigraphic content.<br>
 		If you want to make reference to an inscription that is published in the web in EpiDoc format but it's not included in our collection, our Storytelling App is the right tool! Just launch click on "Add Media" from within the editor, select the <strong>EAGLE Storytelling Application</strong>  gallery (just like for any other content) and then click on the <strong>Epidoc</strong> tab.<br>
