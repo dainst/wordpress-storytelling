@@ -85,6 +85,12 @@ cd $SVNPATH/trunk/
 svn status | grep -v "^.[ \t]*\..*" | grep "^?" | awk '{print $2}' | xargs svn add
 svn commit --username=$SVNUSER -m "$COMMITMSG"
 
+# Paflov:
+#echo "Copy the contents of svn_assets to assets";
+#mkdir $SVNPATH/assets
+#cp svn_assets/*.png $SVNPATH/assets
+
+
 echo "Creating new SVN tag & committing it"
 cd $SVNPATH
 svn copy trunk/ tags/$NEWVERSION1/
@@ -95,3 +101,4 @@ echo "Removing temporary directory $SVNPATH"
 rm -fr $SVNPATH/
 
 echo "*** FIN ***"
+

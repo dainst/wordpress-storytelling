@@ -84,10 +84,10 @@
 	<h2>Links</h2>
 	<ul>
 		<li><a target='_blank' href='http://www.eagle-network.eu/resources/flagship-storytelling-app/'>www.eagle-network.eu</a></li>
-		<li><a target='_blank' hruf='https://github.com/codarchlab/eagle-storytelling'>Github Project (TBA)</a></li>
-		<li><a target='_blank' href='#'>Wordpress.org (TBA)</a>
-		<li><a target='_blank' href='https://github.com/paflov/epidocConverter'>Github Project: Epidoc Converter</a></li>
 		<li><a target='_blank' href='https://www.dainst.org/'>Deutsches Archäologisches Institut</a></li>
+		<li><a target='_blank' hruf='https://github.com/codarchlab/eagle-storytelling'>Github Project</a></li>
+		<li><a target='_blank' href='https://wordpress.org/plugins/eagle-storytelling-application/'>Wordpress.org</a>
+		<li><a target='_blank' href='https://github.com/paflov/epidocConverter'>Github Project: Epidoc Converter</a></li>
 	</ul>
 	<h2>Legal Notice</h2>
 	<p>	
