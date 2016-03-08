@@ -115,6 +115,7 @@ namespace esa_datasource {
 				}
 				$echo .= "<option value='$typeId' " . (($typeId == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  $type . "</option>";
 			}
+			$echo .= "<option value='' " . (isset($post['esa_ds_param_type']) ? 'selected ' : '') . ">All</option>";
 			$echo .= "</select>";
 			return $echo;
 		}
