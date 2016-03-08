@@ -5,7 +5,7 @@
  * @link 		http://www.ancient.eu/
  * @author 		Philipp Franck
  *
- * Status: Alpha 1
+ * Status: 1.1
  *
  */
 
@@ -34,14 +34,24 @@ namespace esa_datasource {
 				//'blog2'		=>	'#https?\:\/\/etc\.ancient\.eu\/\d*\/\d*\/\d*\/([\w-]*)\/?$#', // does not work because no id included!
 		);				
 
-			
+		public 	$types = array(
+			'',
+			'Encyclopedia Entry',
+			'Article',
+			'Image',
+			'',
+			'Blog Entry',
+			'Video',
+			'Link',
+			'Book Review'
+		);
 		
 		function api_search_url($query, $params = array()) {
 			$query = str_replace(' ', ' AND ', $query);
 			//$query = str_replace(' ', '+AND+', $query);
 			$query = str_replace(':', '\:', $query);
 			$query = rawurlencode($query);
-			return "http://www.ancient.eu/api/search.php?query=$query&limit=12";
+			return "http://www.ancient.eu/api/search.php?query=$query&limit=12"  . $this->_api_params_url_part($params);
 		}
 			
 		function api_single_url($id, $params = array()) {
@@ -64,8 +74,6 @@ namespace esa_datasource {
 			
 			return "http://www.ancient.eu/api/search.php?query=id:$id";
 		}
-
-
 		
 		function api_record_url($id, $params = array()) {
 			$x = explode('-', $id);
@@ -77,36 +85,56 @@ namespace esa_datasource {
 		/*	pagination functions  */
 		function api_search_url_next($query, $params = array()) {
 			$this->page += 1;
-			return $this->api_search_url($query) . '&page=' . $this->page;
+			return $this->api_search_url($query) . '&page=' . $this->page  . $this->_api_params_url_part($params);
 		}
 			
 		function api_search_url_prev($query, $params = array()) {
 			$this->page -= 1;
-			return $this->api_search_url($query) . '&page=' . $this->page;
+			return $this->api_search_url($query) . '&page=' . $this->page  . $this->_api_params_url_part($params);
 		}
 			
 		function api_search_url_first($query, $params = array()) {
 			$this->page = 1;
-			return $this->api_search_url($query) . '&page=' . $this->page;
+			return $this->api_search_url($query) . '&page=' . $this->page  . $this->_api_params_url_part($params);
 		}
 			
 		function api_search_url_last($query, $params = array()) {
 			$this->page = $this->pages;
-			return $this->api_search_url($query) . '&page=' . $this->page;
+			return $this->api_search_url($query) . '&page=' . $this->page  . $this->_api_params_url_part($params);
 		}
-			
+		
+		/*
+		 * 
+		 * search form
+		 */
+		function search_form_params($post) {
+			$echo = "<select name='esa_ds_param_type' height='1'>";
+			foreach ($this->types as $typeId =>  $type) {
+				if ($type == '') {
+					continue;
+				}
+				$echo .= "<option value='$typeId' " . (($typeId == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  $type . "</option>";
+			}
+			$echo .= "</select>";
+			return $echo;
+		}
+		
+		private function _api_params_url_part($params) {
+			$return = '';
+			if (isset($params['type'])) {
+				$return .= "&type={$params['type']}";
+			}
+			return $return;
+		}
+		
+		
+		/*
+		 * The result rendering
+		 * 
+		 */
 		function parse_result_set($response) {
 			
-			$types = array(
-				'Encyclopedia Entry',
-				'Article',
-				'Image',
-				'',
-				'Blog Entry',
-				'Video',
-				'Link',
-				'Review'
-			);
+
 			
 			$response = json_decode($response);
 			$this->results = array();
@@ -118,8 +146,9 @@ namespace esa_datasource {
 				
 				$data->title = $doc->title;
 				$data->addTable('', str_replace("\n", '<br>', $doc->description) . "<br><br><a href='{$url}' target='_blank'>Read Full Article</a>");
-				$data->addTable('Keywords', str_replace('_', ' ', implode(', ',$doc->tags)));
-				$data->addTable('Type', $types[$doc->type -1]);
+				$tags = is_array($doc->tags) ? implode(', ', $doc->tags) : $doc->tags;
+				$data->addTable('Keywords', str_replace('_', ' ', $tags));
+				$data->addTable('Type', $this->types[$doc->type]);
 
 				if ($doc->thumbnail and $doc->image) {
 					$data->addImages(array(
