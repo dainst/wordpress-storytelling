@@ -40,7 +40,7 @@ namespace esa_datasource {
 			
 			// search string
 			$query = str_replace(':', '\:', $query);
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query" . $this->_api_params_url_part($params);
 		}
 			
 		function api_single_url($id, $params = array()) {
@@ -64,23 +64,23 @@ namespace esa_datasource {
 		function api_search_url_next($query, $params = array()) {
 			$this->page += 1;
 			$start = 1 + ($this->page - 1) * $this->_hits_per_page;
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$start&q=$query";
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$start&q=$query" . $this->_api_params_url_part($params);
 					}
 			
 		function api_search_url_prev($query, $params = array()) {
 			$this->page -= 1;
 			$start = 1 + ($this->page - 1) * $this->_hits_per_page;
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$start&q=$query";
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$start&q=$query" . $this->_api_params_url_part($params);
 		}
 			
 		function api_search_url_first($query, $params = array()) {
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query";
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query" . $this->_api_params_url_part($params);
 		}
 			
 		function api_search_url_last($query, $params = array()) {
 			$this->page = $this->pages;
 			$last = 1 + ($this->pages) * $this->_hits_per_page;
-			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$last&q=$query";
+			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&start=$last&q=$query" . $this->_api_params_url_part($params);
 		}
 		
 
@@ -194,7 +194,44 @@ namespace esa_datasource {
 			}
 		}
 		 
+		/**
+		 * Search Params
+		 */
+		public $types = array(
+			'artifact' => 'Artifact',
+			'documental' => 'Documental',
+			'visual' => 'Visual',
+			'' =>  'All'
+		);
 		
+		/**
+		 * (non-PHPdoc)
+		 * @see \esa_datasource\abstract_datasource::search_form_params()
+		 */
+		function search_form_params($post) {
+			$echo  = "<select name='esa_ds_param_type' height='1'>";
+			foreach ($this->types as $typeId =>  $type) {
+				if ($type == '') {
+					continue;
+				}
+				$echo .= "<option value='$typeId' " . (($typeId == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  $type . "</option>";
+			}
+			$echo .= "</select>";
+			return $echo;
+		}
+		
+		/**
+		 * 
+		 * @param array $params
+		 * @return string
+		 */
+		private function _api_params_url_part($params) {
+			$return = '';
+			if (isset($params['type'])) {
+				$return .= "&fq=entitytype:{$params['type']}";
+			}
+			return $return;
+		}
 		
 		/**
 		 * Render results
@@ -236,7 +273,7 @@ namespace esa_datasource {
 				if (!isset($data->text) or !$data->text) {
 					$data->text[] = (string) $obj->description != (string) $obj->title ? (string) $obj->description : 'kein text';
 				}*/
-				//$data->table['type'] = $obj->entityType;
+				$data->table['entityType'] = $obj->entityType;
 				
 				$data->table['repositoryname'] = $page->repositoryname;
 								
