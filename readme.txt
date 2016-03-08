@@ -29,21 +29,22 @@ You can not only embed content as ESA-Items by posting URLs from known data sour
 In this way you can integrate Maps, Wikipedia Articles, Images from Wikimedia Commons and a lot of specialized data sources for epigraphy. The ESA has has a modular sub-plugin architecture which makes it quite easy for developers to add some other data sources via their Web-APIs. Thus it might be no only of interest for those who work in epigraphy or the ancient world but also for those who want to show the content of any Web-API in their blog.
 
 Currently available Sub-Plugins are:
- * [Wikipedia](https://www.wikipedia.org/) Articles
- * File form [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page)
- * Map (via [iDAI Gazetteer](http://gazetteer.dainst.org))
- * Media from [Europeana](http://www.europeana.eu/portal/)
- * [Epidoc](http://sourceforge.net/projects/epidoc/) File
- * Entry from [Eagle Inscription Database](http://www.eagle-network.eu/)
- * Entry from [Pelagios.org](http://pelagios.dme.ait.ac.at/) (and with this [Pleaides](http://pleiades.stoa.org/), and some more sources which are collected there)
- * Entry from [Finds.org](https://finds.org.uk/)
- * Entry from [ancient.eu](https://ancient.eu/)
+
+* [Wikipedia](https://www.wikipedia.org/) Articles
+* File form [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page)
+* Map (via [iDAI Gazetteer](http://gazetteer.dainst.org))
+* Media from [Europeana](http://www.europeana.eu/portal/)
+* [Epidoc](http://sourceforge.net/projects/epidoc/) File
+* Entry from [Eagle Inscription Database](http://www.eagle-network.eu/)
+* Entry from [Pelagios.org](http://pelagios.dme.ait.ac.at/) (and with this [Pleaides](http://pleiades.stoa.org/), and some more sources which are collected there)
+* Entry from [Finds.org](https://finds.org.uk/)
+* Entry from [ancient.eu](https://ancient.eu/)
 
 == Installation ==
 
- * PHP >= 5.3.0 is required
- * Install from Plugin Repository / extract to wp-content/plugins and activate via wp-admin/plugins
- * In admin menu go to the “Eagle Storytelling Application”, activate the data sources you want to use and click save
+* PHP >= 5.3.0 is required
+* Install from Plugin Repository / extract to wp-content/plugins and activate via wp-admin/plugins
+* In admin menu go to the “Eagle Storytelling Application”, activate the data sources you want to use and click save
 
 To use the Epidoc-Reader you need
 a) Libxml >= 2.7.8 (as of PHP >= 5.4.0) to be installed
@@ -63,5 +64,9 @@ $settings['epidoc'] = array(
 
 {{mode}} can be 'saxon', 'libxml', 'remote:saxon', 'remote:libxml' etc. 'apiurl' is only required when using remote.
 
-== Usage ==
-See Settinsg page after installing plugin.
+== Screenshots ==
+
+1.
+2.
+3.
+4.

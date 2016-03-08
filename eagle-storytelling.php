@@ -7,7 +7,7 @@
 Plugin Name: Eagle Storytelling Application
 Plugin URI:  http://www.eagle-network.eu/stories/
 Description: The EAGLE Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content. It was created in the context of the EAGLE project, a European project which started in 2013 and aimed to connect and collect data sources and projects related to the topic of digital epigraphy, ancient history or archeology. 
-Author:	     Philipp Franck
+Author:	     Deutsches Archäologisches Institut
 Author URI:	 http://www.dainst.org/
 Version:     2.1
 */
