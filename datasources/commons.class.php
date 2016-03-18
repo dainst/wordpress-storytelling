@@ -16,7 +16,7 @@ namespace esa_datasource {
 		public $title = 'Wikimedia Commons'; // Label / Title of the Datasource
 		public $index = 70; // where to appear in the menu
 		public $info = false; // get created automatically, or enter text
-		public $homeurl; // link to the dataset's homepage
+		public $homeurl = 'https://commons.wikimedia.org'; // link to the dataset's homepage
 		public $debug = false;
 		public $examplesearch = 'a search term like "res gestae" or an Wikimedia Commons url like "https://upload.wikimedia.org/wikipedia/commons/7/77/Res_Gestae_Divi_Augusti.jpg"'; // placeholder for search field
 		//public $searchbuttonlabel = 'Search'; // label for searchbutton
