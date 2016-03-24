@@ -53,7 +53,7 @@ namespace epidocConverter {
 		);
 		
 		
-		function __construct($data = false, $noException  = false) {
+		function __construct($data = false) {
 			if ($data) {
 				$this->set($data);
 			}
@@ -104,7 +104,7 @@ namespace epidocConverter {
 					"Expect:",                              // Disable "100 Continue" server response
 					"Content-Type: application/json"        // Content Type json
 			);
-			//curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
 			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_FAILONERROR, true);
@@ -116,7 +116,7 @@ namespace epidocConverter {
 			$response = curl_exec($ch);
 	
 			if ($response === false) {
-				throw new \Exception('Curl error: (' . curl_errno($ch) . ') ' . curl_error($ch));
+				throw new \Exception('Curl error: (' . curl_errno($ch) . ') ' . curl_error($ch) . ' | ' . $this->apiurl);
 			}
 	
 		
@@ -145,14 +145,9 @@ namespace epidocConverter {
 				throw new \Exception("$file does not exist.");
 			}
 		
-
 			$class = "\\epidocConverter\\$mode";
 			
-
-			$c = new $class('', true);
-
-			return $c->getStylesheet();
-
+			return file_get_contents($this->workingDir . '/' . $class::$cssFilePath);
 
 		}
 

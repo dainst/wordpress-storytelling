@@ -91,8 +91,7 @@ namespace esa_datasource {
 		}
 		
 		function parse_result($response) {
-			error_reporting(true);
-			ini_set('display_errors', '1');
+
 			$c = \epidocConverter::create($response, $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 			$epi = $c->convert(true);
 			

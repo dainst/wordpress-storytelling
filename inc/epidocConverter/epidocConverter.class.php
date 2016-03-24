@@ -3,7 +3,7 @@
  *
  * epidocConverter
  *
- * @version 1.1
+ * @version 1.5
  * 
  * @year 2016
  * 
@@ -45,14 +45,52 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 abstract class epidocConverter {
-		
+	
+	public $version = '1.5';
+	
 	// position of xslt stylsheets & so on
 	public $workingDir; // usually __DIR__
-	public $cssFile;
 	public $xslFile;
 	public $dtdPath = 'tei-epidoc.dtd'; //can be set to anywhere, but default is working directory
 	
+	public static $cssFilePath;
+	public $cssFile;
+	
 	public $errors = array(); // tmp array for errors
+	
+	public $renderOptions	= array();
+	public $renderOptionset = array(
+		'apparatus-style' =>  	array(
+				'description' =>  	"supported values are 'default' (generate apparatus from tei:div[@type='apparatus']) and 'ddbdp' (generate apparatus from tei:app, tei:subst, tei:choice, tei:hi etc. elements in the text)",
+				'options' => 		array('default', 'ddbdp')
+			),					
+		'edition-type' =>		array(
+				'description' =>  	"diplomatic' prints edition in uppercase, no restored, corrected, expanded characters, etc.)",
+				'options' => 		array('interpretive', 'diplomatic')
+			),
+		'edn-structure' =>		array(
+				'description' =>  	'',
+				'options' => 		array('default', 'ddbdp', 'hgv', 'inslib', 'iospe', 'edh', 'edh-db', 'rib', 'sammelbuch', 'eagle', 'igcyr'),
+			),
+		'leiden-style' =>		array(
+				'description' =>  	'These change minor variations in local Leiden usage; brackets for corrected text, display of previously read text, illegible characters, etc.',
+				'options' => 		array('panciera', 'ddbdp', 'dohnicht', 'eagletxt', 'edh-itx', 'edh-names', 'edh-web ', 'ila', 'iospe', 'london', 'petrae', 'rib', 'sammelbuch', 'seg'),
+			),
+		'line-inc' =>			array(
+				'description' =>  	'Show line number every ... line.',
+				'options' => 		array(5, 10, 25, 20, 1, 2, 3, 4),
+				'type' =>			'int'
+			),
+		'topNav' =>				array(
+				'description' =>  	'',
+				'options' => 		array('default', 'ddbdp'),
+			),
+		'verse-lines' =>		array(
+				'description' =>  	'when a text of section of text is tagged using <lg> and <l> elements [instead of <ab>] then edition is formatted and numbered in verse lines rather than epigraphic lines',
+				'options' => 		array('off', 'on')
+			)
+	);
+	
 	
 	/**
 	 * 
@@ -66,12 +104,12 @@ abstract class epidocConverter {
 	 * 
 	 * @param string $epidoc
 	 * @param string $mode 'saxon' 'libxml' 'remote' 'remote:saxon' 'remote:libxml'
-	 * @param assoc $settings (for example array('apiurl' =>  'http://myepidocservice'))
+	 * @param assoc $settings allowed are all public variables of this class and all keys of the $renderOptions array (for example array('apiurl' =>  'http://myepidocservice'))
 	 * @return epidocConverterFallback|epidocConverterSaxon
 	 */
-	function create($epidoc = false, $mode = 'libxml', $settings  = array()) {
+	static function create($epidoc = false, $mode = 'libxml', $settings  = array()) {
 
-		list($mode, $mode2) = explode(':', $mode);
+		@list($mode, $mode2) = explode(':', $mode);
 
 		$file = dirname(__FILE__) . "/epidocConverter.$mode.class.php";
 		
@@ -91,10 +129,16 @@ abstract class epidocConverter {
 			throw $e;
 		}		
 
+		// imports xslt options and other settings
 		foreach ($settings as $key => $val) {
 			if (property_exists($conv, $key)) {
 				$conv->$key = $val;
 			}
+			
+			if (isset($conv->renderOptionset[$key])) {
+				$conv->setRenderOption($key, $val);
+			}
+			
 		}
 		
 		if (!empty ($mode2) and ($mode == 'remote')) {
@@ -107,6 +151,25 @@ abstract class epidocConverter {
 		
 
 		return $conv;
+	}
+	
+	/**
+	 * 
+	 * @param string $key
+	 * @param string $val
+	 * @throws \Exception when rende option is not registered
+	 * @return boolean - true when render option value was registered, false if not
+	 */
+	function setRenderOption($key, $val) {
+		if (!isset($this->renderOptionset[$key])) {
+			throw new \Exception("Unknown render option: '$key'.");
+		}
+		
+		$type = isset($this->renderOptionset[$key]['type']) ? $this->renderOptionset[$key]['type'] : 'string';
+		$this->renderOptions[$key] = $val;
+		settype($this->renderOptions[$key], $type);
+		
+		return in_array($val, $this->renderOptionset[$key]['options']);
 	}
 	
 	/**

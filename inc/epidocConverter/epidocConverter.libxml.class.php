@@ -58,13 +58,13 @@ namespace epidocConverter {
 		
 		public $workingDir = ''; 
 		public $xslFile = "xslShort/epidocShort.xsl"; // relative to this files' position !
-		public $cssFile = "xslShort/epidoc.css";
+		public static $cssFilePath = "xslShort/epidoc.css";
 		
 		public $proc;
 		
 		public $xmlDom;
 		
-	
+		public $renderOptions = array();
 		
 		/**
 		 * 
@@ -75,6 +75,7 @@ namespace epidocConverter {
 		function __construct($data = false, $noException  = false) {
 			
 			$this->workingDir = __DIR__;
+			$this->cssFile = self::$cssFilePath;
 			
 			if (!class_exists('\XSLTProcessor')) {
 				throw new \Exception('PHP XSLT Extension not installed');
@@ -230,7 +231,7 @@ namespace epidocConverter {
 					return trim($result);
 				}
 				
-				return "<!DOCTYPE HTML><html><head><title>Epidoc</title><meta charset='utf-8'><style>" . file_get_contents($this->processor->workingDir . '/' . $this->processor->cssFile) . "</style></head><body>$result</body></html>";
+				return "<!DOCTYPE HTML><html><head><title>Epidoc</title><meta charset='utf-8'><style>" . file_get_contents($this->workingDir . '/' . $this->cssFile) . "</style></head><body>$result</body></html>";
 				
 		
 			} else {

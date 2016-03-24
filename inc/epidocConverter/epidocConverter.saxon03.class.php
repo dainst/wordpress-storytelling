@@ -1,61 +1,26 @@
 <?php 
 /**
  * 
- * epidocConverter - Saxon/C Version
+ * epidocConverter - Saxon/C Version for Saxon 0.3
  * 
- * @version 1.5
+ * @version 1.0
  * 
- * @year 2016
+ * @year 2015 
  * 
  * @author Philipp Franck
  * 
  * @desc
+ * This is the older Version of epidocConverter.saxon.class.php wich was build for Saxon/C 0.3.
+ * The Saxon/C changed a lot of things, so this class is not usable anymore. I include it in the package anyway,
+ * in case someone can use it.
+ * 
+ * 
+ * 
  * This class employs the PHP API of the Saxon/C processor to convert Epidoc-XML-Data via XSLT into html-data
  * 
  * It takes the Epidoc-Data as String or as SimpleXMLElement and returns a String, representing the
  * body of the rendered html.
  * 
- * @tutorial
- * 
- * try {
- * 	$s = new \epidocConverter\saxon(file_get_contents("/myepidocfiles/HD006705.xml"));
- * 	$xml = $s->convert();
- * 	echo '<div class="myepidocbox">' .  $xml . '</div>';
- * } catch (Exception $e) {
- * 	echo $e->getMessage();
- * }
- * 
- * 
- * Tipps:
- * 
- * 
- * = If you have the xslt stylesheets in a different directory =
- * 
- * //let's say they are in /home/myxsl/supi.xsl.
- * 
- * $s = new \epidocConverter\saxon();
- * $s->xslFile = 'supi.xsl';
- * $s->workingDir = '/home/myxsl/';  //see footnote 1
- * $s->createSaxon();
- * $s->set(file_get_contents("/myepidocfiles/HD006705.xml");
- * 
- * 
- * =  Using Windows? =
- * 
- * $s = new \epidocConverter\saxon();
- * $s->xslFile = 'supi.xsl';
- * $s->workingDir = 'C://www/html//trax//';  //see footnote 1
- * $s->createSaxon();
- * $s->set(file_get_contents("/myepidocfiles/HD006705.xml");
- * 
- * Better: Don't use Windows.
- * 
- * 
- * 
- * @see
- * http://www.saxonica.com/html/saxon-c/php_api.html
- *
- */
 /*
 
 Copyright (C) 2015  Deutsches Archäologisches Institut
@@ -77,18 +42,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 namespace epidocConverter {
 
 	require_once('epidocConverter.class.php');
-
+	
 	class saxon extends \epidocConverter {
 		
 		// position of xslt stylsheets and doctype dtd
 		public $xslFile = "xsl/start-edition.xsl"; // relative to this files' position !
 		public $dtdPath = 'tei-epidoc.dtd'; //can be set to anywhere, but default is working directory
 		public $workingDir = ''; //set in __construct, but is public value in case you want to change (see footnote 1)
-		public static $cssFilePath = "xsl/global.css";
+		public $cssFile = "xsl/global.css";
 		
 		// the processor
 		public $saxon = NULL;
-		public $saxonP = NULL;
 		
 		// the data in xdm format
 		public $xdm = null;
@@ -99,14 +63,14 @@ namespace epidocConverter {
 		 * @param noException | if true this does not throw exception if saxon not present (so you can use it for getting stylesheet etc.)
 		 * @throws Exception
 		 */
-		function __construct($data = false, $noException = false) {
+		function __construct($data = false, $noException  = false) {
+			
 			// set up working dir (see footnote 1)
 			$this->workingDir = __DIR__;
 			$this->dtdPath = $this->workingDir . '/' . $this->dtdPath;
-			$this->cssFile = self::$cssFilePath;
 			
 			// check for saxon	
-			if (class_exists('\\Saxon\\SaxonProcessor')) {
+			if (class_exists('SaxonProcessor')) {
 							
 				$this->createSaxon();
 	            
@@ -116,11 +80,7 @@ namespace epidocConverter {
 				
 			} else {
 				if (!$noException) {
-					if (class_exists('SaxonProcessor')) {
-						throw new \Exception('You have to use Saxon/C Version 1.0.0 (or maybe future versions as well), but no 0.x version.');
-					} else {
-						throw new \Exception('sSaxon XSLT Processor PHP module not available.');
-					}
+					throw new \Exception('Saxon XSLT Processor PHP Module not available.');
 				}
 			}
 			
@@ -131,11 +91,9 @@ namespace epidocConverter {
 		 * can be called to reset the error log and stuff
 		 */
 		function createSaxon() {
-			// On Windows we recommend setting the cwd using the overloaded constructor
-			// because there remains an issue with building Saxon/C with PHP when using the function VCWD_GETCWD. i.e. $proc = new SaxonProcessor('C://www/html//trax//');
-			// (This was an Issue in Saxon/C 0.3. It has not been confirmed if it still remains in 1.0.0.)
-			$this->saxonP = new \Saxon\SaxonProcessor($this->workingDir);
-			$this->saxon  = $this->saxonP->newXsltProcessor(); 
+			//On Windows we recommend setting the cwd using the overloaded constructor
+			//because there remains an issue with building Saxon/C with PHP when using the function VCWD_GETCWD. i.e. $proc = new SaxonProcessor('C://www/html//trax//');
+			$this->saxon = new \SaxonProcessor($this->workingDir);
 		}
 		
 	
@@ -151,7 +109,7 @@ namespace epidocConverter {
 			for ($i = 0; $i < $this->saxon->getExceptionCount(); $i++) {
 				$error .= '<li>' . $this->saxon->getErrorCode($i) . ': ' . $this->saxon->getErrorMessage($i) . "</li>\n";
 			}
-			$this->saxon->exceptionClear();
+	
 			if ($error) {
 				$errorText = "Saxon processor found some XML errors: <ul>\n$error\n</ul>";
 				if ($return) {
@@ -178,7 +136,7 @@ namespace epidocConverter {
 			$str = $this->sanitizeStr($str);
 			
 			// try to import
-			$this->xdm = $this->saxonP->parseXmlFromString($str);
+			$this->xdm = $this->saxon->parseString($str);
 			
 			// if at first you don't succeed, you can dust it off and try again 
 			if ($error = $this->raiseErrors(true)) {
@@ -203,14 +161,10 @@ namespace epidocConverter {
 		 * @return string
 		 */
 		function status() {
-			if (class_exists('\\Saxon\\SaxonProcessor'))  {
-				return "Saxon Processor: " . $this->saxonP->version();
+			if (class_exists('SaxonProcessor'))  {
+				return "Saxon Processor: " . $this->saxon->version();
 			} else {
-				if (class_exists('SaxonProcessor')) {
-					throw new \Exception('You have to use Saxon/C Version 1.0.0 (or maybe future versions as well), but no 0.x version.');
-				} else {
-					throw new \Exception('Saxon XSLT Processor PHP module not available.');
-				}
+				throw new \Exception('Saxon XSLT Processor PHP Module not available.');
 			}
 		}
 		
@@ -227,17 +181,13 @@ namespace epidocConverter {
 				throw new \Exception("File >>{$this->xslFile}<< does not exist." );
 			}
 			
-			if (!$this->xdm) {
-				throw new \Exception("Import Data to Convert");
-			}
+			$this->saxon->setSourceValue($this->xdm);
+			$this->saxon->setStylesheetFile($this->xslFile);
 			
-			$this->saxon->setSourceFromXdmValue($this->xdm);
-			$this->saxon->compileFromFile($this->workingDir . '/' . $this->xslFile);
-			
+			// notice! because of bug in Saxon/X API 0.3 this does not work with string values			
 			foreach ($this->renderOptions as $name => $value) {
-				$this->saxon->setParameter($name, $this->saxonP->createAtomicValue($value));
+				$this->saxon->setParameter($name, $this->saxon->createXdmValue($value));
 			}
-			//$this->saxon->setProperty('edition-type', $this->saxon->createXdmValue('diplomatic'));
 			
 			$result = $this->saxon->transformToString();
 			
@@ -286,7 +236,7 @@ namespace epidocConverter {
  * and gives it in xsltProcessor.cpp, l. 242 to the Java-powered Saxon Processor. Appereantly that one searches in this working directory for the 
  * stylesheets. Therefore it throws an error, if you want to give a absolute path as stylesheets. They implented a way for windows users to define the
  * working directory manually, because there VCWD_GETCWD dows not work. We use this (on linux) to define the right working directory. 
- * (This was an Issue in Saxon/C 0.3. It has not been confirmed if it still remains in 1.0.0.)
+ * 
  * 
  * 
  * 

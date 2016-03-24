@@ -24,7 +24,7 @@
             <xsl:for-each select="t:ptr/@target">
               <xsl:call-template name="source">
                 <xsl:with-param name="root" select="ancestor-or-self::t:TEI"/>
-                <xsl:with-param name="parm-external-app-style" select="'iospe'"/>
+                <xsl:with-param name="parm-external-app-style" select="'iospe'" tunnel="yes" />
               </xsl:call-template>
             </xsl:for-each>
           </xsl:when>
@@ -40,7 +40,7 @@
 
   <xsl:template name="source">
     <xsl:param name="root"/>
-    <xsl:param name="parm-external-app-style" tunnel="yes" required="no"/>
+    <xsl:param name="parm-external-app-style" required="no" tunnel="yes" />
 
     <xsl:variable name="source_location">
       <xsl:choose>
@@ -68,7 +68,7 @@
             mode="parse-name-year"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="document($source_location, $root)" mode="parse-name-year"/>
+          <!--  <xsl:apply-templates select="document($source_location, $root)" mode="parse-name-year"/>  -->
         </xsl:otherwise>
       </xsl:choose>
     </t:ref>

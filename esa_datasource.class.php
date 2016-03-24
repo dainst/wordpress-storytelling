@@ -67,8 +67,9 @@ namespace esa_datasource {
 			
 			// get some settings
 			if (!file_exists(__DIR__ . '/esa_datasource.settings.local.php')) {
-				$settings = array();
-				$settings['epidoc'] = array('mode' => 'libxml');
+				$settings = array('epidoc' => array());
+				$settings['epidoc']['mode'] = 'remote:saxon';
+				$settings['epidoc']['settings'] = array('apiurl' => 'http://epidoc.dainst.org');
 			} else {
 				include(__DIR__ . '/esa_datasource.settings.local.php');
 			}
