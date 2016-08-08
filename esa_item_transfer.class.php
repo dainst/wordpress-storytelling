@@ -141,7 +141,7 @@ namespace esa_item {
 		}
 	
 		public function render() {
-
+			$class = '';
 			
 			$drlink = "<a href='{$this->url}' target='_blank'>{$this->title}</a>";
 			

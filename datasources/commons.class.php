@@ -81,10 +81,13 @@ namespace esa_datasource {
 			$this->results = array();
 			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}
 			
-			foreach ($response->query->pages as $pageId => $page) {
-				$data = $this->fetch_information($page);
-				$this->results[] = new \esa_item('commons', $pageId, $data->render(), $page->imageinfo[0]->descriptionurl, array(), array(), $data->latitude, $data->longitude);
+			if (count($response->query->pages)) {
+				foreach ($response->query->pages as $pageId => $page) {
+					$data = $this->fetch_information($page);
+					$this->results[] = new \esa_item('commons', $pageId, $data->render(), $page->imageinfo[0]->descriptionurl, array(), array(), $data->latitude, $data->longitude);
+				}				
 			}
+			
 			
 			// workaround because media wiki api is not respoding total amount of pages
 
@@ -143,13 +146,16 @@ namespace esa_datasource {
 				$data->addTable('Position', $data->latitude . ' | ' . $data->longitude);
 			}
 
+			
 			// rest
 			foreach ($page->imageinfo[0]->extmetadata as $meta => $val) {
-				if (in_array($meta, array('ImageDescription', 'DateTime', 'License', 'Artist'))) {
+				if (in_array($meta, array('ImageDescription', 'DateTime', 'Artist'))) {
 					$data->addTable($meta, $val->value);
 				}
 			}
-			
+
+			// licence
+			$data->addTable('Licence', "<a href='{$page->imageinfo[0]->extmetadata->LicenseUrl->value}' target='_blank'>{$page->imageinfo[0]->extmetadata->LicenseShortName->value}</a>");
 			
 			return $data;			
 		}

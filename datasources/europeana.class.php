@@ -256,6 +256,11 @@ namespace esa_datasource {
 				unset($data->table['Title']);
 			}
 			
+			
+			//rights
+			if (isset($item->rights)) {
+				$data->addTable('Licence', "<a href='{$item->rights[0]}' target='_blank'>{$item->rights[0]}</a>");
+			}
 
 			//$data->addTable('id', $this->api_single_url($id));
 			
