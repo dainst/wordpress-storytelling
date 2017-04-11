@@ -5,12 +5,12 @@ Plugin URI:  http://www.eagle-network.eu/stories/
 Description: Create your own EAGLE story! 
 Author:	     Deutsches Archäologisches Institut
 Author URI:	 http://www.dainst.org/
-Version:     2.1.0005
+Version:     2.1.0010
 
 Contributors: Deutsches Archäologisches Institut
 Tags: Web-APIs, epigraphy, links, data, linked data, semantic, ancient world, history, science, wikipedia, pleiades, perseus, pelagios, finds-org,
 Requires at least: 4.2
-Tested up to: 4.4.2
+Tested up to: 4.7.3
 Stable tag: 2.1.0005
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
