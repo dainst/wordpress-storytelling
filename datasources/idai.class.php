@@ -18,29 +18,24 @@ namespace esa_datasource {
 
 		public $title = 'iDAI Gazetteer';
 		public $index = 55; // where to appear in the menu
-		public $homeurl = "http://gazetteer.dainst.org/";
+		public $homeurl = "https://gazetteer.dainst.org/";
 		
 		public $pagination = false;
 
 		function api_search_url($query, $params = array()) {
 			$query = urlencode($query);
-			return "http://gazetteer.dainst.org/search.json?q={$query}";
+			return "https://gazetteer.dainst.org/search.json?q={$query}";
 		}
 			
 		function api_single_url($id, $params = array()) {
 			$query = urlencode($id);
-			/*Ich bekomme einen 400er Bad Request wenn ich die API anspreche, um einen einzelnen Record
- 			* zu bekommen. Eine URL wie http://gazetteer.dainst.org/doc/2281530.json, die im Browser ein Ergebnis liefert, klappt mit PHP über curl oder
- 			* file_get_contents nicht.
- 			* -> Daher diese kompliziert URL
- 			*/   
-			return "http://gazetteer.dainst.org/search.json?q={%22bool%22:{%22must%22:%5B%20{%20%22match%22:%20{%20%22_id%22:%20$id%20}}%5D}}&type=extended";
+			return "https://gazetteer.dainst.org/search.json?q=%7B%22bool%22:%7B%22must%22:%5B%20%7B%20%22match%22:%20%7B%20%22_id%22:%20$id%20%7D%7D%5D%7D%7D&type=extended";
 			//return "http://gazetteer.dainst.org/doc/$id.json";
 		}
 
 		function api_record_url($id, $params = array()) {
 			$query = urlencode($id);
-			return "http://gazetteer.dainst.org/app/#!/show/$id";
+			return "https://gazetteer.dainst.org/app/#!/show/$id";
 		}
 
 		
@@ -49,10 +44,8 @@ namespace esa_datasource {
 		
 		function api_url_parser($string) {
 			if (preg_match($this->url_parser, $string, $match)) {
-				
 				//http://gazetteer.dainst.org/place/2059461 or ttp://gazetteer.dainst.org/app/#!/show/2059461
-				
-				return "http://gazetteer.dainst.org/search.json?q={%22bool%22:{%22must%22:%5B%20{%20%22match%22:%20{%20%22_id%22:%20{$match[2]}%20}}%5D}}&type=extended";
+				return "http://gazetteer.dainst.org/search.json?q=%7B%22bool%22:%7B%22must%22:%5B%20%7B%20%22match%22:%20%7B%20%22_id%22:%20{$match[2]}%20%7D%7D%5D%7D%7D&type=extended";
 				//return "http://gazetteer.dainst.org/doc/{$match[2]}.json";
 			}
 		}
@@ -75,7 +68,7 @@ namespace esa_datasource {
 						$alt_names[] = $name->title;
 					}
 				}
-				$name_list = implode(', ', $alt_names);
+				$name_list = implode(', ', array_unique($alt_names));
 				$type_list = (isset($result->types)) ? implode(', ', $result->types) : '';
 				$type_label = (count($type_list) > 1) ? 'Types' : "Type";
 				
