@@ -23,7 +23,7 @@
             var is_in_editor = (typeof window.tinymce !== 'undefined');
             
             //console.log('init', this_esa_item);
-     
+
             $(this_esa_item).on('mouseenter', function() {
         		jQuery(this_esa_item).find('.esa_item_resizebar').fadeIn('slow');		
             });
@@ -31,9 +31,9 @@
             $(this_esa_item).on('mouseleave', function() {
             	jQuery(this_esa_item).find('.esa_item_resizebar').fadeOut('slow');
             });
-            
-            
-            $(this_esa_item).on('mouseenter', '.esa_item_tools a', function(e) {		
+
+
+            $(this_esa_item).on('mouseenter', '.esa_item_tools a', function(e) {
             	var tooltip = jQuery('<div>', {
             		class: 'esa_item_tooltip'
             	}).text(jQuery(this).attr('title'));
@@ -50,13 +50,13 @@
             });
 
             $(this_esa_item).on('mouseleave', '.esa_item_tools a', function(e) {
-            	
+
             	$(this_esa_item).find('.esa_item_tooltip').toggle('fast', function() {
             		jQuery(this).remove();
             	});
             	
             });
-            
+
             $(this_esa_item).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
             	var thisItem = $(this_esa_item);
             	thisItem.toggleClass('esa_item_collapsed');
@@ -192,7 +192,7 @@
         	var mapDiv = this;
 			var mapId = $(mapDiv).attr('id');
 			console.log(esa);
-   				
+
     		$.getScript("http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js")
    			.done(function() {
     			
@@ -203,8 +203,8 @@
 				L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 				    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 				}).addTo(map);
-				
-				
+
+
 				$.ajax({
 					url: esa.ajax_url,
 					type: 'post',
@@ -247,9 +247,9 @@
 }(jQuery));
 
 
-jQuery(document).ready(function(){
-	jQuery('.esa_item').esa_item();	
-	jQuery('#esa_items_overview_map').esa_items_overview_map();	
+jQuery(document).ready(function($){
+	$('.esa_item').esa_item();
+	$('#esa_items_overview_map').esa_items_overview_map();
 });
 
 

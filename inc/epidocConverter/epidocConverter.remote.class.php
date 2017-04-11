@@ -109,9 +109,9 @@ namespace epidocConverter {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_FAILONERROR, true);
 			curl_setopt($ch, CURLOPT_VERBOSE, true);   	// Verbose mode for diagnostics
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_URL, $this->apiurl);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->apiurlArguments));
+			curl_setopt($ch, CURLOPT_URL, $this->apiurl . '?' . http_build_query($this->apiurlArguments));
+			//curl_setopt($ch, CURLOPT_POST, true);
+			//curl_setopt($ch, CURLOPT_POSTFIELDS, );
 	
 			$response = curl_exec($ch);
 	
@@ -126,7 +126,7 @@ namespace epidocConverter {
 			if ($responseO and $responseO->success) {
 				return $responseO->data;
 			} else {
-				throw new \Exception($responseO ? $responseO->message : 'No Response from ' . $this->apiurl . '! <br> <pre>' . $response . '</pre>');
+				throw new \Exception($responseO ? $responseO->message : 'No valid Response from ' . $this->apiurl . '! <br><b>POST</b><pre>' . htmlspecialchars(print_r($this->apiurlArguments,1)) . '</pre><b>Query</b><pre>' . http_build_query($this->apiurlArguments) . '</pre><b>Response:</b><pre>' . htmlspecialchars($response) . '</pre>');
 			}
 			
 		}

@@ -398,7 +398,9 @@ namespace esa_datasource {
 					//$data->table['debug'] = $c->status();
 					//$data->text['transcription'] = $epi;
 				} catch (\Exception $e) {
-					$data->table['debug'] = $e->getMessage();
+					if ($this->debug) {
+						$data->table['debug'] = $e->getMessage();
+					}
 				}
 			}
 		}

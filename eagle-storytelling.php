@@ -325,7 +325,7 @@ add_action('admin_enqueue_scripts', function($hook) {
 		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling-application/css/esa_item.css');
 		esa_item_special_styles();
 		wp_enqueue_style('esa_admin', plugins_url() .'/eagle-storytelling-application/css/esa_admin.css');
-		wp_enqueue_script('esa_item', plugins_url() . '/eagle-storytelling-application/js/esa_item.js');
+		wp_enqueue_script('esa_item', plugins_url() . '/eagle-storytelling-application/js/esa_item.js', array('jquery'));
 	}
 });
 	
@@ -535,7 +535,7 @@ function media_esa_dialogue() {
 	//media_upload_header();
 	
 	if(empty($esa_datasources)) {
-		echo "<p>Error: No Sub-Plugins found. In the admin menu under 'Eagle Storytelling Application' you can activate some.</p>";
+		echo "<p>Error: No active Sub-Plugins found. <a href='admin.php?page=eagle-storytelling-application/eagle-storytelling.php' target='_parent'> In the admin menu, at 'Eagle Storytelling Application' </a> you can activate some.</p>";
 		return;
 	}
 	
@@ -903,9 +903,12 @@ function is_esa($post_type = false) {
  * @return esa_datasource
  */
 function get_esa_datasource($engine) {
+	if (!$engine) {
+		return;
+	}
 	// get engine interface
-	if (!$engine or !file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
-		echo "Error: Search engine $engine not found!"; return;
+	if (!file_exists(plugin_dir_path(__FILE__) . "datasources/$engine.class.php")) {
+		echo "Error: Sub-Plugin engine '$engine' not found!"; return;
 	}
 	
 	require_once(plugin_dir_path(__FILE__) . "datasources/$engine.class.php");
