@@ -214,8 +214,6 @@ add_action('admin_action_esa_flush_cache', function() {
 add_action('admin_action_esa_refresh_cache', function() {
 	global $wpdb;
 
-	echo "<ul><li>Cache empty</li>";
-	
 	$sql = "truncate {$wpdb->prefix}esa_item_cache;";
 
 	$wpdb->query($sql);
@@ -231,15 +229,12 @@ add_action('admin_action_esa_refresh_cache', function() {
 			esa_item_source,
 			esa_item_id
 	";
-	
+
 	foreach ($wpdb->get_results($sql) as $row) {
 		$item = new \esa_item($row->source, $row->id);
 		$item->html(true);
 		$e = count($item->errors);
-		echo "<li>{$item->id} of {$item->source} cached with $e errors.</li>";
 	}
-	
-	echo "</ul>";
 
 
 	wp_redirect($_SERVER['HTTP_REFERER']);
@@ -253,11 +248,12 @@ add_action('admin_action_esa_save_settings' ,function() {
 	if (!check_admin_referer('esa_save_settings', 'esa_save_settings_nonce')) {
 	   echo "Nonce failed";
 	}
-	
-	print_r($_POST);
+
+	//print_r($_POST);
 	if (isset($_POST['esa_datasources'])) {
 		update_option('esa_datasources', json_encode(array_map('sanitize_text_field', $_POST['esa_datasources'])));
-	}		
+	}
+
 	wp_redirect($_SERVER['HTTP_REFERER']);
     exit();
 });
@@ -391,7 +387,7 @@ add_action('save_post', function($post_id) {
 			foreach($shortcodes as $shortcode) {
 				if ($shortcode[2] == 'esa') {
 					$atts = shortcode_parse_atts($shortcode[3]);
-					echo "<pre>", print_r($atts,1), "</pre>";
+					// echo "<pre>", print_r($atts,1), "</pre>";
 						
 					$wpdb->insert(
 						$wpdb->prefix . 'esa_item_to_post',
