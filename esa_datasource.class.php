@@ -518,7 +518,7 @@ namespace esa_datasource {
 		 * @param $require path or filename of file in plugin base dir
 		 */
 		protected function _require($require) {
-			require_once(__DIR__ . 'esa_datasource.class.php/' . $require);
+			require_once(__DIR__ . '/' . $require);
 		}
 		
 		
