@@ -5,7 +5,7 @@ services:
   wordpress:
     image: wordpress
     ports:
-    - 8080:80
+    - 81:80
     environment:
       WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
     volumes:
