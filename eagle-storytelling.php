@@ -442,11 +442,6 @@ add_filter('posts_search', function($sql, $query) {
 	
 	
 	//echo "<pre>"; print_r($wp_query->query); die($sql);
-	
-	if (($wp_query->query['post_type'] != 'story') or (!$sql and !$story)) { //@todo: enable generic version 
-		return $sql;
-	}
-	
 	//echo '<pre style="border:1px solid red; background: silver">', $sql, '</pre>';				
 	//echo '<pre style="border:1px solid red; background: silver">', print_r($sqlr, 1), '</pre>';
 	
