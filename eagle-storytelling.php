@@ -45,8 +45,9 @@ define('ESA_DEBUG', false);
 $esa_settings = array(
 	'post_types' => array('post', 'page'), // post types which can contain embedded epigraphic content (esa items)
 	'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
-
 );
+
+define(ESA_PATH, '/' . basename(dirname(__FILE__)));
 
 
 /**
@@ -269,20 +270,19 @@ add_action('wp_enqueue_scripts', function() {
 
 	if (is_esa($post->post_type)) {
 
-		// eagle-storytelling-application/
 		wp_enqueue_style('thickbox');
 		
-		wp_register_style('eagle-storytelling', plugins_url('eagle-storytelling-application/css/eagle-storytelling.css'));
+		wp_register_style('eagle-storytelling', plugins_url(ESA_PATH . '/css/eagle-storytelling.css'));
 		wp_enqueue_style('eagle-storytelling' );
 		
-		wp_register_style('esa_item', plugins_url('eagle-storytelling-application/css/esa_item.css'));
+		wp_register_style('esa_item', plugins_url(ESA_PATH . '/css/esa_item.css'));
 		wp_enqueue_style('esa_item');
 		
 		esa_item_special_styles();
 		
 		
 		//js
-		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling-application/js/esa_item.js', array('jquery'));
+		wp_enqueue_script('esa_item.js', plugins_url() . ESA_PATH . '/js/esa_item.js', array('jquery'));
 		wp_enqueue_script('thickbox');
 
 		wp_localize_script('esa_item.js', 'esa', array('ajax_url' => admin_url('admin-ajax.php')));
@@ -298,10 +298,10 @@ add_action('admin_init', function() {
 	 */
 
 	add_filter("mce_external_plugins", function($plugin_array) {
-		$plugin_array['esa_mce'] = plugins_url() . '/eagle-storytelling-application/js/esa_mce.js';
-		$plugin_array['esa_item'] = plugins_url() . '/eagle-storytelling-application/js/esa_item.js';
-		add_editor_style(plugins_url() .'/eagle-storytelling-application/css/esa_item.css');
-		add_editor_style(plugins_url() .'/eagle-storytelling-application/css/esa_item-mce.css');
+		$plugin_array['esa_mce'] = plugins_url() . ESA_PATH . '/js/esa_mce.js';
+		$plugin_array['esa_item'] = plugins_url() . ESA_PATH . '/js/esa_item.js';
+		add_editor_style(plugins_url() . ESA_PATH . '/css/esa_item.css');
+		add_editor_style(plugins_url() . ESA_PATH . '/css/esa_item-mce.css');
 		return $plugin_array;
 	});
 	
@@ -318,10 +318,10 @@ add_action('admin_init', function() {
 	
 add_action('admin_enqueue_scripts', function($hook) {
 	if ($hook == 'toplevel_page_eagle-storytelling-application/eagle-storytelling') {
-		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling-application/css/esa_item.css');
+		wp_enqueue_style('esa_item', plugins_url() . ESA_PATH . '/css/esa_item.css');
 		esa_item_special_styles();
-		wp_enqueue_style('esa_admin', plugins_url() .'/eagle-storytelling-application/css/esa_admin.css');
-		wp_enqueue_script('esa_item', plugins_url() . '/eagle-storytelling-application/js/esa_item.js', array('jquery'));
+		wp_enqueue_style('esa_admin', plugins_url() . ESA_PATH . '/css/esa_admin.css');
+		wp_enqueue_script('esa_item', plugins_url() . ESA_PATH . '/js/esa_item.js', array('jquery'));
 	}
 });
 	
@@ -484,17 +484,17 @@ add_action('media_upload_esa', function() {
 		wp_enqueue_style('media');
 		wp_enqueue_style('media-views');
 		wp_enqueue_style('thickbox');
-		wp_enqueue_style('esa_item', plugins_url() .'/eagle-storytelling-application/css/esa_item.css');
+		wp_enqueue_style('esa_item', plugins_url() . ESA_PATH . '/css/esa_item.css');
 		esa_item_special_styles();
-		wp_enqueue_style('esa_item-mediaframe', plugins_url() .'/eagle-storytelling-application/css/esa_item-mediaframe.css');
+		wp_enqueue_style('esa_item-mediaframe', plugins_url() . ESA_PATH . '/css/esa_item-mediaframe.css');
 	});
 	
 	
 	add_action('admin_print_scripts-media-upload-popup', function() {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('thickbox');
-		wp_enqueue_script('esa_item.js', plugins_url() .'/eagle-storytelling-application/js/esa_item.js', array('jquery'));
-		wp_enqueue_script('esa_mediamenu.js', plugins_url() .'/eagle-storytelling-application/js/esa_mediamenu.js', array('jquery'));
+		wp_enqueue_script('esa_item.js', plugins_url() . ESA_PATH . '/js/esa_item.js', array('jquery'));
+		wp_enqueue_script('esa_mediamenu.js', plugins_url() . ESA_PATH . '/js/esa_mediamenu.js', array('jquery'));
 		
 	});
 	
