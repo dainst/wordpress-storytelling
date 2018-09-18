@@ -11,7 +11,7 @@
 </div>
 
 <div class='media-frame-content'>
-	<h1>Eagle Storytelling Application</h1>
+	<h1>Storytelling Application</h1>
 	<p>
 		The EAGLE Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content. 
 		It was created in the context of the EAGLE project, a European project which started in 2013 and aimed to connect and collect data 

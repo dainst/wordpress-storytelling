@@ -44,7 +44,7 @@ define('ESA_DEBUG', false);
 
 $esa_settings = array(
 	'post_types' => array('post', 'page'), // post types which can contain embedded epigraphic content (esa items)
-	'add_media_entry' => 'Eagle Storytelling Application', // how is the entry called  in the add media dialogue
+	'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
 
 );
 
@@ -116,7 +116,7 @@ add_action('admin_menu', function () {
 	
 	
 	//create new top-level menu
-	add_menu_page('Eagle Storytelling Application', 'Eagle Storytelling Application', 'administrator', __FILE__, function() {
+	add_menu_page('Storytelling Application', 'Storytelling Application', 'administrator', __FILE__, function() {
 		
 		global $esa_settings;
 		$url = admin_url('admin.php');
