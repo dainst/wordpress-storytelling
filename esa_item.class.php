@@ -53,7 +53,7 @@ class esa_item {
 	 * put out the html representation of this item
 	 */
 	public function html($return = false) {
-		
+
 		if ($return) {
 			ob_start();
 		}
@@ -96,14 +96,12 @@ class esa_item {
 		echo "</div>";
 		
 		echo "</div>";
-		
+
 		if ($return) {
 			return ob_get_clean();
 		}
 		
 	}
-	
-	
 	
 	/**
 	 * generates the html-representation of this item using the corresponding engine 

@@ -45,6 +45,8 @@ define('ESA_DEBUG', false);
 $esa_settings = array(
 	'post_types' => array('post', 'page'), // post types which can contain embedded epigraphic content (esa items)
 	'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
+    'activate_tags' => false,
+    'tag_color' => true
 );
 
 define(ESA_PATH, '/' . basename(dirname(__FILE__)));
@@ -272,8 +274,8 @@ add_action('wp_enqueue_scripts', function() {
 
 		wp_enqueue_style('thickbox');
 		
-		wp_register_style('eagle-storytelling', plugins_url(ESA_PATH . '/css/eagle-storytelling.css'));
-		wp_enqueue_style('eagle-storytelling' );
+		//wp_register_style('eagle-storytelling', plugins_url(ESA_PATH . '/css/eagle-storytelling.css'));
+		//wp_enqueue_style('eagle-storytelling' );
 		
 		wp_register_style('esa_item', plugins_url(ESA_PATH . '/css/esa_item.css'));
 		wp_enqueue_style('esa_item');
@@ -632,6 +634,64 @@ function media_esa_dialogue() {
 
 
 /**
+ * ******************************************* esa tags
+ *
+ *
+ *
+ */
+function get_tag_color($tag) {
+    $t = array_map(function($char) {
+        $c = ord(strtoupper($char));
+        return ($c >= 65 and $c <= 90) ? 256 - round(($c - 64) * 9.5) : ord($char);
+    }, str_split($tag, 1));
+    $c = array();
+    $i = 0;
+    while (count($c) < 3) {
+        $c[] = $t[$i++ % count($t)];
+    }
+    for ($i = 0; $i < $t[0] % 3; $i++) {
+        array_push($c, array_shift($c));
+    }
+    return "rgba({$c[0]}, {$c[1]}, {$c[2]}, 0.4)";
+
+}
+
+function get_esa_tags($esaItem) {
+    $tags = array(
+        "dies",
+        "sind",
+        "nur",
+        "Beispiel-Tags"
+    );
+    return array_map(function($tag){
+        return (object) array(
+            "name" => substr($tag, 0, 12),
+            "full" => $tag,
+            "color" => get_tag_color($tag)
+        );
+    }, $tags);
+
+}
+
+function show_esa_tags($esaItem) {
+    global $esa_settings;
+    if (!$esa_settings['activate_tags']) {
+        return "";
+    }
+
+    $return = "\n<div class='esa_item_tags'>";
+    foreach (get_esa_tags($esaItem) as $tag) {
+        $color = $esa_settings['tag_color'] ? "style='background:{$tag->color}'" : '' ;
+        $return .=  "\n\t<div class='esa_item_tag' $color title='{$tag->full}'>{$tag->name}</div>";
+    }
+    $return .= "\n</div>";
+    return $return;
+}
+
+
+
+
+/**
  * ******************************************* the esa_item shortcode / URL Embed
  * 
  *  
@@ -650,10 +710,7 @@ function media_esa_dialogue() {
  */
 
 add_action('init', function() {
-	
-	// shortcode
 	add_shortcode('esa', 'esa_shortcode');
-
 });
 
 
@@ -693,7 +750,7 @@ function esa_shortcode($atts, $context) {
 
 	
 	
-	return $item->html(true);
+	return $item->html(true) . show_esa_tags($item);
 	
 
 }
