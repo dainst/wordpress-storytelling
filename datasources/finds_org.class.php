@@ -75,12 +75,27 @@ namespace esa_datasource {
 			
 			$data->title = $item->broadperiod . ' ' . $item->objecttype;
 			
-			$data->addTable('Found', $this->_list($item->parish, $item->district, $item->county, $item->region));
-			$data->addTable('Time', ucfirst(strtolower($item->broadperiod)) . ' (' . $item->dateFromQualifier . ' ' . $item->fromdate . ' to ' . $item->dateToQualifier . ' ' . $item->todate . ' )');
+			$data->addTable('Found',
+                $this->_list(
+                    isset($item->parish) ? $item->parish : "",
+                    isset($item->district) ? $item->district: "",
+                    isset($item->county) ? $item->county : "",
+                    isset($item->region) ? $item->region : ""));
+			$data->addTable('Time', ucfirst(strtolower($item->broadperiod)) .
+                ' (' . (isset($item->dateFromQualifier) ? $item->dateFromQualifier : "") .
+                ' ' . $item->fromdate .
+                ' to ' . (isset($item->dateToQualifier) ? $item->dateToQualifier : "") .
+                ' ' . $item->todate . ' )');
 			$data->addTable('description', nl2br($item->description));
-			$data->addTable('notes', nl2br($item->notes));
-			$data->addTable('Ruler', $item->rulerName);
-			$data->addTable('Moneyer Name', $item->moneyerName);
+			if (isset($item->notes)) {
+                $data->addTable('notes', nl2br($item->notes));
+            }
+			if (isset($item->rulerName)){
+                $data->addTable('Ruler', $item->rulerName);
+            }
+			if (isset($item->moneyerName)) {
+                $data->addTable('Moneyer Name', $item->moneyerName);
+            }
 				
 			if (!empty($item->obverseLegend) and (!in_array($item->obverseLegend, array('[]', '[...]')))) {
 				$data->addText('obverse', '<div id="edition"><div class="textpart"><span class="linenumber">O: </span>' . $item->obverseLegend . '</div></div>');
@@ -88,9 +103,13 @@ namespace esa_datasource {
 			if (!empty($item->reverseLegend) and (!in_array($item->reverseLegend, array('[]', '[...]')))) {
 				$data->addText('reverse', '<div id="edition"><div class="textpart"><span class="linenumber">R: </span>' . $item->reverseLegend . '</div></div>');
 			}
-				
-			$data->addTable('Obverse', $item->obverseDescription);
-			$data->addTable('Reverse', $item->reverseDescription);
+            if (isset($item->obverseDescription)) {
+                $data->addTable('Obverse', $item->obverseDescription);
+            }
+			if (isset($item->reverseDescription)) {
+                $data->addTable('Reverse', $item->reverseDescription);
+            }
+
 			$data->addTable('Diameter', !empty($item->diameter) ? $item->diameter . 'mm' : false);
 			$data->addTable('Weight', !empty($item->weight) ? $item->weight . 'g' : false);
 			$data->addTable('Material', $item->materialTerm);

@@ -61,7 +61,7 @@ namespace esa_datasource {
 			foreach ($list as $result) {
 
 				$the_name = $result->prefName->title;
-				$the_name .= ($result->prefName->ancient == true) ? ' (ancient)' : '';
+				$the_name .= isset($result->prefName->ancient) && ($result->prefName->ancient == true) ? ' (ancient)' : '';
 				$alt_names = array();
 				if (isset($result->names) and is_array($result->names)) {
 					foreach($result->names as $name) {

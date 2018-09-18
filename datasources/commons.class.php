@@ -115,7 +115,9 @@ namespace esa_datasource {
 					'url'	=>	$page->imageinfo[0]->thumburl,
 					'fullres'=> $page->imageinfo[0]->url,
 					'mime'	=>	$page->imageinfo[0]->mime,
-					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+					'text'	=>	isset($page->imageinfo[0]->extmetadata->ImageDescription)
+                        ? strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+                        : ""
 				));
 			} elseif ($page->imageinfo[0]->mediatype == 'OFFICE') {
 				$data->addImages(array(
@@ -124,14 +126,18 @@ namespace esa_datasource {
 					'url'	=>	$page->imageinfo[0]->thumburl,
 					'fullres'=> $page->imageinfo[0]->url,
 					'mime'	=>	$page->imageinfo[0]->mime,
-					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+					'text'	=>	sset($page->imageinfo[0]->extmetadata->ImageDescription)
+                        ? strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+                        : ""
 				));
 			} else {
 				$data->addImages(array(
 					'type' 	=>	$page->imageinfo[0]->mediatype,
 					'url'	=>	$page->imageinfo[0]->url,
 					'mime'	=>	$page->imageinfo[0]->mime,
-					'text'	=>	strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+					'text'	=>	sset($page->imageinfo[0]->extmetadata->ImageDescription)
+                        ? strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
+                        : ""
 				));
 			}
 			// coordinates
@@ -155,8 +161,10 @@ namespace esa_datasource {
 			}
 
 			// licence
-			$data->addTable('Licence', "<a href='{$page->imageinfo[0]->extmetadata->LicenseUrl->value}' target='_blank'>{$page->imageinfo[0]->extmetadata->LicenseShortName->value}</a>");
-			
+			if (isset($page->imageinfo[0]->extmetadata->LicenseUrl)) {
+                $data->addTable('Licence', "<a href='{$page->imageinfo[0]->extmetadata->LicenseUrl->value}' target='_blank'>{$page->imageinfo[0]->extmetadata->LicenseShortName->value}</a>");
+            }
+
 			return $data;			
 		}
 		

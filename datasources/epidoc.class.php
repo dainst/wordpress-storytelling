@@ -310,7 +310,7 @@ namespace esa_datasource {
 			} catch (\Exception $e) {
 				return;
 			}
-			$c->getStylesheet() . "
+			$css = $c->getStylesheet() . "
 				.esa_item_collapsed .textpart  {
 					left: 0em;
 				}

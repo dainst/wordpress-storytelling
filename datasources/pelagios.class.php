@@ -116,7 +116,7 @@ namespace esa_datasource {
 		function search_form_params($post) {
 			$echo = "<select name='esa_ds_param_type' height='1'>";
 			foreach (array('', 'place', 'item') as $type) {
-				$echo .= "<option value='$type' " . (($type == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
+				$echo .= "<option value='$type' " . ((isset($post['esa_ds_param_type']) && ($type == $post['esa_ds_param_type'])) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
 			}
 			$echo .= "</select>";
 			return $echo;
@@ -153,7 +153,7 @@ namespace esa_datasource {
 			
 			// basic information
 			$data->addTable('type', $item->object_type);			
-			$data->addTable('description', $item->description);
+			$data->addTable('description', isset($item->description) ? $item->description: "");
 			
 			if (isset($item->names) and is_array($item->names)) {
 				$data->addTable('Alternative Names', implode(', ', $item->names));
@@ -173,7 +173,8 @@ namespace esa_datasource {
 
 				
 			// c) bounding biox given, size zero	
-			} else if (($item->geo_bounds->min_lon == $item->geo_bounds->max_lon) and
+			} else if (isset($item->geo_bounds) and
+                ($item->geo_bounds->min_lon == $item->geo_bounds->max_lon) and
 				($item->geo_bounds->min_lat == $item->geo_bounds->max_lat)) {
 				
 				$longitude = $item->geo_bounds->max_lon;
@@ -183,8 +184,8 @@ namespace esa_datasource {
 				
 
 				
-			// d) bounding biox given, real size	
-			} else {
+			// d) bounding box given, real size
+			} else if (isset($item->geo_bounds)) {
 				
 				$longitude = $item->geo_bounds->min_lon; //@todo: calculate center
 				$latitude  = $item->geo_bounds->min_lat;
@@ -199,6 +200,10 @@ namespace esa_datasource {
 				
 
 			}
+
+            list($source, $id) = $this->_identify_place_source($item->identifier);
+            $source = $source ? $source : 'pelagios';
+            //$data->addTable('sourceType', $source);
 			
 			if ($latitude and $longitude and ($item->object_type == 'Place')) {
 				$data->addImages(array(
@@ -210,12 +215,7 @@ namespace esa_datasource {
 			}
 
 			
-			/*
-			 list($source, $id) = $this->_identify_place_source($item->identifier);
-			 $source = $source ? $source : 'pelagios';
-			 $esa_item_id = $id ? $id : $item->identifier;
-			 $data->addTable('sourceType', $source);
-			*/
+
 	
 			if (isset($item->place_category)) {
 				$data->addTable('place_category', strtolower(str_replace('_', ' ', $item->place_category)));

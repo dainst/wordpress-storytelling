@@ -94,7 +94,7 @@ namespace esa_datasource {
 		 * is overwritten because we want to acces items from lcoal stash on http://www.eagle-network.eu as well maybe...
 		 * @see \esa_datasource\abstract_datasource::search()
 		 */
-		function search($query) {
+		function search($query = null) {
 			$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
 			if (($query == '') and ($this->eagle_store))  {
 				try {
@@ -214,7 +214,7 @@ namespace esa_datasource {
 				if ($type == '') {
 					continue;
 				}
-				$echo .= "<option value='$typeId' " . (($typeId == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  $type . "</option>";
+				$echo .= "<option value='$typeId' " . (isset($post['esa_ds_param_type']) and ($typeId == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  $type . "</option>";
 			}
 			$echo .= "</select>";
 			return $echo;

@@ -121,8 +121,7 @@ namespace esa_datasource {
 			//$echo = "<pre>b|" . print_r($post,1) . "</pre>";
 			$echo = "<select name='esa_ds_param_type' height='1'>";
 			foreach (array('', 'TEXT', 'VIDEO', 'SOUND', 'IMAGE', '3D') as $type) {
-					
-				$echo .= "<option value='$type' " . (($type == $post['esa_ds_param_type']) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
+				$echo .= "<option value='$type' " . ((isset($post['esa_ds_param_type']) and ($type == $post['esa_ds_param_type'])) ? 'selected ' : '') . '>' .  ucfirst(strtolower($type)) . "</option>";
 			}
 			$echo .= "</select>";
 			$checked = isset($post['esa_ds_param_onlyeagle']) ? 'checked' : '';
@@ -213,7 +212,7 @@ namespace esa_datasource {
 						isset($item->europeanaAggregation->edmCountry->en) ? implode(', ', $item->europeanaAggregation->edmCountry->en) : ''
 						); 
 			}
-			if ($country) {
+			if (isset($country) and $country) {
 				$data->addTable('Country', $country);
 			}
 			

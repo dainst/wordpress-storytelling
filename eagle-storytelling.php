@@ -49,7 +49,7 @@ $esa_settings = array(
     'tag_color' => true
 );
 
-define(ESA_PATH, '/' . basename(dirname(__FILE__)));
+define('ESA_PATH', '/' . basename(dirname(__FILE__)));
 
 
 /**
@@ -416,6 +416,7 @@ add_filter('query_vars', function($public_query_vars) {
 add_filter('posts_search', function($sql, $query) {
 	
 	$args = func_get_args();
+    $sqlr = "";
 	
 	if (!$query->is_main_query()) {
 		return $sql;

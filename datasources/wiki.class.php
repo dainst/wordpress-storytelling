@@ -120,12 +120,15 @@ namespace esa_datasource {
 			$data->title = $page->title;
 			
 			// media
-			if ($page->thumbnail) {
-				$data->addImages(array(
+			if (isset($page->thumbnail)) {
+			    $img = array(
 					'type' 	=>	'BITMAP',
-					'url'	=>	$page->thumbnail->source,
-					'fullres'=> $page->thumbnail->original
-				));
+					'url'	=>	$page->thumbnail->source
+				);
+			    if (isset($page->thumbnail->original)) {
+                    $img['fullres'] = $page->thumbnail->original;
+                }
+                $data->addImages($img);
 			}
 			
 			// extract
