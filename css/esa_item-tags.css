@@ -1,0 +1,153 @@
+.tagsdiv .howto {
+    margin: 0 0 6px 0;
+}
+
+.ajaxtag .newtag {
+    position: relative;
+}
+
+.tagsdiv .newtag {
+    width: 180px;
+}
+
+.tagsdiv .the-tags {
+    display: block;
+    height: 60px;
+    margin: 0 auto;
+    overflow: auto;
+    width: 260px;
+}
+
+#post-body-content .tagsdiv .the-tags {
+    margin: 0 5px;
+}
+
+p.popular-tags {
+    border: none;
+    line-height: 2em;
+    padding: 8px 12px 12px;
+    text-align: justify;
+}
+
+p.popular-tags a {
+    padding: 0 3px;
+}
+
+.tagcloud {
+    width: 97%;
+    margin: 0 0 40px;
+    text-align: justify;
+}
+
+.tagcloud h2 {
+    margin: 2px 0 12px;
+}
+
+.the-tagcloud ul {
+    margin: 0;
+}
+
+.the-tagcloud ul li {
+    display: inline-block;
+}
+
+.tagchecklist {
+    margin-left: 14px;
+    font-size: 12px;
+    overflow: auto;
+}
+
+.tagchecklist br {
+    display: none;
+}
+
+.tagchecklist strong {
+    margin-left: -8px;
+    position: absolute;
+}
+
+.tagchecklist > li {
+    max-width: 12em;
+    font-size: 12px;
+    font-family: sans-serif;
+    overflow: hidden;
+    display: inline-block;
+    margin: 2px 0 0 4px;
+    padding: 0 10px 0 15px;
+    background: silver;
+    border-radius: 12px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tagchecklist .ntdelbutton {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: none;
+    margin: -1px 0 0 -15px;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    text-indent: 0;
+}
+
+.tagchecklist .ntdelbutton .remove-tag-icon:before {
+    background: none;
+    color: #72777c;
+    content: "\f153";
+    display: block;
+    font: normal 16px/20px dashicons;
+    speak: none;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+input[type="text"].ui-autocomplete-loading,
+input[type="email"].ui-autocomplete-loading {
+    background-image: url(../images/loading.gif);
+    background-repeat: no-repeat;
+    background-position: right center;
+    visibility: visible;
+}
+
+input.ui-autocomplete-input.open {
+    border-bottom-color: transparent;
+}
+
+ul#add-to-blog-users {
+    margin: 0 0 0 14px;
+}
+
+.ui-autocomplete {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    position: absolute;
+    z-index: 10000;
+    border: 1px solid #5b9dd9;
+    box-shadow: 0 1px 2px rgba( 30, 140, 190, 0.8 );
+    background-color: #fff;
+}
+
+.ui-autocomplete li {
+    margin-bottom: 0;
+    padding: 4px 10px;
+    white-space: nowrap;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* Colors for the wplink toolbar autocomplete. */
+.ui-autocomplete .ui-state-focus {
+    background-color: #ddd;
+}
+
+/* Colors for the tags autocomplete. */
+.wp-tags-autocomplete .ui-state-focus {
+    background-color: #0073aa;
+    color: #fff;
+}

@@ -141,7 +141,7 @@ add_action('admin_menu', function () {
 
         echo "<form method='POST' action='$url'>";
         echo "<h4>Available Data Sources</h4>";
-        echo "<p>Here you can see all currently installed subplugins, wich are connectors to several epigraphic / other datasources.";
+        echo "<p>Here you can see all currently installed sub-plugins, which are connectors to several epigraphic / other datasources.";
         $labels = array();
         $optionlist = array();
         $index = array();
@@ -197,7 +197,7 @@ add_action('admin_menu', function () {
  * - we want to make the embedded esa_items searchable
  * - page loading would be quite slow, if every items content had to be fetched again from the api
  *
- * how long may content be kept in cache? that has to be diskussed.
+ * how long may content be kept in cache? that has to be discussed.
  *
  *
  */
@@ -272,23 +272,66 @@ add_action('wp_enqueue_scripts', function() {
 
     if (is_esa($post->post_type)) {
 
+        // css
         wp_enqueue_style('thickbox');
-
-        //wp_register_style('eagle-storytelling', plugins_url(ESA_PATH . '/css/eagle-storytelling.css'));
-        //wp_enqueue_style('eagle-storytelling' );
-
         wp_register_style('esa_item', plugins_url(ESA_PATH . '/css/esa_item.css'));
         wp_enqueue_style('esa_item');
+        wp_register_style('esa_item-tags', plugins_url(ESA_PATH . '/css/esa_item-tags.css'));
+        wp_enqueue_style('esa_item-tags');
 
         esa_item_special_styles();
 
+        $dev_suffix = "";
 
-        //js
-        wp_enqueue_script('esa_item.js', plugins_url() . ESA_PATH . '/js/esa_item.js', array('jquery'));
-        wp_enqueue_script('thickbox');
+        // js
+        wp_enqueue_script(
+            'esa_item.js',
+            plugins_url() . ESA_PATH . '/js/esa_item.js',
+            array('jquery')
+        );
+        wp_enqueue_script(
+            'esa_item_tags.js',
+            plugins_url() . ESA_PATH . '/js/esa_item_tags.js',
+            array('jquery')
+        );
+        wp_enqueue_script(
+            'tags-suggest',
+            admin_url() . "js/tags-suggest$dev_suffix.js",
+            array('jquery', 'jquery-ui-autocomplete'),
+            false,
+            true
+        );
+        wp_enqueue_script(
+            'tags-box',
+            admin_url() . "js/tags-box$dev_suffix.js",
+            array('jquery', 'tags-suggest'),
+            false,
+            true
+        );
+        wp_enqueue_script(
+            'jquery-ui-autocomplete',
+            "/wp-includes/js/jquery/ui/autocomplete$dev_suffix.js",
+            array( 'jquery-ui-menu', 'wp-a11y' ),
+            '1.11.4',
+            true
+        );
 
         wp_localize_script('esa_item.js', 'esa', array('ajax_url' => admin_url('admin-ajax.php')));
-        //wp_enqueue_script('leaflet.js', 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js');
+        wp_localize_script('jquery-ui-autocomplete', 'uiAutocompleteL10n', array(
+            'noResults' => __('No results found.'),
+            'oneResult' => __('1 result found. Use up and down arrow keys to navigate.'),
+            'manyResults' => __('%d results found. Use up and down arrow keys to navigate.'),
+            'itemSelected' => __('Item selected.'),
+        ));
+        wp_localize_script( 'tags-suggest', 'tagsSuggestL10n', array(
+            'tagDelimiter' => _x(',', 'tag delimiter'),
+            'removeTerm'   => __('Remove term:'),
+            'termSelected' => __('Term selected.'),
+            'termAdded'    => __('Term added.'),
+            'termRemoved'  => __('Term removed.'),
+        ));
+
+        wp_add_inline_script('tags-suggest', "var ajaxurl = '" . admin_url('admin-ajax.php') . "';", "before");
 
     }
 });
@@ -312,9 +355,6 @@ add_action('admin_init', function() {
         array_push($buttons, 'whatever');
         return $buttons;
     });
-
-    // stylesheet
-
 
 });
 
@@ -344,7 +384,6 @@ function esa_item_special_styles() {
             continue;
         }
 
-        // stylsheets
         $cssInfo = $dso->stylesheet();
         if (isset($cssInfo['css']) and $cssInfo['css']) {
             $css[$cssInfo['name']] = "\n\n/* {$cssInfo['name']} styles ($ds)  */\n" . $cssInfo['css']; // names to avoid dublication if some datasources share the same styles e. g. epidoc
@@ -539,7 +578,6 @@ function media_esa_dialogue() {
     echo "<div class='media-router'>";
 
 
-
     // create search engine menu
     foreach ($esa_datasources as $source) {
         $sel = ($source == $engine) ? 'active' : '';
@@ -550,7 +588,6 @@ function media_esa_dialogue() {
     echo "<a class='media-menu-item $sel' href='?tab=esa&esa_source=_info'>?</a>";
     echo "</div>";
     echo "</div>"; //media-router
-
 
 
     if ($engine == '_info') {
@@ -659,37 +696,52 @@ function get_tag_color($tag) {
 
 function get_esa_item_wrapper($esaItem) {
 
-    $id = $esaItem->id . "|@|" . $esaItem->source;
+    $id = sanitize_title($esaItem->id . "---" . $esaItem->source);
 
-    $wrapper = get_posts(array(
+    $wrappers = get_posts(array(
         'post_type' => 'esa_item_wrapper',
-        'limit' => 1,
-        'post_title' => $id
+        'title' => $id,
+        'post_status' => 'publish',
+        'posts_per_page' => -1
     ));
-    if (!count($wrapper)) {
-        return wp_insert_post(array(
+
+    if (!count($wrappers)) {
+        $wrapper = get_post(wp_insert_post(array(
             'post_title' => $id,
-            'post_type' => 'esa_item_wrapper'
-        ));
+            'post_type' => 'esa_item_wrapper',
+            'post_status' => 'publish',
+            'post_content' => "[esa source='{$esaItem->source}' id='{$esaItem->id}']"
+        )));
+    } else {
+        $wrapper = array_pop($wrappers);
+        foreach ($wrappers as $item) {
+            wp_delete_post($item->ID);
+        }
     }
-    return $wrapper[0];
+
+    return $wrapper;
 }
 
 
 function get_esa_tags($esaItem) {
-
     $wrapper = get_esa_item_wrapper($esaItem);
     $tags = wp_get_post_tags($wrapper->ID);
-
     return array_map(function($tag){
-        echo "... $tag ...";
         return (object) array(
-            "name" => substr($tag, 0, 12),
-            "full" => $tag,
-            "color" => get_tag_color($tag)
+            "name" => substr($tag->name, 0, 12),
+            "full" => $tag->name,
+            "color" => get_tag_color($tag->name)
         );
     }, $tags);
+}
 
+require_once(ABSPATH  . 'wp-admin/includes/taxonomy.php');
+require_once(ABSPATH  . 'wp-admin/includes/meta-boxes.php');
+
+function get_esa_item_tag_box($esaItem) {
+    ob_start();
+    post_tags_meta_box(get_esa_item_wrapper($esaItem), array());
+    return ob_get_clean();
 }
 
 function show_esa_tags($esaItem) {
@@ -697,15 +749,9 @@ function show_esa_tags($esaItem) {
     if (!$esa_settings['activate_tags']) {
         return "";
     }
-
-    $return = "\n<div class='esa_item_tags'>";
-    foreach (get_esa_tags($esaItem) as $tag) {
-        $color = $esa_settings['tag_color'] ? "style='background:{$tag->color}'" : '' ;
-        $return .=  "\n\t<div class='esa_item_tag' $color title='{$tag->full}'>{$tag->name}</div>";
-    }
-    $return .= "\n</div>";
-    return $return;
+    return get_esa_item_tag_box($esaItem);
 }
+
 
 
 
@@ -768,10 +814,7 @@ function esa_shortcode($atts, $context) {
 
     // generate / load wrapper item & tags
 
-
-
     return $item->html(true) . show_esa_tags($item);
-
 }
 
 add_action('wp_ajax_esa_shortcode', function() {
@@ -858,7 +901,6 @@ add_action('wp_ajax_esa_set_featured_image', function() {
             update_post_meta($post_id, 'esa_thumbnail', $image_url);
         }
 
-
         wp_send_json_success(array('image_url' => $image_url));
 
     }
@@ -901,9 +943,7 @@ add_filter('admin_post_thumbnail_html', function($html) {
     $class = $esa_thumbnail_url ? 'hasEsathumbnail' : '';
 
     $reg_thumbnail = get_the_post_thumbnail($post->ID);
-    $class .= $reg_thumbnail_url ? 'hasthumbnail ' : '';
-
-
+    $class .= $reg_thumbnail ? 'hasthumbnail ' : '';
 
 
     return "<div id='esa_thumbnail_chooser' class='$class'>
@@ -947,7 +987,7 @@ function register_esa_item_wrapper() {
         "show_in_admin_bar" => true,
         "supports" => array(
             'title' => true,
-            'editor' => false,
+            'editor' => true,
             'author' => false,
             'thumbnail' => false,
             'excerpt' => false,
@@ -993,7 +1033,7 @@ function esa_info() {
  */
 
 /**
- * checks wheter actual selected post is of a post type wich is selected for the esa functions
+ * checks whether actual selected post is of a post type which is selected for the esa functions
  * if this in templates
  * 
  * @param string $post_type

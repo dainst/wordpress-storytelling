@@ -32,7 +32,6 @@
             	jQuery(this_esa_item).find('.esa_item_resizebar').fadeOut('slow');
             });
 
-
             $(this_esa_item).on('mouseenter', '.esa_item_tools a', function(e) {
             	var tooltip = jQuery('<div>', {
             		class: 'esa_item_tooltip'
@@ -215,7 +214,7 @@
 						//console.log(response);
 						response = JSON.parse(response);
 						//console.log(response);
-						if ((response.length == 0) || (!response.length)) {
+						if ((response.length === 0) || (!response.length)) {
 							map.remove();
 							$(mapDiv).hide();
 							return;
@@ -250,6 +249,7 @@
 jQuery(document).ready(function($){
 	$('.esa_item').esa_item();
 	$('#esa_items_overview_map').esa_items_overview_map();
+    window.tagBox && window.tagBox.init();
 });
 
 

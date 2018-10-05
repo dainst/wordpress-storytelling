@@ -398,17 +398,7 @@
 }
 
 .esa_item_tag {
-	max-width: 12em;
-	font-size: 12px;
-	font-family: sans-serif;
-	overflow: hidden;
-	display: inline-block;
-	margin: 2px 0px 0px 4px;
-	padding: 0px 10px 0px 10px;
-	background: silver;
-	border-radius: 12px;
-	white-space: nowrap;
-	cursor: pointer;
+
 }
 
 .esa_item_tag:hover {
