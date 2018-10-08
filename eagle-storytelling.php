@@ -739,8 +739,44 @@ require_once(ABSPATH  . 'wp-admin/includes/taxonomy.php');
 require_once(ABSPATH  . 'wp-admin/includes/meta-boxes.php');
 
 function get_esa_item_tag_box($esaItem) {
+    $wrapper = get_esa_item_wrapper($esaItem);
     ob_start();
-    post_tags_meta_box(get_esa_item_wrapper($esaItem), array());
+    $tax_name = 'post_tag';
+    $taxonomy = get_taxonomy('post_tag');
+    $user_can_assign_terms = current_user_can($taxonomy->cap->assign_terms);
+    $comma = _x(',', 'tag delimiter');
+    $terms_to_edit = get_terms_to_edit($wrapper->ID, 'post_tag');
+    if (!is_string($terms_to_edit)) {
+        $terms_to_edit = '';
+    }
+    ?>
+    <div class="tagsdiv" id="<?php echo $tax_name; ?>">
+        <div class="jaxtag">
+            <div class="nojs-tags hide-if-js">
+                <textarea name="<?php echo "tax_input[$tax_name]"; ?>" rows="3" cols="20" class="the-tags" <?php disabled( ! $user_can_assign_terms ); ?> >
+                    <?php echo str_replace( ',', $comma . ' ', $terms_to_edit ); // textarea_escaped by esc_attr() ?>
+                </textarea>
+            </div>
+            <ul class="tagchecklist" role="list"></ul>
+
+            <?php if ($user_can_assign_terms) : ?>
+                <div class="add-tag-buttons">
+                    <input type="button" class="tag-suggest-button button-link tagcloud-link" value="&#xf318;" id="link_<?php echo $wrapper->ID ?>-<?php echo $tax_name; ?>" />
+                    <div class="ajaxtag">
+                        <input type="text" data-wp-taxonomy="<?php echo $tax_name; ?>" name="newtag[<?php echo $tax_name; ?>]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
+                        <input type="button" class="button tag-add-button tagadd" value="&#xf502;" />
+                    </div>
+                </div>
+            <?php elseif ( empty( $terms_to_edit ) ): ?>
+                <p><?php echo $taxonomy->labels->no_terms; ?></p>
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+    <?php if ( $user_can_assign_terms ) : ?>
+    <?php endif; ?>
+    <?php
     return ob_get_clean();
 }
 

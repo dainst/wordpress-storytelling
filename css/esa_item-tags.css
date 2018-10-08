@@ -1,14 +1,85 @@
-.tagsdiv .howto {
-    margin: 0 0 6px 0;
+.add-tag-buttons {
+    text-align: right
 }
 
-.ajaxtag .newtag {
-    position: relative;
+.ajaxtag {
+    display: inline-block
 }
 
-.tagsdiv .newtag {
-    width: 180px;
+
+input[type="text"].newtag,
+input[type="button"].tag-suggest-button,
+input[type="button"].tag-add-button {
+    cursor: pointer;
+    font-size: 12px;
+    display: inline-block;
+    white-space: nowrap;
+    font-family: sans-serif;
+    overflow: hidden;
+    padding: 0 10px 0 15px;
+    font-weight: normal;
+    border-radius: 12px;
 }
+
+input[type="button"].tag-suggest-button,
+input[type="button"].tag-add-button {
+    color: #72777c;
+    background: rgba(200, 200, 200, 0.1);
+    font: normal 16px/20px dashicons;
+    speak: none;
+    height: 22px;
+    min-width: 22px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-left: 2px;
+    padding-top: 1px;
+    margin-right: 0;
+    background: lightgray;
+    border: 1px solid lightgray;
+    margin-top: -1px;
+}
+
+
+input[type="button"].tag-suggest-button:hover,
+input[type="button"].tag-add-button:hover {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: lightgreen;
+}
+
+input[type="button"].tag-add-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0
+}
+
+input[type="text"].newtag {
+    max-width: 8em;
+    background: white;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: 1px solid lightgray;
+    border-right: 0;
+    margin: 0;
+    font-size: 16px;
+    margin-right:-4px;
+    margin-bottom: 8px;
+    box-sizing: content-box;
+}
+
+input[type="text"].newtag:focus {
+    border-color: lightgray;
+    background: rgba(0, 100, 200, 0.1);
+}
+
+input[type="button"].tag-suggest-button:focus,
+input[type="button"].tag-add-button:focus {
+    border-color: lightgray;
+    background: rgba(0, 100, 200, 0.1);
+}
+
 
 .tagsdiv .the-tags {
     display: block;
@@ -16,11 +87,10 @@
     margin: 0 auto;
     overflow: auto;
     width: 260px;
+    clear: both
 }
 
-#post-body-content .tagsdiv .the-tags {
-    margin: 0 5px;
-}
+
 
 p.popular-tags {
     border: none;
@@ -51,21 +121,26 @@ p.popular-tags a {
     display: inline-block;
 }
 
+.wp-tag-cloud,
 .tagchecklist {
     margin-left: 14px;
     font-size: 12px;
     overflow: auto;
+    margin-bottom: 0px
 }
 
+.wp-tag-cloud br,
 .tagchecklist br {
     display: none;
 }
 
+.wp-tag-cloud strong,
 .tagchecklist strong {
     margin-left: -8px;
     position: absolute;
 }
 
+.wp-tag-cloud > li,
 .tagchecklist > li {
     max-width: 12em;
     font-size: 12px;
@@ -80,6 +155,19 @@ p.popular-tags a {
     cursor: pointer;
 }
 
+.wp-tag-cloud > li a {
+    color: black;
+    text-decoration: none;
+    font-family: sans;
+    font-size: 12px;
+}
+
+.wp-tag-cloud >  li:hover,
+.tagchecklist > li:hover {
+    background: #CCC !important;
+    color: lightcyan !important;
+}
+
 .tagchecklist .ntdelbutton {
     position: absolute;
     width: 24px;
@@ -91,6 +179,7 @@ p.popular-tags a {
     cursor: pointer;
     text-indent: 0;
 }
+
 
 .tagchecklist .ntdelbutton .remove-tag-icon:before {
     background: none;
@@ -106,21 +195,15 @@ p.popular-tags a {
     -moz-osx-font-smoothing: grayscale;
 }
 
-input[type="text"].ui-autocomplete-loading,
-input[type="email"].ui-autocomplete-loading {
-    background-image: url(../images/loading.gif);
-    background-repeat: no-repeat;
-    background-position: right center;
-    visibility: visible;
+.tagchecklist .ntdelbutton:hover .remove-tag-icon:before {
+    color: red;
 }
 
 input.ui-autocomplete-input.open {
     border-bottom-color: transparent;
 }
 
-ul#add-to-blog-users {
-    margin: 0 0 0 14px;
-}
+
 
 .ui-autocomplete {
     padding: 0;
@@ -150,4 +233,8 @@ ul#add-to-blog-users {
 .wp-tags-autocomplete .ui-state-focus {
     background-color: #0073aa;
     color: #fff;
+}
+
+.hide-if-js {
+    display: none
 }
