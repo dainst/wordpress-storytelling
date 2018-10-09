@@ -741,7 +741,6 @@ require_once(ABSPATH  . 'wp-admin/includes/meta-boxes.php');
 function get_esa_item_tag_box($esaItem) {
     $wrapper = get_esa_item_wrapper($esaItem);
     ob_start();
-    $tax_name = 'post_tag';
     $taxonomy = get_taxonomy('post_tag');
     $user_can_assign_terms = current_user_can($taxonomy->cap->assign_terms);
     $comma = _x(',', 'tag delimiter');
@@ -750,20 +749,20 @@ function get_esa_item_tag_box($esaItem) {
         $terms_to_edit = '';
     }
     ?>
-    <div class="tagsdiv" id="<?php echo $tax_name; ?>">
+    <div class="esa-item-tags tagsdiv" id="esa_post_tag-<?php echo $wrapper->ID ?>">
         <div class="jaxtag">
             <div class="nojs-tags hide-if-js">
-                <textarea name="<?php echo "tax_input[$tax_name]"; ?>" rows="3" cols="20" class="the-tags" <?php disabled( ! $user_can_assign_terms ); ?> >
-                    <?php echo str_replace( ',', $comma . ' ', $terms_to_edit ); // textarea_escaped by esc_attr() ?>
+                <textarea name="tax_input[post_tag]" rows="3" cols="20" class="the-tags" <?php disabled( ! $user_can_assign_terms ); ?> >
+                    <?php echo str_replace( ',', $comma . ' ', $terms_to_edit ); ?>
                 </textarea>
             </div>
             <ul class="tagchecklist" role="list"></ul>
 
             <?php if ($user_can_assign_terms) : ?>
                 <div class="add-tag-buttons">
-                    <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link_<?php echo $wrapper->ID ?>-<?php echo $tax_name; ?>" />
+                    <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link-esa_post_tag-<?php echo $wrapper->ID ?>" />
                     <div class="ajaxtag">
-                        <input type="text" data-wp-taxonomy="<?php echo $tax_name; ?>" name="newtag[<?php echo $tax_name; ?>]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
+                        <input type="text" data-wp-taxonomy="post_tag" name="newtag[post_tag]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
                         <input type="button" class="button tag-add-button tagadd" value="&#xf502;" />
                     </div>
                 </div>
@@ -783,7 +782,7 @@ function get_esa_item_tag_box($esaItem) {
 
 function show_esa_tags($esaItem) {
     global $esa_settings;
-    if (!$esa_settings['activate_tags']) {
+    if (!$esa_settings['activate_tags'] or is_admin()) {
         return "";
     }
     return get_esa_item_tag_box($esaItem);
@@ -849,7 +848,6 @@ function esa_shortcode($atts, $context) {
 
     $item = new esa_item($atts['source'], $atts['id'], false, false, $classes, $css);
 
-    // generate / load wrapper item & tags
 
     return $item->html(true) . show_esa_tags($item);
 }
@@ -1007,6 +1005,7 @@ add_filter('admin_post_thumbnail_html', function($html) {
  */
 
 add_action( 'init', 'register_esa_item_wrapper' );
+add_action( 'init', 'register_esa_item_tag_cloud' );
 
 register_activation_hook( __FILE__, function() {
     register_esa_item_wrapper();
@@ -1039,6 +1038,23 @@ function register_esa_item_wrapper() {
     ));
 }
 
+function esa_tag_cloud() {
+    if (!isset($_POST['tax'])) {
+        wp_die(0);
+    }
+    if (substr($_POST['tax'],0, 4) == "esa_") {
+        $_POST['tax'] = 'post_tag';
+        wp_ajax_get_tagcloud();
+    }
+
+    wp_ajax_get_tagcloud();
+}
+
+
+function register_esa_item_tag_cloud() {
+    remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
+    add_action('wp_ajax_get-tagcloud', 'esa_tag_cloud', 1);
+}
 
 
 

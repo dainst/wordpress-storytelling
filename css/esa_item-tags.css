@@ -1,14 +1,14 @@
-.add-tag-buttons {
+.esa-item-tags .add-tag-buttons {
     text-align: right
 }
 
-.ajaxtag {
+.esa-item-tags .ajaxtag {
     display: inline-block
 }
 
-input[type="text"].newtag,
-input[type="button"].tag-suggest-button,
-input[type="button"].tag-add-button {
+.esa-item-tags input[type="text"].newtag,
+.esa-item-tags input[type="button"].tag-suggest-button,
+.esa-item-tags input[type="button"].tag-add-button {
     cursor: pointer;
     font-size: 12px;
     display: inline-block;
@@ -22,8 +22,8 @@ input[type="button"].tag-add-button {
     height: 22px;
 }
 
-input[type="button"].tag-suggest-button,
-input[type="button"].tag-add-button {
+.esa-item-tags input[type="button"].tag-suggest-button,
+.esa-item-tags input[type="button"].tag-add-button {
     color: #72777c;
     background: rgba(200, 200, 200, 0.1);
     font: normal 16px/20px dashicons;
@@ -39,35 +39,35 @@ input[type="button"].tag-add-button {
     border: 1px solid lightgray;
 }
 
-.wp-tag-cloud > li:hover:before,
-input[type="button"].tag-suggest-button:hover,
-input[type="button"].tag-add-button:hover {
+.esa-item-tags .wp-tag-cloud > li:hover:before,
+.esa-item-tags input[type="button"].tag-suggest-button:hover,
+.esa-item-tags input[type="button"].tag-add-button:hover {
     background: rgba(200, 200, 200, 0.1);
     border-color: lightgray;
     color: green;
 }
 
-input[type="button"].tag-suggest-button[aria-expanded="true"] {
+.esa-item-tags input[type="button"].tag-suggest-button[aria-expanded="true"] {
     border-color: lightgray;
     background: rgba(0, 100, 200, 0.1);
 }
 
-input[type="button"].tag-suggest-button[aria-expanded="true"]:hover {
+.esa-item-tags input[type="button"].tag-suggest-button[aria-expanded="true"]:hover {
     color: black
 }
 
 
-input[type="button"].tag-add-button {
+.esa-item-tags input[type="button"].tag-add-button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 0
 }
 
-input[type="button"].tag-suggest-button + .the-tagcloud {
+.esa-item-tags input[type="button"].tag-suggest-button + .the-tagcloud {
     float: left
 }
 
-input[type="text"].newtag {
+.esa-item-tags input[type="text"].newtag {
     max-width: 8em;
     background: white;
     border-top-right-radius: 0;
@@ -80,30 +80,30 @@ input[type="text"].newtag {
     box-sizing: border-box;
 }
 
-.wp-tag-cloud > li a:focus,
-.tagchecklist > li button:focus,
-input[type="button"].tag-add-button:focus {
+.esa-item-tags .wp-tag-cloud > li a:focus,
+.esa-item-tags .tagchecklist > li button:focus,
+.esa-item-tags input[type="button"].tag-add-button:focus {
     outline: none;
 }
 
-input[type="button"].tag-add-button:focus,
-input[type="button"].tag-suggest-button[aria-expanded="false"]:focus {
+.esa-item-tags input[type="button"].tag-add-button:focus,
+.esa-item-tags input[type="button"].tag-suggest-button[aria-expanded="false"]:focus {
     background: lightgray;
     color: black
 }
 
-input[type="button"].tag-suggest-button:focus {
+.esa-item-tags input[type="button"].tag-suggest-button:focus {
     outline: none;
     text-decoration: none;
 }
 
-.wp-tag-cloud > li a:focus {
+.esa-item-tags .wp-tag-cloud > li a:focus {
     text-decoration: underline;
 }
 
 
 
-.tagsdiv .the-tags {
+.esa-item-tags.tagsdiv .the-tags {
     display: block;
     height: 60px;
     margin: 0 auto;
@@ -112,35 +112,34 @@ input[type="button"].tag-suggest-button:focus {
     clear: both
 }
 
-.the-tagcloud {
+.esa-item-tags .the-tagcloud {
     margin-left: 2px
 }
 
-.the-tagcloud ul {
+.esa-item-tags .the-tagcloud ul {
     margin: 0;
 }
 
-.the-tagcloud ul li {
+.esa-item-tags .the-tagcloud ul li {
     display: inline-block;
     margin-left: 2px;
 }
 
-.wp-tag-cloud,
-.tagchecklist {
-    margin-left: 14px;
+.esa-item-tags .wp-tag-cloud,
+.esa-item-tags .tagchecklist {
     font-size: 12px;
     overflow: auto;
     margin-bottom: 0
 }
 
-.wp-tag-cloud br,
-.tagchecklist br {
+.esa-item-tags .wp-tag-cloud br,
+.esa-item-tags .tagchecklist br {
     display: none;
 }
 
 
-.wp-tag-cloud > li,
-.tagchecklist > li {
+.esa-item-tags .wp-tag-cloud > li,
+.esa-item-tags .tagchecklist > li {
     max-width: 12em;
     font-size: 12px;
     font-family: sans-serif;
@@ -154,7 +153,7 @@ input[type="button"].tag-suggest-button:focus {
     cursor: pointer;
 }
 
-.wp-tag-cloud > li a {
+.esa-item-tags .wp-tag-cloud > li a {
     color: black;
     text-decoration: none;
     font-family: sans-serif;
@@ -164,7 +163,7 @@ input[type="button"].tag-suggest-button:focus {
     line-height: 50%;
 }
 
-.wp-tag-cloud > li:before {
+.esa-item-tags .wp-tag-cloud > li:before {
     vertical-align: middle;
     background: none;
     color: #72777c;
@@ -177,14 +176,14 @@ input[type="button"].tag-suggest-button:focus {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.wp-tag-cloud > li:hover,
-.wp-tag-cloud > li:hover a,
-.tagchecklist > li:hover {
+.esa-item-tags .wp-tag-cloud > li:hover,
+.esa-item-tags .wp-tag-cloud > li:hover a,
+.esa-item-tags .tagchecklist > li:hover {
     background: #CCC !important;
     color: lightcyan !important;
 }
 
-.tagchecklist .ntdelbutton {
+.esa-item-tags .tagchecklist .ntdelbutton {
     position: absolute;
     width: 24px;
     height: 24px;
@@ -197,7 +196,7 @@ input[type="button"].tag-suggest-button:focus {
 }
 
 
-.tagchecklist .ntdelbutton .remove-tag-icon:before {
+.esa-item-tags .tagchecklist .ntdelbutton .remove-tag-icon:before {
     background: none;
     color: #72777c;
     content: "\f153";
@@ -211,7 +210,7 @@ input[type="button"].tag-suggest-button:focus {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.tagchecklist .ntdelbutton:hover .remove-tag-icon:before {
+.esa-item-tags .tagchecklist .ntdelbutton:hover .remove-tag-icon:before {
     color: red;
 }
 
@@ -219,17 +218,16 @@ input.ui-autocomplete-input.open {
     border-bottom-color: transparent;
 }
 
-
-
 .ui-autocomplete {
     padding: 0;
     margin: 0;
     list-style: none;
     position: absolute;
     z-index: 10000;
-    border: 1px solid #5b9dd9;
-    box-shadow: 0 1px 2px rgba( 30, 140, 190, 0.8 );
+    border: 1px solid lightgray;
+    box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.3 );
     background-color: #fff;
+    font-family: sans-serif;
 }
 
 .ui-autocomplete li {
@@ -238,6 +236,7 @@ input.ui-autocomplete-input.open {
     white-space: nowrap;
     text-align: left;
     cursor: pointer;
+    line-height: 50%
 }
 
 /* Colors for the wplink toolbar autocomplete. */
@@ -247,14 +246,14 @@ input.ui-autocomplete-input.open {
 
 /* Colors for the tags autocomplete. */
 .wp-tags-autocomplete .ui-state-focus {
-    background-color: #0073aa;
-    color: #fff;
+    background: #CCC;
+    color: lightcyan;
 }
 
-.hide-if-js {
+.esa-item-tags .hide-if-js {
     display: none
 }
 
-.separator {
+.esa-item-tags .separator {
     clear: both
 }
