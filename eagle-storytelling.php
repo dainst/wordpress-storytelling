@@ -761,7 +761,7 @@ function get_esa_item_tag_box($esaItem) {
 
             <?php if ($user_can_assign_terms) : ?>
                 <div class="add-tag-buttons">
-                    <input type="button" class="tag-suggest-button button-link tagcloud-link" value="&#xf318;" id="link_<?php echo $wrapper->ID ?>-<?php echo $tax_name; ?>" />
+                    <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link_<?php echo $wrapper->ID ?>-<?php echo $tax_name; ?>" />
                     <div class="ajaxtag">
                         <input type="text" data-wp-taxonomy="<?php echo $tax_name; ?>" name="newtag[<?php echo $tax_name; ?>]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
                         <input type="button" class="button tag-add-button tagadd" value="&#xf502;" />
@@ -772,6 +772,7 @@ function get_esa_item_tag_box($esaItem) {
             <?php endif; ?>
 
         </div>
+        <div class="separator"></div>
 
     </div>
     <?php if ( $user_can_assign_terms ) : ?>

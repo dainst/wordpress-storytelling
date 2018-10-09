@@ -6,7 +6,6 @@
     display: inline-block
 }
 
-
 input[type="text"].newtag,
 input[type="button"].tag-suggest-button,
 input[type="button"].tag-add-button {
@@ -19,6 +18,8 @@ input[type="button"].tag-add-button {
     padding: 0 10px 0 15px;
     font-weight: normal;
     border-radius: 12px;
+    vertical-align: middle;
+    height: 22px;
 }
 
 input[type="button"].tag-suggest-button,
@@ -26,8 +27,6 @@ input[type="button"].tag-add-button {
     color: #72777c;
     background: rgba(200, 200, 200, 0.1);
     font: normal 16px/20px dashicons;
-    speak: none;
-    height: 22px;
     min-width: 22px;
     text-align: center;
     width: 20px;
@@ -38,21 +37,34 @@ input[type="button"].tag-add-button {
     margin-right: 0;
     background: lightgray;
     border: 1px solid lightgray;
-    margin-top: -1px;
 }
 
-
+.wp-tag-cloud > li:hover:before,
 input[type="button"].tag-suggest-button:hover,
 input[type="button"].tag-add-button:hover {
-    background: #1a1a1a;
-    border-color: #1a1a1a;
-    color: lightgreen;
+    background: rgba(200, 200, 200, 0.1);
+    border-color: lightgray;
+    color: green;
 }
+
+input[type="button"].tag-suggest-button[aria-expanded="true"] {
+    border-color: lightgray;
+    background: rgba(0, 100, 200, 0.1);
+}
+
+input[type="button"].tag-suggest-button[aria-expanded="true"]:hover {
+    color: black
+}
+
 
 input[type="button"].tag-add-button {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 0
+}
+
+input[type="button"].tag-suggest-button + .the-tagcloud {
+    float: left
 }
 
 input[type="text"].newtag {
@@ -63,22 +75,32 @@ input[type="text"].newtag {
     border: 1px solid lightgray;
     border-right: 0;
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     margin-right:-4px;
-    margin-bottom: 8px;
-    box-sizing: content-box;
+    box-sizing: border-box;
 }
 
-input[type="text"].newtag:focus {
-    border-color: lightgray;
-    background: rgba(0, 100, 200, 0.1);
-}
-
-input[type="button"].tag-suggest-button:focus,
+.wp-tag-cloud > li a:focus,
+.tagchecklist > li button:focus,
 input[type="button"].tag-add-button:focus {
-    border-color: lightgray;
-    background: rgba(0, 100, 200, 0.1);
+    outline: none;
 }
+
+input[type="button"].tag-add-button:focus,
+input[type="button"].tag-suggest-button[aria-expanded="false"]:focus {
+    background: lightgray;
+    color: black
+}
+
+input[type="button"].tag-suggest-button:focus {
+    outline: none;
+    text-decoration: none;
+}
+
+.wp-tag-cloud > li a:focus {
+    text-decoration: underline;
+}
+
 
 
 .tagsdiv .the-tags {
@@ -90,27 +112,8 @@ input[type="button"].tag-add-button:focus {
     clear: both
 }
 
-
-
-p.popular-tags {
-    border: none;
-    line-height: 2em;
-    padding: 8px 12px 12px;
-    text-align: justify;
-}
-
-p.popular-tags a {
-    padding: 0 3px;
-}
-
-.tagcloud {
-    width: 97%;
-    margin: 0 0 40px;
-    text-align: justify;
-}
-
-.tagcloud h2 {
-    margin: 2px 0 12px;
+.the-tagcloud {
+    margin-left: 2px
 }
 
 .the-tagcloud ul {
@@ -119,6 +122,7 @@ p.popular-tags a {
 
 .the-tagcloud ul li {
     display: inline-block;
+    margin-left: 2px;
 }
 
 .wp-tag-cloud,
@@ -126,7 +130,7 @@ p.popular-tags a {
     margin-left: 14px;
     font-size: 12px;
     overflow: auto;
-    margin-bottom: 0px
+    margin-bottom: 0
 }
 
 .wp-tag-cloud br,
@@ -134,11 +138,6 @@ p.popular-tags a {
     display: none;
 }
 
-.wp-tag-cloud strong,
-.tagchecklist strong {
-    margin-left: -8px;
-    position: absolute;
-}
 
 .wp-tag-cloud > li,
 .tagchecklist > li {
@@ -158,11 +157,28 @@ p.popular-tags a {
 .wp-tag-cloud > li a {
     color: black;
     text-decoration: none;
-    font-family: sans;
-    font-size: 12px;
+    font-family: sans-serif;
+    font-size: 12px !important;
+    box-shadow: none;
+    display: inline;
+    line-height: 50%;
 }
 
-.wp-tag-cloud >  li:hover,
+.wp-tag-cloud > li:before {
+    vertical-align: middle;
+    background: none;
+    color: #72777c;
+    content: "\f502";
+    display: inline;
+    font: normal 16px/20px dashicons;
+    line-height: 50%;
+    margin-left: -12px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.wp-tag-cloud > li:hover,
+.wp-tag-cloud > li:hover a,
 .tagchecklist > li:hover {
     background: #CCC !important;
     color: lightcyan !important;
@@ -237,4 +253,8 @@ input.ui-autocomplete-input.open {
 
 .hide-if-js {
     display: none
+}
+
+.separator {
+    clear: both
 }
