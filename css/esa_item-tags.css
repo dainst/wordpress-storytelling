@@ -250,8 +250,8 @@ input.ui-autocomplete-input.open {
     color: lightcyan;
 }
 
-.esa-item-tags .hide-if-js {
-    display: none
+.esa-item-tags .hide {
+    display: none !important
 }
 
 .esa-item-tags .separator {

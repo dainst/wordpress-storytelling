@@ -735,6 +735,30 @@ function get_esa_tags($esaItem) {
     }, $tags);
 }
 
+function update_esa_tags($what) {
+
+    if (!isset($_POST['esa_item_wrapper_id'])) {
+        wp_die("wrapper id missing");
+    }
+    $wrapper = get_post($_POST['esa_item_wrapper_id']);
+    if (!$wrapper or $wrapper->post_type != "esa_item_wrapper") {
+        wp_die("wrapper not found");
+    }
+    $tags = isset($_POST['tags']) ? $_POST['tags'] : array();
+    if (!wp_set_object_terms($wrapper->ID, null, "post_tag")) {
+        //wp_die("could not clear tags");
+    }
+    foreach ($tags as $tag) {
+        if (!wp_set_object_terms($wrapper->ID, $tag, "post_tag", true)) {
+            wp_die("could not save tag:" . $tag);
+        }
+        echo "STORED: " . $tag;
+    }
+
+    print_r($tags);
+    wp_die($wrapper->ID . "!");
+}
+
 require_once(ABSPATH  . 'wp-admin/includes/taxonomy.php');
 require_once(ABSPATH  . 'wp-admin/includes/meta-boxes.php');
 
@@ -748,14 +772,17 @@ function get_esa_item_tag_box($esaItem) {
     if (!is_string($terms_to_edit)) {
         $terms_to_edit = '';
     }
+
+    // next: user
+
     ?>
-    <div class="esa-item-tags tagsdiv" id="esa_post_tag-<?php echo $wrapper->ID ?>">
+    <div class="esa-item-tags tagsdiv" id="esa_post_tag-<?php echo $wrapper->ID ?>" data-esa-item-wrapper-id="<?php echo $wrapper->ID ?>">
         <div class="jaxtag">
-            <div class="nojs-tags hide-if-js">
-                <textarea name="tax_input[post_tag]" rows="3" cols="20" class="the-tags" <?php disabled( ! $user_can_assign_terms ); ?> >
-                    <?php echo str_replace( ',', $comma . ' ', $terms_to_edit ); ?>
-                </textarea>
-            </div>
+
+            <textarea name="tax_input[post_tag]" rows="3" cols="20" class="hide the-tags" <?php disabled( ! $user_can_assign_terms ); ?> >
+                <?php echo str_replace( ',', $comma . ' ', $terms_to_edit ); ?>
+            </textarea>
+
             <ul class="tagchecklist" role="list"></ul>
 
             <?php if ($user_can_assign_terms) : ?>
@@ -1005,7 +1032,7 @@ add_filter('admin_post_thumbnail_html', function($html) {
  */
 
 add_action( 'init', 'register_esa_item_wrapper' );
-add_action( 'init', 'register_esa_item_tag_cloud' );
+add_action( 'init', 'register_esa_item_tag_actions' );
 
 register_activation_hook( __FILE__, function() {
     register_esa_item_wrapper();
@@ -1051,9 +1078,11 @@ function esa_tag_cloud() {
 }
 
 
-function register_esa_item_tag_cloud() {
+function register_esa_item_tag_actions() {
     remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
     add_action('wp_ajax_get-tagcloud', 'esa_tag_cloud', 1);
+    add_action("wp_ajax_update-esa-tags", "update_esa_tags");
+    add_action("wp_ajax_nopriv_update-esa-tags", "update_esa_tags");
 }
 
 

@@ -1,5 +1,5 @@
 (function ($) {
-    $.fn.esa_item_tagchecklist = function(options) {
+    $.fn.esa_item_tags = function(options) {
 
         function colorize(term) {
             var t = term.split("").map(function(char) {
@@ -20,27 +20,55 @@
 
         function colorizeTags(tagchecklist) {
             tagchecklist.children('li').each(function(index, li) {
-                var text = $(li).clone().children().remove().end().text().trim();
-                $(li).css('background-color', colorize(text))
+                $(li).css('background-color', colorize(getTagText(li)));
             });
         }
 
-        return this.each(function() {
-            var tagchecklist = $(this);
+        function getTagText(tag) {
+            return $(tag).clone().children().remove().end().text().trim();
+        }
 
-            tagchecklist.bind('DOMSubtreeModified', function(e) {
-                if (e.target.innerHTML.length > 0) {
-                    colorizeTags(tagchecklist);
-                }
+        function updateTags(mutationsList, observer) {
+
+            console.log("TAX");
+
+            var tags = [];
+            this.tagchecklist.children('li').each(function(index, li) {
+                tags.push(getTagText(li));
             });
+            console.log("T", tags);
 
+            jQuery.post(
+                window.ajaxurl,
+                {
+                    'action': 'update-esa-tags',
+                    'esa_item_wrapper_id':   this.wrapperId,
+                    'tags': tags
+                })
+                .done(function(response) {
+                    console.log('The server responded: ', response);
+                })
+                .fail(function(err) {
+                    console.warn("Tags couln't be updated: ", err);
+                });
+
+            colorizeTags(this.tagchecklist);
+
+        }
+
+        return this.each(function() {
+            var tagchecklist = $(this).find(".tagchecklist");
+            var observer = new MutationObserver(updateTags.bind({
+                tagchecklist: tagchecklist,
+                container: this,
+                wrapperId: $(this).data("esa-item-wrapper-id")
+            }));
+            observer.observe(tagchecklist.get(0), {attributes: false, childList: true, subtree: true});
             colorizeTags(tagchecklist);
-
-
         });
     };
 }(jQuery));
 
 jQuery(document).ready(function($){
-    $('.tagchecklist').esa_item_tagchecklist();
+    $('.esa-item-tags').esa_item_tags();
 });
