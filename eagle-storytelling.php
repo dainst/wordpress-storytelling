@@ -796,9 +796,7 @@ function get_esa_item_tag_box($esaItem) {
     if (!is_string($terms_to_edit)) {
         $terms_to_edit = '';
     }
-    //<pre><?php array_map("var_dump", array($taxonomy->cap));? ></pre>
     ?>
-
     <div class="esa-item-tags tagsdiv" id="esa_post_tag-<?php echo $wrapper->ID ?>" data-esa-item-wrapper-id="<?php echo $wrapper->ID ?>">
         <div class="jaxtag">
 
@@ -810,10 +808,10 @@ function get_esa_item_tag_box($esaItem) {
 
             <?php if ($user_can_assign_terms) : ?>
                 <div class="add-tag-buttons">
-                    <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link-esa_post_tag-<?php echo $wrapper->ID ?>" />
+                    <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link-esa_post_tag-<?php echo $wrapper->ID ?>" title="<?php echo $taxonomy->labels->choose_from_most_used; ?>" />
                     <div class="ajaxtag">
                         <input type="text" maxlength="32" data-wp-taxonomy="post_tag" name="newtag[post_tag]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
-                        <input type="button" class="button tag-add-button tagadd" value="&#xf502;" />
+                        <input type="button" class="button tag-add-button tagadd" value="&#xf502;" title="<?php echo $taxonomy->labels->add_new_item; ?>"/>
                     </div>
                 </div>
             <?php elseif (empty($terms_to_edit)) : ?>
