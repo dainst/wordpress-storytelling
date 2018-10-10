@@ -214,6 +214,14 @@
     color: red;
 }
 
+.esa-item-tags .tagchecklist.no-delete-btn li {
+    padding-left: 8px
+}
+
+.esa-item-tags .tagchecklist.no-delete-btn .ntdelbutton {
+    display: none
+}
+
 input.ui-autocomplete-input.open {
     border-bottom-color: transparent;
 }

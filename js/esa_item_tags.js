@@ -2,6 +2,9 @@
     $.fn.esa_item_tags = function(options) {
 
         function colorize(term) {
+
+            var masterColor = [false, false, false];
+
             var t = term.split("").map(function(char) {
                 c = char.toUpperCase().charCodeAt(0);
                 return (c >= 65 && c <= 90) ? 256 - Math.round((c - 64) * 9.5) : char.charCodeAt(0);
@@ -14,7 +17,12 @@
             for (i = 0; i < t[0] % 3; i++) {
                 c.push(c.shift());
             }
-            return "rgba(" + c[0] +", " + c[1] + ", " + c[2] + ", 0.4)";
+            var color = [
+                masterColor[0] ? masterColor[0] : c[0],
+                masterColor[1] ? masterColor[1] : c[1],
+                masterColor[2] ? masterColor[2] : c[2]
+            ];
+            return "rgba(" + color[0] + ", " + color[1] + ", " + color[2] + ", 0.4)";
 
         }
 
@@ -30,13 +38,10 @@
 
         function updateTags(mutationsList, observer) {
 
-            console.log("TAX");
-
             var tags = [];
             this.tagchecklist.children('li').each(function(index, li) {
                 tags.push(getTagText(li));
             });
-            console.log("T", tags);
 
             jQuery.post(
                 window.ajaxurl,
