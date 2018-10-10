@@ -49,7 +49,7 @@ $esa_settings = array(
         'activate' => true, // is the tagging feature active
         'visitor_can_add' => true, // can tags be edited at the frontend
         'visitor_can_create' => true, // can new tags be created in the frontend?
-        'visitor_can_delete' => false, // can tags be deleted in the frontend?
+        'visitor_can_delete' => true, // can tags be deleted in the frontend?
         'color' => [0, 75, false] // rgb color for the tags. channels which are set to false will get an automatic values
     )
 );
@@ -758,8 +758,7 @@ function update_esa_tags() {
         wp_die("wrapper not found");
     }
     $tags = isset($_POST['tags']) ? $_POST['tags'] : array();
-    if ($esa_settings['tags']['visitor_can_delete']) {
-        wp_die("CLEAR");
+    if (($esa_settings['tags']['visitor_can_delete']) or (current_user_can('delete_post_tags'))) {
         wp_set_object_terms($wrapper->ID, null, "post_tag");
     }
     foreach ($tags as $tag) {
@@ -795,7 +794,7 @@ function get_esa_item_tag_box($esaItem) {
     if (!is_string($terms_to_edit)) {
         $terms_to_edit = '';
     }
-    // <pre><?php array_map("var_dump", array($taxonomy->cap));? ></pre>
+    //<pre><?php array_map("var_dump", array($taxonomy->cap));? ></pre>
     ?>
 
     <div class="esa-item-tags tagsdiv" id="esa_post_tag-<?php echo $wrapper->ID ?>" data-esa-item-wrapper-id="<?php echo $wrapper->ID ?>">
@@ -838,40 +837,28 @@ function show_esa_tags($esaItem) {
 }
 
 function esa_tag_search() {
-    if ( ! isset( $_GET['tax'] ) ) {
-        wp_die( 0 );
-    }
-
-    $taxonomy = sanitize_key( $_GET['tax'] );
-    $tax = get_taxonomy( $taxonomy );
-    if ( ! $tax ) {
-        wp_die( 0 );
-    }
-
-    $s = wp_unslash( $_GET['q'] );
-
-    $comma = _x( ',', 'tag delimiter' );
-    if ( ',' !== $comma )
-        $s = str_replace( $comma, ',', $s );
-    if ( false !== strpos( $s, ',' ) ) {
-        $s = explode( ',', $s );
-        $s = $s[count( $s ) - 1];
-    }
-    $s = trim( $s );
-
-    $term_search_min_chars = (int) apply_filters( 'term_search_min_chars', 2, $tax, $s );
-
-    if ( ( $term_search_min_chars == 0 ) || ( strlen( $s ) < $term_search_min_chars ) ){
-        wp_die();
-    }
-
-    $results = get_terms( $taxonomy, array( 'name__like' => $s, 'fields' => 'names', 'hide_empty' => false ) );
-
-    echo join( $results, "\n" );
-    wp_die();
+    wp_ajax_ajax_tag_search();
 }
 
+function esa_catch_cap($allcaps, $caps, $args) {
+    global $esa_settings;
 
+    if (!in_array($args[0], array('assign_post_tags', 'delete_post_tags'))) {
+        return $allcaps;
+    }
+
+    if ($esa_settings['tags']['visitor_can_add']) {
+        $allcaps['assign_post_tags'] = 1;
+        $allcaps['edit_posts'] = 1;
+    }
+
+    if ($esa_settings['tags']['visitor_can_delete']) {
+        $allcaps['delete_post_tags'] = 1;
+        $allcaps['edit_posts'] = 1;
+    }
+
+    return $allcaps;
+}
 
 
 /**
@@ -1087,8 +1074,9 @@ add_filter('admin_post_thumbnail_html', function($html) {
  * ******************************************* esa item object wrapper
  */
 
-add_action( 'init', 'register_esa_item_wrapper' );
-add_action( 'init', 'register_esa_item_tag_actions' );
+add_action('init', 'register_esa_item_wrapper');
+add_action('init', 'register_esa_item_tag_actions');
+add_filter('user_has_cap', 'esa_catch_cap', 10, 3);
 
 register_activation_hook( __FILE__, function() {
     register_esa_item_wrapper();
@@ -1137,6 +1125,7 @@ function esa_tag_cloud() {
 function register_esa_item_tag_actions() {
     remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
     add_action('wp_ajax_get-tagcloud', 'esa_tag_cloud', 1);
+    add_action('wp_ajax_nopriv_get-tagcloud', 'esa_tag_cloud', 1);
     add_action("wp_ajax_update-esa-tags", "update_esa_tags");
     add_action("wp_ajax_nopriv_update-esa-tags", "update_esa_tags");
     add_action("wp_ajax_nopriv_ajax-tag-search", "esa_tag_search");
