@@ -129,7 +129,8 @@
 .esa-item-tags .tagchecklist {
     font-size: 12px;
     overflow: auto;
-    margin-bottom: 0
+    margin-bottom: 0;
+    max-height: 160px;
 }
 
 .esa-item-tags .wp-tag-cloud br,
@@ -151,6 +152,7 @@
     border-radius: 12px;
     white-space: nowrap;
     cursor: pointer;
+    position: relative;
 }
 
 .esa-item-tags .wp-tag-cloud > li a {

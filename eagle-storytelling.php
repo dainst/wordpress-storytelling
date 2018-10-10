@@ -768,6 +768,8 @@ function update_esa_tags() {
             }
         }
 
+        $tag = substr($tag, 0, 32);
+
         if (!wp_set_object_terms($wrapper->ID, $tag, "post_tag", true)) {
             wp_die("could not save tag:" . $tag);
         }
@@ -810,7 +812,7 @@ function get_esa_item_tag_box($esaItem) {
                 <div class="add-tag-buttons">
                     <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link-esa_post_tag-<?php echo $wrapper->ID ?>" />
                     <div class="ajaxtag">
-                        <input type="text" data-wp-taxonomy="post_tag" name="newtag[post_tag]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
+                        <input type="text" maxlength="32" data-wp-taxonomy="post_tag" name="newtag[post_tag]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
                         <input type="button" class="button tag-add-button tagadd" value="&#xf502;" />
                     </div>
                 </div>

@@ -32,6 +32,12 @@
             });
         }
 
+        function setTagToolTips(tagchecklist) {
+            tagchecklist.children('li').each(function(index, li) {
+                $(li).attr('title', getTagText(li));
+            });
+        }
+
         function getTagText(tag) {
             return $(tag).clone().children().remove().end().text().trim();
         }
@@ -58,6 +64,7 @@
                 });
 
             colorizeTags(this.tagchecklist);
+            setTagToolTips(this.tagchecklist);
 
         }
 
@@ -70,6 +77,7 @@
             }));
             observer.observe(tagchecklist.get(0), {attributes: false, childList: true, subtree: true});
             colorizeTags(tagchecklist);
+            setTagToolTips(tagchecklist);
         });
     };
 }(jQuery));
