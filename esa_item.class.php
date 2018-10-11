@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	eagle-storytelling
+ * @package 	wordpress-storytelling
  * @subpackage	Search in Datasources | esa_item Class
  * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck

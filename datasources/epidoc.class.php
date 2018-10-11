@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	eagle-storytelling
+ * @package 	wordpress-storytelling
  * @subpackage	Search in Datasources | Subplugin: epidoc
  * @link 		http://sourceforge.net/projects/epidoc/
  * @author 		Philipp Franck

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	eagle-storytelling
+ * @package 	wordpress-storytelling
  * @subpackage	widget for esa map
  * @link 		
  * @author 		Philipp Franck

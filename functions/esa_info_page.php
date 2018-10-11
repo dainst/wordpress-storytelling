@@ -103,7 +103,7 @@ function esa_info() {
     <div class='media-frame-content'>
         <h1>Storytelling Application</h1>
         <p>
-            The EAGLE Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content.
+            The Enhanced Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content.
             It was created in the context of the EAGLE project, a European project which started in 2013 and aimed to connect and collect data
             sources and projects related to the topic of digital epigraphy, ancient history or archeology.
         </p>
@@ -140,10 +140,10 @@ function esa_info() {
             There is also a widget wich displays a map of all posts with embedded content wich has geographic coordinates. You can find it in the widget area.
         </p>
         <p>
-            By default, all the embedded contents (excerpts from Wikipedia pages, interactive maps or objects from the EAGLE
-            collection or Europeanaand so on) are displayed in a compact view. By clicking on the buttons, an excerpt can be expanded
+            By default, all the embedded contents (excerpts from Wikipedia pages, interactive maps or objects from the Europeana collection and so on) are displayed in a compact view.
+            By clicking on the buttons, an excerpt can be expanded
             (downward arrow at the bottom of the item) and visualized in its original web page (the eye icon on the top-right corner).
-            Finally, you can search for all the stories that embed the same item in our EAGLE collection.
+            Finally, you can search for all the posts that embed the same item .
         </p>
         <p>
             Here is a <strong>map</strong> of Berlin. When you expand it using the downward arrow, the interactive map will become available for browsing!<br>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	eagle-storytelling
+ * @package 	wordpress-storytelling
  * @subpackage	Search in Datasources | Subplugin: ancient_eu
  * @link 		http://www.ancient.eu/
  * @author 		Philipp Franck
