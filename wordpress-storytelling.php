@@ -51,6 +51,10 @@ $esa_settings = array(
             'visitor_can_delete' => true, // can tags be deleted in the frontend?
             'color' => [0, 75, false] // rgb color for the tags. channels which are set to false will get an automatic values
         ),
+        'comments' => array(
+            'activate' => true, // is the comment feature active
+            'comments_open_by_default' => true
+        )
     ),
     'script_suffix' => ""
 );
@@ -80,6 +84,7 @@ require_once('functions/esa_template_functions.php');
 require_once('functions/esa_thumpnails.php');
 require_once('functions/esa_item_wrapper.php');
 require_once('functions/esa_item_tags.php');
+require_once('functions/esa_item_comments.php');
 
 register_activation_hook( ESA_FILE, 'esa_install_esa_item_db');
 register_activation_hook( ESA_FILE, 'esa_install_register_esa_item_wrapper');

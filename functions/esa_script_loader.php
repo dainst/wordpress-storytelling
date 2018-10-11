@@ -6,9 +6,7 @@
 add_action('wp_enqueue_scripts', function() {
     global $post;
     global $esa_settings;
-    if (!$esa_settings['modules']['tags']['activate']) {
-        return;
-    }
+
     $dev_suffix = $esa_settings['script_suffix'];
 
     if (is_esa($post->post_type)) {

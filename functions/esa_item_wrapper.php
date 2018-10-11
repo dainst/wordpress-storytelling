@@ -6,6 +6,37 @@ function esa_install_register_esa_item_wrapper() {
     flush_rewrite_rules();
 }
 
+
+add_action('admin_enqueue_scripts', function($hook) {
+    if (($hook == 'post.php') and (get_post_type() == 'esa_item_wrapper')) {
+        wp_enqueue_style('colors');
+        wp_enqueue_style('media');
+        wp_enqueue_style('media-views');
+        wp_enqueue_style('thickbox');
+        wp_enqueue_style('esa_item', plugins_url() . ESA_DIR . '/css/esa_item.css');
+        esa_register_special_styles();
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('thickbox');
+        wp_enqueue_script('esa_item.js', plugins_url() . ESA_DIR . '/js/esa_item.js', array('jquery'));
+        wp_enqueue_script('esa_mediamenu.js', plugins_url() . ESA_DIR . '/js/esa_mediamenu.js', array('jquery'));
+    }
+});
+
+
+
+function esa_item_wrapper_edit_ui($item) {
+    add_meta_box('esa_item_wrapper_preview', $item->post_content, 'esa_item_wrapper_preview', null, 'normal', 'high');
+    add_meta_box('esa_item_wrapper_tags', "Tags", 'esa_item_wrapper_tags', null, 'side');
+}
+
+function esa_item_wrapper_preview($item) {
+    echo do_shortcode($item->post_content);
+}
+
+function esa_item_wrapper_tags($item) {
+    post_tags_meta_box($item, array());
+}
+
 function esa_register_esa_item_wrapper() {
     register_post_type('esa_item_wrapper', array(
         "labels" => array(
@@ -15,20 +46,12 @@ function esa_register_esa_item_wrapper() {
         "show_ui" => true,
         "show_in_menu" => true,
         "show_in_admin_bar" => true,
+        "public" => true,
         "supports" => array(
-            'title' => true,
-            'editor' => true,
-            'author' => false,
-            'thumbnail' => false,
-            'excerpt' => false,
-            'trackbacks' => false,
-            'custom-fields' => false,
-            'comments' => true,
-            'revisions' => false,
-            'page-attributes' => false,
-            'post-formats' => false
+            'comments'
         ),
-        "taxonomies" => array("post_tags")
+        "taxonomies" => array("post_tags"),
+        "register_meta_box_cb" => "esa_item_wrapper_edit_ui"
     ));
 }
 

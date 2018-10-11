@@ -18,7 +18,7 @@ function is_esa($post_type = false) {
         $post_type = (is_object($post)) ? $post->post_type : '';
     }
     //print_r($esa_settings['post_types'] );die();
-    return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page;
+    return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page or ($post_type == 'esa_item_wrapper');
 }
 
 /**

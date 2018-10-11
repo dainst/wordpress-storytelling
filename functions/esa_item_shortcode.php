@@ -64,6 +64,7 @@ function esa_shortcode($atts, $context) {
             }
         }
     }
+
     return $content;
 }
 

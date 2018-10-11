@@ -75,7 +75,7 @@ add_action('admin_menu', function () {
     });
 
 });
-//toplevel_page_wordpress-storytelling/eagle-storytelling
+
 add_action('admin_enqueue_scripts', function($hook) {
     if ($hook == 'toplevel_page_' . ESA_NAME . '/' . basename(ESA_FILE, '.php')) {
         wp_enqueue_style('esa_item', plugins_url() . ESA_DIR . '/css/esa_item.css');
