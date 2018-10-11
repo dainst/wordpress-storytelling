@@ -1,7 +1,7 @@
 <?php
 /**
  * @package wordpress-storytelling
- * @version 3.0.0000
+ * @version 3.0.0
  */
 /*
 Plugin Name: Enhanced Storytelling Application
@@ -12,8 +12,6 @@ Author URI:	 http://www.dainst.org/
 Version:     3.0.0
 */
 /*
-
-Copyright (C) 2015, 2016  Deutsches Archäologisches Institut
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
