@@ -35,7 +35,7 @@ namespace esa_datasource {
 		
 		function api_single_url($id, $params = array()) {
 			$id = $this->real_id($id);
-			$id = urlencode($id);
+			$id = (strpos($id, '%')) ? $id : urlencode($id);
 			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&redirects=&titles=$id";
 
 		}
@@ -52,6 +52,7 @@ namespace esa_datasource {
 				$this->params['lang'] = $match[1];
 				return $this->api_single_url($match[2]);
 			}
+			return null;
 		}
 		
 		//	pagination functions
@@ -136,6 +137,10 @@ namespace esa_datasource {
 
 			//id
 			$id = $page->title . '@' . $this->params['lang'];
+
+			if (!isset($page->fullurl)) {
+                die("!!!!!!!!!!!!!1<pre>" . print_r($page,1) . "</pre>");
+            }
 
 			return new \esa_item('wiki', $id, $data->render(), $page->fullurl);
 		}
