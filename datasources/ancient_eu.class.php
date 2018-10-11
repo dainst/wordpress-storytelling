@@ -134,7 +134,7 @@ namespace esa_datasource {
 		 * 
 		 */
 		function parse_result_set($response) {
-			
+
 
 			
 			$response = json_decode($response);

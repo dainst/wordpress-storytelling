@@ -70,7 +70,7 @@ namespace esa_datasource {
 				}
 				$name_list = implode(', ', array_unique($alt_names));
 				$type_list = (isset($result->types)) ? implode(', ', $result->types) : '';
-				$type_label = (count($type_list) > 1) ? 'Types' : "Type";
+				$type_label = (isset($result->types) and (count($result->types) > 1)) ? 'Types' : "Type";
 				
 				$hint = '';
 				

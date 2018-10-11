@@ -80,16 +80,14 @@ namespace esa_datasource {
 			$response = json_decode($response);
 			$this->results = array();
 			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}
-			
-			if (count($response->query->pages)) {
+			if (count((array) $response->query->pages)) {
 				foreach ($response->query->pages as $pageId => $page) {
 					$data = $this->fetch_information($page);
 					$this->results[] = new \esa_item('commons', $pageId, $data->render(), $page->imageinfo[0]->descriptionurl, array(), array(), $data->latitude, $data->longitude);
 				}				
 			}
-			
-			
-			// workaround because media wiki api is not respoding total amount of pages
+
+			// workaround because media wiki api is not responding total amount of pages
 
 			if (count($this->results) >= $this->_hits_per_page) {
 				$this->pages = '?';
