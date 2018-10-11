@@ -211,9 +211,7 @@
 						action: 'esa_get_overview_map'
 					},
 					success: function(response) {
-						//console.log(response);
 						response = JSON.parse(response);
-						//console.log(response);
 						if ((response.length === 0) || (!response.length)) {
 							map.remove();
 							$(mapDiv).hide();
@@ -221,7 +219,7 @@
 						}
 						var markers = [];
 						$.each(response, function(k, item) {
-							markers.push(L.marker([item.latitude, item.longitude]).bindPopup(item.textbox).addTo(map));
+							markers.push(L.marker([parseFloat(item.latitude), parseFloat(item.longitude)]).bindPopup(item.textbox).addTo(map));
 						});
 						var group = new L.featureGroup(markers);
 						map.fitBounds(group.getBounds());
