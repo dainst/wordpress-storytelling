@@ -1,7 +1,22 @@
 <?php
 
 function esa_get_module_scripts_comments() {
-    // no special scripts needed
+    global $esa_settings;
+    if (!$esa_settings['modules']['tags']['activate']) {
+        return;
+    }
+    $dev_suffix = $esa_settings['script_suffix'];
+
+    wp_register_style('esa_item-comments', plugins_url(ESA_DIR . '/css/esa_item-comments.css'));
+    wp_enqueue_style('esa_item-comments');
+
+    wp_enqueue_script(
+        'esa_item_comments.js',
+        plugins_url() . ESA_DIR . '/js/esa_item_comments.js',
+        array('jquery')
+    );
+
+    wp_localize_script('esa_item_comments.js', 'esaItemCommentsL10n', array());
 }
 
 function esa_get_module_content_comments($esa_item) {
@@ -13,17 +28,16 @@ function esa_get_module_content_comments($esa_item) {
 
     ob_start();
 
-    echo "<div class='esa_item_comments'>";
+    echo "<div class='esa-item-comments'>";
+    echo '<button class="esa-item-show-comments-button" title="---" />137</button>';
 
-    echo "<div class='esa_item_comments_list'>";
-
+    echo "<div class='esa-item-comments-list'>";
     echo wp_list_comments(array(
         'post_id' =>  $wrapper->ID
     ), $comments);
     echo "</div>";
 
-    echo "<div class='esa_item_comment_form'>";
-
+    echo "<div class='esa-item-comment-form'>";
     comment_form(array(
         "must_log_in" => false
     ), $wrapper->ID);

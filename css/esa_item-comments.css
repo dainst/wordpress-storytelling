@@ -1,0 +1,47 @@
+.esa-item-comments .esa-item-comments-list,
+.esa-item-comments .esa-item-comment-form {
+    display: none;
+}
+
+.esa-item-comments button.esa-item-show-comments-button {
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 10px 0 15px;
+    border-radius: 12px;
+    vertical-align: middle;
+    height: 22px;
+    color: #72777c;
+    background: lightgray;
+}
+.esa-item-comments button.esa-item-show-comments-button:before {
+    content: "\f101";
+    font: normal 16px/20px dashicons;
+    min-width: 22px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding-left: 2px;
+    padding-top: 1px;
+    margin-right: 0;
+
+    border: 1px solid lightgray;
+}
+
+
+.esa-item-comments button.esa-item-show-comments-button:hover {
+    background: rgba(200, 200, 200, 0.1);
+    border-color: lightgray;
+    color: green;
+}
+
+.esa-item-comments button.esa-item-show-comments-button[aria-expanded="true"] {
+    border-color: lightgray;
+    background: rgba(0, 100, 200, 0.1);
+}
+
+.esa-item-comments button.esa-item-show-comments-button[aria-expanded="true"]:hover {
+    color: black
+}
