@@ -8,14 +8,18 @@
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
-    padding: 0 10px 0 15px;
+    padding: 0 10px 0 12px;
     border-radius: 12px;
     vertical-align: middle;
     height: 22px;
-    color: #72777c;
+    color: black;
     background: lightgray;
+    font-family: sans-serif;
+    font-size: 12px !important;
+    font-weight: normal;
+    border: 1px solid lightgray;
 }
-.esa-item-comments button.esa-item-show-comments-button:before {
+.esa-item-comments button.esa-item-show-comments-button:after {
     content: "\f101";
     font: normal 16px/20px dashicons;
     min-width: 22px;
@@ -23,18 +27,21 @@
     width: 20px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-left: 2px;
-    padding-top: 1px;
-    margin-right: 0;
-
-    border: 1px solid lightgray;
+    margin-right: -8px;
+    vertical-align: middle;
+    display: inline-block;
+    color: #72777c;
+    padding-top: 3px;
 }
 
 
 .esa-item-comments button.esa-item-show-comments-button:hover {
-    background: rgba(200, 200, 200, 0.1);
-    border-color: lightgray;
-    color: green;
+    background: #CCC;
+    color: lightcyan;
+}
+
+.esa-item-comments button.esa-item-show-comments-button:hover:after {
+    color: green
 }
 
 .esa-item-comments button.esa-item-show-comments-button[aria-expanded="true"] {
@@ -44,4 +51,17 @@
 
 .esa-item-comments button.esa-item-show-comments-button[aria-expanded="true"]:hover {
     color: black
+}
+
+.esa-item-comments button.esa-item-show-comments-button[aria-expanded="true"]:hover:after {
+    color: black
+}
+
+.esa-item-comments button.esa-item-show-comments-button:focus:after {
+    color: black
+}
+
+.esa-item-comments button.esa-item-show-comments-button:focus {
+    outline: none;
+    text-decoration: none;
 }

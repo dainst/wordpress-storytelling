@@ -23,17 +23,19 @@ function esa_get_module_content_comments($esa_item) {
     $wrapper = get_esa_item_wrapper($esa_item);
 
     $comments = get_comments(array(
-        'avatar_size' => 16,
+        'post_id' =>  $wrapper->ID
     ));
+    $comment_count = get_comments_number($wrapper->ID);
+    $comment_count_s = sprintf(_n('%s Comment', '%s Comments', $comment_count), $comment_count);
 
     ob_start();
 
     echo "<div class='esa-item-comments'>";
-    echo '<button class="esa-item-show-comments-button" title="---" />137</button>';
+    echo "<button class='esa-item-show-comments-button' aria-expanded='false' title='$comment_count_s' />$comment_count</button>";
 
     echo "<div class='esa-item-comments-list'>";
     echo wp_list_comments(array(
-        'post_id' =>  $wrapper->ID
+        'avatar_size' => 16,
     ), $comments);
     echo "</div>";
 

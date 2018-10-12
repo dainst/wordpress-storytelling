@@ -8,6 +8,8 @@
             esa_item_show_comments.on('click', function(e) {
                 console.log("!",esa_item_comments_list);
                 $(esa_item_comments_list).toggle();
+                var expanded = ($(esa_item_show_comments).attr("aria-expanded") === "true");
+                $(esa_item_show_comments).attr("aria-expanded", !expanded);
             })
         });
     };
