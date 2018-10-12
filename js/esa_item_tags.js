@@ -53,7 +53,7 @@
                 window.ajaxurl,
                 {
                     'action': 'update-esa-tags',
-                    'esa_item_wrapper_id':   this.wrapperId,
+                    'esa_item_wrapper_id': this.wrapperId,
                     'tags': tags
                 })
                 .done(function(response) {
