@@ -69,10 +69,11 @@ function esa_comment_list() {
         'number' => 5,
         'offset' => $page * 5
     ));
-
+    echo "<ol class=\"commentlist\">";
     echo wp_list_comments(array(
         'avatar_size' => 16,
     ), $comments);
+    echo "</ol>";
 
     if ($comment_count > 5) {
         echo "<table class='esa-item-comment-nav'><tr><td>";

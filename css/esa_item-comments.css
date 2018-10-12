@@ -138,6 +138,7 @@
 .esa-item-comments.esa a,
 .esa-item-comments.esa a:hover {
     border-bottom: none;
+    box-shadow: none
 }
 
 .esa-item-comments .esa-item-comment-nav {
@@ -159,4 +160,18 @@
 
 .esa-item-comments .esa-item-comment-nav td:last-child {
     text-align: right
+}
+
+.esa-item-comments.esa .commentlist {
+    list-style-position: inside;
+    list-style-type: none;
+}
+
+.esa-item-comments.esa .commentlist li {
+    margin-bottom: 2em
+}
+
+
+.esa-item-comments.esa .commentlist li .comment-metadata {
+    margin-bottom: 0.75em
 }
