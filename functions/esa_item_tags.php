@@ -198,18 +198,6 @@ function esa_tag_cloud() {
     wp_ajax_get_tagcloud();
 }
 
-function get_esa_item_tags($esaItem) {
-    $wrapper = get_esa_item_wrapper($esaItem);
-    $tags = wp_get_post_tags($wrapper->ID);
-    return array_map(function($tag){
-        return (object) array(
-            "name" => substr($tag->name, 0, 12),
-            "full" => $tag->name,
-            "color" => get_tag_color($tag->name)
-        );
-    }, $tags);
-}
-
 function esa_get_module_content_tags($esaItem) {
     return get_esa_item_tag_box($esaItem);
 }
