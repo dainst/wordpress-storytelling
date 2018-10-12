@@ -53,7 +53,8 @@ $esa_settings = array(
         ),
         'comments' => array(
             'activate' => true, // is the comment feature active
-            'comments_open_by_default' => true
+            'comments_open_by_default' => true,
+            'esa_style' => true
         )
     ),
     'script_suffix' => ""

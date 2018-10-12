@@ -1,16 +1,71 @@
 (function ($) {
     $.fn.esa_item_comments = function(options) {
+
         return this.each(function() {
-            var esa_item_show_comments = $(this).find('.esa-item-show-comments-button');
+
+            var esa_item_show_comments = $(this).find('.esa-item-comments-button.show-comments');
+            var esa_item_show_form = $(this).find('.esa-item-comments-button.show-form');
             var esa_item_comments_list = $(this).find('.esa-item-comments-list');
-            var esa_item_comment_form = $(this).find('.esa-item-comment-form');
+            var esa_item_comment_form = $(this).find('.esa-item-comments-form');
+            //var esa_change_page_btns = $(this).find('.esa-item-comments-button.change-page');
+            var wrapper_id = $(this).data("esa-item-wrapper-id");
+
+            var current_tab = "";
+
+            function get_comments(page) {
+                page = page || 0;
+                console.log("get comment page ", page);
+                jQuery.post(
+                    window.ajaxurl,
+                    {
+                        'action': 'esa-comment-list',
+                        'esa_item_wrapper_id': wrapper_id,
+                        'page': page
+                    })
+                    .done(function(response) {
+                        $(esa_item_comments_list).html(response);
+                    })
+                    .fail(function(err) {
+                        console.warn("Comment couldn't be fetched: ", err);
+                    });
+            }
+
+            function toggle_buttons(tab) {
+                $(esa_item_show_comments).attr("aria-expanded", 'false');
+                $(esa_item_show_form).attr("aria-expanded", 'false');
+                if (tab === current_tab) {
+                    $(esa_item_comments_list).toggle(false);
+                    $(esa_item_comment_form).toggle(false);
+                    current_tab = "";
+                    return;
+                }
+                if (tab === "form") {
+                    $(esa_item_comments_list).toggle(false);
+                    $(esa_item_comment_form).toggle(true);
+                    $(esa_item_show_form).attr("aria-expanded", 'true');
+                }
+                if (tab === "list") {
+                    $(esa_item_comments_list).toggle(true);
+                    $(esa_item_comment_form).toggle(false);
+                    $(esa_item_show_comments).attr("aria-expanded", 'true');
+                    get_comments();
+                }
+                current_tab = tab;
+            }
 
             esa_item_show_comments.on('click', function(e) {
-                console.log("!",esa_item_comments_list);
-                $(esa_item_comments_list).toggle();
-                var expanded = ($(esa_item_show_comments).attr("aria-expanded") === "true");
-                $(esa_item_show_comments).attr("aria-expanded", !expanded);
-            })
+                toggle_buttons("list")
+            });
+            esa_item_show_form.on('click', function(e) {
+                toggle_buttons("form")
+            });
+            $(this).on('click', '.esa-item-comments-button.change-page', function(e) {
+                console.log(this);
+                console.log(e);
+                get_comments($(this).data("esa-comment-page"));
+            });
+
+            toggle_buttons("list");
         });
     };
 }(jQuery));
