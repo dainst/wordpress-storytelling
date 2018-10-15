@@ -7,22 +7,17 @@ $esa_settings = array(
     'script_suffix' => ""
 );
 
-$esa_labels = array(
-    "esa_settings" => "Feature Settings"
-);
-
 add_action('init', function() {
     global $esa_settings;
     foreach ($esa_settings['modules'] as $modNr => $mod) {
         $esa_settings['modules'][$mod] = call_user_func("esa_get_module_settings_$mod");
         unset($esa_settings['modules'][$modNr]);
-        load_settings($esa_settings['modules'], $mod, "esa_{$mod}");
+        load_settings($esa_settings['modules'], $mod, "esa_settings");
     }
 
 });
 
 function load_settings(&$setting, $setting_name, $option_domain) {
-
     $option_name = $option_domain . '_' .$setting_name;
     $default_value = isset($setting[$setting_name]['default']) ? $setting[$setting_name]['default'] : null;
     if (!is_null($default_value)) {
@@ -30,10 +25,9 @@ function load_settings(&$setting, $setting_name, $option_domain) {
     }
     if (isset($setting[$setting_name]['children']) and is_array($setting[$setting_name]['children'])) {
         foreach ($setting[$setting_name]['children'] as $sub_setting_name => $sub_setting) {
-            load_settings($setting[$setting_name]['children'], $sub_setting_name, $option_domain);
+            load_settings($setting[$setting_name]['children'], $sub_setting_name, $option_name);
         }
     }
-
 }
 
 /**
@@ -60,21 +54,3 @@ function esa_get_settings() {
     return isset($set['value']) ? $set['value'] : $set;
 }
 
-/*
- * 'tags' => array(
-                'activate' => true, // is the tagging feature active
-                'visitor_can_add' => true, // can tags be edited at the frontend
-                'visitor_can_create' => true, // can new tags be created in the frontend?
-                'visitor_can_delete' => true, // can tags be deleted in the frontend?
-                'color' => array( // rgb color for the tags. channels which are set to false will get an automatic values
-                    'red' => 0,
-                    'green' => 75,
-                    'blue' => false
-                )
-            ),
-            'comments' => array(
-                'activate' => true, // is the comment feature active
-                'comments_open_by_default' => true,
-                'esa_style' => true
-            )
- */

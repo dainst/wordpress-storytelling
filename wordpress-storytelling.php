@@ -36,9 +36,8 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * ******************************************* Settings
+ * ******************************************* Path Globals
  */
-define('ESA_DEBUG', false);
 define('ESA_DIR', '/' . basename(dirname(__FILE__)));
 define('ESA_PATH', plugin_dir_path(__FILE__));
 define('ESA_FILE', __FILE__);
@@ -56,7 +55,6 @@ require_once('functions/esa_settings.php');
 require_once('functions/esa_info_page.php');
 require_once('functions/esa_script_loader.php');
 require_once('functions/esa_install.php');
-require_once('functions/esa_item_cache.php');
 require_once('functions/esa_item_shortcode.php');
 require_once('functions/esa_item_add_media.php');
 require_once('functions/esa_item_search.php');

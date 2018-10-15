@@ -11,7 +11,6 @@ add_action('admin_menu', function () {
 
         $url = admin_url('admin.php');
 
-
         echo "<div class='wrap' id='esa_settings'>";
 
         //esa_info();
@@ -23,7 +22,10 @@ add_action('admin_menu', function () {
 
         esa_settings_datasources();
 
-        esa_settings_features();
+        $all_settings_names = esa_settings_features();
+
+        // to update  also checkboxes wich are set to false and get not submitted
+        echo "<input type='hidden' name='esa_all_settings' value='" . implode(',', $all_settings_names) . "' />";
 
         wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');
         echo "<input type='hidden' name='action' value='esa_save_settings'>";
@@ -92,11 +94,13 @@ function esa_settings_datasources() {
 function esa_settings_features($settings_set = false, $parent = "esa_settings", $level = 3) {
     $esa_settings = esa_get_settings();
     $settings_set = !$settings_set ? $esa_settings['modules'] : $settings_set;
+    $all_settings_names = array();
 
     echo "<ul>";
     foreach ($settings_set as $setting_name => $setting) {
 
         $name = $parent . '_' . $setting_name;
+        $all_settings_names [] = $name;
 
         echo "<li>";
 
@@ -105,30 +109,112 @@ function esa_settings_features($settings_set = false, $parent = "esa_settings", 
             $disabled = "";
             echo "<input ";
             foreach ($setting as $attr => $attr_value) {
-                if (in_array($attr, array('default', 'label', 'children'))) {
+                if (in_array($attr, array('default', 'label', 'children', 'value'))) {
                     continue;
                 }
                 echo " $attr='$attr_value'";
             }
             echo " name='$name' id='$name' $disabled";
-            echo " /><label for='$name'>$label</label>";
+            if (in_array($setting['type'], array('checkbox', 'radio'))) {
+                echo $setting['value'] ? " checked='{$setting['value']}'" : '';
+            } else {
+                echo " value='{$setting['value']}'";
+            }
+            echo " /><label for='$name'>$label ({$setting['value']})</label>";
         }
 
         if (isset($setting['children']) and is_array($setting['children'])) {
             echo "<h$level>" . $setting['label'] . "</h$level>";
-            esa_settings_features($setting['children'], $name,$level + 1);
+            $all_settings_names = array_merge(esa_settings_features($setting['children'], $name,$level + 1), $all_settings_names);
         }
 
         echo "</li>";
 
     }
     echo "</ul>";
+
+    return $all_settings_names;
 }
 
-function esa_label_get($label) {
-    global $esa_labels;
-    return isset($esa_labels[$label]) ? $esa_labels[$label] : '#' . $label;
-}
+/**
+ * the caching mechanism for esa_items
+ *
+ * how it works: everytime a esa_item get displayed, it look in the cache if there is a non expired cache of this item. if not,
+ * it fetches the contents from the corresponding api and caches it
+ * that has two reasons:
+ * - we want to make the embedded esa_items searchable
+ * - page loading would be quite slow, if every items content had to be fetched again from the api
+ *
+ * how long may content be kept in cache? that has to be discussed.
+ *
+ *
+ */
+
+add_action('admin_action_esa_flush_cache', function() {
+    global $wpdb;
+
+    $sql = "truncate {$wpdb->prefix}esa_item_cache;";
+
+    $wpdb->query($sql);
+
+    wp_redirect($_SERVER['HTTP_REFERER']);
+    exit();
+
+});
+
+add_action('admin_action_esa_refresh_cache', function() {
+    global $wpdb;
+
+    $sql = "truncate {$wpdb->prefix}esa_item_cache;";
+
+    $wpdb->query($sql);
+
+    $sql = "
+        select
+            esa_item_source as source,
+            esa_item_id as id
+        from
+             {$wpdb->prefix}esa_item_to_post
+         
+        group by
+            esa_item_source,
+            esa_item_id
+    ";
+
+    foreach ($wpdb->get_results($sql) as $row) {
+        $item = new \esa_item($row->source, $row->id);
+        $item->html(true);
+        $e = count($item->errors);
+    }
+
+    wp_redirect($_SERVER['HTTP_REFERER']);
+    exit();
+
+});
+
+
+
+add_action('admin_action_esa_save_settings' ,function() {
+    if (!check_admin_referer('esa_save_settings', 'esa_save_settings_nonce')) {
+        echo "Nonce failed";
+    }
+
+    if (isset($_POST['esa_datasources'])) {
+        update_option('esa_datasources', json_encode(array_map('sanitize_text_field', $_POST['esa_datasources'])));
+    }
+
+    if (isset($_POST['esa_all_settings'])) {
+        $all_settings = explode(',', $_POST['esa_all_settings']);
+        foreach ($all_settings as $setting) {
+            $value = (isset($_POST[$setting])) ? $_POST[$setting] : 0;
+            update_option($setting, $value);
+        }
+    }
+
+    wp_redirect($_SERVER['HTTP_REFERER']);
+    exit();
+});
+
 
 function esa_info() {
     ob_start();

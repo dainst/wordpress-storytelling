@@ -92,23 +92,23 @@ function esa_get_module_settings_tags() {
                 'children' => array(
                     'red' => array(
                         'default' => 17,
-                        'label' => "Tag color: red channel (0 to 255, leave out for automatic)",
+                        'label' => "Tag color: red channel (0 to 255, -1 for automatic)",
                         'type' => 'number',
-                        'min' => 0,
+                        'min' => -1,
                         'max' => 255
                     ),
                      'green' => array(
                         'default' => 135,
-                        'label' => "Tag color: green channel (0 to 255, leave out for automatic)",
+                        'label' => "Tag color: green channel (0 to 255, -1 for automatic)",
                         'type' => 'number',
-                        'min' => 0,
+                        'min' => -1,
                         'max' => 255
                     ),
                     'blue' => array(
                         'default' => 0,
-                        'label' => "Tag color: blue channel (0 to 255, leave out for automatic)",
+                        'label' => "Tag color: blue channel (0 to 255, -1 for automatic)",
                         'type' => 'number',
-                        'min' => 0,
+                        'min' => -1,
                         'max' => 255
                     )
                 )
