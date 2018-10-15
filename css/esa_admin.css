@@ -40,3 +40,15 @@
 	font-family: "Source Sans Pro",Arial,Helvetica,sans-serif;
 	text-decoration: none
 }
+
+#esa_settings li li > ul,
+#esa_settings li li > h1,
+#esa_settings li li > h2,
+#esa_settings li li > h3,
+#esa_settings li li > h4,
+#esa_settings li li > h5,
+#esa_settings li li > h6,
+#esa_settings li li > h7,
+#esa_settings li li > h8 {
+	margin-left: 2em;
+}

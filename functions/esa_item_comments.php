@@ -1,5 +1,7 @@
 <?php
 
+
+
 function esa_get_module_scripts_comments() {
     global $esa_settings;
     if (!$esa_settings['modules']['comments']['activate']) {
@@ -49,6 +51,30 @@ function esa_get_module_content_comments($esa_item) {
     echo "</div>";
 
     return ob_get_clean();
+}
+
+function esa_get_module_settings_comments() {
+    return array(
+        'label' => "Comments on Esa-Items",
+        'children' => array(
+            // is the comment feature active
+            'activate' => array(
+                'default' => true,
+                'label' => "Activate Feature",
+                'type' => 'checkbox'
+            ),
+            'open_by_default' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "Comment function is open for every Esa-Item by Default"
+            ),
+            'esa_style' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "Add Plugins Own stylesheets to the Wordpress' themes stylesheet on comments"
+            )
+        )
+    );
 }
 
 

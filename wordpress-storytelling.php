@@ -39,27 +39,6 @@ if (!defined('ABSPATH')) {
  * ******************************************* Settings
  */
 define('ESA_DEBUG', false);
-
-$esa_settings = array(
-    'post_types' => array('post', 'page'), // post types which can contain embedded content (esa items)
-    'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
-    'modules' => array(
-        'tags' => array(
-            'activate' => true, // is the tagging feature active
-            'visitor_can_add' => true, // can tags be edited at the frontend
-            'visitor_can_create' => true, // can new tags be created in the frontend?
-            'visitor_can_delete' => true, // can tags be deleted in the frontend?
-            'color' => [0, 75, false] // rgb color for the tags. channels which are set to false will get an automatic values
-        ),
-        'comments' => array(
-            'activate' => true, // is the comment feature active
-            'comments_open_by_default' => true,
-            'esa_style' => true
-        )
-    ),
-    'script_suffix' => ""
-);
-
 define('ESA_DIR', '/' . basename(dirname(__FILE__)));
 define('ESA_PATH', plugin_dir_path(__FILE__));
 define('ESA_FILE', __FILE__);
@@ -73,6 +52,7 @@ require_once('esa_item.class.php');
 require_once('esa_item_transfer.class.php');
 require_once('esa_map_widget.class.php');
 
+require_once('functions/esa_settings.php');
 require_once('functions/esa_info_page.php');
 require_once('functions/esa_script_loader.php');
 require_once('functions/esa_install.php');

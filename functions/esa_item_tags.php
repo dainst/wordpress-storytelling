@@ -59,6 +59,65 @@ function esa_get_module_scripts_tags() {
 
 }
 
+function esa_get_module_settings_tags() {
+    return array(
+        'label' => "Tags on Esa-Items",
+        'children' => array(
+            // is the tagging feature active
+            'activate' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "Activate Feature"
+            ),
+            // can tags be edited at the frontend
+            'visitor_can_add' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "Visitor can Add Tags to Items without Login"
+            ),
+            // can new tags be created in the frontend?
+            'visitor_can_create' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "Visitor can even Add previously unused Tags to Items without Login\""
+            ),
+            // can tags be deleted in the frontend?
+            'visitor_can_delete' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "Visitor can Delete Tags to Items without Login"
+            ),
+            // rgb color for the tags. channels which are set to false will get an automatic values
+            'color' => array(
+                'label' => "Tag Color",
+                'children' => array(
+                    'red' => array(
+                        'default' => 0,
+                        'label' => "Tag color: red channel (0 to 255, leave out for automatic)",
+                        'type' => 'number',
+                        'min' => 0,
+                        'max' => 255
+                    ),
+                     'green' => array(
+                        'default' => 0,
+                        'label' => "Tag color: green channel (0 to 255, leave out for automatic)",
+                        'type' => 'number',
+                        'min' => 0,
+                        'max' => 255
+                    ),
+                    'blue' => array(
+                        'default' => 0,
+                        'label' => "Tag color: blue channel (0 to 255, leave out for automatic)",
+                        'type' => 'number',
+                        'min' => 0,
+                        'max' => 255
+                    )
+                )
+            )
+        )
+    );
+}
+
 add_action('init', function() {
     remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
     add_action('wp_ajax_get-tagcloud', 'esa_tag_cloud', 1);
