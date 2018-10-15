@@ -4,11 +4,10 @@ require_once(ABSPATH  . 'wp-admin/includes/taxonomy.php');
 require_once(ABSPATH  . 'wp-admin/includes/meta-boxes.php');
 
 function esa_get_module_scripts_tags() {
-    global $esa_settings;
-    if (!$esa_settings['modules']['tags']['activate']) {
+    if (!esa_get_settings('modules', 'tags', 'activate')) {
         return;
     }
-    $dev_suffix = $esa_settings['script_suffix'];
+    $dev_suffix = esa_get_settings('script_suffix');
 
     wp_register_style('esa_item-tags', plugins_url(ESA_DIR . '/css/esa_item-tags.css'));
     wp_enqueue_style('esa_item-tags');
@@ -53,7 +52,7 @@ function esa_get_module_scripts_tags() {
         'termRemoved'  => __('Term removed.'),
     ));
     wp_localize_script('esa_item_tags.js', 'esaItemTagsL10n', array(
-        'color' => $esa_settings['modules']['tags']['color']
+        'color' => esa_get_settings('modules', 'tags', 'color') //!TODO
     ));
     wp_add_inline_script('tags-suggest', "var ajaxurl = '" . admin_url('admin-ajax.php') . "';", "before");
 
@@ -92,14 +91,14 @@ function esa_get_module_settings_tags() {
                 'label' => "Tag Color",
                 'children' => array(
                     'red' => array(
-                        'default' => 0,
+                        'default' => 17,
                         'label' => "Tag color: red channel (0 to 255, leave out for automatic)",
                         'type' => 'number',
                         'min' => 0,
                         'max' => 255
                     ),
                      'green' => array(
-                        'default' => 0,
+                        'default' => 135,
                         'label' => "Tag color: green channel (0 to 255, leave out for automatic)",
                         'type' => 'number',
                         'min' => 0,
@@ -128,18 +127,17 @@ add_action('init', function() {
 });
 
 add_filter('user_has_cap', function($allcaps, $caps, $args) {
-    global $esa_settings;
 
     if (!in_array($args[0], array('assign_post_tags', 'delete_post_tags'))) {
         return $allcaps;
     }
 
-    if ($esa_settings['modules']['tags']['visitor_can_add']) {
+    if (esa_get_settings('modules', 'tags', 'visitor_can_add')) {
         $allcaps['assign_post_tags'] = 1;
         $allcaps['edit_posts'] = 1;
     }
 
-    if ($esa_settings['modules']['tags']['visitor_can_delete']) {
+    if (esa_get_settings('modules', 'tags', 'visitor_can_delete')) {
         $allcaps['delete_post_tags'] = 1;
         $allcaps['edit_posts'] = 1;
     }
@@ -166,8 +164,6 @@ function get_tag_color($tag) {
 
 function update_esa_tags() {
 
-    global $esa_settings;
-
     if (!isset($_POST['esa_item_wrapper_id'])) {
         wp_die("wrapper id missing");
     }
@@ -176,11 +172,11 @@ function update_esa_tags() {
         wp_die("wrapper not found");
     }
     $tags = isset($_POST['tags']) ? $_POST['tags'] : array();
-    if (($esa_settings['modules']['tags']['visitor_can_delete']) or (current_user_can('delete_post_tags'))) {
+    if (esa_get_settings('modules', 'tags', 'visitor_can_delete') or (current_user_can('delete_post_tags'))) {
         wp_set_object_terms($wrapper->ID, null, "post_tag");
     }
     foreach ($tags as $tag) {
-        if (!$esa_settings['modules']['tags']['visitor_can_create']) {
+        if (!esa_get_settings('modules', 'tags', 'visitor_can_create')) {
             if (!get_term_by('name', $tag, 'post_tag')) {
                 continue;
             }
@@ -200,12 +196,11 @@ function update_esa_tags() {
 }
 
 function get_esa_item_tag_box($esaItem) {
-    global $esa_settings;
     $wrapper = get_esa_item_wrapper($esaItem);
     ob_start();
     $taxonomy = get_taxonomy('post_tag');
-    $user_can_assign_terms = ($esa_settings['modules']['tags']['visitor_can_add'] or current_user_can($taxonomy->cap->assign_terms));
-    $user_can_remove_terms = ($esa_settings['modules']['tags']['visitor_can_delete'] or current_user_can($taxonomy->cap->delete_terms));
+    $user_can_assign_terms = esa_get_settings('modules', 'tags', 'visitor_can_add') or current_user_can($taxonomy->cap->assign_terms);
+    $user_can_remove_terms = esa_get_settings('modules', 'tags', 'visitor_can_delete') or current_user_can($taxonomy->cap->delete_terms);
     $comma = _x(',', 'tag delimiter');
     $terms_to_edit = get_terms_to_edit($wrapper->ID, 'post_tag');
     if (!is_string($terms_to_edit)) {

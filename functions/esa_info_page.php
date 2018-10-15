@@ -9,7 +9,6 @@ add_action('admin_menu', function () {
     //create new top-level menu
     add_menu_page('Storytelling Application', 'Storytelling Application', 'administrator', ESA_FILE, function() {
 
-        global $esa_settings;
         $url = admin_url('admin.php');
 
 

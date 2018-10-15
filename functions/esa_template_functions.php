@@ -12,13 +12,11 @@
  */
 function is_esa($post_type = false) {
     global $is_esa_story_page; // if you want to set manually a page as esa page in template use this
-    global $esa_settings;
     if (!$post_type) {
         global $post;
         $post_type = (is_object($post)) ? $post->post_type : '';
     }
-    //print_r($esa_settings['post_types'] );die();
-    return (in_array($post_type, $esa_settings['post_types'])) or $is_esa_story_page or ($post_type == 'esa_item_wrapper');
+    return (in_array($post_type, esa_get_settings('post_types'))) or $is_esa_story_page or ($post_type == 'esa_item_wrapper');
 }
 
 /**

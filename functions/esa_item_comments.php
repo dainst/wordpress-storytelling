@@ -3,11 +3,11 @@
 
 
 function esa_get_module_scripts_comments() {
-    global $esa_settings;
-    if (!$esa_settings['modules']['comments']['activate']) {
+
+    if (!esa_get_settings('modules', 'comments', 'activate')) {
         return;
     }
-    $dev_suffix = $esa_settings['script_suffix'];
+    $dev_suffix = esa_get_settings('script_suffix');
 
     wp_register_style('esa_item-comments', plugins_url(ESA_DIR . '/css/esa_item-comments.css'));
     wp_enqueue_style('esa_item-comments');
@@ -23,13 +23,13 @@ function esa_get_module_scripts_comments() {
 }
 
 function esa_get_module_content_comments($esa_item) {
-    global $esa_settings;
+
     $wrapper = get_esa_item_wrapper($esa_item);
 
     $comment_count = get_comments_number($wrapper->ID);
     $comment_count_s = sprintf(_n('%s Comment', '%s Comments', $comment_count), $comment_count);
 
-    $esa_style = $esa_settings['modules']['comments']['esa_style'] ? 'esa' : '';
+    $esa_style = esa_get_settings('modules', 'comments', 'esa_style') ? 'esa' : '';
 
     ob_start();
 
@@ -120,10 +120,11 @@ function esa_comment_list() {
 
 
 add_filter('wp_insert_post_data', function($data) {
-    global $esa_settings;
-    $esmc = $esa_settings['modules']['comments'];
     if($data['post_type'] == 'esa_item_wrapper') {
-        $data['comment_status'] = (($esmc['comments_open_by_default']) and ($esmc['activate'])) ? 'open' : 'close';
+        $data['comment_status'] =
+            (esa_get_settings('modules', 'comments', 'comments_open_by_default') and esa_get_settings('modules', 'comments', 'activate'))
+                ? 'open'
+                : 'close';
     }
 
     return $data;

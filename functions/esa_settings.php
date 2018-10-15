@@ -36,10 +36,28 @@ function load_settings(&$setting, $setting_name, $option_domain) {
 
 }
 
-
+/**
+ * @param e. G. "modules", "tags", "color", "red"
+ * @return array|null
+ */
 function esa_get_settings() {
     global $esa_settings;
-    return $esa_settings;
+    $args = func_get_args();
+    if (!count($args)) {
+        return $esa_settings;
+    }
+    $set = $esa_settings;
+    while (count($args)) {
+        if (isset($set['children'])) {
+            $set = $set['children'];
+        }
+        $sub = array_shift($args);
+        if (!isset($set[$sub])) {
+            return null;
+        }
+        $set = $set[$sub];
+    }
+    return isset($set['value']) ? $set['value'] : $set;
 }
 
 /*

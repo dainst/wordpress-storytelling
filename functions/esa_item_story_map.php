@@ -16,10 +16,9 @@ function esa_item_map() {
 
 function wp_ajax_esa_get_overview_map() {
 
-    global $esa_settings;
     global $wpdb;
 
-    $post_types = "'" . implode("', '", $esa_settings['post_types']) . "'";
+    $post_types = "'" . implode("', '", esa_get_settings('post_types')) . "'";
 
     $sql = "
             select

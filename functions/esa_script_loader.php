@@ -5,9 +5,8 @@
 
 add_action('wp_enqueue_scripts', function() {
     global $post;
-    global $esa_settings;
 
-    $dev_suffix = $esa_settings['script_suffix'];
+    $dev_suffix = esa_get_settings('script_suffix');
 
     if (is_esa($post->post_type)) {
 
@@ -25,8 +24,8 @@ add_action('wp_enqueue_scripts', function() {
 
         wp_localize_script('esa_item.js', 'esa', array('ajax_url' => admin_url('admin-ajax.php')));
 
-        foreach($esa_settings['modules'] as $mod => $modSettings) {
-            if ($modSettings['activate']) {
+        foreach(esa_get_settings('modules') as $mod => $modSettings) {
+            if (esa_get_settings('modules', $mod)) {
                 call_user_func("esa_get_module_scripts_$mod");
             }
         }

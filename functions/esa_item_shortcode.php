@@ -25,7 +25,7 @@ add_action('init', function() {
 
 
 function esa_shortcode($atts, $context) {
-    global $esa_settings;
+    $modules = esa_get_settings("modules");
 
     if (!isset($atts['source']) or !isset($atts['id'])) {
         return "";
@@ -44,13 +44,10 @@ function esa_shortcode($atts, $context) {
     if (isset($atts['align'])) {
         if ($atts['align'] == 'right') {
             $classes[] = 'esa_item_right';
-            //$css['float'] = 'left';
         } elseif ($atts['align'] == 'left') {
             $classes[] = 'esa_item_left';
-            //$css['float'] = 'right';
         } else {
             $classes[] = 'esa_item_none';
-            //$css['float'] = 'none';
         }
     }
 
@@ -58,8 +55,8 @@ function esa_shortcode($atts, $context) {
 
     $content = $item->html(true);
     if (!is_admin()) {
-        foreach($esa_settings['modules'] as $mod => $modSettings) {
-            if ($modSettings['activate']) {
+        foreach($modules as $mod => $modSettings) {
+            if (esa_get_settings('modules', $mod, 'activate')) {
                 $content .= call_user_func("esa_get_module_content_$mod", $item);
             }
         }

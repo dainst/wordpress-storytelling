@@ -6,9 +6,8 @@
 // add them to media menu
 add_filter('media_upload_tabs', function($tabs) {
     global $post;
-    global $esa_settings;
     return (!is_object($post) or is_esa($post->post_type)) ?
-        array_merge($tabs, array('esa' => $esa_settings['add_media_entry'])) :
+        array_merge($tabs, array('esa' => esa_get_settings('add_media_entry'))) :
         $tabs;
 });
 
@@ -44,7 +43,6 @@ function media_esa_dialogue() {
     //    error_reporting(E_ALL | E_NOTICE);
     //    ini_set('display_errors', 1);
 
-    global $esa_settings;
     $esa_datasources = json_decode(get_option('esa_datasources'));
     $labels = (array) json_decode(get_option('esa_datasource_labels'));
     $post_id = isset($_REQUEST['post_id']) ? intval($_REQUEST['post_id']) : 0;
