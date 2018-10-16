@@ -217,7 +217,7 @@ function get_esa_item_tag_box($esaItem) {
             <ul class="tagchecklist <?php echo $user_can_remove_terms ? "" : "no-delete-btn" ?>" role="list"></ul>
 
             <?php if ($user_can_assign_terms) : ?>
-                <div class="add-tag-buttons">
+                <div class="add-tag-buttons esa-module-buttons">
                     <input type="button" class="tag-suggest-button button-link tagcloud-link" aria-expanded="false" value="&#xf318;" id="link-esa_post_tag-<?php echo $wrapper->ID ?>" title="<?php echo $taxonomy->labels->choose_from_most_used; ?>" />
                     <div class="ajaxtag">
                         <input type="text" maxlength="32" data-wp-taxonomy="post_tag" name="newtag[post_tag]" class="newtag form-input-tip" size="16" autocomplete="off" value="" />
@@ -229,7 +229,7 @@ function get_esa_item_tag_box($esaItem) {
             <?php endif; ?>
 
         </div>
-        <div class="separator"></div>
+
 
     </div>
     <?php

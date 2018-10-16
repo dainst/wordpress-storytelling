@@ -33,14 +33,17 @@ function esa_get_module_content_comments($esa_item) {
 
     ob_start();
 
-    echo "<div class='esa-item-comments $esa_style' data-esa-item-wrapper-id='{$wrapper->ID}'>";
+    echo "<span class='esa-item-comments $esa_style' data-esa-item-wrapper-id='{$wrapper->ID}'>";
+    echo "<div class='esa-item-comments-buttons esa-module-buttons'>";
     echo "<button class='esa-item-comments-button show-comments' aria-expanded='false' title='$comment_count_s' />$comment_count</button>";
-    // if current user can
-    echo "<button class='esa-item-comments-button show-form' aria-expanded='false' title='---' /></button>";
-
-    echo "<div class='esa-item-comments-list'>";
-
+    // TODO if current user can
+    $label = __( 'Add new Comment' );
+    echo "<button class='esa-item-comments-button show-form' aria-expanded='false' title='$label' /></button>";
     echo "</div>";
+
+    echo "<div class='esa-separator'></div>";
+    echo "<div class='esa-item-comments-list'><!-- filled with ajax --></div>";
+
 
     echo "<div class='esa-item-comments-form'>";
     comment_form(array(
@@ -48,7 +51,7 @@ function esa_get_module_content_comments($esa_item) {
     ), $wrapper->ID);
     echo "</div>";
 
-    echo "</div>";
+    echo "</span>";
 
     return ob_get_clean();
 }
@@ -105,12 +108,15 @@ function esa_comment_list() {
         echo "<table class='esa-item-comment-nav'><tr><td>";
         if ($page > 0) {
             $next = $page - 1;
-            echo "<button class='esa-item-comments-button change-page' data-esa-comment-page='$next' title='---' >back</button>";
+            $label = __('Previous page');
+            echo "<button class='esa-item-comments-button change-page' data-esa-comment-page='$next' title='$label'>$label</button>";
         }
-        echo "</td><td><span>Page: " . ($page + 1) . " / " . ($pages + 1) . "</span></td><td>";
+        $label = __('Page');
+        echo "</td><td><span>$label: " . ($page + 1) . " / " . ($pages + 1) . "</span></td><td>";
         if ($page < $pages) {
             $prev = $page + 1;
-            echo "<button class='esa-item-comments-button change-page' data-esa-comment-page='$prev' title='---' >next</button>";
+            $label = __('Next page');
+            echo "<button class='esa-item-comments-button change-page' data-esa-comment-page='$prev' title='$label'>$label</button>";
         }
         echo "</td></tr></table>";
     }

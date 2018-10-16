@@ -1,6 +1,17 @@
 .esa-item-comments .esa-item-comments-list,
-.esa-item-comments .esa-item-comment-form {
+.esa-item-comments .esa-item-comments-form {
     display: none;
+    padding: 20px;
+    margin-top: 3px;
+    background: rgba(200, 200, 200, 0.1);
+}
+
+.esa-item-comments .esa-item-comments-buttons {
+    text-align: right;
+}
+
+.esa-item-comments button.esa-item-comments-button {
+    margin-left: 4px ;
 }
 
 .esa-item-comments.esa .edit-link,
@@ -21,6 +32,8 @@
     font-size: 12px !important;
     font-weight: normal;
     border: 1px solid lightgray;
+    margin-top: -1px;
+    text-transform: none;
 }
 
 .esa-item-comments.esa .edit-link:before,
@@ -39,10 +52,15 @@
     top: 0;
 }
 
+.esa-item-comments button.esa-item-comments-button.show-form {
+    padding-left: 6px;
+}
+
 .esa-item-comments.esa .edit-link:before {
-    font: normal 16px/20px Genericons;
-    margin: 0;
+    font: normal 16px/20px dashicons;
+    margin: 0 3px 0 0;
     vertical-align: middle;
+    content: "\f464";
 }
 
 .esa-item-comments button.esa-item-comments-button.show-comments:after {
@@ -61,10 +79,10 @@
 
 .esa-item-comments.esa .edit-link {
     vertical-align: middle;
-    padding: 0 10px 0 0px;
+    padding: 0 10px 0 0;
 }
 
-.esa-item-comments.esa .edit-link:hover,
+.esa-item-comments.esa .edit-link:hover a,
 .esa-item-comments.esa .esa-item-comments-form a:hover,
 .esa-item-comments.esa input.submit:hover,
 .esa-item-comments button.esa-item-comments-button:hover {
@@ -72,6 +90,7 @@
     color: lightcyan;
 }
 
+.esa-item-comments.esa .edit-link:hover:before,
 .esa-item-comments.esa input.submit:hover:after,
 .esa-item-comments button.esa-item-comments-button:hover:after {
     color: green
@@ -90,28 +109,35 @@
     color: black
 }
 
+.esa-item-comments.esa .edit-link a:focus,
 .esa-item-comments.esa input.submit:focus:after,
 .esa-item-comments button.esa-item-comments-button:focus:after {
     color: black
 }
 
-.esa-item-comments.esa .edit-link:focus,
+.esa-item-comments.esa .edit-link a:focus,
 .esa-item-comments.esa .esa-item-comments-form a:focus,
 .esa-item-comments.esa input.submit:focus,
 .esa-item-comments button.esa-item-comments-button:focus {
     outline: none;
-    text-decoration: none;
+    color: black;
+    text-decoration: underline;
+    box-shadow: none;
 }
 
-.esa-item-comments .esa-item-comments-list,
-.esa-item-comments .esa-item-comments-form {
-    border: 1px solid #CCC;
-    padding: 3px;
-    margin-top: 3px
-}
-
+.esa-item-comments.esa input,
 .esa-item-comments.esa {
     font-family: sans-serif;
+    text-transform: none
+}
+
+.esa-item-comments.esa p,
+.esa-item-comments.esa h3,
+.esa-item-comments.esa .comment-form label {
+    text-transform: none;
+    border: none;
+    padding-top: 2px;
+    margin-bottom: 3px;
 }
 
 .esa-item-comments.esa .comment-reply-title {

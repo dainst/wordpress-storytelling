@@ -392,20 +392,10 @@
 }
 
 
-/* tags */
+/* modules */
 
-.esa_item_tags {
+.esa-separator {
+	clear: both
 }
-
-.esa_item_tag {
-
-}
-
-.esa_item_tag:hover {
-	box-shadow: inset 0px 0px 300px 61px rgba(0,0,0,0.55);
-}
-
-
-
 
 

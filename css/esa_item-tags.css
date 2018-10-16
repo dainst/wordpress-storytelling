@@ -95,6 +95,7 @@
 .esa-item-tags input[type="button"].tag-suggest-button:focus {
     outline: none;
     text-decoration: none;
+    background: rgba(180, 180, 180, 1)
 }
 
 .esa-item-tags .wp-tag-cloud > li a:focus {
