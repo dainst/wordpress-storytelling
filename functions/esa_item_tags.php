@@ -51,8 +51,12 @@ function esa_get_module_scripts_tags() {
         'termAdded'    => __('Term added.'),
         'termRemoved'  => __('Term removed.'),
     ));
-    wp_localize_script('esa_item_tags.js', 'esaItemTagsL10n', array(
-        'color' => esa_get_settings('modules', 'tags', 'color') //!TODO
+    wp_localize_script('esa_item_tags.js', 'esaItemTagsOptions', array(
+        'color' => array(
+                'red' => (int) esa_get_settings('modules', 'tags', 'color', 'red'),
+                'green' => (int) esa_get_settings('modules', 'tags', 'color', 'green'),
+                'blue' => (int) esa_get_settings('modules', 'tags', 'color', 'blue'),
+        )
     ));
     wp_add_inline_script('tags-suggest', "var ajaxurl = '" . admin_url('admin-ajax.php') . "';", "before");
 

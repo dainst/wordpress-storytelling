@@ -3,7 +3,7 @@
 
         function colorize(term) {
 
-            var masterColor = [false, false, false];
+            var masterColor = esaItemTagsOptions.color;
 
             var t = term.split("").map(function(char) {
                 c = char.toUpperCase().charCodeAt(0);
@@ -18,9 +18,9 @@
                 c.push(c.shift());
             }
             var color = [
-                masterColor[0] ? masterColor[0] : c[0],
-                masterColor[1] ? masterColor[1] : c[1],
-                masterColor[2] ? masterColor[2] : c[2]
+                (masterColor.red !== -1)    ? masterColor.red   : c[0],
+                (masterColor.green !== -1)  ? masterColor.green : c[1],
+                (masterColor.blue !== -1)   ? masterColor.blue  : c[2]
             ];
             return "rgba(" + color[0] + ", " + color[1] + ", " + color[2] + ", 0.4)";
 
