@@ -13,12 +13,11 @@ add_action('admin_menu', function () {
 
         echo "<div class='wrap' id='esa_settings'>";
 
-        //esa_info();
+        esa_info();
 
         echo "<h2>Settings</h2>";
 
         echo "<form method='POST' action='$url'>";
-
 
         esa_settings_datasources();
 
