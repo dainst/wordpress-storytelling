@@ -92,6 +92,7 @@ function esa_comment_list() {
     $page = isset($_POST['page']) ? (int) $_POST['page'] : 0;
     $comment_count = get_comments_number($wrapper->ID);
     $pages = (int) ($comment_count / 5);
+    $pages -= ($comment_count % 5 == 0) ? 1 : 0;
     $comments = get_comments(array(
         'post_id' =>  $wrapper->ID,
         'status' => "approve",
@@ -100,7 +101,7 @@ function esa_comment_list() {
     ));
     echo "<ol class=\"commentlist\">";
     echo wp_list_comments(array(
-        'avatar_size' => 16,
+        'avatar_size' => 16
     ), $comments);
     echo "</ol>";
 

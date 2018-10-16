@@ -12,6 +12,7 @@
 
 .esa-item-comments button.esa-item-comments-button {
     margin-left: 4px ;
+    line-height: 1
 }
 
 .esa-item-comments.esa .edit-link,
@@ -56,13 +57,6 @@
     padding-left: 6px;
 }
 
-.esa-item-comments.esa .edit-link:before {
-    font: normal 16px/20px dashicons;
-    margin: 0 3px 0 0;
-    vertical-align: middle;
-    content: "\f464";
-}
-
 .esa-item-comments button.esa-item-comments-button.show-comments:after {
     content: "\f101";
     padding-top: 3px;
@@ -77,9 +71,42 @@
     content: "\f464";
 }
 
-.esa-item-comments.esa .edit-link {
+.esa-item-comments button.esa-item-comments-button[aria-expanded="true"] {
+    border-color: lightgray;
+    background: rgba(0, 100, 200, 0.1);
+}
+
+.esa-item-comments button.esa-item-comments-button[aria-expanded="true"]:hover {
+    color: black
+}
+
+.esa-item-comments button.esa-item-comments-button[aria-expanded="true"]:hover:after {
+    color: black
+}
+
+.esa-item-comments.esa .edit-link,
+.esa-item-comments.esa .edit-link a {
+    text-decoration: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: unset !important;
+    -webkit-box-shadow: unset !important;
+    transition: unset !important;
     vertical-align: middle;
     padding: 0 10px 0 0;
+    letter-spacing: normal;
+}
+
+.esa-item-comments.esa .edit-link a {
+    margin: 0;
+    padding: 0
+}
+
+.esa-item-comments.esa .edit-link:before {
+    font: normal 16px/20px dashicons;
+    margin: 0 3px 0 0;
+    vertical-align: middle;
+    content: "\f464";
 }
 
 .esa-item-comments.esa .edit-link:hover a,
@@ -96,18 +123,8 @@
     color: green
 }
 
-.esa-item-comments button.esa-item-comments-button[aria-expanded="true"] {
-    border-color: lightgray;
-    background: rgba(0, 100, 200, 0.1);
-}
 
-.esa-item-comments button.esa-item-comments-button[aria-expanded="true"]:hover {
-    color: black
-}
 
-.esa-item-comments button.esa-item-comments-button[aria-expanded="true"]:hover:after {
-    color: black
-}
 
 .esa-item-comments.esa .edit-link a:focus,
 .esa-item-comments.esa input.submit:focus:after,
@@ -123,6 +140,10 @@
     color: black;
     text-decoration: underline;
     box-shadow: none;
+}
+
+.esa-item-comments button.esa-item-comments-button[aria-expanded="false"]:focus {
+    background: lightgray;
 }
 
 .esa-item-comments.esa input,
@@ -177,7 +198,8 @@
     text-align: center;
     border: 0;
     border-collapse: collapse;
-    padding: 1px
+    padding: 1px;
+    width: 33%
 }
 
 .esa-item-comments .esa-item-comment-nav td:first-child {
