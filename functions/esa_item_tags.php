@@ -61,6 +61,7 @@ function esa_get_module_scripts_tags() {
 function esa_get_module_settings_tags() {
     return array(
         'label' => "Tags on Esa-Items",
+        'info' => "Manage Tags here: <a href='edit-tags.php?taxonomy=post_tag'>" . __('Posts') . " > " . __('Keywords') . "</a>",
         'children' => array(
             // is the tagging feature active
             'activate' => array(
