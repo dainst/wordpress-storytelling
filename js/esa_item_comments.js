@@ -64,11 +64,11 @@
                 toggle_buttons("form")
             });
             $(this).on('click', '.esa-item-comments-button.change-page', function(e) {
-                console.log(this);
-                console.log(e);
+                // console.log(this);
+                // console.log(e);
                 get_comments($(this).data("esa-comment-page"));
             });
-            console.log(esaItemCommentsOptions);
+
             if (isTrue(esaItemCommentsOptions.tab_list_open)) {
                 toggle_buttons("list");
             } else if (isTrue(esaItemCommentsOptions.tab_form_open)) {
