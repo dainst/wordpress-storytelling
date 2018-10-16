@@ -401,3 +401,7 @@
 .esa-module-buttons {
 	margin-top: 0.1em
 }
+
+.esa-hide {
+	display: none !important
+}

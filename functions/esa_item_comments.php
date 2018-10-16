@@ -18,7 +18,10 @@ function esa_get_module_scripts_comments() {
         array('jquery')
     );
 
-    wp_localize_script('esa_item_comments.js', 'esaItemCommentsL10n', array());
+    wp_localize_script('esa_item_comments.js', 'esaItemCommentsOptions', array(
+        "tab_list_open" => esa_get_settings('modules', 'comments', 'tab_list_open'),
+        "tab_form_open" => esa_get_settings('modules', 'comments', 'tab_form_open'),
+    ));
     wp_add_inline_script('esa_item_comments.js', "var ajaxurl = '" . admin_url('admin-ajax.php') . "';", "before");
 }
 
@@ -31,21 +34,23 @@ function esa_get_module_content_comments($esa_item) {
 
     $esa_style = esa_get_settings('modules', 'comments', 'esa_style') ? 'esa' : '';
 
+    $list_visibility = (($wrapper->comment_status !== 'open') and ($comment_count == 0)) ? 'esa-hide' : '';
+    $form_visibility = ($wrapper->comment_status !== 'open') ? 'esa-hide' : '';
+
     ob_start();
 
     echo "<span class='esa-item-comments $esa_style' data-esa-item-wrapper-id='{$wrapper->ID}'>";
     echo "<div class='esa-item-comments-buttons esa-module-buttons'>";
-    echo "<button class='esa-item-comments-button show-comments' aria-expanded='false' title='$comment_count_s' />$comment_count</button>";
-    // TODO if current user can
+    echo "<button class='esa-item-comments-button show-comments $list_visibility' aria-expanded='false' title='$comment_count_s' />$comment_count</button>";
     $label = __( 'Add new Comment' );
-    echo "<button class='esa-item-comments-button show-form' aria-expanded='false' title='$label' /></button>";
+    echo "<button class='esa-item-comments-button show-form $form_visibility' aria-expanded='false' title='$label' /></button>";
     echo "</div>";
 
     echo "<div class='esa-separator'></div>";
-    echo "<div class='esa-item-comments-list'><!-- filled with ajax --></div>";
+    echo "<div class='esa-item-comments-list $list_visibility'><!-- filled with ajax --></div>";
 
 
-    echo "<div class='esa-item-comments-form'>";
+    echo "<div class='esa-item-comments-form $form_visibility'>";
     comment_form(array(
         "must_log_in" => false
     ), $wrapper->ID);
@@ -59,6 +64,7 @@ function esa_get_module_content_comments($esa_item) {
 function esa_get_module_settings_comments() {
     return array(
         'label' => "Comments on Esa-Items",
+        'info' => "More Settings on Comments see <a href='options-writing.php'>" . __('Settings') . ' > ' . __('Writing')  . "</a>",
         'children' => array(
             // is the comment feature active
             'activate' => array(
@@ -69,7 +75,17 @@ function esa_get_module_settings_comments() {
             'open_by_default' => array(
                 'default' => true,
                 'type' => 'checkbox',
-                'label' => "Comment function is open for every Esa-Item by Default"
+                'label' => "Allow commenting on all Esa-Items, unaware of their individual comment-status"
+            ),
+            'tab_list_open' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "open Comment-List for each Esa-Item on page load"
+            ),
+            'tab_form_open' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => "open Comment-Form  for each Esa-Item on page load"
             ),
             'esa_style' => array(
                 'default' => true,
@@ -122,6 +138,10 @@ function esa_comment_list() {
         echo "</td></tr></table>";
     }
 
+    if ($comment_count == 0) {
+        echo "<p>" . __( 'No comments found.' ) . "</p>";
+    }
+
     wp_die();
 }
 
@@ -131,7 +151,7 @@ add_filter('wp_insert_post_data', function($data) {
         $data['comment_status'] =
             (esa_get_settings('modules', 'comments', 'comments_open_by_default') and esa_get_settings('modules', 'comments', 'activate'))
                 ? 'open'
-                : 'close';
+                : $data['comment_status'];
     }
 
     return $data;

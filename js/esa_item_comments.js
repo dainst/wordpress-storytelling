@@ -1,6 +1,10 @@
 (function ($) {
     $.fn.esa_item_comments = function(options) {
 
+        function isTrue(value) {
+            return (["on", "On", "true", true, 1, "1"].indexOf(value) !== -1);
+        }
+
         return this.each(function() {
 
             var esa_item_show_comments = $(this).find('.esa-item-comments-button.show-comments');
@@ -64,8 +68,13 @@
                 console.log(e);
                 get_comments($(this).data("esa-comment-page"));
             });
+            console.log(esaItemCommentsOptions);
+            if (isTrue(esaItemCommentsOptions.tab_list_open)) {
+                toggle_buttons("list");
+            } else if (isTrue(esaItemCommentsOptions.tab_form_open)) {
+                toggle_buttons("form");
+            }
 
-            toggle_buttons("list");
         });
     };
 }(jQuery));

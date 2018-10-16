@@ -128,6 +128,10 @@ function esa_settings_features($settings_set = false, $parent = "esa_settings", 
             $all_settings_names = array_merge(esa_settings_features($setting['children'], $name,$level + 1), $all_settings_names);
         }
 
+        if (isset($setting['info'])) {
+            echo "<p>{$setting['info']}</p>";
+        }
+
         echo "</li>";
 
     }

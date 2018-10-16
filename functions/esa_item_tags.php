@@ -210,7 +210,7 @@ function get_esa_item_tag_box($esaItem) {
     <div class="esa-item-tags tagsdiv" id="esa_post_tag-<?php echo $wrapper->ID ?>" data-esa-item-wrapper-id="<?php echo $wrapper->ID ?>">
         <div class="jaxtag">
 
-            <textarea name="tax_input[post_tag]" rows="3" cols="20" class="hide the-tags" <?php disabled(!$user_can_assign_terms); ?> autocomplete="off">
+            <textarea name="tax_input[post_tag]" rows="3" cols="20" class="esa-hide the-tags" <?php disabled(!$user_can_assign_terms); ?> autocomplete="off">
                 <?php echo str_replace(',', $comma . ' ', $terms_to_edit); ?>
             </textarea>
 

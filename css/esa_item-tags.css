@@ -262,11 +262,3 @@ input.ui-autocomplete-input.open {
     background: #CCC;
     color: lightcyan;
 }
-
-.esa-item-tags .hide {
-    display: none !important
-}
-
-.esa-item-tags .separator {
-    clear: both
-}
