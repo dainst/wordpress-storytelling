@@ -154,6 +154,8 @@
     white-space: nowrap;
     cursor: pointer;
     position: relative;
+    font-weight: 400;
+    line-height: 1.7;
 }
 
 .esa-item-tags .wp-tag-cloud > li a {

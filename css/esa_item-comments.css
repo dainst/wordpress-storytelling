@@ -84,6 +84,7 @@
     color: black
 }
 
+.esa-item-comments.esa .logged-in-as a,
 .esa-item-comments.esa .edit-link,
 .esa-item-comments.esa .edit-link a {
     text-decoration: none !important;
