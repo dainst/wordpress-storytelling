@@ -1,9 +1,9 @@
 .esa-item-comments .esa-item-comments-list,
 .esa-item-comments .esa-item-comments-form {
     display: none;
-    padding: 20px;
+    padding: 7px;
     margin-top: 3px;
-    background: rgba(200, 200, 200, 0.1);
+    background: rgba(200, 200, 200, 0.3);
 }
 
 .esa-item-comments .esa-item-comments-buttons {

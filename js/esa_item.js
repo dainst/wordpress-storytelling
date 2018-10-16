@@ -25,36 +25,15 @@
             //console.log('init', this_esa_item);
 
             $(this_esa_item).on('mouseenter', function() {
-        		jQuery(this_esa_item).find('.esa_item_resizebar').fadeIn('slow');		
+        		jQuery(this_esa_item).find('.esa_item_tools').fadeIn('slow');
+        		jQuery(this_esa_item).find('.esa_item_resizebar').fadeIn('slow');
             });
 
             $(this_esa_item).on('mouseleave', function() {
+            	jQuery(this_esa_item).find('.esa_item_tools').fadeOut('slow');
             	jQuery(this_esa_item).find('.esa_item_resizebar').fadeOut('slow');
             });
 
-            $(this_esa_item).on('mouseenter', '.esa_item_tools a', function(e) {
-            	var tooltip = jQuery('<div>', {
-            		class: 'esa_item_tooltip'
-            	}).text(jQuery(this).attr('title'));
-            	jQuery(this).after(tooltip);
-            	
-            	var fullwidth = tooltip.width() + 14;
-            	tooltip.css({
-            		display: 'block',
-            		width : '0px'
-            	});
-            	tooltip.animate({
-            		width: fullwidth
-            	}, 'slow');
-            });
-
-            $(this_esa_item).on('mouseleave', '.esa_item_tools a', function(e) {
-
-            	$(this_esa_item).find('.esa_item_tooltip').toggle('fast', function() {
-            		jQuery(this).remove();
-            	});
-            	
-            });
 
             $(this_esa_item).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
             	var thisItem = $(this_esa_item);
@@ -68,7 +47,7 @@
             		var mediaBoxes = thisItem.find('.esa_item_media_box');
             		//console.log('rearragane', mediaBoxes);
             		
-            		if (mediaBoxes.length == 0) {
+            		if (mediaBoxes.length === 0) {
             			return;
             		}
             		

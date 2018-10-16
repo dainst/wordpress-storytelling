@@ -1,16 +1,15 @@
+@CHARSET "UTF-8";
 /**
  * @package 	eagle-storytelling
  * @subpackage	Search in Datasources | esa_item CSS
  * @link 		http://www.eagle-network.eu/stories/
  * @author 		Philipp Franck
  */
-@CHARSET "UTF-8";
-
 
 
 /* esa item is important! its the visual interpretation of our shortcodes */
 .esa_item {
-	background-color: rgba(200, 200, 200, 0.1);
+	background-color: rgba(200, 200, 200, 0.3);
 	min-width: 190px;
 	min-height: 190px;
 	position: relative;
@@ -18,15 +17,15 @@
 	margin-bottom: 3px;
 	overflow: hidden;
 	font-family: "Open Sans",Arial,sans-serif;
-	
+
 }
 
 .esa_item:hover {
-	background-color: #CCC;
+    background-color: rgba(200, 200, 200, 0.2);
 }
 
 .esa_item_inner {
-	padding: 20px;
+	padding: 7px;
 }
 
 .esa_item_collapsed {
@@ -38,73 +37,92 @@
 .esa_item_right {
 	float: left;
 	margin-right: 3px;
-	margin-left: 0px;
+	margin-left: 0;
 }
 
 .esa_item_left {
 	float: right;
 	margin-left: 3px;
-	margin-right: 0px;
+	margin-right: 0;
 }
 
 /* -- */
 
 .esa_item_tools {
 	position: absolute;
-	border: 1px solid #A0A5AA;
 	border-radius: 2px;
-	right: 1em;
+	right: 7px;
 	display: none;
 	z-index: 10000;
 	padding: 2px;
-	background: #F5F5F5;
-	margin-top: 1em
+	margin-top: 7px
 }
 
 .esa_item_tools a {
-	display: block;
-	background: #F5F5F5;
-	height: 28px;
-	width: 28px;
-	color: rgba(0,0,0,0);
 	cursor: pointer;
-	float: right;
-	padding: 1px
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	padding: 0 0 0 4px;
+	border-radius: 12px;
+	vertical-align: middle;
+	height: 22px;
+	color: black;
+	background: lightgray;
+	font-family: sans-serif;
+	font-size: 12px !important;
+	font-weight: normal;
+	border: 1px solid lightgray;
+	text-transform: none;
+    margin-left: 2px;
+    line-height: 1;
+    box-shadow: none !important;
+    -moz-box-shadow: none !important;
 }
 
-.esa_item_tools a.esa_item_tools_originurl  {
-	background: url('../images/eye.png') center center no-repeat white;
+.esa_item_tools a:before {
+	font: normal 16px/20px dashicons;
+	text-align: center;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	vertical-align: middle;
+	display: inline-block;
+	color: #72777c;
+	top: 0;
 }
 
-.esa_item_tools a.esa_item_tools_find {
-	background: url('../images/find.png') center center no-repeat white;
-}
-/*
 .esa_item_tools a:hover {
-	border: 1px solid #A0A5AA;
-	border-radius: 2px;
-	padding: 0px
-}
-*/
-.esa_item_tools a.esa_item_tools_originurl {
-	background: url('../images/eye.png') center center no-repeat white;
+    background: rgba(200, 200, 200, 0.1);
+    border-color: lightgray;
 }
 
-.esa_item_tools a.esa_item_tools_edit {
-	background: url('../images/edit.png') center center no-repeat white;
+.esa_item_tools a:hover:before {
+    color: green;
 }
 
-.esa_item_tools a.esa_item_tools_featured {
-	background: url('../images/featured.png') center center no-repeat white;	
+.esa_item_tools a:focus {
+    outline: none;
 }
 
-.esa_item_tools a.esa_item_tools_delete {
-	background: url('../images/delete.png') center center no-repeat white;	
+.esa_item_tools a:focus:before {
+    color: black
 }
 
-.esa_item_tools a.esa_item_tools_expand {
-	background: url('../images/expand.png') center center no-repeat white;	
+.esa_item_tools a:focus:hover:before {
+    color: black
 }
+
+.esa_item_tools a.esa_item_tools_originurl:before  {
+	content: "\f103"
+}
+
+.esa_item_tools a.esa_item_tools_find:before {
+	content: "\f179"
+}
+.esa_item_tools a.esa_item_tools_expand:before {
+	content: "\f211";
+}
+
 
 
 .esa_item_tools a:focus {
