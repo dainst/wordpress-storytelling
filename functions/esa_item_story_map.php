@@ -18,7 +18,7 @@ function wp_ajax_esa_get_overview_map() {
 
     global $wpdb;
 
-    $post_types = "'" . implode("', '", esa_get_settings('post_types')) . "'";
+    $post_types = "'" . implode("', '", esa_get_post_types()) . "'";
 
     $sql = "
             select

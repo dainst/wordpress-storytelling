@@ -52,12 +52,13 @@ add_filter('query_vars', function($public_query_vars) {
 
 add_filter('posts_search', function($sql, $query) {
 
-    $sqlr = "";
-    $story = false;
-
     if (!$query->is_main_query()) {
         return $sql;
     }
+
+    $post_types = "'" . implode("', '", esa_get_post_types()) . "'";
+    $sqlr = "";
+    $story = false;
 
     global $wp_query;
     global $wpdb;
@@ -71,7 +72,7 @@ add_filter('posts_search', function($sql, $query) {
 
     if (isset($wp_query->query['s']) and ($wp_query->query['s'] != '')) {
         $where = "\n\t esai.searchindex like '%{$wp_query->query['s']}%'";
-        $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where)) or (1 = 1 $sql))";
+        $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where) and {$wpdb->prefix}posts.post_type in ($post_types)) or (1 = 1 $sql))";
     }
     if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])
         and $wp_query->query['esa_item_source'] and $wp_query->query['esa_item_id']) {
@@ -80,14 +81,33 @@ add_filter('posts_search', function($sql, $query) {
             $sqlr = "AND {$wpdb->prefix}posts.ID in ($sqst $where)";
     }
 
-    if ((isset($wp_query->query['post_type']) && !in_array($wp_query->query['post_type'], esa_get_settings('post_types')))
+    if ((isset($wp_query->query['post_type']) and !in_array($wp_query->query['post_type'], esa_get_post_types()))
         or (!$sql and !$story)) {
             return $sql;
     }
 
-    //echo '<pre style="border:1px solid red; background: silver">', $sql, '</pre>';
-    //echo '<pre style="border:1px solid red; background: silver">', print_r($sqlr, 1), '</pre>';
-
     return $sqlr;
 
 }, 10, 2);
+
+function esa_get_module_settings_search() {
+    return array(
+        'label' => 'Include Esa-Items to search',
+        'info' => '',
+        'children' => array(
+            'activate' => array(
+                'default' => true,
+                'type' => 'checkbox',
+                'label' => 'Show both, posts which contain Esa-Items and Esa-Items themselves in search results',
+            )
+        )
+    );
+}
+
+function esa_get_module_content_search() {
+    // nothing, but function must exist
+}
+
+function esa_get_module_scripts_search() {
+    // nothing, but function must exist
+}
