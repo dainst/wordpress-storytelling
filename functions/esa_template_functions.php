@@ -16,7 +16,7 @@ function is_esa($post_type = false) {
         global $post;
         $post_type = (is_object($post)) ? $post->post_type : '';
     }
-    return (in_array($post_type, esa_get_settings('post_types'))) or $is_esa_story_page;
+    return (in_array($post_type, esa_get_post_types())) or $is_esa_story_page;
 }
 
 /**
@@ -37,4 +37,13 @@ function get_esa_datasource($engine) {
     require_once(ESA_PATH . "datasources/$engine.class.php");
     $ed_class = "\\esa_datasource\\$engine";
     return new $ed_class;
+}
+
+
+function esa_debug($whatver) {
+    ob_start();
+    echo "<pre>";
+    var_dump($whatver);
+    echo "</pre>";
+    return ob_get_clean();
 }
