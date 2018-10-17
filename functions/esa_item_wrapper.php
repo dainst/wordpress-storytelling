@@ -26,12 +26,12 @@ add_action('admin_enqueue_scripts', function($hook) {
 
 
 function esa_item_wrapper_edit_ui($item) {
-    add_meta_box('esa_item_wrapper_preview', $item->post_content, 'esa_item_wrapper_preview', null, 'normal', 'high');
+    add_meta_box('esa_item_wrapper_preview', $item->post_excerpt, 'esa_item_wrapper_preview', null, 'normal', 'high');
     add_meta_box('esa_item_wrapper_tags', "Tags", 'esa_item_wrapper_tags', null, 'side');
 }
 
 function esa_item_wrapper_preview($item) {
-    echo do_shortcode($item->post_content);
+    echo do_shortcode(html_entity_decode($item->post_excerpt));
 }
 
 function esa_item_wrapper_tags($item) {
@@ -82,7 +82,7 @@ function get_esa_item_wrapper($esaItem) {
             'post_title' => $esaItem->title ? $esaItem->title : '',
             'post_type' => 'esa_item_wrapper',
             'post_status' => 'publish',
-            'post_excerpt' => "[esa source='{$esaItem->source}' id='{$esaItem->id}']"
+            'post_excerpt' => "[esa source=\"{$esaItem->source}\" id=\"{$esaItem->id}\"]"
         )));
         $wpdb->insert(
             $wpdb->prefix . 'esa_item_to_post',
