@@ -56,8 +56,6 @@ function esa_shortcode($atts, $context) {
 
     $content = $item->html(true);
 
-
-
     if (!is_admin()) {
         foreach(esa_get_modules() as $mod) {
             $content .= call_user_func("esa_get_module_content_$mod", $item);
