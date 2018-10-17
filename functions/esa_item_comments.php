@@ -1,6 +1,21 @@
 <?php
 
+add_action('init', function() {
+    add_action('wp_ajax_esa-comment-list', 'esa_comment_list', 1);
+    add_action('wp_ajax_nopriv_esa-comment-list', 'esa_comment_list', 1);
+});
 
+
+add_filter('wp_insert_post_data', function($data) {
+    if($data['post_type'] == 'esa_item_wrapper') {
+        $data['comment_status'] =
+            (esa_get_settings('modules', 'comments', 'comments_open_by_default') and esa_get_settings('modules', 'comments', 'activate'))
+                ? 'open'
+                : $data['comment_status'];
+    }
+
+    return $data;
+});
 
 function esa_get_module_scripts_comments() {
 
@@ -27,7 +42,7 @@ function esa_get_module_scripts_comments() {
 
 function esa_get_module_content_comments($esa_item) {
 
-    $wrapper = get_esa_item_wrapper($esa_item);
+    $wrapper = esa_get_wrapper($esa_item);
 
     $comment_count = get_comments_number($wrapper->ID);
     $comment_count_s = sprintf(_n('%s Comment', '%s Comments', $comment_count), $comment_count);
@@ -145,19 +160,10 @@ function esa_comment_list() {
     wp_die();
 }
 
-
-add_filter('wp_insert_post_data', function($data) {
-    if($data['post_type'] == 'esa_item_wrapper') {
-        $data['comment_status'] =
-            (esa_get_settings('modules', 'comments', 'comments_open_by_default') and esa_get_settings('modules', 'comments', 'activate'))
-                ? 'open'
-                : $data['comment_status'];
-    }
-
-    return $data;
-});
-
-add_action('init', function() {
-    add_action('wp_ajax_esa-comment-list', 'esa_comment_list', 1);
-    add_action('wp_ajax_nopriv_esa-comment-list', 'esa_comment_list', 1);
-});
+function esa_get_module_store_shortcode_action_comments($post, $attrs) {
+    $item = new esa_item($attrs['source'], $attrs['id']);
+    ob_start();
+    $item->html();
+    ob_end_clean();
+    esa_get_wrapper($item);
+}

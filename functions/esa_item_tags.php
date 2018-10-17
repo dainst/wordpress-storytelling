@@ -201,7 +201,7 @@ function update_esa_tags() {
 }
 
 function get_esa_item_tag_box($esaItem) {
-    $wrapper = get_esa_item_wrapper($esaItem);
+    $wrapper = esa_get_wrapper($esaItem);
     ob_start();
     $taxonomy = get_taxonomy('post_tag');
     $user_can_assign_terms = esa_get_settings('modules', 'tags', 'visitor_can_add') or current_user_can($taxonomy->cap->assign_terms);
@@ -259,4 +259,10 @@ function esa_tag_cloud() {
 
 function esa_get_module_content_tags($esaItem) {
     return get_esa_item_tag_box($esaItem);
+}
+
+function esa_get_module_store_shortcode_action_tags($post, $attrs) {
+    $item = new esa_item($attrs['source'], $attrs['id']);
+    $item->html();
+    esa_get_wrapper($item);
 }

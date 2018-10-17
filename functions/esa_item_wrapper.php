@@ -55,11 +55,16 @@ function esa_register_esa_item_wrapper() {
             'comments'
         ),
         "taxonomies" => array("post_tags"),
-        "register_meta_box_cb" => "esa_item_wrapper_edit_ui"
+        "register_meta_box_cb" => "esa_item_wrapper_edit_ui",
+        'capability_type' => 'post',
+        'capabilities' => array(
+            'create_posts' => 'do_not_allow', // false < WP 4.5
+        ),
+        'map_meta_cap' => true,
     ));
 }
 
-function get_esa_item_wrapper($esaItem) {
+function esa_get_wrapper($esaItem) {
 
     if (!count(esa_get_modules())) {
         return;

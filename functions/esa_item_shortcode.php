@@ -127,3 +127,32 @@ add_action('wp_ajax_esa_url_checker', function() {
         'message' => 'no esa url'
     ));
 });
+
+add_action('save_post', function($post_id) {
+
+    $post = get_post($post_id);
+    global $wpdb;
+
+    if (!wp_is_post_revision($post_id) and is_esa($post->post_type)) {
+
+        $regex = get_shortcode_regex();
+        preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
+
+        $sql = "delete from {$wpdb->prefix}esa_item_to_post where post_id=$post_id";
+        $wpdb->query($sql);
+
+        if ($shortcodes) {
+
+            foreach($shortcodes as $shortcode) {
+                if ($shortcode[2] == 'esa') {
+                    $atts = shortcode_parse_atts($shortcode[3]);
+
+                    foreach(esa_get_modules() as $mod) {
+                        call_user_func("esa_get_module_store_shortcode_action_$mod", $post, $atts);
+                    }
+
+                }
+            }
+        }
+    }
+});

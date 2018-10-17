@@ -6,43 +6,7 @@
  * Make search able to search inside of esa_item_cache to find entries by it's content in esa item.
  */
 
-add_action('save_post', function($post_id) {
 
-    $post = get_post($post_id);
-    global $wpdb;
-
-    if (!wp_is_post_revision($post_id) and is_esa($post->post_type)) {
-
-        $regex = get_shortcode_regex();
-        preg_match_all("#$regex#s", $post->post_content, $shortcodes, PREG_SET_ORDER);
-
-        //echo "<pre>", print_r($shortcodes,1), "</pre>";
-
-        $sql = "delete from {$wpdb->prefix}esa_item_to_post where post_id=$post_id";
-        $wpdb->query($sql);
-
-        if ($shortcodes) {
-
-            foreach($shortcodes as $shortcode) {
-                if ($shortcode[2] == 'esa') {
-                    $atts = shortcode_parse_atts($shortcode[3]);
-                    // echo "<pre>", print_r($atts,1), "</pre>";
-
-                    $wpdb->insert(
-                        $wpdb->prefix . 'esa_item_to_post',
-                        array(
-                            "post_id" => $post_id,
-                            "esa_item_source" => $atts['source'],
-                            "esa_item_id" => $atts['id']
-                        )
-                    );
-
-
-                }
-            }
-        }
-    }
-});
 
 add_filter('query_vars', function($public_query_vars) {
     $public_query_vars[] = 'esa_item_source';
@@ -110,4 +74,16 @@ function esa_get_module_content_search() {
 
 function esa_get_module_scripts_search() {
     // nothing, but function must exist
+}
+
+function esa_get_module_store_shortcode_action_search($post, $atts) {
+    global $wpdb;
+    $wpdb->insert(
+        $wpdb->prefix . 'esa_item_to_post',
+        array(
+            "post_id" => $post->ID,
+            "esa_item_source" => $atts['source'],
+            "esa_item_id" => $atts['id']
+        )
+    );
 }
