@@ -60,8 +60,7 @@ class esa_item {
 		if ($return) {
 			ob_start();
 		}
-		
-		
+
 		if (!$this->html) {
 			$this->_generator();
 		}
@@ -110,9 +109,9 @@ class esa_item {
 	 * generates the html-representation of this item using the corresponding engine 
 	 */
 	private function _generator() {
-		
+
 		if (!$this->source or !$this->id) {
-			return $this->_error("id ($this->id) or source  ($this->source) missing!");
+			return $this->_error("Error: id ($this->id) or source ($this->source) missing!");
 		}
 		
 		// check: is data allready in cache?
@@ -133,11 +132,12 @@ class esa_item {
 		}
 		
 		// no then, generate content with corresponding interface
-		if (!$this->source or !file_exists(plugin_dir_path(__FILE__) . "datasources/{$this->source}.class.php")) {
-			return $this->_error("Error: Search engine {$this->source} not found!");
+        $file_name = ESA_PATH . "datasources/{$this->source}.class.php";
+		if (!$this->source or !file_exists($file_name)) {
+			return $this->_error("Error: Search engine {$this->source} not found! (File: $file_name)");
 		}
-		
-		require_once(plugin_dir_path(__FILE__) . "datasources/{$this->source}.class.php");
+
+		require_once($file_name);
 		$ed_class = "\\esa_datasource\\{$this->source}";
 		$eds = new $ed_class;
 		try {
