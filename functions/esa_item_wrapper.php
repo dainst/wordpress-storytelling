@@ -57,22 +57,33 @@ function esa_register_esa_item_wrapper() {
 
 function get_esa_item_wrapper($esaItem) {
 
+    global $wpdb;
+
     $id = sanitize_title($esaItem->id . "---" . $esaItem->source);
 
     $wrappers = get_posts(array(
         'post_type' => 'esa_item_wrapper',
-        'title' => $id,
+        'name' => $id,
         'post_status' => 'publish',
         'posts_per_page' => -1
     ));
 
     if (!count($wrappers)) {
         $wrapper = get_post(wp_insert_post(array(
-            'post_title' => $id,
+            'post_name' => $id,
+            'post_title' => $esaItem->title ? $esaItem->title : '',
             'post_type' => 'esa_item_wrapper',
             'post_status' => 'publish',
-            'post_content' => "[esa source='{$esaItem->source}' id='{$esaItem->id}']"
+            'post_excerpt' => "[esa source='{$esaItem->source}' id='{$esaItem->id}']"
         )));
+        $wpdb->insert(
+            $wpdb->prefix . 'esa_item_to_post',
+            array(
+                "post_id" => $wrapper->ID,
+                "esa_item_source" => $esaItem->source,
+                "esa_item_id" => $esaItem->id
+            )
+        );
     } else {
         $wrapper = array_pop($wrappers);
         foreach ($wrappers as $item) {

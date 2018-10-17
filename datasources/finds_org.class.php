@@ -136,7 +136,7 @@ namespace esa_datasource {
 				//ec61fa899e8748c5afdfbc7a5f4f97fe
 			}
 			
-			return new \esa_item('finds_org', $item->id, $data->render(), $this->api_record_url($item->id), array(), array(), $latitude, $longitude);
+			return new \esa_item('finds_org', $item->id, $data->render(), $this->api_record_url($item->id), $data->title, array(), array(), $latitude, $longitude);
 		}
 		
 		private function _list() {

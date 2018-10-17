@@ -52,8 +52,8 @@ add_filter('query_vars', function($public_query_vars) {
 
 add_filter('posts_search', function($sql, $query) {
 
-    $args = func_get_args();
     $sqlr = "";
+    $story = false;
 
     if (!$query->is_main_query()) {
         return $sql;
@@ -75,13 +75,16 @@ add_filter('posts_search', function($sql, $query) {
     }
     if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])
         and $wp_query->query['esa_item_source'] and $wp_query->query['esa_item_id']) {
-        $story = true;
-        $where = "esai.id = '{$wp_query->query['esa_item_id']}' and esai.source = '{$wp_query->query['esa_item_source']}'";
-        $sqlr = "AND {$wpdb->prefix}posts.ID in ($sqst $where)";
+            $story = true;
+            $where = "esai.id = '{$wp_query->query['esa_item_id']}' and esai.source = '{$wp_query->query['esa_item_source']}'";
+            $sqlr = "AND {$wpdb->prefix}posts.ID in ($sqst $where)";
     }
 
+    if ((isset($wp_query->query['post_type']) && !in_array($wp_query->query['post_type'], esa_get_settings('post_types')))
+        or (!$sql and !$story)) {
+            return $sql;
+    }
 
-    //echo "<pre>"; print_r($wp_query->query); die($sql);
     //echo '<pre style="border:1px solid red; background: silver">', $sql, '</pre>';
     //echo '<pre style="border:1px solid red; background: silver">', print_r($sqlr, 1), '</pre>';
 

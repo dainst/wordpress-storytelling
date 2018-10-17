@@ -159,7 +159,7 @@ namespace esa_datasource {
 						'title' 	=> $doc->title
 					));
 				}
-				$this->results[] = new \esa_item('ancient_eu', $doc->id, $data->render(), $url);
+				$this->results[] = new \esa_item('ancient_eu', $doc->id, $data->render(), $url, $data->title);
 			}
 						
 			// pagination

@@ -111,7 +111,7 @@ namespace esa_datasource {
 				
 				
 					
-				$this->results[] = new \esa_item(__source__, __id__, $data->render(), __url__);
+				$this->results[] = new \esa_item(__source__, __id__, $data->render(), __url__, __title__);
 			}
 			
 			// pagination

@@ -15,8 +15,10 @@ class esa_item {
 	public $errors = array(); //collect errors for debug purpose
 	
 	public $id; // unique id from whatever datasource this item  is from
-	public $source; // itentifier of the datasource (correspondets with class names in esa_datasource namespace)
+	public $source; // identifier of the datasource (correspondents with class names in esa_datasource namespace)
 	public $url; // URI / URL wich lead to the original dataset (displayed in the original webpage)
+
+    public $title;
 
 	public $latitude; // if the item is geographically localizable
 	public $longitude;
@@ -26,13 +28,14 @@ class esa_item {
 	public $classes = array(); // additional classes of this item
 	public $css = array(); // additional css of this item
 	
-	public function __construct($source, $id, $html = '', $url = '', $classes = array(), $css = array(), $latitude = null, $longitude = null) {
+	public function __construct($source, $id, $html = '', $url = '', $title = '', $classes = array(), $css = array(), $latitude = null, $longitude = null) {
 		$this->id = $id;
 		$this->source = $source;
 		$this->html = $html;	
 		$this->classes = $classes;
 		$this->css = $css;
-		
+		$this->title = $title;
+
 		if ($latitude and $longitude) {
 			$this->latitude  = $latitude;
 			$this->longitude = $longitude;
@@ -121,6 +124,7 @@ class esa_item {
 			$this->classes[] = 'esa_item_cached';
 			$this->html = $cached->content;
 			$this->url = $cached->url;
+            $this->title = $cached->title;
 			$this->latitude = $cached->latitude;
 			$this->longitude = $cached->longitude;
 			if (!$cached->expired) {
@@ -140,6 +144,7 @@ class esa_item {
 			$generated = $eds->get($this->id);
 			$this->url = $generated->url;
 			$this->html = $generated->html;
+			$this->title = $generated->title;
 			$this->latitude = $generated->latitude;
 			$this->longitude = $generated->longitude;
 			$this->store($cached);
@@ -166,6 +171,7 @@ class esa_item {
 					'searchindex' => strip_tags($this->html), 
 					'timestamp' => current_time('mysql'),
 					'url' => $this->url,
+					'title' => $this->title,
 					'latitude' => $this->latitude,
 					'longitude' => $this->longitude
 				),
@@ -184,6 +190,7 @@ class esa_item {
 					'searchindex' => strip_tags($this->html),
 					'timestamp' => current_time('mysql'),
 					'url' => $this->url,
+                    'title' => $this->title,
 					'latitude' => $this->latitude,
 					'longitude' => $this->longitude
 				)

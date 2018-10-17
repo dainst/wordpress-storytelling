@@ -283,7 +283,7 @@ namespace esa_datasource {
 				
 				$id = (isset($page->dnetresourceidentifier)) ? $page->dnetresourceidentifier : $obj->dnetResourceIdentifier; //wtf
 				
-				$this->results[] = new \esa_item('eagle', $id, $data->render(), $page->landingpage);
+				$this->results[] = new \esa_item('eagle', $id, $data->render(), $page->landingpage, $data->title);
 				//break;
 			}
 			

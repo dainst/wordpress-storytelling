@@ -213,9 +213,6 @@ namespace esa_datasource {
 					'id'		=> $item->identifier . '-' . $source
 				));
 			}
-
-			
-
 	
 			if (isset($item->place_category)) {
 				$data->addTable('place_category', strtolower(str_replace('_', ' ', $item->place_category)));
@@ -244,7 +241,7 @@ namespace esa_datasource {
 			
 			$source_url = $type_map[$item->object_type] . '/' . urlencode($item->identifier);
 	
-			return new \esa_item('pelagios', $source_url, $data->render(), $record_url, array(), array(), $latitude, $longitude);
+			return new \esa_item('pelagios', $source_url, $data->render(), $record_url, $data->title, array(), array(), $latitude, $longitude);
 			
 				
 		}

@@ -83,7 +83,17 @@ namespace esa_datasource {
 			if (count((array) $response->query->pages)) {
 				foreach ($response->query->pages as $pageId => $page) {
 					$data = $this->fetch_information($page);
-					$this->results[] = new \esa_item('commons', $pageId, $data->render(), $page->imageinfo[0]->descriptionurl, array(), array(), $data->latitude, $data->longitude);
+					$this->results[] = new \esa_item(
+					    'commons',
+                        $pageId,
+                        $data->render(),
+                        $data->title,
+                        $page->imageinfo[0]->descriptionurl,
+                        array(),
+                        array(),
+                        $data->latitude,
+                        $data->longitude
+                    );
 				}				
 			}
 

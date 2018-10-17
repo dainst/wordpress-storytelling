@@ -87,7 +87,7 @@ namespace esa_datasource {
 			$this->results = array(); 
 			foreach ($response->items as $item) {
 				$data = $this->_item2html($item, $item->id);
-				$this->results[] = new \esa_item('europeana', $item->id, $data->render(), $item->guid, array(), array(), $data->latitude, $data->longitude);
+				$this->results[] = new \esa_item('europeana', $item->id, $data->render(), $item->guid, $data->title, array(), array(), $data->latitude, $data->longitude);
 			}
 			
 			// set up pagination data
@@ -112,7 +112,7 @@ namespace esa_datasource {
 			}
 			
 			$data = $this->_item2html($response->object, $this->id);
-			return new \esa_item('europeana', $this->id, $data->render(), $this->api_record_url($this->id), array(), array(), $data->latitude, $data->longitude);
+			return new \esa_item('europeana', $this->id, $data->render(), $this->api_record_url($this->id), $data->title, array(), array(), $data->latitude, $data->longitude);
 			
 		}
 		
@@ -137,9 +137,6 @@ namespace esa_datasource {
 			$data->title = $item->title[0];
 			
 			// images
-			
-			
-			
 			$thumbnails = isset($item->edmPreview) ?
 				$item->edmPreview : (
 				isset($item->europeanaAggregation->edmPreview) ?

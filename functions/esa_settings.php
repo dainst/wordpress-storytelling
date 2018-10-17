@@ -1,7 +1,7 @@
 <?php
 
 $esa_settings = array(
-    'post_types' => array('post', 'page'), // post types which can contain embedded content (esa items)
+    'post_types' => array('post', 'page', 'esa_item_wrapper'), // post types which can contain embedded content (esa items)
     'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
     'modules' => array('tags', 'comments'),
     'script_suffix' => ""

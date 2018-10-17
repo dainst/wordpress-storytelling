@@ -139,10 +139,11 @@ namespace esa_datasource {
 			$id = $page->title . '@' . $this->params['lang'];
 
 			if (!isset($page->fullurl)) {
-                die("!!!!!!!!!!!!!1<pre>" . print_r($page,1) . "</pre>");
+			    return null;
+                //die("!!!!!!!!!!!!!1<pre>" . print_r($page,1) . "</pre>");
             }
 
-			return new \esa_item('wiki', $id, $data->render(), $page->fullurl);
+			return new \esa_item('wiki', $id, $data->render(), $page->fullurl, $data->title);
 		}
 		
 		function parse_result($response) {

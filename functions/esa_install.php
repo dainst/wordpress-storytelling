@@ -17,6 +17,7 @@ function esa_install_esa_item_db () {
         content LONGTEXT NULL,
         searchindex TEXT NULL,
         url TEXT NULL,
+        title TEXT NULL,
         timestamp DATETIME NOT NULL,
         latitude FLOAT NULL,
         longitude FLOAT NULL,

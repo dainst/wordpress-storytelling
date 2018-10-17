@@ -21,7 +21,9 @@ add_action('init', function() {
     add_shortcode('esa', 'esa_shortcode');
 });
 
-
+add_filter('the_excerpt', function($excerpt) {
+    return do_shortcode($excerpt);
+}, 10, 1);
 
 
 function esa_shortcode($atts, $context) {
@@ -51,7 +53,7 @@ function esa_shortcode($atts, $context) {
         }
     }
 
-    $item = new esa_item($atts['source'], $atts['id'], false, false, $classes, $css);
+    $item = new esa_item($atts['source'], $atts['id'], false, false, false, $classes, $css);
 
     $content = $item->html(true);
     if (!is_admin()) {

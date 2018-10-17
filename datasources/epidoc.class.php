@@ -219,7 +219,7 @@ namespace esa_datasource {
 			
 			//$debug = '<textarea>'. print_r($data['text'], 1) . '</textarea>';
 
-			return new \esa_item('epidoc', $this->query, $debug . $data->render(), $data->url);
+			return new \esa_item('epidoc', $this->query, $data->render(), $data->url, $data->title );
 		}
 		
 		
