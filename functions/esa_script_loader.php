@@ -16,6 +16,7 @@ add_action('wp_enqueue_scripts', function() {
 
         esa_register_special_styles();
 
+        wp_enqueue_script('thickbox');
         wp_enqueue_script(
             'esa_item.js',
             plugins_url() . ESA_DIR . '/js/esa_item.js',
