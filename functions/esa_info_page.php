@@ -119,7 +119,7 @@ function esa_settings_features($settings_set = false, $parent = "esa_settings", 
             } else {
                 echo " value='{$setting['value']}'";
             }
-            echo " /><label for='$name'>$label ({$setting['value']})</label>";
+            echo " /><label for='$name'>$label</label>";
         }
 
         if (isset($setting['children']) and is_array($setting['children'])) {
