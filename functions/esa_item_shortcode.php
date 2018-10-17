@@ -27,7 +27,6 @@ add_filter('the_excerpt', function($excerpt) {
 
 
 function esa_shortcode($atts, $context) {
-    $modules = esa_get_settings("modules");
 
     if (!isset($atts['source']) or !isset($atts['id'])) {
         return "";
@@ -56,11 +55,12 @@ function esa_shortcode($atts, $context) {
     $item = new esa_item($atts['source'], $atts['id'], false, false, false, $classes, $css);
 
     $content = $item->html(true);
+
+
+
     if (!is_admin()) {
-        foreach($modules as $mod => $modSettings) {
-            if (esa_get_settings('modules', $mod, 'activate')) {
-                $content .= call_user_func("esa_get_module_content_$mod", $item);
-            }
+        foreach(esa_get_modules() as $mod) {
+            $content .= call_user_func("esa_get_module_content_$mod", $item);
         }
     }
 

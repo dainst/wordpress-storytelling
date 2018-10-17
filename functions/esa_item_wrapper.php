@@ -1,4 +1,5 @@
 <?php
+
 add_action('init', 'esa_register_esa_item_wrapper');
 
 function esa_install_register_esa_item_wrapper() {
@@ -38,6 +39,9 @@ function esa_item_wrapper_tags($item) {
 }
 
 function esa_register_esa_item_wrapper() {
+    if (!count(esa_get_modules())) {
+        return;
+    }
     register_post_type('esa_item_wrapper', array(
         "labels" => array(
             "name" => "Embedded Objects",
@@ -56,6 +60,10 @@ function esa_register_esa_item_wrapper() {
 }
 
 function get_esa_item_wrapper($esaItem) {
+
+    if (!count(esa_get_modules())) {
+        return;
+    }
 
     global $wpdb;
 
