@@ -1,10 +1,11 @@
 <?php
-
+global $esa_settings;
 $esa_settings = array(
     'post_types' => array('post', 'page'), // post types which can contain embedded content (esa items)
     'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
     'modules' => array('tags', 'comments', 'search'),
     'script_suffix' => "",
+    'settings_loaded' => false
 );
 
 add_action('init', function() {
@@ -14,6 +15,7 @@ add_action('init', function() {
         unset($esa_settings['modules'][$modNr]);
         load_settings($esa_settings['modules'], $mod, "esa_settings");
     }
+    $esa_settings['settings_loaded'] = true;
 });
 
 function load_settings(&$setting, $setting_name, $option_domain) {
@@ -54,6 +56,7 @@ function esa_get_settings() {
 }
 
 function esa_get_modules() {
+    if (!esa_get_settings('settings_loaded')) return esa_get_settings('modules'); // installation time
     return array_keys(array_filter(esa_get_settings('modules'), function($item){return $item['children']['activate']['value'];}));
 }
 

@@ -1,8 +1,5 @@
 <?php
-/**
- * ******************************************* Installation
- */
-function esa_install_esa_item_db () {
+register_activation_hook( ESA_FILE, function() {
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -43,4 +40,4 @@ function esa_install_esa_item_db () {
 
     dbDelta($sql);
 
-}
+});

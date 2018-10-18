@@ -1,11 +1,11 @@
 <?php
 
-add_action('init', 'esa_register_esa_item_wrapper');
-
-function esa_install_register_esa_item_wrapper() {
+register_activation_hook( ESA_FILE, function() {
     esa_register_esa_item_wrapper();
     flush_rewrite_rules();
-}
+});
+
+add_action('init', 'esa_register_esa_item_wrapper');
 
 
 add_action('admin_enqueue_scripts', function($hook) {
@@ -61,7 +61,10 @@ function esa_register_esa_item_wrapper() {
             'create_posts' => 'do_not_allow', // false < WP 4.5
         ),
         'map_meta_cap' => true,
+        'has_archive' => true,
+        'publicly_queryable' => true
     ));
+    flush_rewrite_rules();
 }
 
 function esa_get_wrapper($esaItem) {

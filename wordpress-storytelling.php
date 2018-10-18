@@ -64,6 +64,3 @@ require_once('functions/esa_thumpnails.php');
 require_once('functions/esa_item_wrapper.php');
 require_once('functions/esa_item_tags.php');
 require_once('functions/esa_item_comments.php');
-
-register_activation_hook( ESA_FILE, 'esa_install_esa_item_db');
-register_activation_hook( ESA_FILE, 'esa_install_register_esa_item_wrapper');
