@@ -332,6 +332,11 @@
 	padding-bottom: 0px;	
 }
 
+.esa_item_inner ul.datatable ul.datatable ul.datatable {
+	margin-left: 2em;
+	list-style-type: circle;
+}
+
 .esa_item .esa_item_text {
 	background: rgba(0,0,0,0.1);
 	/*border: 1px solid rgba(0,0,0,0.2);*/

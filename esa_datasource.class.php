@@ -270,8 +270,11 @@ namespace esa_datasource {
 			if (!is_array($this->url_parser)) {
 				$this->url_parser = array($this->url_parser);
 			}
+
 			foreach ($this->url_parser as $regex_id => $regex) {
+                error_log( "regex: " . print_r($regex,1));
 				if (preg_match($regex, $string, $match)) {
+                    error_log( "match: " . print_r($match,1));
 					return $this->api_single_url(array_pop($match), array(
 						'pasted_url' => $string,
 						'regex_id'	=> $regex_id

@@ -7,11 +7,17 @@ namespace esa_item {
 		public $images = array();
 		public $table = array();
 		public $text = array();
-		
-		
+		public $tableAsTree = false;
+
 		function addTable($key, $value) {
 			if (isset($this->table[$key])) {
-				return $this->table[$key] = $this->table[$key] . ', ' . $value;
+			    if ($this->tableAsTree) {
+                    $this->table[$key] = !is_array($this->table[$key]) ? array($this->table[$key]) : $this->table[$key];
+                    $this->table[$key][] = $value;
+			        return $this->table[$key];
+                } else {
+                    return $this->table[$key] = $this->table[$key] . ', ' . $value;
+                }
 			}
 			return $this->table[$key] = $value;
 		}
@@ -22,7 +28,7 @@ namespace esa_item {
 			}
 			return $this->text[$key] = $value;
 		}
-		
+
 		function addImages($image) {
 			if ($image instanceof image) {
 				return $this->images[] = $image;
@@ -69,26 +75,44 @@ namespace esa_item {
 			$html .= "<h4>{$this->title}</h4><br>";
 				
 			if (count($this->table)) {
-				$html .= "<ul class='datatable'>";
-				foreach ($this->table as $field => $value) {
-					$value = (is_array($value)) ? implode(', ', $value) : trim($value);
-					if ($value) {
-						$label = $this->_label($field);
-						$label = $label ? "<strong>{$label}: </strong>" : '';
-						$html .= "<li>$label $value</li>";
-						//$html .='<textarea>' . print_r($value,1) . "</textarea>";
-					}
-				}
-				$html .= "</ul>";
-			}
+                $html.= $this->_render_table();
+            }
 		
 			$html .= "</div>";
 				
 			return $html;
 		}
 		
-		
+		private function _render_table($table = false, $level = 0) {
+		    $table = $table ? $table : $this->table;
+            $level = "datatable-$level";
+            $html = "<ul class='datatable $level'>";
+            foreach ($table as $field => $value) {
+                $html .= "<li>";
+                $value = (!is_array($value))
+                    ? trim($value)
+                    : (
+                        $this->tableAsTree
+                        ? $this->_render_table($value)
+                        : implode(', ', $value)
+                    );
+                if ($value) {
+                    $label = $this->_label($field);
+                    $label = $label ? "<strong>{$label}: </strong>" : '';
+                    $html .= "$label $value";
+                    //$html .='<textarea>' . print_r($value,1) . "</textarea>";
+                }
+                $html .= "</li>";
+            }
+            $html .= "</ul>";
+            return $html;
+        }
+
+
 		private function _label($of) {
+		    if (is_numeric($of)) {
+		        return "";
+            }
 			$labels = array(
 					'objectType' => 'Type',
 					'repositoryname' => 'Repository',

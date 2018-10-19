@@ -67,7 +67,7 @@ namespace esa_datasource {
 		}
 			
 		function api_search_url_last($query, $params = array()) {
-			$this->page += $this->pages;
+			$this->page = $this->pages;
 			return $this->api_search_url($query) . '&page=' . $this->page;
 		}
 		*/	
