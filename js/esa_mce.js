@@ -154,8 +154,8 @@
 
 tinymce.PluginManager.add('esa_item', function(editor) {
 	editor.on('NodeChange', function(event) {
-		node = jQuery(tinyMCE.activeEditor.selection.getNode()).parents('.wpview-body').find('.esa_item');
-		//console.log('nodeChange', node);
+		var node = jQuery(tinyMCE.activeEditor.selection.getNode()).find('.esa_item');
+		console.log('nodeChange', node);
 		jQuery('#esa_thumbnail_set_esa').toggle(node.length > 0);
 	});
 	
@@ -164,7 +164,7 @@ tinymce.PluginManager.add('esa_item', function(editor) {
 
 
 jQuery(document).on('click', '#esa_featured_btn', function() {
-	node = jQuery(tinyMCE.activeEditor.selection.getNode()).parents('.wpview-body').find('.esa_item');
+	node = jQuery(tinyMCE.activeEditor.selection.getNode()).find('.esa_item');
 	//console.log(node);
 	if (!node.length) {
 		return;
@@ -192,7 +192,7 @@ function esa_thumbnail_update(url) {
 		.done(function(result) {
 			//console.log('ajax success', result);
 			
-			jQuery('#esa_thumbnail_chooser').toggleClass('hasEsathumbnail', result.image_url != '' && result.image_url != '%none%');
+			jQuery('#esa_thumbnail_chooser').toggleClass('hasEsathumbnail', result.image_url !== '' && result.image_url !== '%none%');
 			jQuery('#esa_thumbnail_admin_picture').attr("src", result.image_url);
 			
 		})

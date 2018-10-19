@@ -1,9 +1,4 @@
 <?php
-/**
- *  ******************************************* thumbnailing
- *  esa thumbnail > regular thumbnail
- *
- */
 
 add_action('wp_ajax_esa_set_featured_image', function() {
 

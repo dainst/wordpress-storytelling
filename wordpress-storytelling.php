@@ -60,7 +60,7 @@ require_once('functions/esa_item_add_media.php');
 require_once('functions/esa_item_search.php');
 require_once('functions/esa_item_story_map.php');
 require_once('functions/esa_template_functions.php');
-require_once('functions/esa_thumpnails.php');
+require_once('functions/esa_thumbnails.php');
 require_once('functions/esa_item_wrapper.php');
 require_once('functions/esa_item_tags.php');
 require_once('functions/esa_item_comments.php');
