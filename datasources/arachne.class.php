@@ -42,7 +42,6 @@ namespace esa_datasource {
 		}
 
 		function api_single_url($id, $params = array()) {
-            error_log("ID: $id");
 			return "https://arachne.dainst.org/data/entity/{$id}";
 		}
 
