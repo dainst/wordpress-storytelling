@@ -116,9 +116,10 @@ class esa_item {
 		
 		// check: is data allready in cache?
 		global $wpdb;
-		$expiring_time = "2 week"; // what is a reasonable expiring time?!
+		$enable_cache = function_exists('esa_get_settings') ? !!esa_get_settings('modules', 'cache', 'activate') : true;
+		$expiring_time = "2 week";
 		$cached = $wpdb->get_row("select *, timestamp < date_sub(now(), interval $expiring_time) as expired from {$wpdb->prefix}esa_item_cache where id='{$this->id}' and source='{$this->source}';");
-		if ($cached) {
+		if ($enable_cache and $cached) {
 			//echo "restored from cache ({$cached->expired})";
 			$this->classes[] = 'esa_item_cached';
 			$this->html = $cached->content;
@@ -147,9 +148,10 @@ class esa_item {
 			$this->title = $generated->title;
 			$this->latitude = $generated->latitude;
 			$this->longitude = $generated->longitude;
-			$this->store($cached);
+			if ($enable_cache) {
+                $this->store($cached);
+            }
 		} catch (Exception $e) {
-			
 			$this->_error($e->getMessage() . '<br>'. $e->getTraceAsString());
 		}
 

@@ -3,7 +3,7 @@ global $esa_settings;
 $esa_settings = array(
     'post_types' => array('post', 'page'), // post types which can contain embedded content (esa items)
     'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
-    'modules' => array('tags', 'comments', 'search'),
+    'modules' => array('tags', 'comments', 'search', 'cache'),
     'script_suffix' => "",
     'settings_loaded' => false
 );
