@@ -55,7 +55,7 @@ function media_esa_dialogue() {
     //media_upload_header();
 
     if(empty($esa_datasources)) {
-        echo "<p>Error: No active Sub-Plugins found. <a href='admin.php?page=eagle-storytelling-application/eagle-storytelling.php' target='_parent'> In the admin menu, at 'Eagle Storytelling Application' </a> you can activate some.</p>";
+        echo "<p>Error: No active Sub-Plugins found. <a href='admin.php?page=eagle-storytelling-application/eagle-storytelling.php' target='_parent'> In the admin menu, at 'Storytelling Application' </a> you can activate some.</p>";
         return;
     }
 

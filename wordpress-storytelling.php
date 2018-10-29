@@ -65,3 +65,4 @@ require_once('functions/esa_item_wrapper.php');
 require_once('functions/esa_item_tags.php');
 require_once('functions/esa_item_comments.php');
 require_once('functions/esa_item_cache_settings.php');
+require_once('functions/esa_cache_all.php');

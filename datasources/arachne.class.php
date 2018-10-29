@@ -76,7 +76,8 @@ namespace esa_datasource {
 		function parse_result_set($response) {
 			$response = json_decode($response);
 			$this->results = array();
-			foreach ($response->entities as $item) {
+			$entities = isset($response->entities) ? $response->entities : array();
+			foreach ($entities as $item) {
                 $entity = json_decode($this->_fetch_external_data($this->api_single_url($item->entityId)));
                 $this->results[] = $this->_parse_entity($entity);
 			}
@@ -97,8 +98,10 @@ namespace esa_datasource {
             //echo "<pre>";var_dump($entity);echo "</pre>";
             $data->title = $entity->title;
             $data->tableAsTree = true;
-            foreach($entity->sections as $section) {
-                $this->_parse_section($section, $data->table);
+            if (isset($entity->sections)) {
+                foreach($entity->sections as $section) {
+                    $this->_parse_section($section, $data->table);
+                }
             }
             if (isset($entity->thumbnailId)) {
                 $data->addImages(array(

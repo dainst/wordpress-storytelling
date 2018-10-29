@@ -99,11 +99,10 @@ namespace esa_datasource {
 		}
 		
 		/**
-		 * a generic search dialogue (can be overwitten) 	
+		 * a generic search dialogue
 		 * - needs $this->apiurl to be set
-		 * - you can overwrite this whole function in the implementation or just the search_form_params part 
 		 */
-		function search_form() {
+		final function search_form() {
 			
 			echo $this->info;
 			
@@ -112,6 +111,9 @@ namespace esa_datasource {
 			echo "<input type='text' name='esa_ds_query' placeholder='{$this->examplesearch}' value='{$query}'>";
 
 			echo "<input type='hidden' name='esa_ds_page' value='1'>";
+
+			$type = $this->get_source_name();
+            echo "<input type='hidden' name='esa_ds_type' value='$type'>";
 			
 			echo $this->search_form_params($_POST);
 			
@@ -135,14 +137,14 @@ namespace esa_datasource {
 		 * This is a generic function, it can be overwritten in some implementations
 		 * 
 		 * 
-		 * @return array of result, wich has to be parsed by $this->parse_result_set or false if error
+		 * @return true or false depending to success;
 		 */
 		function search($query = null) {
 			try {
 				$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
 				
 				if (!$query) {
-					return;
+					return false;
 				}
 				
 				// collect $_POST data
@@ -516,7 +518,7 @@ namespace esa_datasource {
 		
 		/**
 		 * require a file
-		 * @param $require path or filename of file in plugin base dir
+		 * @param $require - path or filename of file in plugin base dir
 		 */
 		protected function _require($require) {
 			require_once(__DIR__ . '/' . $require);
@@ -531,7 +533,8 @@ namespace esa_datasource {
 		
 		
 		function get_source_name() {
-			return array_pop(explode('\\', get_class($this)));
+		    $ar = explode('\\', get_class($this));
+			return array_pop($ar);
 		}
 		
 
