@@ -5,7 +5,6 @@
  * @link 		
  * @author 		Philipp Franck
  *
- * Searches in the Eagle Database directly.
  *
  */
 class esa_map_widget extends WP_Widget {
@@ -16,7 +15,7 @@ class esa_map_widget extends WP_Widget {
 	public function __construct() {
 		$widget_ops = array( 
 			'classname' => 'ESA Map',
-			'description' => 'Displays a map of all posts with embedded epigraphic content which have geographic coordinates.',
+			'description' => 'Displays a map of all posts with embedded content which have geographic coordinates.',
 		);
 		parent::__construct('esa_map_widget', 'ESA Map', $widget_ops );
 	}
@@ -40,11 +39,37 @@ class esa_map_widget extends WP_Widget {
 	public function form($instance) {
 		// outputs the options form on admin
 		$height = (isset($instance['height'])) ? $instance['height'] : '';
+        $display = (isset($instance['display'])) ? $instance['display'] : '';
+        $display_radio = array(
+            'wrapper' => 'Map data objects only',
+            'embedded' => 'Map posts, containing data objects only',
+            'both' => 'Map Both'
+        );
+        echo "<strong>$display</strong>";
 		?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'height' ); ?>"><?php _e( 'Height:' ); ?></label> 
-				<input class="widefat" id="<?php echo $this->get_field_id( 'height' ); ?>" name="<?php echo $this->get_field_name( 'height' ); ?>" type="number" value="<?php echo esc_attr($height); ?>">
-			</p>
+				<input
+                        class="widefat"
+                        id="<?php echo $this->get_field_id( 'height' ); ?>"
+                        name="<?php echo $this->get_field_name( 'height' ); ?>"
+                        type="number"
+                        value="<?php echo esc_attr($height); ?>"
+                >
+                <br>
+                <?php foreach ($display_radio as $radio_name => $radio_label) { ?>
+                    <input
+                        class="widefat"
+                        id="<?php echo $this->get_field_id( "display-$radio_name" ) ; ?>"
+                        name="<?php echo $this->get_field_name( 'display' ); ?>"
+                        type="radio"
+                        value="<?php echo $radio_name; ?>"
+                        <?php echo ($radio_name == $display) ? 'checked' : ''; ?>
+                    >
+                    <label for="<?php echo $this->get_field_id( "display-$radio_name" ) ; ?>"><?php echo $radio_label; ?></label>
+                    <br>
+                <?php } ?>
+            </p>
 		<?php
 	}
 
@@ -56,8 +81,8 @@ class esa_map_widget extends WP_Widget {
 	 */
 	public function update($new_instance, $old_instance) {
 		$instance = array();
-		$instance['height'] = ( ! empty( $new_instance['height'] ) ) ? strip_tags( $new_instance['height'] ) : '';
-
+		$instance['height'] = (!empty($new_instance['height'])) ? strip_tags($new_instance['height']) : '';
+		$instance['display'] = (!empty($new_instance['display'])) ? strip_tags($new_instance['display']) : '';
 		return $instance;
 	}
 }
