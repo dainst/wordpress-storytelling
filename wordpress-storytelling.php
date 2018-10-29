@@ -52,7 +52,6 @@ require_once('esa_item_transfer.class.php');
 require_once('esa_map_widget.class.php');
 
 require_once('functions/esa_settings.php');
-require_once('functions/esa_info_page.php');
 require_once('functions/esa_script_loader.php');
 require_once('functions/esa_install.php');
 require_once('functions/esa_item_shortcode.php');
@@ -64,5 +63,8 @@ require_once('functions/esa_thumbnails.php');
 require_once('functions/esa_item_wrapper.php');
 require_once('functions/esa_item_tags.php');
 require_once('functions/esa_item_comments.php');
-require_once('functions/esa_item_cache_settings.php');
-require_once('functions/esa_cache_all.php');
+require_once('functions/esa_item_cache.php');
+
+require_once('functions/esa_page_info.php');
+require_once('functions/esa_page_cache_all.php');
+require_once('functions/esa_page_settings.php');

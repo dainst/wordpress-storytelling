@@ -4,17 +4,18 @@ add_action('admin_menu', function () {
 
     add_submenu_page(ESA_FILE,'Import to Cache', 'Import to Cache', 'administrator', ESA_FILE . '-import', function () {
 
-        echo "<h1>Import to cache</h1>";
+        echo "<h2>Import to cache</h2>";
 
         echo "<div class='wrap' id='esa-import'>";
 
         echo "<div id='esa-input-form'>";
 
         if (!isset($_POST['esa_ds_type'])) {
-            echo "<h2>Step 1: Select Datasource</h2>";
+            echo "<h3>Step 1: Select Datasource</h3>";
             echo esa_select_datasource();
             echo "</div>";
             echo "</div>";
+            esa_cache_debug_form();
             return;
         }
 
@@ -42,6 +43,8 @@ add_action('admin_menu', function () {
         echo "</ol>";
         echo "<hr>";
         echo "<div id='esa-import-status'></div>";
+
+
 
         echo "</div>";
 
@@ -132,13 +135,25 @@ function esa_select_datasource() {
 }
 
 function esa_cache_result($ds) {
-
     foreach ($ds->results as $result) {
         $result->store();
         esa_get_wrapper($result);
     }
-
-
 }
 
-//get_esa_datasource
+
+function esa_cache_debug_form() {
+    $url = admin_url('admin.php');
+    echo "<hr>";
+    echo "<h2>Cache Debug Functions</h2>";
+    echo "<p><b>These are debug functions you most likely not need!</b><br> Explanation: Normally embedded content from epigraphic datasources ('Esa-Items') is stored in cache and gets refreshed (causing a new API call) in the moment it get displayed when it was not refreshed by more than two weeks.<br>";
+    echo "But you can force to empty the cache and also force to refresh all items at once (You may want to do that after an update for example).</p>";
+    echo "<form method='POST' action='$url'>";
+    echo "<input type='hidden' name='action' value='esa_flush_cache'>";
+    echo "<input type='submit' value='Delete all cached content!' class='button'>";
+    echo "</form>";
+    echo "<form method='POST' action='$url'>";
+    echo "<input type='hidden' name='action' value='esa_refresh_cache'>";
+    echo "<input type='submit' value='Refresh all cached content! (May take extremly long time).' class='button'>";
+    echo "</form>";
+}

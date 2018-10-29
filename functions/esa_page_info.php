@@ -1,47 +1,13 @@
 <?php
-/**
- *  ******************************************* Settings page
- */
 
 add_action('admin_menu', function () {
-
 
     //create new top-level menu
     add_menu_page('Storytelling Application', 'Storytelling Application', 'administrator', ESA_FILE, function() {
 
-        $url = admin_url('admin.php');
-
         echo "<div class='wrap' id='esa_settings'>";
 
         esa_info();
-
-        echo "<h2>Settings</h2>";
-
-        echo "<form method='POST' action='$url'>";
-
-        esa_settings_datasources();
-
-        $all_settings_names = esa_settings_features();
-
-        // to update  also checkboxes wich are set to false and get not submitted
-        echo "<input type='hidden' name='esa_all_settings' value='" . implode(',', $all_settings_names) . "' />";
-
-        wp_nonce_field('esa_save_settings', 'esa_save_settings_nonce');
-        echo "<input type='hidden' name='action' value='esa_save_settings'>";
-        echo "<input type='submit' value='Save' class='button button-primary'>";
-        echo "</form>";
-
-        echo "<h2>Cache debug functions</h2>";
-        echo "<p><b>These are debug functions you most likely not need!</b><br> Explanation: Normally embedded content from epigraphic datasources ('Esa-Items') is stored in cache and gets refreshed (causing a new API call) in the moment it get displayed when it was not refreshed by more than two weeks.<br>";
-        echo "But you can force to empty the cache and also force to refresh all items at once (You may want to do that after an update for example).</p>";
-        echo "<form method='POST' action='$url'>";
-        echo "<input type='hidden' name='action' value='esa_flush_cache'>";
-        echo "<input type='submit' value='Delete all cached content!' class='button'>";
-        echo "</form>";
-        echo "<form method='POST' action='$url'>";
-        echo "<input type='hidden' name='action' value='esa_refresh_cache'>";
-        echo "<input type='submit' value='Refresh all cached content! (May take extremly long time).' class='button'>";
-        echo "</form>";
 
         echo "</div>";
     });
@@ -57,143 +23,9 @@ add_action('admin_enqueue_scripts', function($hook) {
     }
 });
 
-function esa_settings_datasources() {
-    echo "<h3>Available Data Sources</h3>";
-    $datasources = json_decode(get_option('esa_datasources'));
-    if (!is_array($datasources)) {
-        $datasources  = array();
-    }
-    echo "<p>Here you can see all currently installed sub-plugins, which are connectors to several epigraphic / other datasources.";
-    $dsfiles = glob(ESA_PATH . "datasources/*.class.php");
-    $labels = array();
-    $optionlist = array();
-    foreach ($dsfiles as $filename) {
-        $name = basename($filename, '.class.php');
-        $ds = get_esa_datasource($name);
-        $label = $ds->title;
-        $labels[$name] = $label;
-        try  {
-            $is_ok = true;
-            $status = $ds->dependency_check();
-        } catch(\exception $e) {
-            $is_ok = false;
-            $status = 'Error:' . $e->getMessage();
-        }
-        $status = ($is_ok === true) ? "<span style='color:green'>($status)</span>" : "<span style='color:red'>(Error: $status)</span>";
-        $checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';
-        $disabled = ($is_ok === true) ? '' : 'disabled="disabled"';
-        $optionlist[$ds->index] = "<li><input type='checkbox' name='esa_datasources[]' value='$name' id='esa_activate_datasource_$name' $checked $disabled /><label for='esa_activate_datasource_$name'>$label $status</label></li>";
-    }
-    ksort($optionlist);
-    echo "<ul>" . implode("\n", $optionlist) . "</ul>";
-    update_option('esa_datasource_labels', json_encode($labels));
-    //update_option('esa_datasources') = json_encode($list);
-}
 
-function esa_settings_features($settings_set = false, $parent = "esa_settings", $level = 3) {
-    $esa_settings = esa_get_settings();
-    $settings_set = !$settings_set ? $esa_settings['modules'] : $settings_set;
-    $all_settings_names = array();
 
-    echo "<ul>";
-    foreach ($settings_set as $setting_name => $setting) {
 
-        $name = $parent . '_' . $setting_name;
-        $all_settings_names [] = $name;
-
-        echo "<li>";
-
-        if (isset($setting['value'])) {
-            $label = isset($setting['label']) ? $setting['label'] : '#' . $setting_name;
-            $disabled = "";
-            echo "<input ";
-            foreach ($setting as $attr => $attr_value) {
-                if (in_array($attr, array('default', 'label', 'children', 'value'))) {
-                    continue;
-                }
-                echo " $attr='$attr_value'";
-            }
-            echo " name='$name' id='$name' $disabled";
-            if (in_array($setting['type'], array('checkbox', 'radio'))) {
-                echo $setting['value'] ? " checked='{$setting['value']}'" : '';
-            } else {
-                echo " value='{$setting['value']}'";
-            }
-            echo " /><label for='$name'>$label</label>";
-        }
-
-        if (isset($setting['children']) and is_array($setting['children'])) {
-            echo "<h$level>" . $setting['label'] . "</h$level>";
-            $all_settings_names = array_merge(esa_settings_features($setting['children'], $name,$level + 1), $all_settings_names);
-        }
-
-        if (isset($setting['info'])) {
-            echo "<p>{$setting['info']}</p>";
-        }
-
-        echo "</li>";
-
-    }
-    echo "</ul>";
-
-    return $all_settings_names;
-}
-
-/**
- * the caching mechanism for esa_items
- *
- * how it works: everytime a esa_item get displayed, it look in the cache if there is a non expired cache of this item. if not,
- * it fetches the contents from the corresponding api and caches it
- * that has two reasons:
- * - we want to make the embedded esa_items searchable
- * - page loading would be quite slow, if every items content had to be fetched again from the api
- *
- * how long may content be kept in cache? that has to be discussed.
- *
- *
- */
-
-add_action('admin_action_esa_flush_cache', function() {
-    global $wpdb;
-
-    $sql = "truncate {$wpdb->prefix}esa_item_cache;";
-
-    $wpdb->query($sql);
-
-    wp_redirect($_SERVER['HTTP_REFERER']);
-    exit();
-
-});
-
-add_action('admin_action_esa_refresh_cache', function() {
-    global $wpdb;
-
-    $sql = "truncate {$wpdb->prefix}esa_item_cache;";
-
-    $wpdb->query($sql);
-
-    $sql = "
-        select
-            esa_item_source as source,
-            esa_item_id as id
-        from
-             {$wpdb->prefix}esa_item_to_post
-         
-        group by
-            esa_item_source,
-            esa_item_id
-    ";
-
-    foreach ($wpdb->get_results($sql) as $row) {
-        $item = new \esa_item($row->source, $row->id);
-        $item->html(true);
-        $e = count($item->errors);
-    }
-
-    wp_redirect($_SERVER['HTTP_REFERER']);
-    exit();
-
-});
 
 
 
