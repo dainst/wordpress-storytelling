@@ -18,8 +18,6 @@ add_action('admin_menu', function () {
             return;
         }
 
-
-
         echo "<h2>Step 3: Start Import</h2>";
         $ds = get_esa_datasource($_POST['esa_ds_type']);
 
@@ -105,6 +103,7 @@ add_action('wp_ajax_esa_import_next_page', function() {
     }
 
     $results = count($ds->results);
+    esa_cache_result($ds);
 
     echo json_encode(array(
         "success" => true,
@@ -129,6 +128,16 @@ function esa_select_datasource() {
     $return .= "</select>";
 
     return $return;
+
+}
+
+function esa_cache_result($ds) {
+
+    foreach ($ds->results as $result) {
+        $result->store();
+        esa_get_wrapper($result);
+    }
+
 
 }
 
