@@ -9,14 +9,14 @@
 
 /* esa item is important! its the visual interpretation of our shortcodes */
 .esa_item {
-	background-color: rgba(200, 200, 200, 0.3);
-	min-width: 190px;
-	min-height: 190px;
-	position: relative;
-	margin-top: 3px;
-	margin-bottom: 3px;
-	overflow: hidden;
-	font-family: "Open Sans",Arial,sans-serif;
+    background-color: rgba(200, 200, 200, 0.3);
+    min-width: 190px;
+    min-height: 190px;
+    position: relative;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    overflow: hidden;
+    font-family: "Open Sans",Arial,sans-serif;
 
 }
 
@@ -25,55 +25,55 @@
 }
 
 .esa_item_inner {
-	padding: 7px;
+    padding: 7px;
 }
 
 .esa_item_collapsed {
-	height: 190px;
+    height: 190px;
 }
 
 /* special types of esa_items */
 
 .esa_item_right {
-	float: left;
-	margin-right: 3px;
-	margin-left: 0;
+    float: left;
+    margin-right: 3px;
+    margin-left: 0;
 }
 
 .esa_item_left {
-	float: right;
-	margin-left: 3px;
-	margin-right: 0;
+    float: right;
+    margin-left: 3px;
+    margin-right: 0;
 }
 
 /* -- */
 
 .esa_item_tools {
-	position: absolute;
-	border-radius: 2px;
-	right: 7px;
-	display: none;
-	z-index: 10000;
-	padding: 2px;
-	margin-top: 7px
+    position: absolute;
+    border-radius: 2px;
+    right: 7px;
+    display: none;
+    z-index: 10000;
+    padding: 2px;
+    margin-top: 7px
 }
 
 .esa_item_tools a {
-	cursor: pointer;
-	display: inline-block;
-	white-space: nowrap;
-	overflow: hidden;
-	padding: 0 0 0 4px;
-	border-radius: 12px;
-	vertical-align: middle;
-	height: 22px;
-	color: black;
-	background: lightgray;
-	font-family: sans-serif;
-	font-size: 12px !important;
-	font-weight: normal;
-	border: 1px solid lightgray;
-	text-transform: none;
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 0 0 4px;
+    border-radius: 12px;
+    vertical-align: middle;
+    height: 22px;
+    color: black;
+    background: lightgray;
+    font-family: sans-serif;
+    font-size: 12px !important;
+    font-weight: normal;
+    border: 1px solid lightgray;
+    text-transform: none;
     margin-left: 2px;
     line-height: 1;
     box-shadow: none !important;
@@ -81,14 +81,14 @@
 }
 
 .esa_item_tools a:before {
-	font: normal 16px/20px dashicons;
-	text-align: center;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	vertical-align: middle;
-	display: inline-block;
-	color: #72777c;
-	top: 0;
+    font: normal 16px/20px dashicons;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    vertical-align: middle;
+    display: inline-block;
+    color: #72777c;
+    top: 0;
 }
 
 .esa_item_tools a:hover {
@@ -113,318 +113,328 @@
 }
 
 .esa_item_tools a.esa_item_tools_originurl:before  {
-	content: "\f103"
+    content: "\f103"
 }
 
 .esa_item_tools a.esa_item_tools_find:before {
-	content: "\f179"
+    content: "\f179"
 }
 .esa_item_tools a.esa_item_tools_expand:before {
-	content: "\f211";
+    content: "\f211";
 }
 
 
 
 .esa_item_tools a:focus {
-	box-shadow: none
+    box-shadow: none
 }
 
 .esa_item_tools a:hover {
-	/*box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.8);*/
-	opacity: 1
+    /*box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.8);*/
+    opacity: 1
 }
 
 
 .esa_item_tooltip {
-	padding-left: 0.4em;
-	padding-right: 2em;
-	height: 28px;
-	float: right;
-	background: white;
-	display: none;
-	white-space: nowrap;
+    padding-left: 0.4em;
+    padding-right: 2em;
+    height: 28px;
+    float: right;
+    background: white;
+    display: none;
+    white-space: nowrap;
 }
 
 .esa_item_resizebar {
-	background-color: rgba(0,0,0,0.4);
-	background-image: url('../images/arrow-up.png');
-	background-repeat: no-repeat;
-	background-position: center center;
-	-webkit-background-size: 9px;
-	background-size: 9px;
-	color: white;
-	text-align: center;
-	position: absolute;
-	bottom: 0px;
-	width: 100%;
-	height: 9px;
-	margin-top: 1px;
-	padding: 2px;
-	display: none;
-	cursor: pointer;
+    background-color: rgba(0,0,0,0.4);
+    background-image: url('../images/arrow-up.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: 9px;
+    background-size: 9px;
+    color: white;
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 9px;
+    margin-top: 1px;
+    padding: 2px;
+    display: none;
+    cursor: pointer;
 }
 
 .esa_item_collapsed .esa_item_resizebar {
-	background-image: url('../images/arrow-down.png');
+    background-image: url('../images/arrow-down.png');
 }
 
 
 .esa_item:hover .esa_item_tools {
-	display: block
+    display: block
 }
 
 /* esa_item style */
 
 .esa_item_collapsed .esa_item_left_column_max_left,
 .esa_item_left_column {
-	width: 150px;
-	float: left;
+    width: 150px;
+    float: left;
 }
 
 .esa_item_left_column_max_left {
-	width: 100%
+    width: 100%
 }
 
 .esa_item_collapsed .esa_item_right_column_max_left,
 .esa_item_right_column {
-	margin-left: 160px;
+    margin-left: 160px;
 }
 
 .esa_item_right_column_max_left {
-	clear: both;
+    clear: both;
 }
 
 .esa_item_collapsed .esa_item_right_column_max_left {
-	clear: none
+    clear: none
 }
 
 .esa_item_main_image {
-	width: 150px;
-	height: 150px;
-	background-repeat: no-repeat;
-	background-position: center center;
-	-webkit-background-size: cover;
-	background-size: cover;
-	background-color: white;
-	display: none;
+    width: 150px;
+    height: 150px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background-color: white;
+    display: none;
 }
 
 .esa_item_collapsed .esa_item_main_image {
-	display: block
+    display: block
 }
 
 .esa_item_media_box {
-	max-height: 500px;
-	float: left;
-	padding-right: 0em;
-	margin-bottom: 0.5em;
-	overflow: hidden;
-	background-color: rgba(255, 255, 255, 0.7);
+    max-height: 500px;
+    float: left;
+    padding-right: 0em;
+    margin-bottom: 0.5em;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.7);
 }
 
 
 
 .esa_item_media_size_4 .esa_item_media_box {
-	width: 23.5%;
-	margin: 0.2%;
+    width: 23.5%;
+    margin: 0.2%;
 }
 
 .esa_item_media_size_3 .esa_item_media_box {
-	width: 32.1333333333%;
-	margin: 0.2%;
+    width: 32.1333333333%;
+    margin: 0.2%;
 }
 
 .esa_item_media_size_2 .esa_item_media_box {
-	width: 49.2%;
-	margin: 0.2%;
+    width: 49.2%;
+    margin: 0.2%;
 }
 
 .esa_item_media_size_1 .esa_item_media_box {
-	max-height: auto;
-	width: 100%
+    max-height: auto;
+    width: 100%
 }
 
 
 
 .esa_item_collapsed .esa_item_multimedia,
 .esa_item_collapsed .esa_item_media_box {
-	width: 150px;
-	float: none;
-	margin: 0px 0px 2px 0px;
+    width: 150px;
+    float: none;
+    margin: 0px 0px 2px 0px;
 }
 
 .esa_item_fullres {
-	display: block;
-	/*max-height: 500px;*/
-	width: 100%;
+    display: block;
+    /*max-height: 500px;*/
+    width: 100%;
 }
 
 .esa_item_collapsed .esa_item_fullres {
-	display: none;
+    display: none;
 }
 
 .esa_item_svg {
-	background-color: white;
-	width: 100%
+    background-color: white;
+    width: 100%
 }
 
 .esa_item_subtext {
-	padding: 0em 0.1em 0.1em 0em;
-	font-style: italic;
-	line-height: normal
+    padding: 0em 0.1em 0.1em 0em;
+    font-style: italic;
+    line-height: normal
 }
 
 
 
 
 .esa_item_collapsed .esa_item_subtext {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 
 .esa_item p {
-	margin: 0px !important
+    margin: 0px !important
 }
 
 .esa_item_map {
-	width:  100%;
-	height: 400px;
-	/*margin-bottom: 15px;*/
+    width:  100%;
+    height: 400px;
+    /*margin-bottom: 15px;*/
 }
 
 .esa_item_iframe {
-	width:  100%;
-	max-height: 350px;
+    width:  100%;
+    max-height: 350px;
 }
 
 .esa_item_iframe iframe {
-	width:  100%;
+    width:  100%;
 }
 
 .esa_item_collapsed .esa_item_iframe,
 .esa_item_collapsed .esa_item_map {
-	width: 150px;
-	height: 150px;
-	margin-bottom: 0px;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 0px;
 }
 
 
 .esa_item_inner h4 {
-	padding: 0px !important;
-	margin: 0px !important;
-	font-size: 14px;
-	color: #4D4D4A;
-	letter-spacing: 1px;
-	font-weight: bold;
-	text-transform: uppercase;
-	line-height: 130%;
-	display: inline-block;
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size: 14px;
+    color: #4D4D4A;
+    letter-spacing: 1px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 130%;
+    display: inline-block;
 }
 
 
 .esa_item_inner ul.datatable {
-	list-style: none;
-	margin: 4px 0px 0px 0px;
-	padding: 0px;
+    list-style: none;
+    margin: 4px 0px 0px 0px;
+    padding: 0px;
 }
 
 .esa_item_inner ul.datatable li {
-	padding-bottom: 0px;	
+    padding-bottom: 0px;
 }
 
 .esa_item_inner ul.datatable ul.datatable ul.datatable {
-	margin-left: 2em;
-	list-style-type: circle;
+    margin-left: 2em;
+    list-style-type: circle;
 }
 
 .esa_item .esa_item_text {
-	background: rgba(0,0,0,0.1);
-	/*border: 1px solid rgba(0,0,0,0.2);*/
-	border-radius: 1px;
-	padding: 2px;
-	margin-bottom: 10px;
-	width: 100%;
-	overflow: auto;
+    background: rgba(0,0,0,0.1);
+    /*border: 1px solid rgba(0,0,0,0.2);*/
+    border-radius: 1px;
+    padding: 2px;
+    margin-bottom: 10px;
+    width: 100%;
+    overflow: auto;
 }
 
 .esa_item_collapsed .esa_item_text {
-	width: 150px;
-	min-height: 150px;
-	margin-bottom: 4px;
-	overflow: hidden;
+    width: 150px;
+    min-height: 150px;
+    margin-bottom: 4px;
+    overflow: hidden;
 }
 
 
 .esa_item .sub1,
 .esa_item .sub2 {
-	font-size: 85%;
-	line-height: normal;
-	font-weight: normal
+    font-size: 85%;
+    line-height: normal;
+    font-weight: normal
 }
 
 .esa_item_collapsed .sub2 {
-	display: none
+    display: none
 }
 
 .esa_item_divider {
-	clear: both;
-	height: 1px
+    clear: both;
+    height: 1px
 }
 
 /* debug */
 
 .esa_debug {
-	background: #F2EF99;
-	max-height:300px; 
-	overflow: scroll;
-	display: block	
+    background: #F2EF99;
+    max-height:300px;
+    overflow: scroll;
+    display: block
 }
 
 
 /*  esa items overview map */
+
+.esa_map_error {
+    background: rgba(120,0,0,0.3);
+    padding: 3px;
+}
+
+.esa_map_error:after {
+    content: '(Error loading map)'
+}
+
 #esa_items_overview_map {
-	height: 500px
+    height: 500px
 }
 
 .esa_inmap_popup {
-	font-size: small;
-	text-decoration: none
+    font-size: small;
+    text-decoration: none
 }
 .esa_inmap_popup h1 {
-	font-size: medium;
-	margin-top: 2px;
-	margin-bottom: 2px;
-	font-weight: bold
+    font-size: medium;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: bold
 }
 
 .esa_inmap_popup ul {
-	margin-bottom: 0px
+    margin-bottom: 0px
 }
 
 .esa_inmap_popup li {
-	padding-bottom: 0px
+    padding-bottom: 0px
 }
 
 .esa_inmap_popup .excerpt {
-	margin-top: 2px;
-	margin-bottom: 2px;	
-	font-weight: normal;
-	max-height: 50px;
-	overflow: auto;
-	line-height: normal
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: normal;
+    max-height: 50px;
+    overflow: auto;
+    line-height: normal
 }
 
 
 /* modules */
 
 .esa-separator {
-	clear: both
+    clear: both
 }
 
 .esa-module-buttons {
-	margin-top: 0.1em
+    margin-top: 0.1em
 }
 
 .esa-hide {
-	display: none !important
+    display: none !important
 }
