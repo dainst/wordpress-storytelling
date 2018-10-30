@@ -18,7 +18,17 @@ function wp_ajax_esa_get_overview_map() {
 
     global $wpdb;
 
-    $post_types = "'" . implode("', '", esa_get_post_types()) . "'";
+
+    $display = isset($_POST['display']) ? $_POST['display'] : 'both';
+    if ($display == 'embedded') {
+        $types = esa_get_settings('post_types');
+    } else if ($display == 'wrapper') {
+        $types = array("esa_item_wrapper");
+    } else {
+        $types = esa_get_post_types();
+    }
+    $post_types = "'" . implode("', '", $types) . "'";
+
 
     $sql = "
             select

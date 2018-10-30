@@ -248,7 +248,7 @@ namespace esa_datasource {
 
 		function stylesheet() {
 			return array(
-				'file' => 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css',
+				'file' => 'http://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.css',
 				'name' => 'leaflet'
 			)
 			;

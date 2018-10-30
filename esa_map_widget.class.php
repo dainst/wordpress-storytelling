@@ -28,7 +28,8 @@ class esa_map_widget extends WP_Widget {
 	 */
 	public function widget($args, $instance) {
 		$h = (isset($instance['height']) and $instance['height'] > 0) ? " style='height:{$instance['height']}px'" : '';
-		echo "<div id='esa_items_overview_map' $h>&nbsp;</div>";
+		echo "<div id='{$args['widget_id']}' class='esa_items_overview_map' data-display='{$instance['display']}' $h>&nbsp;</div>";
+		//echo esa_debug($instance);
 	}
 
 	/**
@@ -45,7 +46,6 @@ class esa_map_widget extends WP_Widget {
             'embedded' => 'Map posts, containing data objects only',
             'both' => 'Map Both'
         );
-        echo "<strong>$display</strong>";
 		?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'height' ); ?>"><?php _e( 'Height:' ); ?></label> 
