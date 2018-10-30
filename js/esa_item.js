@@ -182,13 +182,15 @@
                         $(mapDiv).hide();
                         return;
                     }
-                    var markers = [];
+                    var markers = response.length > 35
+                        ? L.markerClusterGroup({maxClusterRadius: 50})
+                        : L.featureGroup();
                     $.each(response, function(k, item) {
-                        markers.push(L.marker([parseFloat(item.latitude), parseFloat(item.longitude)]).bindPopup(item.textbox).addTo(map));
+                        markers.addLayer(L.marker([parseFloat(item.latitude), parseFloat(item.longitude)]).bindPopup(item.textbox));
                     });
-                    var group = new L.featureGroup(markers);
+                    map.addLayer(markers);
 
-                    map.fitBounds(group.getBounds());
+                    map.fitBounds(markers.getBounds());
                 },
                 error: function(exception) {
                     console.log(exception);
@@ -201,20 +203,22 @@
     };
 }(jQuery));
 
+var scriptLoadingTimeout; // timeout id is a global variable
 
 jQuery(document).ready(function($){
     window.tagBox && window.tagBox.init();
-
-    var timeoutId; // timeout id is a global variable
-    timeoutId = window.setTimeout(function() {
+    scriptLoadingTimeout = window.setTimeout(function() {
         console.warn("Leaflet could ne be loaded.");
         $('.esa_item_map').addClass("esa_map_error");
         $('.esa_items_overview_map').addClass("esa_map_error");
     }, 1000);
     $.getScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.js", function() {
-        $('.esa_item').esa_item();
-        $('.esa_items_overview_map').esa_items_overview_map();
-        window.clearTimeout(timeoutId);
+        $.getScript("https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js", function() {
+            $("head").append($("<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css' type='text/css' media='screen' />"));
+            $('.esa_item').esa_item();
+            $('.esa_items_overview_map').esa_items_overview_map();
+            window.clearTimeout(scriptLoadingTimeout);
+        });
     });
 });
 
