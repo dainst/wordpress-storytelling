@@ -27,6 +27,9 @@ class esa_map_widget extends WP_Widget {
 	 * @param array $instance
 	 */
 	public function widget($args, $instance) {
+        if (!esa_get_settings('modules', 'map', 'activate')) {
+            return;
+        }
 		$h = (isset($instance['height']) and $instance['height'] > 0) ? " style='height:{$instance['height']}px'" : '';
 		echo "<div id='{$args['widget_id']}' class='esa_items_overview_map' data-display='{$instance['display']}' $h>&nbsp;</div>";
 		//echo esa_debug($instance);

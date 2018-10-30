@@ -10,8 +10,10 @@
  * the map will be filled per ajax
  *
  */
-function esa_item_map() {
-    echo "<div id='esa_items_overview_map'>&nbsp;</div>";
+function esa_item_map($display='both') {
+    if (esa_get_settings('modules', 'map', 'activate')) {
+        echo "<div class='esa_items_overview_map' data-display='$display'>&nbsp;</div>";
+    }
 }
 
 function wp_ajax_esa_get_overview_map() {
@@ -106,11 +108,11 @@ function esa_get_module_settings_map() {
         'label' => "Overview map of embedded content",
         'info' => "Add a Map to your page here: <a href='widgets.php'>" . __('Widgets') . "</a>",
         'children' => array(
-            // is the tagging feature active
             'activate' => array(
                 'default' => true,
                 'type' => 'checkbox',
-                'label' => "Activate Feature"
+                'label' => "Activate Feature",
+                ''
             ),
         )
     );
