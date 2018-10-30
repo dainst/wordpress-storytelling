@@ -159,6 +159,11 @@
 
 (function ($) {
     $.fn.esa_items_overview_map = function(options) {
+
+        var clusterOptions = {
+            maxClusterRadius: 30
+        };
+
         return this.each(function(counter, mapDiv) {
 
             var mapId = $(mapDiv).attr('id');
@@ -183,10 +188,21 @@
                         return;
                     }
                     var markers = response.length > 35
-                        ? L.markerClusterGroup({maxClusterRadius: 50})
+                        ? L.markerClusterGroup(clusterOptions)
                         : L.featureGroup();
                     $.each(response, function(k, item) {
-                        markers.addLayer(L.marker([parseFloat(item.latitude), parseFloat(item.longitude)]).bindPopup(item.textbox));
+                        L.circleMarker(
+                            [parseFloat(item.latitude), parseFloat(item.longitude)],
+                            {
+                                'fillColor': '#004242',
+                                'color': '#004242',
+                                'radius': 8,
+                                'weight': (item.selected === "1") ? 4 : 2,
+                                'opacity': (item.selected === "1") ? 1 : 0.8,
+                                'fillOpacity': (item.selected === "1") ? 0.8 : 0.6
+                            })
+                            .bindPopup(item.textbox)
+                            .addTo(markers);
                     });
                     map.addLayer(markers);
 

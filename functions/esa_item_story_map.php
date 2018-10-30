@@ -17,7 +17,10 @@ function esa_item_map() {
 function wp_ajax_esa_get_overview_map() {
 
     global $wpdb;
+    global $post;
 
+    $url     = wp_get_referer();
+    $post_id = url_to_postid( $url );
 
     $display = isset($_POST['display']) ? $_POST['display'] : 'both';
     if ($display == 'embedded') {
@@ -41,10 +44,19 @@ function wp_ajax_esa_get_overview_map() {
                         concat('<h1>', count(post.ID), ' stories here:', '</h1><ul>',
                             group_concat('<li><a href=\"',post.guid ,'\">', post.post_title, '</a>' separator ''),
                         '</ul>'),
-                        concat('<a href=\"', post.guid,'\">', '<h1>', post.post_title, '</h1><p class=\"excerpt\">', post.post_excerpt, '</p>', '</a>')
+                        concat(
+                          '<a href=\"', post.guid,'\">', '<h1>', post.post_title, '</h1><p class=\"excerpt\">', 
+                          if (
+                            post.post_type = 'esa_item_wrapper',
+                            '',
+                            post.post_excerpt
+                          ), 
+                          '</p>', '</a>'
+                        )
                     ),
                     '</span>'
-                ) as textbox
+                ) as textbox,
+                post.ID = '$post_id' as selected
                 
             from
                 {$wpdb->prefix}esa_item_cache as esa_item
