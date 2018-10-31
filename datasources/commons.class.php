@@ -134,7 +134,7 @@ namespace esa_datasource {
 					'url'	=>	$page->imageinfo[0]->thumburl,
 					'fullres'=> $page->imageinfo[0]->url,
 					'mime'	=>	$page->imageinfo[0]->mime,
-					'text'	=>	sset($page->imageinfo[0]->extmetadata->ImageDescription)
+					'text'	=>	isset($page->imageinfo[0]->extmetadata->ImageDescription)
                         ? strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
                         : ""
 				));
@@ -143,7 +143,7 @@ namespace esa_datasource {
 					'type' 	=>	$page->imageinfo[0]->mediatype,
 					'url'	=>	$page->imageinfo[0]->url,
 					'mime'	=>	$page->imageinfo[0]->mime,
-					'text'	=>	sset($page->imageinfo[0]->extmetadata->ImageDescription)
+					'text'	=>	isset($page->imageinfo[0]->extmetadata->ImageDescription)
                         ? strip_tags($page->imageinfo[0]->extmetadata->ImageDescription->value)
                         : ""
 				));
