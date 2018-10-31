@@ -43,5 +43,17 @@ register_activation_hook(ESA_FILE, function() {
     // default options
     add_option('esa_datasources',  json_encode(array("idai", "wiki", "commons", "pelagios")));
 
+    $dsfiles = glob(ESA_PATH . "datasources/*.class.php");
+    $labels = array();
+    foreach ($dsfiles as $filename) {
+        $name = basename($filename, '.class.php');
+        $ds = get_esa_datasource($name);
+        $labels[$name] = $ds->title;
+    }
+    add_option('esa_datasource_labels', json_encode($labels));
+
+
+
+
 });
 
