@@ -1,5 +1,5 @@
 <?php
-register_activation_hook( ESA_FILE, function() {
+register_activation_hook(ESA_FILE, function() {
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -40,4 +40,8 @@ register_activation_hook( ESA_FILE, function() {
 
     dbDelta($sql);
 
+    // default options
+    add_option('esa_datasources',  json_encode(array("idai", "wikipedia", "commons", "pelagios")));
+
 });
+
