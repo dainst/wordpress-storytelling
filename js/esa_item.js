@@ -157,6 +157,62 @@
     };
 }(jQuery));
 
+var esa_map_layers = {
+    "osm": {
+        "url":  'https://{s}.tile.osm.org/{z}/{x}/{y}.png',
+        "opts": {
+            attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        }
+    },
+    "stamen-toner": {
+        "url":  'https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.{ext}',
+        "opts": {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
+        }
+    },
+    "stamen-watercolor": {
+        "url":  'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}',
+        "opts": {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
+        }
+    },
+    "stamen-terrain": {
+        "url":  'https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.{ext}',
+        "opts": {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
+        }
+    },
+    "landsat": {
+        "url":   "https://map1.vis.earthdata.nasa.gov/wmts-webmerc/{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.{format}",
+        "opts": {
+            layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
+            tileMatrixSet: "GoogleMapsCompatible_Level9",
+            maxZoom: 18,
+            maxNativeZoom: 9,
+            time: "2015-08-31",
+            tileSize: 256,
+            subdomains: "abc",
+            noWrap: true,
+            continuousWorld: true,
+            bounds: [[-85.0511287776, -179.999999975], [85.0511287776, 179.999999975]],
+            format: "jpg",
+            attribution: "NASA MODIS"
+        }
+    }
+};
+
 (function ($) {
     $.fn.esa_items_overview_map = function(options) {
 
@@ -168,10 +224,9 @@
 
             var mapId = $(mapDiv).attr('id');
             var map = L.map(mapDiv).setView([12.483333, 41.883333], 13);
+            var mapType = (typeof esa_map_layers[$(mapDiv).data("type")] === "undefined") ? "osm" : $(mapDiv).data("type");
 
-            L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+            L.tileLayer(esa_map_layers[mapType].url, esa_map_layers[mapType].opts).addTo(map);
 
             $.ajax({
                 url: esa.ajax_url,
