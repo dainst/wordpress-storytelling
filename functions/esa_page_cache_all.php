@@ -105,13 +105,15 @@ add_action('wp_ajax_esa_import_next_page', function() {
         wp_die();
     }
 
-    $results = count($ds->results);
-    esa_cache_result($ds);
+    $warnings = esa_cache_result($ds);
+    $results = count($ds->results) - count($warnings);
+    $results_all = count($ds->results);
 
     echo json_encode(array(
         "success" => true,
-        "message" => "Page {$ds->page} successfully fetched, $results items added.",
-        "results" => count($ds->results),
+        "warnings" => $warnings,
+        "message" => "Page {$ds->page} successfully fetched, $results/$results_all items added.",
+        "results" => $results,
         "page" => $ds->page
     ));
 
@@ -135,10 +137,17 @@ function esa_select_datasource() {
 }
 
 function esa_cache_result($ds) {
+    $warnings = array();
     foreach ($ds->results as $result) {
-        $result->store();
-        esa_get_wrapper($result);
+
+        if (get_class($result) == 'esa_item') {
+            $result->store();
+            esa_get_wrapper($result);
+        } else {
+            $warnings[] = esa_debug(get_class($result));
+        }
     }
+    return $warnings;
 }
 
 
