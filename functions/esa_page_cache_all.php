@@ -157,12 +157,20 @@ function esa_cache_debug_form() {
     echo "<h2>Cache Debug Functions</h2>";
     echo "<p><b>These are debug functions you most likely not need!</b><br> Explanation: Normally embedded content from epigraphic datasources ('Esa-Items') is stored in cache and gets refreshed (causing a new API call) in the moment it get displayed when it was not refreshed by more than two weeks.<br>";
     echo "But you can force to empty the cache and also force to refresh all items at once (You may want to do that after an update for example).</p>";
+
     echo "<form method='POST' action='$url'>";
     echo "<input type='hidden' name='action' value='esa_flush_cache'>";
     echo "<input type='submit' value='Delete all cached content!' class='button'>";
     echo "</form>";
+
     echo "<form method='POST' action='$url'>";
     echo "<input type='hidden' name='action' value='esa_refresh_cache'>";
     echo "<input type='submit' value='Refresh all cached content! (May take extremly long time).' class='button'>";
+    echo "</form>";
+
+    echo "<form method='POST' action='$url'>";
+    echo "<input type='hidden' name='action' value='esa_flush_cache'>";
+    echo "<input type='hidden' name='wrappers' value='true'>";
+    echo "<input type='submit' value='Delete all cached content!, all comments and tags' class='button'>";
     echo "</form>";
 }
