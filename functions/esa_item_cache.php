@@ -22,9 +22,6 @@ function esa_get_module_scripts_cache() {
     // nothing, but function must exist
 }
 
-function esa_get_module_store_shortcode_action_cache($post, $atts) {
-    // nothing, but function must exist
-}
 
 function esa_get_module_settings_cache() {
     return array(

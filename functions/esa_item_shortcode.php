@@ -142,13 +142,14 @@ add_action('save_post', function($post_id) {
         $wpdb->query($sql);
 
         if ($shortcodes) {
-
             foreach($shortcodes as $shortcode) {
                 if ($shortcode[2] == 'esa') {
                     $atts = shortcode_parse_atts($shortcode[3]);
-
                     foreach(esa_get_modules() as $mod) {
-                        call_user_func("esa_get_module_store_shortcode_action_$mod", $post, $atts);
+                        $func_name = "esa_get_module_store_shortcode_action_$mod";
+                        if (function_exists($func_name)) {
+                            call_user_func($func_name, $post, $atts);
+                        }
                     }
 
                 }
