@@ -162,8 +162,6 @@ function esa_comment_list() {
 
 function esa_get_module_store_shortcode_action_comments($post, $attrs) {
     $item = new esa_item($attrs['source'], $attrs['id']);
-    ob_start();
-    $item->html();
-    ob_end_clean();
+    $item->html(true);
     esa_get_wrapper($item);
 }
