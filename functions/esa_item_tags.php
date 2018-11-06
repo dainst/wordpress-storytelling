@@ -96,21 +96,21 @@ function esa_get_module_settings_tags() {
                 'label' => "Tag Color",
                 'children' => array(
                     'red' => array(
-                        'default' => 17,
+                        'default' => -1,
                         'label' => "Tag color: red channel (0 to 255, -1 for automatic)",
                         'type' => 'number',
                         'min' => -1,
                         'max' => 255
                     ),
                      'green' => array(
-                        'default' => 135,
+                        'default' => -1,
                         'label' => "Tag color: green channel (0 to 255, -1 for automatic)",
                         'type' => 'number',
                         'min' => -1,
                         'max' => 255
                     ),
                     'blue' => array(
-                        'default' => 0,
+                        'default' => -1,
                         'label' => "Tag color: blue channel (0 to 255, -1 for automatic)",
                         'type' => 'number',
                         'min' => -1,
@@ -150,6 +150,12 @@ add_filter('user_has_cap', function($allcaps, $caps, $args) {
     return $allcaps;
 }, 10, 3);
 
+// include wrappers into tag archives
+add_action('pre_get_posts', function($query) {
+    if ($query->is_tag() && $query->is_main_query()) {
+        $query->set('post_type', array('post', 'esa_item_wrapper'));
+    }
+});
 
 function get_tag_color($tag) {
     $t = array_map(function($char) {
@@ -195,7 +201,13 @@ function update_esa_tags() {
         }
     }
     $stored_tags = array_map(
-        function($term) {return $term->name;},
+        function($term) {
+            return (object) array(
+                'name' => $term->name,
+                'url' => get_tag_link($term->term_id),
+                'id' => $term->term_id
+            );
+        },
         wp_get_object_terms($wrapper->ID, "post_tag")
     );
     wp_die(json_encode($stored_tags));

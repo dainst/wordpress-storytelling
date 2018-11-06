@@ -38,6 +38,15 @@
             });
         }
 
+        function setTagLinks(tagchecklist) {
+            tagchecklist.children('li').each(function(index, li) {
+                console.log("add listener", li);
+                $(li).on('click', function() {
+                    window.location.href = '/?tag=' + encodeURIComponent(getTagText(li));
+                })
+            });
+        }
+
         function getTagText(tag) {
             return $(tag).clone().children().remove().end().text().trim();
         }
@@ -57,7 +66,7 @@
                     'tags': tags
                 })
                 .done(function(response) {
-                    console.log('The server responded: ', response);
+                    console.log('The server responded: ', JSON.parse(response));
                 })
                 .fail(function(err) {
                     console.warn("Tags couln't be updated: ", err);
@@ -65,7 +74,7 @@
 
             colorizeTags(this.tagchecklist);
             setTagToolTips(this.tagchecklist);
-
+            setTagLinks(this.tagchecklist);
         }
 
         return this.each(function() {
@@ -78,6 +87,7 @@
             observer.observe(tagchecklist.get(0), {attributes: false, childList: true, subtree: true});
             colorizeTags(tagchecklist);
             setTagToolTips(tagchecklist);
+            setTagLinks(tagchecklist);
         });
     };
 }(jQuery));
