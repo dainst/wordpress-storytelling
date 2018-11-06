@@ -8,7 +8,7 @@ add_action('wp_enqueue_scripts', function() {
 
     $dev_suffix = esa_get_settings('script_suffix');
 
-    if (is_esa($post->post_type)) {
+    if (is_object($post) and is_esa($post->post_type)) {
 
         wp_enqueue_style('thickbox');
         wp_register_style('esa_item', plugins_url(ESA_DIR . '/css/esa_item.css'));
