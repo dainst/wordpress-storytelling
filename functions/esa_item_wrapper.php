@@ -75,7 +75,7 @@ function esa_get_wrapper($esaItem) {
 
     global $wpdb;
 
-    $id = sanitize_title($esaItem->id . "---" . $esaItem->source);
+    $id = esa_clean_string($esaItem->id . "---" . $esaItem->source);
 
     $wrappers = get_posts(array(
         'post_type' => 'esa_item_wrapper',
@@ -84,6 +84,10 @@ function esa_get_wrapper($esaItem) {
         'posts_per_page' => -1
     ));
 
+    //echo esa_debug($esaItem);
+//    echo esa_debug($wrappers);
+//    echo esa_debug($id);
+//    wp_die("!");
     if (!count($wrappers)) {
         $wrapper = get_post(wp_insert_post(array(
             'post_name' => $id,
@@ -107,5 +111,12 @@ function esa_get_wrapper($esaItem) {
         }
     }
 
+
+
     return $wrapper;
+}
+
+function esa_clean_string($string) {
+    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+    return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 }
