@@ -150,6 +150,7 @@ add_filter('user_has_cap', function($allcaps, $caps, $args) {
     return $allcaps;
 }, 10, 3);
 
+
 function get_tag_color($tag) {
     $t = array_map(function($char) {
         $c = ord(strtoupper($char));
@@ -263,6 +264,6 @@ function esa_get_module_content_tags($esaItem) {
 
 function esa_get_module_store_shortcode_action_tags($post, $attrs) {
     $item = new esa_item($attrs['source'], $attrs['id']);
-    $item->html();
+    $item->html(true);
     esa_get_wrapper($item);
 }
