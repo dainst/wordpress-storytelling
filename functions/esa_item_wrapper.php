@@ -84,10 +84,6 @@ function esa_get_wrapper($esaItem) {
         'posts_per_page' => -1
     ));
 
-    //echo esa_debug($esaItem);
-//    echo esa_debug($wrappers);
-//    echo esa_debug($id);
-//    wp_die("!");
     if (!count($wrappers)) {
         $wrapper = get_post(wp_insert_post(array(
             'post_name' => $id,
