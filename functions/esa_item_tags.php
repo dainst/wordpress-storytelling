@@ -124,11 +124,11 @@ function esa_get_module_settings_tags() {
 
 add_action('init', function() {
     remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
-    add_action('wp_ajax_get-tagcloud', 'esa_tag_cloud', 1);
-    add_action('wp_ajax_nopriv_get-tagcloud', 'esa_tag_cloud', 1);
-    add_action("wp_ajax_update-esa-tags", "update_esa_tags");
-    add_action("wp_ajax_nopriv_update-esa-tags", "update_esa_tags");
-    add_action("wp_ajax_nopriv_ajax-tag-search", "esa_tag_search");
+    add_action('wp_ajax_get-tagcloud', 'esa_ajax_tag_cloud', 1);
+    add_action('wp_ajax_nopriv_get-tagcloud', 'esa_ajax_tag_cloud', 1);
+    add_action("wp_ajax_update-esa-tags", "esa_ajax_update_tags");
+    add_action("wp_ajax_nopriv_update-esa-tags", "esa_ajax_update_tags");
+    add_action("wp_ajax_nopriv_ajax-tag-search", "esa_ajax_tag_search");
 });
 
 add_filter('user_has_cap', function($allcaps, $caps, $args) {
@@ -157,24 +157,7 @@ add_action('pre_get_posts', function($query) {
     }
 });
 
-function get_tag_color($tag) {
-    $t = array_map(function($char) {
-        $c = ord(strtoupper($char));
-        return ($c >= 65 and $c <= 90) ? 256 - round(($c - 64) * 9.5) : ord($char);
-    }, str_split($tag, 1));
-    $c = array();
-    $i = 0;
-    while (count($c) < 3) {
-        $c[] = $t[$i++ % count($t)];
-    }
-    for ($i = 0; $i < $t[0] % 3; $i++) {
-        array_push($c, array_shift($c));
-    }
-    return "rgba({$c[0]}, {$c[1]}, {$c[2]}, 0.4)";
-
-}
-
-function update_esa_tags() {
+function esa_ajax_update_tags() {
 
     if (!isset($_POST['esa_item_wrapper_id'])) {
         wp_die("wrapper id missing");
@@ -254,11 +237,11 @@ function get_esa_item_tag_box($esaItem) {
     return ob_get_clean();
 }
 
-function esa_tag_search() {
+function esa_ajax_tag_search() {
     wp_ajax_ajax_tag_search();
 }
 
-function esa_tag_cloud() {
+function esa_ajax_tag_cloud() {
     if (!isset($_POST['tax'])) {
         wp_die(0);
     }
