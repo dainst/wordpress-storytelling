@@ -7,7 +7,13 @@
 
             var t = term.split("").map(function(char) {
                 c = char.toUpperCase().charCodeAt(0);
-                return (c >= 65 && c <= 90) ? 256 - Math.round((c - 64) * 9.5) : char.charCodeAt(0);
+                if (c >= 65 && c <= 90) {
+                    return 256 - Math.round((c - 64) * 9.5)
+                } else if (char.charCodeAt(0) > 255) {
+                    return char.charCodeAt(0) % 255;
+                } else {
+                    return char.charCodeAt(0);
+                }
             });
             var c = [];
             var i = 0;
@@ -38,11 +44,16 @@
             });
         }
 
-        function setTagLinks(tagchecklist) {
+        function setTagLinks(tagchecklist, tagslist) {
             tagchecklist.children('li').each(function(index, li) {
-                console.log("add listener", li);
+                var name = encodeURIComponent(getTagText(li));
+                //console.log("tag", name, tagslist[name]);
+                var url = (typeof tagslist[name] !== "undefined")
+                    ? tagslist[name].url
+                    : '/?tag=' + name;
+                //console.log("url", url);
                 $(li).on('click', function() {
-                    window.location.href = '/?tag=' + encodeURIComponent(getTagText(li));
+                    window.location.href = url;
                 })
             });
         }
@@ -51,43 +62,40 @@
             return $(tag).clone().children().remove().end().text().trim();
         }
 
-        function updateTags(mutationsList, observer) {
+        function updateTags(tagchecklist, wrapperId, update) {
 
             var tags = [];
-            this.tagchecklist.children('li').each(function(index, li) {
+            tagchecklist.children('li').each(function(index, li) {
                 tags.push(getTagText(li));
             });
 
             jQuery.post(
                 window.ajaxurl,
                 {
-                    'action': 'update-esa-tags',
-                    'esa_item_wrapper_id': this.wrapperId,
+                    'action': update ? 'esa-update-tags' : 'esa-get-tags',
+                    'esa_item_wrapper_id': wrapperId,
                     'tags': tags
                 })
                 .done(function(response) {
                     console.log('The server responded: ', JSON.parse(response));
+                    setTagLinks(tagchecklist, JSON.parse(response));
                 })
                 .fail(function(err) {
                     console.warn("Tags couln't be updated: ", err);
                 });
+            colorizeTags(tagchecklist);
+            setTagToolTips(tagchecklist);
 
-            colorizeTags(this.tagchecklist);
-            setTagToolTips(this.tagchecklist);
-            setTagLinks(this.tagchecklist);
         }
 
         return this.each(function() {
             var tagchecklist = $(this).find(".tagchecklist");
-            var observer = new MutationObserver(updateTags.bind({
-                tagchecklist: tagchecklist,
-                container: this,
-                wrapperId: $(this).data("esa-item-wrapper-id")
-            }));
+            var wrapperId = $(this).data("esa-item-wrapper-id");
+            var observer = new MutationObserver(function(mutationsList, observer) {
+                updateTags(tagchecklist, wrapperId, true);
+            });
             observer.observe(tagchecklist.get(0), {attributes: false, childList: true, subtree: true});
-            colorizeTags(tagchecklist);
-            setTagToolTips(tagchecklist);
-            setTagLinks(tagchecklist);
+            updateTags(tagchecklist, wrapperId, false);
         });
     };
 }(jQuery));

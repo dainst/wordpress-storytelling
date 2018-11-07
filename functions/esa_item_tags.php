@@ -126,9 +126,12 @@ add_action('init', function() {
     remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
     add_action('wp_ajax_get-tagcloud', 'esa_ajax_tag_cloud', 1);
     add_action('wp_ajax_nopriv_get-tagcloud', 'esa_ajax_tag_cloud', 1);
-    add_action("wp_ajax_update-esa-tags", "esa_ajax_update_tags");
-    add_action("wp_ajax_nopriv_update-esa-tags", "esa_ajax_update_tags");
     add_action("wp_ajax_nopriv_ajax-tag-search", "esa_ajax_tag_search");
+
+    add_action("wp_ajax_esa-update-tags", "esa_ajax_update_tags");
+    add_action("wp_ajax_nopriv_esa-update-tags", "esa_ajax_update_tags");
+    add_action("wp_ajax_esa-get-tags", "esa_ajax_get_tags");
+    add_action("wp_ajax_nopriv_esa-get-tags", "esa_ajax_get_tags");
 });
 
 add_filter('user_has_cap', function($allcaps, $caps, $args) {
@@ -157,6 +160,28 @@ add_action('pre_get_posts', function($query) {
     }
 });
 
+function esa_ajax_get_tags() {
+
+    if (!isset($_POST['esa_item_wrapper_id'])) {
+        wp_die("wrapper id missing");
+    }
+    $wrapper = get_post($_POST['esa_item_wrapper_id']);
+    if (!$wrapper or $wrapper->post_type != "esa_item_wrapper") {
+        wp_die("wrapper not found");
+    }
+
+    $stored_tags = array();
+    foreach(wp_get_object_terms($wrapper->ID, "post_tag") as $term) {
+        $stored_tags[rawurlencode($term->name)] = array(
+            'name' => $term->name,
+            'url' => get_tag_link($term->term_id),
+            'id' => $term->term_id
+        );
+    }
+
+    wp_die(json_encode($stored_tags));
+}
+
 function esa_ajax_update_tags() {
 
     if (!isset($_POST['esa_item_wrapper_id'])) {
@@ -166,6 +191,7 @@ function esa_ajax_update_tags() {
     if (!$wrapper or $wrapper->post_type != "esa_item_wrapper") {
         wp_die("wrapper not found");
     }
+
     $tags = isset($_POST['tags']) ? $_POST['tags'] : array();
     if (esa_get_settings('modules', 'tags', 'visitor_can_delete') or (current_user_can('delete_post_tags'))) {
         wp_set_object_terms($wrapper->ID, null, "post_tag");
@@ -183,17 +209,8 @@ function esa_ajax_update_tags() {
             wp_die("could not save tag:" . $tag);
         }
     }
-    $stored_tags = array_map(
-        function($term) {
-            return (object) array(
-                'name' => $term->name,
-                'url' => get_tag_link($term->term_id),
-                'id' => $term->term_id
-            );
-        },
-        wp_get_object_terms($wrapper->ID, "post_tag")
-    );
-    wp_die(json_encode($stored_tags));
+
+    esa_ajax_get_tags();
 }
 
 function get_esa_item_tag_box($esaItem) {
