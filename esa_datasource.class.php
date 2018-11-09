@@ -57,6 +57,9 @@ namespace esa_datasource {
 		// some settings
 		public $settings = array('epidoc' => array());
 		public $force_curl = false;
+
+		// a debug feature
+        public $last_fetched_url;
 		
 		/**
 		 * some initialation
@@ -323,7 +326,7 @@ namespace esa_datasource {
 				
 				echo "<div class='esa_item_list_pagination'>";
 				
-				if (method_exists($this, "api_search_url_first")) {
+				if (method_exists($this, "api_search_url_first") and ($this->pages > 0 or $this->pages === '?')) {
 					$this->show_pagination_button('first');
 				}
 				
@@ -333,7 +336,7 @@ namespace esa_datasource {
 
 				echo "<div class='esa_item_list_pagination_current'>";
 				
-				if ($this->page) {
+				if ($this->page and ($this->pages > 0 or $this->pages === '?')) {
 					echo "Page " . $this->page;
 				}
 								
@@ -343,8 +346,8 @@ namespace esa_datasource {
 				}
 				
 				echo "</div>";
-				
-				if (method_exists($this, "api_search_url_next") and ($this->page < $this->pages or $this->pages == '?')) {
+
+				if (method_exists($this, "api_search_url_next") and ($this->page < $this->pages or $this->pages === '?')) {
 					$this->show_pagination_button('next');
 				}
 				
@@ -429,6 +432,9 @@ namespace esa_datasource {
 		 * (curl version never tested :D )
 		 */
 		protected function _fetch_external_data($url) {
+
+            $this->last_fetched_url = $url;
+
 			if (!$url) {
 				throw new \Exception('no $url!');
 			}
