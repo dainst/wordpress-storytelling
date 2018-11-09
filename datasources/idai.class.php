@@ -16,16 +16,38 @@ namespace esa_datasource {
 	class idai extends abstract_datasource {
 
 
-		public $title = 'iDAI Gazetteer';
+		public $title = 'iDAI.gazetteer';
 		public $index = 55; // where to appear in the menu
 		public $homeurl = "https://gazetteer.dainst.org/";
+		public $items_per_page = 12;
 		
-		public $pagination = false;
+		public $pagination = true;
 
 		function api_search_url($query, $params = array()) {
 			$query = urlencode($query);
-			return "https://gazetteer.dainst.org/search.json?q={$query}";
+			return "https://gazetteer.dainst.org/search.json?q={$query}&limit={$this->items_per_page}";
 		}
+
+        function api_search_url_next($query, $params = array()) {
+            $this->page += 1;
+            return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
+        }
+
+        function api_search_url_prev($query, $params = array()) {
+            $this->page -= 1;
+            return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
+        }
+
+        function api_search_url_first($query, $params = array()) {
+            $this->page = 1;
+            return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
+        }
+
+        function api_search_url_last($query, $params = array()) {
+            $this->page = $this->pages;
+            return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
+        }
+
 			
 		function api_single_url($id, $params = array()) {
 			$query = urlencode($id);
@@ -55,6 +77,7 @@ namespace esa_datasource {
 		function parse_result_set($response) {
 			$response = $this->_json_decode($response);
 
+            $this->pages = 1 + (int) ($response->total / $this->items_per_page);
 
 			$this->results = array();
 			$list = (isset($response->result)) ? $response->result : array($response);
@@ -87,8 +110,10 @@ namespace esa_datasource {
 					$prefLocation = $parent->prefLocation;
 					$hint = "<li>(Coordinates taken from parent Object $l: {$parent->prefName->title}</li>";
 				}		
-				
-				list($long, $lat) = $prefLocation->coordinates;
+				if (isset($prefLocation->coordinates)) {
+                    list($long, $lat) = $prefLocation->coordinates;
+                }
+
 				$shape = (isset($prefLocation->shape)) ? "data-shape='" . json_encode($this->swapCoordinates($prefLocation->shape)) .  "'" : '';
 				
 				$html  = "<div class='esa_item_left_column_max_left'>";
