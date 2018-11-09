@@ -108,11 +108,14 @@ add_action('wp_ajax_esa_import_next_page', function() {
     $warnings = esa_cache_result($ds);
     $results = count($ds->results) - count($warnings);
     $results_all = count($ds->results);
+    $list = implode("</li>\n<li>", array_map(function($item) {
+        return $item->title;
+    }, $ds->results));
 
     echo json_encode(array(
         "success" => true,
         "warnings" => $warnings,
-        "message" => "Page {$ds->page} successfully fetched, $results/$results_all items added.",
+        "message" => "Page {$ds->page} successfully fetched, $results/$results_all items added.<ul><li>$list</li></ul>",
         "results" => $results,
         "page" => $ds->page
     ));
