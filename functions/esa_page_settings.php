@@ -39,10 +39,10 @@ function esa_settings_datasources() {
     $labels = array();
     $optionlist = array();
     foreach ($ds_files as $name => $filename) {
-        $ds = get_esa_datasource($name);
-        $label = $ds->title;
-        $labels[$name] = $label;
         try  {
+            $ds = get_esa_datasource($name);
+            $label = $ds->title;
+            $labels[$name] = $label;
             $is_ok = true;
             $status = $ds->dependency_check();
         } catch(\exception $e) {
