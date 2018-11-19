@@ -68,7 +68,7 @@ namespace esa_datasource {
 			// make plugin path available
 			$this->path = __DIR__;
 			
-			// get some settings
+			// get some settings @TODO replace settings file with WP-settings...
 			if (!file_exists(__DIR__ . '/esa_datasource.settings.local.php')) {
 				$settings = array('epidoc' => array());
 				$settings['epidoc']['mode'] = 'remote:saxon';
@@ -405,14 +405,27 @@ namespace esa_datasource {
 		
 		/**
 		 * if the functionality of the datasource relies onto something special like specific php libraries or external software,
-		 * you can implement a dependancy check on wose result the availabilty in wordpress depends.
+		 * you can implement a dependency check on wose result the availability in wordpress depends.
 		 * @return string
 		 * @throws Exception if not
 		 */
 		function dependency_check() {
 			return 'O. K.';
 		}
-		
+
+        /**
+         * checks if curl is available.. can be used in dependency_check
+         */
+		function check_for_curl() {
+		    return (
+                function_exists("curl_init") and
+                function_exists("curl_setopt") and
+                function_exists("curl_exec") and
+                function_exists("curl_close")
+            );
+        }
+
+
 		/**
 		 * get datasource specif styles
 		 * @return array(
@@ -423,15 +436,14 @@ namespace esa_datasource {
 		function stylesheet() {
 			return array();
 		}
-		
-		
-		
+
 		/**
 		 * fetches $data from url, using curl if possible, if not it uses file_get_contents
-		 * 
-		 * (curl version never tested :D )
+		 *
+         * @return string | object containing error
+         * @throws \Exception
 		 */
-		protected function _fetch_external_data($url) {
+		protected function _fetch_external_data($url, $post_params = null) {
 
             $this->last_fetched_url = $url;
 
@@ -439,31 +451,34 @@ namespace esa_datasource {
 				throw new \Exception('no $url!');
 			}
 				
-			if(
-				function_exists("curl_init") and 
-				function_exists("curl_setopt") and
-				function_exists("curl_exec") and 
-				function_exists("curl_close") and
-				$this->force_curl
-			){
+			if($this->check_for_curl() and ($this->force_curl or $post_params)){
 				$ch = curl_init();
 				
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_URL, $url);
+
+				if ($post_params !== null) {
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_params);
+                }
+
 				$response = curl_exec($ch);
 				
 				if ($this->debug) {
 					echo "<pre>mode: curl</pre>";
 				}
 				
-				if(!curl_errno($ch)) {
-					$info = curl_getinfo($ch);
-					if ($this->debug) {
-						echo '<pre>Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'] . '</pre>';
-					}
-				} else {
-					throw new \Exception('Curl error: ' . curl_error($ch));
-				}
+				if(curl_errno($ch)) {
+                    throw new \Exception('Curl error: ' . curl_error($ch));
+                }
+                $info = curl_getinfo($ch);
+                if ($this->debug) {
+                    echo '<pre>Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'] . '</pre>';
+                }
+                if (($info['http_code'] < 200) or ($info['http_code'] >= 400)) {
+                    throw new \Exception($response, 666); // 666 means we forward an error message from server
+                }
+
 				
 				curl_close($ch);
 
@@ -471,11 +486,11 @@ namespace esa_datasource {
 			}
 		
 			
-			if (!$json = file_get_contents($url)) {
+			if (!$data = file_get_contents($url)) {
 				throw new \Exception("no response to $url!");
 			}
 			
-			return $json;
+			return $data;
 		}
 		
 		protected function _ckeck_url($url) {
