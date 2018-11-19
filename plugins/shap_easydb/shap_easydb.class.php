@@ -9,7 +9,7 @@ namespace esa_datasource {
         public $index = 1; // where to appear in the menu
         public $info = "...Kurzbeschreibung..."; // get created automatically, or enter text
         public $homeurl; // link to the dataset's homepage
-        public $debug = true;
+        public $debug = false;
         //public $examplesearch; // placeholder for search field
         //public $searchbuttonlabel = 'Search'; // label for searchbutton
 
@@ -81,10 +81,11 @@ namespace esa_datasource {
                     array(
                         "type" => "match",
                         "mode" => "token",
-                        "string"=> "Jabla", //$query
+                        "string"=> $query,
                         "phrase"=> true
                     )
-                )
+                ),
+                "limit" => 12
             );
 
             return (object) array(
@@ -95,8 +96,10 @@ namespace esa_datasource {
             );
         }
 
+        // id is _objecttype + "|" + id
         function api_single_url($id, $params = array()) {
-            return "";
+            list($object_type, $object_id) = explode("|", $id);
+            return "{$this->easydb_url}/db/$object_type/_all_fields/$object_id?token={$this->session_token}";
         }
 
 
@@ -141,57 +144,83 @@ namespace esa_datasource {
         function parse_result_set($response) {
             $response = json_decode($response);
             $this->results = array();
-            foreach ($response->items as $item) {
-
-
-                /* old way of doint it
-
-                $title = $this->results[2];
-                $url = $this->results[3];
-                $html  = "<div class='esa_item_left_column'>";
-                $html .= "<div class='esa_item_main_image' style='background-image:url(\"{ image url }\")'>&nbsp;</div>";
-                $html .= "</div>";
-
-                $html .= "<div class='esa_item_right_column'>";
-                $html .= "<h4>{ title }</h4>";
-
-                $html .= "<ul class='datatable'>";
-                $html .= "<li><strong>{ field }: </strong>{ data }</li>";
-                $html .= "</ul>";
-
-                $html .= "</div>";
-                */
-
-                $data = new \esa_item\data();
-
-                $data->title = __title__;
-                $data->addText($key, $value);
-                $data->addTable($key, $value);
-                $data->addImages(array(
-                    'url' 		=> '',
-                    'fullres' 	=> '',
-                    'type' 		=> 'BITMAP',
-                    'mime' 		=> '',
-                    'title' 	=> '',
-                    'text' 		=> ''
-                ));
-
-
-
-                $this->results[] = new \esa_item(__source__, __id__, $data->render(), __url__, __title__);
+            foreach ($response->objects as $item) {
+                $type = $item->_objecttype;
+                $this->results[] = $this->parse_result($this->_fetch_external_data($this->api_single_url("$type|{$item->{$type}->_id}")));
             }
 
             // pagination
-            $this->pages = 1 + (int) ($response->meta->totalResults / $response->meta->resultsPerPage);
-            $this->page  = $response->meta->currentPage;
+            //            $this->pages = 1 + (int) ($response->meta->totalResults / $response->meta->resultsPerPage);
+            //            $this->page  = $response->meta->currentPage;
 
             return $this->results;
         }
 
+        function parse_field($field) {
+            $lang = "de-DE";
+            if (!isset($field->_standard)) {
+                return "";
+            }
+            $one = "1";
+            if (!isset($field->_standard->{$one})) {
+                return "";
+            }
+            if (!isset($field->_standard->{$one}->text)) {
+                return "";
+            }
+            if (!isset($field->_standard->{$one}->text->{$lang})) {
+                $lang = get_object_vars($field->_standard->{$one}->text)[0];
+            }
+            return $field->_standard->{$one}->text->{$lang};
+        }
+
+        function parse_field_name($field_name) {
+            return ucwords(str_replace(array("_id", "_"), array("", " "), $field_name));
+        }
+
+
         function parse_result($response) {
-            // if always return a whole set
-            $res = $this->parse_result_set($response);
-            return $res[0];
+
+            $json_response = $this->_json_decode($response);
+            $object_type = $json_response[0]->_objecttype;
+            $object = $json_response[0]->{$object_type};
+            $id = "$object_type|{$object->_id}";
+            $title = isset($object->name) ? $object->name : null;
+            $lat = isset($object->latitude) ? $object->latitude : null;
+            $lon = isset($object->longitude) ? $object->longitude : null;
+
+            $data = new \esa_item\data();
+            $data->title = $title;
+            $data->addTable("Typ", $object_type);
+            $data->addTable("ID", $object->_id);
+
+            $fields_to_parse = array(
+                'anbieter_id',
+                'art_der_vorlage_id',
+                'art_des_motivs_id',
+                'bearbeitungsstatus_id',
+                'ersteller_der_vorlage_id',
+                'material_der_vorlage_id',
+                'ort_des_motivs_id'
+            );
+            foreach ($fields_to_parse as $field_to_parse) {
+                if (isset($object->{$field_to_parse})) {
+                    $data->addTable($this->parse_field_name($field_to_parse), $this->parse_field($object->{$field_to_parse}));
+                }
+            }
+            $fields_to_add = array(
+                'anweisungen',
+                'nutzungsbedingungen',
+                'quelle',
+                'verfasser_der_beschreibung'
+            );
+            foreach ($fields_to_add as $field_to_add) {
+                if (isset($object->{$field_to_add})) {
+                    $data->addTable(ucwords($field_to_add), $object->{$field_to_add});
+                }
+            }
+
+            return new \esa_item("shap_easydb", $id, $data->render(), null, $title, array(), array(), $lat, $lon);
         }
 
         function stylesheet() {
