@@ -182,7 +182,7 @@ namespace esa_datasource {
 						$queryurl = $this->api_search_url($query, $params);
 					}
 					if ($this->debug) {
-						echo $queryurl;
+						echo is_object($queryurl) ? print_r($queryurl, 1) : $queryurl;
 					}
 					
 					$this->parse_result_set($this->_generic_api_call($queryurl));
@@ -197,28 +197,30 @@ namespace esa_datasource {
 			
 			return (!count($this->errors));
 		}
-		
-		/**
-		 * 
-		 * get data from source for a specific unique identifier or URL
-		 * 
-		 * This is generic function, it can be overwritten in some implementations
-		 * 
-		 * @param $id - unique identifier
-		 * 
-		 * @return array of result, wich has to be parsed by $this->parse_result
-		 */
+
+        /**
+         *
+         * get data from source for a specific unique identifier or URL
+         *
+         * This is generic function, it can be overwritten in some implementations
+         *
+         * @param $id - unique identifier
+         *
+         * @return array of result, wich has to be parsed by $this->parse_result
+         * @throws \Exception
+         */
 		function get($id) {
 			$this->id = (isset($_POST['esa_ds_id'])) ? $_POST['esa_ds_id'] : $id;
 			return $this->parse_result($this->_generic_api_call($this->api_single_url($this->id)));
 		}
-		
-		/**
-		 * used for the generic get and search function only; 
-		 * 
-		 * @param string $api
-		 * @param string $param
-		 */
+
+        /**
+         * used for the generic get and search function only;
+         *
+         * @param string $url
+         * @return object|string
+         * @throws \Exception
+         */
 		function _generic_api_call($url) {
 			
 			if (!$url) {
@@ -229,7 +231,8 @@ namespace esa_datasource {
 			
 			if ($this->debug) {
 				echo "<pre>";
-				echo "url: ", $url, "\nPOST: ", print_r($_POST,1 ), "\nResponse: ";
+                $url_debug = !is_object($url) ? $url : print_r($url ,1);
+				echo "url: ", $url_debug, "\nPOST: ", print_r($_POST,1 ), "\nResponse: ";
 				print_r((array) json_decode($response));
 				echo "</pre>";
 			}
@@ -439,47 +442,82 @@ namespace esa_datasource {
 
 		/**
 		 * fetches $data from url, using curl if possible, if not it uses file_get_contents
-		 *
-         * @return string | object containing error
+		 * @param string or object $url
+         *  object variant: {
+         *    url : ...,
+         *    post_params: ...,
+         *    post_json: ...,
+         *    method: post | get
+         *  }
+         * @return string object containing error
          * @throws \Exception
 		 */
-		protected function _fetch_external_data($url, $post_params = null) {
+		protected function _fetch_external_data($url) {
 
             $this->last_fetched_url = $url;
 
 			if (!$url) {
 				throw new \Exception('no $url!');
 			}
-				
-			if($this->check_for_curl() and ($this->force_curl or $post_params)){
-				$ch = curl_init();
+
+			$curl = $this->force_curl or is_object($url);
+
+			if($curl){
+
+			    if (!$this->check_for_curl()) {
+                    throw new \Exception('no $url!');
+                }
+
+                if (!is_object($url)) {
+			        $url = (object) array("url" => $url);
+                }
+
+                if (!isset($url->url)) {
+                    throw new \Exception('url missing!');
+                }
+
+                $ch = curl_init();
 				
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_URL, $url->url);
 
-				if ($post_params !== null) {
+				if (isset($url->post_params)) {
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $url->post_params);
+                }
+
+                if (isset($url->post_json)) {
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                            'Content-Type: application/json',
+                            'Content-Length: ' . strlen(json_encode($url->post_json)))
+                    );
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($url->post_json));
+                }
+
+                if (isset($url->method) and $url->method == 'post') {
                     curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_params);
+                }
+
+                if ($this->debug) {
+                    echo "<pre>mode: curl</pre>";
+                    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
                 }
 
 				$response = curl_exec($ch);
 				
-				if ($this->debug) {
-					echo "<pre>mode: curl</pre>";
-				}
-				
 				if(curl_errno($ch)) {
                     throw new \Exception('Curl error: ' . curl_error($ch));
                 }
+
                 $info = curl_getinfo($ch);
+
                 if ($this->debug) {
                     echo '<pre>Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'] . '</pre>';
                 }
+
                 if (($info['http_code'] < 200) or ($info['http_code'] >= 400)) {
                     throw new \Exception($response, 666); // 666 means we forward an error message from server
                 }
 
-				
 				curl_close($ch);
 
 				return $response;
