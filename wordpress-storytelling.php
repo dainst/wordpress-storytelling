@@ -68,3 +68,8 @@ require_once('functions/esa_item_cache.php');
 require_once('functions/esa_page_info.php');
 require_once('functions/esa_page_cache_all.php');
 require_once('functions/esa_page_settings.php');
+
+$plugins = glob(ESA_PATH . "plugins/*/index.php");
+foreach ($plugins as $plugin) {
+    require_once($plugin);
+}
