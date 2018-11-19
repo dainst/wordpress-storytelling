@@ -540,12 +540,8 @@ namespace esa_datasource {
 		 * json decode with error handling
 		 */
 		protected function _json_decode($json) {
-
-			//echo "input json string<br><pre>$json</pre><hr>";
-
-			
 			$dec = json_decode($json);
-			
+
 			switch (json_last_error()) {
 				case JSON_ERROR_NONE:
 					break;
@@ -568,10 +564,7 @@ namespace esa_datasource {
 					$this->error('json error: - Unknown error');
 					break;
 			}
-			
-			//echo "<br><hr>output json<br><pre>", print_r($dec, 1), "</pre>";
-			
-			
+
 			return $dec;
 		}
 		
