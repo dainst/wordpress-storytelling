@@ -115,9 +115,10 @@ add_action('wp_ajax_esa_import_next_page', function() {
     echo json_encode(array(
         "success" => true,
         "warnings" => $warnings,
-        "message" => "Page {$ds->page} successfully fetched, $results/$results_all items added.<ul><li>$list</li></ul>",
+        "message" => "Page {$ds->page} successfully fetched, $results/$results_all items added.<ul title='{$ds->last_fetched_url}'><li>$list</li></ul>",
         "results" => $results,
-        "page" => $ds->page
+        "page" => $ds->page,
+        "url" => $ds->last_fetched_url
     ));
 
     wp_die();

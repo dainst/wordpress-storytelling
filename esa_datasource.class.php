@@ -427,7 +427,7 @@ namespace esa_datasource {
 		
 		
 		/**
-		 * fetches $data from url, unsing curl if possible, if not it uses file_get_contents
+		 * fetches $data from url, using curl if possible, if not it uses file_get_contents
 		 * 
 		 * (curl version never tested :D )
 		 */
