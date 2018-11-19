@@ -35,11 +35,10 @@ function esa_settings_datasources() {
         $datasources  = array();
     }
     echo "<p>Here you can see all currently installed sub-plugins, which are connectors to several epigraphic / other datasources.";
-    $dsfiles = glob(ESA_PATH . "datasources/*.class.php");
+    $ds_files = esa_collect_datasource_files();
     $labels = array();
     $optionlist = array();
-    foreach ($dsfiles as $filename) {
-        $name = basename($filename, '.class.php');
+    foreach ($ds_files as $name => $filename) {
         $ds = get_esa_datasource($name);
         $label = $ds->title;
         $labels[$name] = $label;
@@ -48,7 +47,7 @@ function esa_settings_datasources() {
             $status = $ds->dependency_check();
         } catch(\exception $e) {
             $is_ok = false;
-            $status = 'Error:' . $e->getMessage();
+            $status = $e->getMessage();
         }
         $status = ($is_ok === true) ? "<span style='color:green'>($status)</span>" : "<span style='color:red'>(Error: $status)</span>";
         $checked = ((in_array($name, $datasources)) and ($is_ok === true)) ?  'checked="checked"' : '';

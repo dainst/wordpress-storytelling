@@ -19,25 +19,7 @@ function is_esa($post_type = false) {
     return (in_array($post_type, esa_get_post_types())) or $is_esa_story_page;
 }
 
-/**
- * returns an object instance of a datasource called by slug
- *
- * @param string $engine
- * @return esa_datasource
- */
-function get_esa_datasource($engine) {
-    if (!$engine) {
-        return;
-    }
-    // get engine interface
-    if (!file_exists(ESA_PATH . "datasources/$engine.class.php")) {
-        echo "Error: Sub-Plugin engine '$engine' not found!"; return;
-    }
 
-    require_once(ESA_PATH . "datasources/$engine.class.php");
-    $ed_class = "\\esa_datasource\\$engine";
-    return new $ed_class;
-}
 
 
 function esa_debug($whatver) {

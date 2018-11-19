@@ -51,6 +51,12 @@ require_once('esa_item.class.php');
 require_once('esa_item_transfer.class.php');
 require_once('esa_map_widget.class.php');
 
+$plugins = glob(ESA_PATH . "plugins/*/index.php");
+foreach ($plugins as $plugin) {
+    require_once($plugin);
+}
+
+require_once('functions/esa_datasources.php');
 require_once('functions/esa_settings.php');
 require_once('functions/esa_script_loader.php');
 require_once('functions/esa_install.php');
@@ -68,8 +74,3 @@ require_once('functions/esa_item_cache.php');
 require_once('functions/esa_page_info.php');
 require_once('functions/esa_page_cache_all.php');
 require_once('functions/esa_page_settings.php');
-
-$plugins = glob(ESA_PATH . "plugins/*/index.php");
-foreach ($plugins as $plugin) {
-    require_once($plugin);
-}
