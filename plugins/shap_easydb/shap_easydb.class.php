@@ -1,16 +1,9 @@
 <?php
-/**
- * @package 	wordpress-storytelling
- * @subpackage	Search in Datasources | Subplugin:
- * @link
- * @author
- *
- *
- */
 
 
 namespace esa_datasource {
-    class __NAME__ extends abstract_datasource {
+
+    class shap_easydb extends abstract_datasource {
 
         public $title = 'SHAP - EasyDB'; // Label / Title of the Datasource
         public $index = 1; // where to appear in the menu
@@ -27,11 +20,60 @@ namespace esa_datasource {
 
         public $url_parser = '#https?\:\/\/(www\.)some_page.de?ID=(.*)#'; // // url regex (or array)
 
+        public $force_curl = true;
+
+        private $session_token;
+
+        private $easydb_url = "https://syrian-heritage.5.easydb.de/api/v1";
+        private $easydb_user = "root";
+        private $easydb_pass = "";
+
+        function dependency_check() {
+            if (!$this->check_for_curl()) {
+                throw new \Exception('PHP Curl extension not installed');
+            }
+            $this->get_easy_db_login();
+            return 'O. K.';
+        }
+
         /**
          * constructor
          * @see \esa_datasource\abstract_datasource::construct()
          */
         function construct() {
+
+        }
+
+        function message_abstract($e) {
+            $json_msg = json_decode($e->getMessage());
+            if (($e->getCode() == 666) and (is_object($json_msg))) {
+                echo esa_debug($json_msg);
+                return isset($json_msg->description) ? $json_msg->description : $json_msg->code;
+            }
+            return $e->getMessage();
+        }
+
+        function get_easy_db_login() {
+            try {
+                $resp = json_decode($this->_fetch_external_data("{$this->easydb_url}/session"));
+                if (!isset($resp->token)) {
+                    throw new \Exception('no token');
+                }
+                $this->session_token = $resp->token;
+            } catch (\Exception $e) {
+                throw new \Exception('Easy-DB: create session failed: ' . $this->message_abstract($e));
+            }
+
+            try {
+                $resp = $this->_fetch_external_data("{$this->easydb_url}/session/authenticate?token={$this->session_token}&login={$this->easydb_user}&password={$this->easydb_pass}", array());
+            } catch (\Exception $e) {
+                throw new \Exception('Easy-DB: authentication failed: ' . $this->message_abstract($e));
+            }
+
+            echo esa_debug($resp);
+
+            return true;
+
 
         }
 
