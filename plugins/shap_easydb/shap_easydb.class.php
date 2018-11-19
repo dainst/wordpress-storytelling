@@ -32,16 +32,8 @@ namespace esa_datasource {
             if (!$this->check_for_curl()) {
                 throw new \Exception('PHP Curl extension not installed');
             }
-            $this->get_easy_db_login();
+            $this->get_easy_db_session_token();
             return 'O. K.';
-        }
-
-        /**
-         * constructor
-         * @see \esa_datasource\abstract_datasource::construct()
-         */
-        function construct() {
-
         }
 
         function message_abstract($e) {
@@ -53,7 +45,10 @@ namespace esa_datasource {
             return $e->getMessage();
         }
 
-        function get_easy_db_login() {
+        function get_easy_db_session_token() {
+            if ($this->session_token) {
+                return $this->session_token;
+            }
             try {
                 $resp = json_decode($this->_fetch_external_data("{$this->easydb_url}/session"));
                 if (!isset($resp->token)) {
@@ -65,20 +60,39 @@ namespace esa_datasource {
             }
 
             try {
-                $resp = $this->_fetch_external_data("{$this->easydb_url}/session/authenticate?token={$this->session_token}&login={$this->easydb_user}&password={$this->easydb_pass}", array());
+                $this->_fetch_external_data((object) array(
+                    "url" => "{$this->easydb_url}/session/authenticate?token={$this->session_token}&login={$this->easydb_user}&password={$this->easydb_pass}",
+                    "method" => "post"
+                ));
             } catch (\Exception $e) {
                 throw new \Exception('Easy-DB: authentication failed: ' . $this->message_abstract($e));
             }
 
-            echo esa_debug($resp);
-
-            return true;
-
+            return $this->session_token;
 
         }
 
         function api_search_url($query, $params = array()) {
-            return "";
+
+            $this->get_easy_db_session_token();
+
+            $search = array(
+                "search" => array(
+                    array(
+                        "type" => "match",
+                        "mode" => "token",
+                        "string"=> "Jabla", //$query
+                        "phrase"=> true
+                    )
+                )
+            );
+
+            return (object) array(
+                'method' => 'post',
+                'url' => "{$this->easydb_url}/search?token={$this->session_token}",
+                'post_json' => $search
+
+            );
         }
 
         function api_single_url($id, $params = array()) {
@@ -88,6 +102,18 @@ namespace esa_datasource {
 
         function api_record_url($id, $params = array()) {
             return "";
+        }
+
+        function show_errors() {
+            echo "<div class='esa_error_list'>";
+            foreach ($this->errors as $error) {
+                $json_error = json_decode($error);
+                if (is_object($json_error)) {
+                    $error = isset($json_error->description) ? $json_error->description : $json_error->code;
+                }
+                echo "<div class='error'>$error</div>";
+            }
+            echo "</div>";
         }
 
 
