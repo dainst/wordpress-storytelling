@@ -50,7 +50,7 @@ function media_esa_dialogue() {
     $engine  = isset($_GET['esa_source']) ? $_GET['esa_source'] : $esa_datasources[0];
 
     // get current search engine
-    $eds = ($engine != '_info') ? get_esa_datasource($engine) : '';
+    $eds = ($engine != '_info') ? esa_get_datasource($engine) : '';
 
     //media_upload_header();
 

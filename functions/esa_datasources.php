@@ -6,7 +6,7 @@
  * @param string $ds
  * @return esa_datasource
  */
-function get_esa_datasource($ds) {
+function esa_get_datasource($ds) {
     if (!$ds) {
         return null;
     }

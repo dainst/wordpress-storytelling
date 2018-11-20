@@ -20,7 +20,7 @@ add_action('admin_menu', function () {
         }
 
         echo "<h2>Step 3: Start Import</h2>";
-        $ds = get_esa_datasource($_POST['esa_ds_type']);
+        $ds = esa_get_datasource($_POST['esa_ds_type']);
 
         echo "<div style='display:none'>";
         $ds->search_form();
@@ -65,7 +65,7 @@ add_action('admin_enqueue_scripts', function($hook) {
 
 add_action('wp_ajax_esa_get_ds_form', function() {
     $engine = isset($_POST['esa_ds']) ? $_POST['esa_ds'] : false;
-    $ds = get_esa_datasource($engine);
+    $ds = esa_get_datasource($engine);
     if (!$ds) {
         echo "error.";
         wp_die();
@@ -87,7 +87,7 @@ add_action('wp_ajax_esa_import_next_page', function() {
     }
 
     ob_start();
-    $ds = get_esa_datasource($_POST['esa_ds_type']);
+    $ds = esa_get_datasource($_POST['esa_ds_type']);
     if (!$ds) {
         echo json_encode(array(
             "success" => false,

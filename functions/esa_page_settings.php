@@ -40,7 +40,7 @@ function esa_settings_datasources() {
     $optionlist = array();
     foreach ($ds_files as $name => $filename) {
         try  {
-            $ds = get_esa_datasource($name);
+            $ds = esa_get_datasource($name);
             $label = $ds->title;
             $labels[$name] = $label;
             $is_ok = true;

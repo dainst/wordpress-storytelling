@@ -47,7 +47,7 @@ register_activation_hook(ESA_FILE, function() {
     $labels = array();
     foreach ($dsfiles as $filename) {
         $name = basename($filename, '.class.php');
-        $ds = get_esa_datasource($name);
+        $ds = esa_get_datasource($name);
         $labels[$name] = $ds->title;
     }
     add_option('esa_datasource_labels', json_encode($labels));

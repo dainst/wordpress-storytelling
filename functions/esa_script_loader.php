@@ -26,7 +26,9 @@ add_action('wp_enqueue_scripts', function() {
         wp_localize_script('esa_item.js', 'esa', array('ajax_url' => admin_url('admin-ajax.php')));
 
         foreach(esa_get_modules() as $mod) {
-            call_user_func("esa_get_module_scripts_$mod");
+            if (function_exists("esa_get_module_scripts_$mod")) { // @ TODO use actions instead
+                call_user_func("esa_get_module_scripts_$mod");
+            }
         }
 
     }
@@ -64,7 +66,7 @@ function esa_register_special_styles() {
     }
     $css = array();
     foreach ($datasources as $ds) {
-        $dso = get_esa_datasource($ds);
+        $dso = esa_get_datasource($ds);
 
         if (!$dso) {
             continue;

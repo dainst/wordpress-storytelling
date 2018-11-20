@@ -58,7 +58,9 @@ function esa_shortcode($atts, $context) {
 
     if (!is_admin()) {
         foreach(esa_get_modules() as $mod) {
-            $content .= call_user_func("esa_get_module_content_$mod", $item);
+            if (function_exists("esa_get_module_content_$mod")) {
+                $content .= call_user_func("esa_get_module_content_$mod", $item);
+            }
         }
     }
 
@@ -102,7 +104,7 @@ add_action('wp_ajax_esa_url_checker', function() {
             $datasources  = array();
         }
         foreach ($datasources as $ds) {
-            $dso = get_esa_datasource($ds);
+            $dso = esa_get_datasource($ds);
 
             $result['debug'][] = "check against: $ds";
             // @todo try & catch
