@@ -13,19 +13,20 @@ namespace esa_datasource {
         //public $examplesearch; // placeholder for search field
         //public $searchbuttonlabel = 'Search'; // label for searchbutton
 
-
         public $force_curl = true;
 
-        private $session_token;
+        private $_session_token;
 
-        private $easydb_url = "";
-        private $easydb_user = "";
-        private $easydb_pass = "";
+        private $_easydb_url = "";
+        private $_easydb_user = "";
+        private $_easydb_pass = "";
+
+        private $_items_per_page = 12;
 
         function construct() {
-            $this->easydb_url = esa_get_settings('modules', 'shap_easydb', 'easyurl');
-            $this->easydb_user = esa_get_settings('modules', 'shap_easydb', 'easyuser');
-            $this->easydb_pass = esa_get_settings('modules', 'shap_easydb', 'easypass');
+            $this->_easydb_url = esa_get_settings('modules', 'shap_easydb', 'easyurl');
+            $this->_easydb_user = esa_get_settings('modules', 'shap_easydb', 'easyuser');
+            $this->_easydb_pass = esa_get_settings('modules', 'shap_easydb', 'easypass');
         }
 
         function dependency_check() {
@@ -46,62 +47,39 @@ namespace esa_datasource {
         }
 
         function get_easy_db_session_token() {
-            if ($this->session_token) {
-                return $this->session_token;
+            if ($this->_session_token) {
+                return $this->_session_token;
             }
-            if (!$this->easydb_url or !$this->easydb_pass or !$this->easydb_user) {
+            if (!$this->_easydb_url or !$this->_easydb_pass or !$this->_easydb_user) {
                 throw new \Exception('Easy-DB: credentials missing.');
             }
             try {
-                $resp = json_decode($this->_fetch_external_data("{$this->easydb_url}/session"));
+                $resp = json_decode($this->_fetch_external_data("{$this->_easydb_url}/session"));
                 if (!isset($resp->token)) {
                     throw new \Exception('no token');
                 }
-                $this->session_token = $resp->token;
+                $this->_session_token = $resp->token;
             } catch (\Exception $e) {
                 throw new \Exception('Easy-DB: create session failed: ' . $this->message_abstract($e));
             }
             try {
                 $this->_fetch_external_data((object) array(
-                    "url" => "{$this->easydb_url}/session/authenticate?token={$this->session_token}&login={$this->easydb_user}&password={$this->easydb_pass}",
+                    "url" => "{$this->_easydb_url}/session/authenticate?token={$this->_session_token}&login={$this->_easydb_user}&password={$this->_easydb_pass}",
                     "method" => "post"
                 ));
             } catch (\Exception $e) {
                 throw new \Exception('Easy-DB: authentication failed: ' . $this->message_abstract($e));
             }
-            return $this->session_token;
+            return $this->_session_token;
         }
 
-        function api_search_url($query, $params = array()) {
 
-            $this->get_easy_db_session_token();
-
-            $search = array(
-                "search" => array(
-                    array(
-                        "type" => "match",
-                        "mode" => "token",
-                        "string"=> $query,
-                        "phrase"=> true
-                    )
-                ),
-                "limit" => 12
-            );
-
-            return (object) array(
-                'method' => 'post',
-                'url' => "{$this->easydb_url}/search?token={$this->session_token}",
-                'post_json' => $search
-
-            );
-        }
 
         // id is _objecttype + "|" + id
         function api_single_url($id, $params = array()) {
             list($object_type, $object_id) = explode("|", $id);
-            return "{$this->easydb_url}/db/$object_type/_all_fields/$object_id?token={$this->session_token}";
+            return "{$this->_easydb_url}/db/$object_type/_all_fields/$object_id?token={$this->_session_token}";
         }
-
 
         function api_record_url($id, $params = array()) {
             return "";
@@ -119,28 +97,62 @@ namespace esa_datasource {
             echo "</div>";
         }
 
+        function api_search_url($query, $params = array()) {
 
-        /*	pagination functions
+            $this->get_easy_db_session_token();
+
+            $search = array(
+                "search" => array(
+                    array(
+                        "type" => "match",
+                        "mode" => "token",
+                        "string"=> $query,
+                        "phrase"=> true
+                    )
+                ),
+                "limit" => $this->_items_per_page
+            );
+
+            if (isset($params['offset'])) {
+                $search['offset'] = $params['offset'];
+            }
+
+            return (object) array(
+                'method' => 'post',
+                'url' => "{$this->_easydb_url}/search?token={$this->_session_token}",
+                'post_json' => $search
+            );
+        }
+
         function api_search_url_next($query, $params = array()) {
             $this->page += 1;
-            return $this->api_search_url($query) . '&page=' . $this->page;
+            $params['offset'] = ($this->page - 1) * $this->_items_per_page;
+            return $this->api_search_url($query, $params);
         }
 
         function api_search_url_prev($query, $params = array()) {
             $this->page -= 1;
-            return $this->api_search_url($query) . '&page=' . $this->page;
+            $params['offset'] = ($this->page - 1) * $this->_items_per_page;
+            return $this->api_search_url($query, $params);
         }
 
         function api_search_url_first($query, $params = array()) {
             $this->page = 1;
-            return $this->api_search_url($query) . '&page=' . $this->page;
+            $params['offset'] = ($this->page - 1) * $this->_items_per_page;
+            return $this->api_search_url($query, $params);
         }
 
         function api_search_url_last($query, $params = array()) {
             $this->page = $this->pages;
-            return $this->api_search_url($query) . '&page=' . $this->page;
+            $params['offset'] = ($this->page - 1) * $this->_items_per_page;
+            return $this->api_search_url($query, $params);
         }
-        */
+
+        function search($query = null) {
+            //$query =
+            return parent::search($query); // TODO: Change the autogenerated stub
+        }
+
         function parse_result_set($response) {
             $response = json_decode($response);
             $this->results = array();
@@ -149,9 +161,8 @@ namespace esa_datasource {
                 $this->results[] = $this->parse_result($this->_fetch_external_data($this->api_single_url("$type|{$item->{$type}->_id}")));
             }
 
-            // pagination
-            //            $this->pages = 1 + (int) ($response->meta->totalResults / $response->meta->resultsPerPage);
-            //            $this->page  = $response->meta->currentPage;
+            $this->pages = (int) ($response->count / $this->_items_per_page) + 1;
+            $this->page = isset($response->offset) ? ((int) ($response->offset / $this->_items_per_page) + 1) : 1;
 
             return $this->results;
         }
