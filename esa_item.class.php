@@ -111,10 +111,11 @@ class esa_item {
 	private function _generator() {
 
 		if (!$this->source or !$this->id) {
-			return $this->_error("Error: id ($this->id) or source ($this->source) missing!");
+            $this->_error("Error: id ($this->id) or source ($this->source) missing!");
+			return;
 		}
 		
-		// check: is data allready in cache?
+		// check: is data already in cache?
 		global $wpdb;
 		$enable_cache = function_exists('esa_get_settings') ? !!esa_get_settings('modules', 'cache', 'activate') : true;
 		$expiring_time = "2 week";
@@ -133,15 +134,8 @@ class esa_item {
 		}
 		
 		// no then, generate content with corresponding interface
-        $file_name = ESA_PATH . "datasources/{$this->source}.class.php";
-		if (!$this->source or !file_exists($file_name)) {
-			return $this->_error("Error: Search engine {$this->source} not found! (File: $file_name)");
-		}
-
-		require_once($file_name);
-		$ed_class = "\\esa_datasource\\{$this->source}";
-		$eds = new $ed_class;
 		try {
+            $eds = esa_get_datasource($this->source);
 			$generated = $eds->get($this->id);
 			$this->url = $generated->url;
 			$this->html = $generated->html;
@@ -152,7 +146,7 @@ class esa_item {
                 $this->store($cached);
             }
 		} catch (Exception $e) {
-			$this->_error($e->getMessage() . '<br>'. $e->getTraceAsString());
+			$this->_error($e->getMessage());
 		}
 
 	}
