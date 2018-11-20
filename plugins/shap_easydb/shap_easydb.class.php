@@ -37,13 +37,12 @@ namespace esa_datasource {
             return 'O. K.';
         }
 
-        function message_abstract($e) {
-            $json_msg = json_decode($e->getMessage());
-            if (($e->getCode() == 666) and (is_object($json_msg))) {
-                echo esa_debug($json_msg);
+        function parse_error_response($msg) {
+            $json_msg = json_decode($msg);
+            if (is_object($json_msg)) {
                 return isset($json_msg->description) ? $json_msg->description : $json_msg->code;
             }
-            return $e->getMessage();
+            return $msg;
         }
 
         function get_easy_db_session_token() {
@@ -60,7 +59,7 @@ namespace esa_datasource {
                 }
                 $this->_session_token = $resp->token;
             } catch (\Exception $e) {
-                throw new \Exception('Easy-DB: create session failed: ' . $this->message_abstract($e));
+                throw new \Exception('Easy-DB: create session failed: ' . $this->parse_error_response($e));
             }
             try {
                 $this->_fetch_external_data((object) array(
@@ -68,7 +67,7 @@ namespace esa_datasource {
                     "method" => "post"
                 ));
             } catch (\Exception $e) {
-                throw new \Exception('Easy-DB: authentication failed: ' . $this->message_abstract($e));
+                throw new \Exception('Easy-DB: authentication failed: ' . $this->parse_error_response($e));
             }
             return $this->_session_token;
         }
@@ -77,24 +76,13 @@ namespace esa_datasource {
 
         // id is _objecttype + "|" + id
         function api_single_url($id, $params = array()) {
+            $this->get_easy_db_session_token();
             list($object_type, $object_id) = explode("|", $id);
             return "{$this->_easydb_url}/db/$object_type/_all_fields/$object_id?token={$this->_session_token}";
         }
 
         function api_record_url($id, $params = array()) {
             return "";
-        }
-
-        function show_errors() {
-            echo "<div class='esa_error_list'>";
-            foreach ($this->errors as $error) {
-                $json_error = json_decode($error);
-                if (is_object($json_error)) {
-                    $error = isset($json_error->description) ? $json_error->description : $json_error->code;
-                }
-                echo "<div class='error'>$error</div>";
-            }
-            echo "</div>";
         }
 
         function api_search_url($query, $params = array()) {
@@ -196,12 +184,15 @@ namespace esa_datasource {
             $object_type = $json_response[0]->_objecttype;
             $object = $json_response[0]->{$object_type};
             $id = "$object_type|{$object->_id}";
-            $title = isset($object->name) ? $object->name : null;
             $lat = isset($object->latitude) ? $object->latitude : null;
             $lon = isset($object->longitude) ? $object->longitude : null;
 
             $data = new \esa_item\data();
-            $data->title = $title;
+
+            if (isset($object->name)) {
+                $data->title = $object->name;
+            }
+
             $data->addTable("Typ", $object_type);
             $data->addTable("ID", $object->_id);
 
@@ -231,7 +222,14 @@ namespace esa_datasource {
                 }
             }
 
-            return new \esa_item("shap_easydb", $id, $data->render(), null, $title, array(), array(), $lat, $lon);
+            if (isset($object->bild) and isset($object->bild[0]->versions)) {
+
+                $data->title = $object->titel;
+
+                $data->addImages(array('url' => $object->bild[0]->versions->preview->url, 'fullres' => $object->bild[0]->versions->full->url));
+            }
+
+            return new \esa_item("shap_easydb", $id, $data->render(), null, $data->title, array(), array(), $lat, $lon);
         }
 
         function stylesheet() {
