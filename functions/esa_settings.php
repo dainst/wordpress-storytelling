@@ -3,22 +3,20 @@ global $esa_settings;
 $esa_settings = array(
     'post_types' => array('post', 'page'), // post types which can contain embedded content (esa items)
     'add_media_entry' => 'Storytelling Application', // how is the entry called  in the add media dialogue
-    'modules' => array('tags', 'comments', 'search', 'cache', 'map'),
+    'default_modules' => array('tags', 'comments', 'search', 'cache', 'map'),
     'script_suffix' => "",
-    'settings_loaded' => false
+    'modules' => false // will be filled
 );
 
 add_action('init', function() {
     global $esa_settings;
-    foreach ($esa_settings['modules'] as $modNr => $mod) {
-        $esa_settings['modules'][$mod] = call_user_func("esa_get_module_settings_$mod");
-        unset($esa_settings['modules'][$modNr]);
-        load_settings($esa_settings['modules'], $mod, "esa_settings");
+    foreach (esa_get_modules(true) as $modNr => $mod) {
+        $esa_settings['modules'][$mod] = call_user_func("esa_get_module_settings_$mod"); // @ TODO use filters instead!
+        load_settings($esa_settings['modules'], $mod);
     }
-    $esa_settings['settings_loaded'] = true;
 });
 
-function load_settings(&$setting, $setting_name, $option_domain) {
+function load_settings(&$setting, $setting_name, $option_domain = "esa_settings") {
     $option_name = $option_domain . '_' .$setting_name;
     $default_value = isset($setting[$setting_name]['default']) ? $setting[$setting_name]['default'] : null;
     if (!is_null($default_value)) {
@@ -55,11 +53,28 @@ function esa_get_settings() {
     return isset($set['value']) ? $set['value'] : $set;
 }
 
-function esa_get_modules() {
-    if (!esa_get_settings('settings_loaded')) return esa_get_settings('modules'); // installation time
+/**
+ * returns a list of activated modules. if $include_inactive is set to false or we have not settings loaded,
+ * in installation f. E. we get all modules
+ *
+ * @param bool $include_inactive - all filters or only active... defaults to false
+ * @return array|null
+ */
+function esa_get_modules($include_inactive = false) {
+    $modules = array();
+    if ($include_inactive or !esa_get_settings('modules')) {
+        $modules = esa_get_settings('default_modules');
+    }
+    $modules = apply_filters('esa_get_modules', $modules);
+    if ($include_inactive or !esa_get_settings('modules')) {
+        return $modules;
+    }
     return array_keys(array_filter(esa_get_settings('modules'), function($item){return $item['children']['activate']['value'];}));
 }
 
+/**
+ * @return array
+ */
 function esa_get_post_types() {
     return array_merge(esa_get_settings('post_types'), (!!esa_get_settings('modules', 'search', 'activate') ? array('esa_item_wrapper') : array()));
 }
