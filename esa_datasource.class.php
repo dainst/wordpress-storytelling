@@ -517,7 +517,7 @@ namespace esa_datasource {
                 }
 
                 if (($info['http_code'] < 200) or ($info['http_code'] >= 400)) {
-                    throw new \Exception($response, 666); // 666 means we forward an error message from server
+                    throw new \Exception($this->parse_error_response($response));
                 }
 
 				curl_close($ch);
@@ -532,6 +532,11 @@ namespace esa_datasource {
 			
 			return $data;
 		}
+
+		// to be overwritten
+		function parse_error_response($response) {
+		    return $response;
+        }
 		
 		protected function _ckeck_url($url) {
 			return (!filter_var($url, FILTER_VALIDATE_URL) === false);
