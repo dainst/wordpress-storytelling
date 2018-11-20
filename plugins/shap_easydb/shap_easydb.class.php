@@ -7,26 +7,26 @@ namespace esa_datasource {
 
         public $title = 'SHAP - EasyDB'; // Label / Title of the Datasource
         public $index = 1; // where to appear in the menu
-        public $info = "...Kurzbeschreibung..."; // get created automatically, or enter text
+        public $info = "<p>...Kurzbeschreibung...</p>"; // get created automatically, or enter text
         public $homeurl; // link to the dataset's homepage
         public $debug = false;
         //public $examplesearch; // placeholder for search field
         //public $searchbuttonlabel = 'Search'; // label for searchbutton
 
-        public $pagination = false; // are results paginated?
-        public $optional_classes = array(); // some classes, the user may add to the esa_item
-
-        public $require = array();  // require additional classes -> array of fileanmes
-
-        public $url_parser = '#https?\:\/\/(www\.)some_page.de?ID=(.*)#'; // // url regex (or array)
 
         public $force_curl = true;
 
         private $session_token;
 
-        private $easydb_url = "https://syrian-heritage.5.easydb.de/api/v1";
-        private $easydb_user = "root";
+        private $easydb_url = "";
+        private $easydb_user = "";
         private $easydb_pass = "";
+
+        function construct() {
+            $this->easydb_url = esa_get_settings('modules', 'shap_easydb', 'easyurl');
+            $this->easydb_user = esa_get_settings('modules', 'shap_easydb', 'easyuser');
+            $this->easydb_pass = esa_get_settings('modules', 'shap_easydb', 'easypass');
+        }
 
         function dependency_check() {
             if (!$this->check_for_curl()) {
@@ -49,6 +49,9 @@ namespace esa_datasource {
             if ($this->session_token) {
                 return $this->session_token;
             }
+            if (!$this->easydb_url or !$this->easydb_pass or !$this->easydb_user) {
+                throw new \Exception('Easy-DB: credentials missing.');
+            }
             try {
                 $resp = json_decode($this->_fetch_external_data("{$this->easydb_url}/session"));
                 if (!isset($resp->token)) {
@@ -58,7 +61,6 @@ namespace esa_datasource {
             } catch (\Exception $e) {
                 throw new \Exception('Easy-DB: create session failed: ' . $this->message_abstract($e));
             }
-
             try {
                 $this->_fetch_external_data((object) array(
                     "url" => "{$this->easydb_url}/session/authenticate?token={$this->session_token}&login={$this->easydb_user}&password={$this->easydb_pass}",
@@ -67,9 +69,7 @@ namespace esa_datasource {
             } catch (\Exception $e) {
                 throw new \Exception('Easy-DB: authentication failed: ' . $this->message_abstract($e));
             }
-
             return $this->session_token;
-
         }
 
         function api_search_url($query, $params = array()) {
