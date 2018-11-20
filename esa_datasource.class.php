@@ -184,7 +184,7 @@ namespace esa_datasource {
 					if ($this->debug) {
 						echo is_object($queryurl) ? print_r($queryurl, 1) : $queryurl;
 					}
-					
+
 					$this->parse_result_set($this->_generic_api_call($queryurl));
 				
 				}
@@ -270,10 +270,11 @@ namespace esa_datasource {
 		 * 
 		 * 
 		 * @param string $string
+         * @return boolean|array
 		 */
 		function api_url_parser($string) {
 			if (!$this->url_parser) {
-				return $string;
+				return false;
 			}
 			if (!is_array($this->url_parser)) {
 				$this->url_parser = array($this->url_parser);
@@ -287,6 +288,7 @@ namespace esa_datasource {
 					));
 				}
 			}
+            return false;
 		}
 		
 		/**
