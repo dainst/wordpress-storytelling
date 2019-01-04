@@ -43,11 +43,11 @@ function wp_ajax_esa_get_overview_map() {
                     '<span class=\"esa_inmap_popup\">',
                     if (
                         count(post.ID) > 1,
-                        concat('<h1>', count(post.ID), ' stories here:', '</h1><ul>',
-                            group_concat('<li><a href=\"',post.guid ,'\">', post.post_title, '</a>' separator ''),
+                        concat('<ul>',
+                            group_concat('<li><a href=\"?=', post.ID ,'\">', post.post_title, '</a>' separator ''),
                         '</ul>'),
                         concat(
-                          '<a href=\"', post.guid,'\">', '<h1>', post.post_title, '</h1><p class=\"excerpt\">', 
+                          '<a href=\"?p=', post.ID, '\">', '<h1>', post.post_title, '</h1><p class=\"excerpt\">', 
                           if (
                             post.post_type = 'esa_item_wrapper',
                             '',
