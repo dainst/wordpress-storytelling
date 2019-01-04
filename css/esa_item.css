@@ -119,11 +119,22 @@
 .esa_item_tools a.esa_item_tools_find:before {
     content: "\f179"
 }
+
 .esa_item_tools a.esa_item_tools_expand:before {
     content: "\f211";
 }
 
+.esa_item_tools a.esa_item_tools_write:before {
+    content: "\f133";
+}
 
+.esa_item_tools a.esa_item_tools_write {
+    display: none
+}
+
+body.logged-in .esa_item_tools a.esa_item_tools_write {
+    display: inline-block
+}
 
 .esa_item_tools a:focus {
     box-shadow: none

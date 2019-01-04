@@ -85,8 +85,11 @@ class esa_item {
 		echo ($this->url) ? "<a href='{$this->url}' class='esa_item_tools_originurl' target='_blank' title='view dataset in original context'>&nbsp;</a>" : '';
 		
 		$url = get_bloginfo('url');
-		echo "<a href='$url?s&post_type=story&esa_item_id={$this->id}&esa_item_source={$this->source}' class='esa_item_tools_find' title='Find Stories with this Item'>&nbsp;</a>";
-		
+		$id = urlencode($this->id);
+		$source = urlencode($this->source);
+		echo "<a href='$url?s&post_type=story&esa_item_id=$id&esa_item_source=$source' class='esa_item_tools_find' title='Find Stories with this Item'>&nbsp;</a>";
+		echo "<a href='$url/wp-admin/post-new.php?esa_item_id=$id&esa_item_source=$source' class='esa_item_tools_write' title='Start Story with this Item'>&nbsp;</a>";
+
 		echo "</div>";
 		
 		echo "<div class='esa_item_inner'>"; 
