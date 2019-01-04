@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	wordpress-storytelling
+ * @package 	enhanced-storytelling
  * @subpackage	Search in Datasources | Subplugin: pleiades
  * @link 		http://pleiades.stoa.org/
  * @author 		Philipp Franck

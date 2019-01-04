@@ -53,8 +53,14 @@ add_action('admin_init', function() {
 
 });
 
-
-
+add_action('admin_enqueue_scripts', function($hook) {
+    if ($hook == 'toplevel_page_' . ESA_NAME . '/' . basename(ESA_FILE, '.php')) {
+        wp_enqueue_style('esa_item', plugins_url() . ESA_DIR . '/css/esa_item.css');
+        esa_register_special_styles();
+        wp_enqueue_style('esa_admin', plugins_url() . ESA_DIR . '/css/esa_admin.css');
+        wp_enqueue_script('esa_item', plugins_url() . ESA_DIR . '/js/esa_item.js', array('jquery'));
+    }
+});
 
 
 // registers additional stylesheet for enabled datasources

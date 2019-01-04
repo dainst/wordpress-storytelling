@@ -28,6 +28,27 @@ add_action('admin_menu', function () {
     });
 });
 
+add_action('admin_action_esa_save_settings' ,function() {
+    if (!check_admin_referer('esa_save_settings', 'esa_save_settings_nonce')) {
+        echo "Nonce failed";
+    }
+
+    if (isset($_POST['esa_datasources'])) {
+        update_option('esa_datasources', json_encode(array_map('sanitize_text_field', $_POST['esa_datasources'])));
+    }
+
+    if (isset($_POST['esa_all_settings'])) {
+        $all_settings = explode(',', $_POST['esa_all_settings']);
+        foreach ($all_settings as $setting) {
+            $value = (isset($_POST[$setting])) ? $_POST[$setting] : 0;
+            update_option($setting, $value);
+        }
+    }
+
+    wp_redirect($_SERVER['HTTP_REFERER']);
+    exit();
+});
+
 function esa_settings_datasources() {
     echo "<h3>Available Data Sources</h3>";
     $datasources = json_decode(get_option('esa_datasources'));

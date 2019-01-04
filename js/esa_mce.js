@@ -1,7 +1,7 @@
 /**
- * @package 	eagle-storytelling
+ * @package 	enhanced-storytelling
  * @subpackage	Search in Datasources | tiny mce plugin to view esa_items in editor (instead of shortcodes)
- * @link 		http://www.eagle-network.eu/stories/
+ * @link 		https://github.com/dainst/wordpress-storytelling
  * @author 		Philipp Franck
  *
  * Status: BETA 
@@ -55,7 +55,7 @@
 			var source = this.shortcode.attrs.named.source;
 			var id = this.shortcode.attrs.named.id;
 			
-			tb_show('Eagle Storytelling Application', 'media-upload.php?tab=esa&esa_source='+source+'&amp;esa_id='+id+'&amp;TB_iframe=true');
+			tb_show('Storytelling Application', 'media-upload.php?tab=esa&esa_source='+source+'&amp;esa_id='+id+'&amp;TB_iframe=true');
 			$('#TB_window').css('z-index', '160000'); //sad but true			
 			return;
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * @package 	wordpress-storytelling
+ * @package 	enhanced-storytelling
  * @subpackage	Search in Datasources | esa_item Class
- * @link 		http://www.eagle-network.eu/stories/
+ * @link 		https://github.com/dainst/wordpress-storytelling
  * @author 		Philipp Franck
  *
  * 

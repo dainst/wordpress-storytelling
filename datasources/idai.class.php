@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	wordpress-storytelling
+ * @package 	enhanced-storytelling
  * @subpackage	Search in Datasources | Subplugin: iDAI Gazetteer
  * @link 		http://gazetteer.dainst.org/
  * @author 		Philipp Franck

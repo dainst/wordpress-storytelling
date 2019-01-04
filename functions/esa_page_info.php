@@ -14,64 +14,17 @@ add_action('admin_menu', function () {
 
 });
 
-add_action('admin_enqueue_scripts', function($hook) {
-    if ($hook == 'toplevel_page_' . ESA_NAME . '/' . basename(ESA_FILE, '.php')) {
-        wp_enqueue_style('esa_item', plugins_url() . ESA_DIR . '/css/esa_item.css');
-        esa_register_special_styles();
-        wp_enqueue_style('esa_admin', plugins_url() . ESA_DIR . '/css/esa_admin.css');
-        wp_enqueue_script('esa_item', plugins_url() . ESA_DIR . '/js/esa_item.js', array('jquery'));
-    }
-});
-
-
-
-
-
-
-
-add_action('admin_action_esa_save_settings' ,function() {
-    if (!check_admin_referer('esa_save_settings', 'esa_save_settings_nonce')) {
-        echo "Nonce failed";
-    }
-
-    if (isset($_POST['esa_datasources'])) {
-        update_option('esa_datasources', json_encode(array_map('sanitize_text_field', $_POST['esa_datasources'])));
-    }
-
-    if (isset($_POST['esa_all_settings'])) {
-        $all_settings = explode(',', $_POST['esa_all_settings']);
-        foreach ($all_settings as $setting) {
-            $value = (isset($_POST[$setting])) ? $_POST[$setting] : 0;
-            update_option($setting, $value);
-        }
-    }
-
-    wp_redirect($_SERVER['HTTP_REFERER']);
-    exit();
-});
-
-
 function esa_info() {
     ob_start();
     ?>
-    <div id='esa_item_list_sidebar'>
-        <table id='esa_infotable'>
-            <tr>
-                <td colspan='2'><a href='http://www.eagle-network.eu/' target='_blank'><img style='width:230px' src='<?php echo plugins_url() . ESA_DIR . '/images/eagle_logo.png' ?>' alt='eagle logo' /></a></td>
-            </tr>
-            <tr>
-                <td><a href='https://www.dainst.org/' target='_blank'><img style='width:120px' src='<?php echo plugins_url() . ESA_DIR . '/images/dai_logo.png' ?>' alt='dai logo' /></a></td>
-                <td><a id='dai_name' href='https://www.dainst.org/' target='_blank'>Deutsches<br>Archäologisches<br>Institut</a></td>
-            </tr>
-        </table>
-    </div>
 
     <div class='media-frame-content'>
         <h1>Storytelling Application</h1>
         <p>
-            The Enhanced Storytelling Application (ESA) is a tool designed to allow users to create multimedia narratives on epigraphic content.
-            It was created in the context of the EAGLE project, a European project which started in 2013 and aimed to connect and collect data
-            sources and projects related to the topic of digital epigraphy, ancient history or archeology.
+            This is a tool designed by the Deutsches Archäologisches Institut. It allows users to create multimedia narratives on different content. 
+            It was created in the context of the <a href="http://www.eagle-network.eu/target="_blank">EAGLE project</a>, a European project which 
+            started in 2013 and aimed to connect and collect data sources and projects related to the topic of digital epigraphy, ancient history or 
+            archeology and continued for the <a href="https://syrian-heritage.org" target="_blank">Syrian Heritage Archive Project</a>.
         </p>
         <p>
             Being a Plug-In for Wordpress the ESA allows you to embed multimedia content from a wide variety of data sources in your posts in a
@@ -99,7 +52,7 @@ function esa_info() {
             To add such embedded content paste an URL to your post or click "Add Media" an your content editor and goto "Eagle Storytelling Application". There you can post URLs or serach directly in the various datasources via their APIs.
         </p>
         <p>
-            Internally theese embedded contents are represented by Wordpresses shortcodes and look like that:<br>
+            Internally theese embedded contents are represented by Wordpress's shortcodes and look like that:<br>
             <code>[[esa source="wiki" id="Epigraphy@en"]]</code>
         </p>
         <p>
@@ -116,38 +69,28 @@ function esa_info() {
             [esa source="idai" id="2282601"]
             <br>Here is an <strong>inscription</strong> from the huge EAGLE collection.<br>
             [esa source="eagle" id="EDB::ecacd215c0e820d5407b32369cd33b9b::7e3028a2329c7e1e0432cc11b965e21c::visual"]
-            <br>And finally, here is a Wikipedia page: the first paragraph of the embedded voice from the free encyclopedia is reported. Of course, by clicking on the eye you can continue reading the page in its original context.<br>
+            <br>And finally, here is a Wikipedia page: the first paragraph of the embedded voice from the free encyclopedia is reported. Of course, by clicking on the magnifier you can continue reading the page in its original context.<br>
             [esa source="wiki" id="Epigraphy@en"]
         </p>
         <h2>What is the "Epidoc reader"?</h2>
         <p>
-            EAGLE is very proud of putting together the largest collection of Graeco-Roman digitized inscriptions on the web. Moreover, we're promoting the use of <a href="http://sourceforge.net/p/epidoc/wiki/Home/">EpiDoc</a> as a standard for the digital encoding of epigraphic content.<br>
-            If you want to make reference to an inscription that is published in the web in EpiDoc format but it's not included in our collection, our Storytelling App is the right tool! Just launch click on "Add Media" from within the editor, select the <strong>EAGLE Storytelling Application</strong>  gallery (just like for any other content) and then click on the <strong>Epidoc</strong> tab.<br>
+            <a href="http://sourceforge.net/p/epidoc/wiki/Home/">EpiDoc</a> is the standard for the digital encoding of epigraphic content.<br>
+            If you want to make reference to an inscription that is published in the web in EpiDoc format but it's not included a available collection, 
+            the Storytelling Application is the right tool! Just launch click on "Add Media" from within the editor, select the <strong>EAGLE Storytelling Application</strong>  gallery (just like for any other content) and then click on the <strong>Epidoc</strong> tab.<br>
             Paste the URL of the XML edition of the inscription you want to insert in the search bar and hit the "Search" button. If you want, the App will suggest a series of repositories where you can find EpiDoc xml. The result will look something like this (from <a href="http://iospe.kcl.ac.uk/index.html">IOSPE, Ancient Inscriptions of the Northern Black Sea</a>):<br>
             <div data-id="http://iospe.kcl.ac.uk/5.140.xml" data-source="epidoc" class="esa_item esa_item_epidoc esa_item_cached esa_item_collapsed"><div class="esa_item_tools"><a title="expand" class="esa_item_tools_expand">&nbsp;</a><a href="http://195.37.232.186/eagle?s&amp;post_type=story&amp;esa_item_id=http://iospe.kcl.ac.uk/5.140.xml&amp;esa_item_source=epidoc" class="esa_item_tools_find" title="Find Stories with this Item">&nbsp;</a></div><div class="esa_item_inner"><div class="esa_item_left_column_max_left"><div class="esa_item_text edition"><div id="edition" lang="grc">  <span class="textpartnumber" id="ab1">1</span>  <div class="textpart">  <a id="a1-l1"><!--0--></a>Ἐκημίθυ <br id="a1-l2">ἡ δούλ(η) τοῦ <br id="a1-l3">θεοῦ Ἀγ̣ά̣τη, <br id="a1-l4">υἱὸς τῆς Παλ- <br id="a1-l5"><span class="linenumber">5</span>κου ἔτους ͵ς- <br id="a1-l6">Ϡκθ´ </div>  <span class="textpartnumber" id="ab2">2</span>  <div class="textpart">  <a id="a2-l1"><!--0--></a>((stauros)) Ἐγώ, Γιάσων ((stauros)) </div>  </div></div><div class="esa_item_text translation"><div id="translation">  <div>
                 <h2>textpart</h2>  <p>Fell asleep: a servant of God, Agathe, son of Palkos(?), in the year 6925.</p>  </div>  <div>  <p>I, Jason (?)</p>  </div>  </div></div></div><div class="esa_item_right_column_max_left"><h4>Надгробие Агаты, Epitaph of Agathe</h4><br><ul class="datatable"><li><strong>Content Provider: </strong> King's College London</li><li><strong>Type: </strong> <a target="_blank" href="monument-search.xml#mon8">Квадр.</a>, Wall block.</li><li><strong>Material: </strong> <a target="_blank" href="material-search.xml#m2">Известняк.</a>, Limestone.</li><li><strong>Ancient find spot: </strong> <a target="_blank" href="origPlace.xml#p012">
                 </a></li><li><strong>urls: </strong> 5.140, PE5000140, byz135</li><li><strong>xslt: </strong> Remote (saxon)</li></ul></div></div><div style="display: none;" class="esa_item_resizebar">&nbsp;</div>
             </div>
         </p>
-        <p>
-            This feature needs
-            <ul>
-                <li>either PHP Module Libxml >= 2.7.8 (as of PHP >= 5.4.0)</li>
-                <li>or PHP Module <a href='http://www.saxonica.com/html/saxon-c/index.html'>Saxon/c Processor</a> to be installed</li>
-                <li>or a remote Epidoc Render Server set up. <i>(We are currently building a webservice for that but it's not ready now.)</i></li>
-            </ul>
-        </p>
         <h2>Links</h2>
         <ul>
-            <li><a target='_blank' href='http://www.eagle-network.eu/resources/flagship-storytelling-app/'>www.eagle-network.eu</a></li>
             <li><a target='_blank' href='https://www.dainst.org/'>Deutsches Archäologisches Institut</a></li>
-            <li><a target='_blank' hruf='https://github.com/codarchlab/eagle-storytelling'>Github Project</a></li>
-            <li><a target='_blank' href='https://wordpress.org/plugins/eagle-storytelling-application/'>Wordpress.org</a>
-            <li><a target='_blank' href='https://github.com/paflov/epidocConverter'>Github Project: Epidoc Converter</a></li>
+            <li><a target='_blank' hrEf='https://github.com/dainst/wordpress-storytelling'>Github Project</a></li>
+            <li><a target='_blank' href='https://wordpress.org/plugins/eagle-storytelling-application/'>Wordpress.org <strong>not up to date!</strong></a>
         </ul>
         <h2>Legal Notice</h2>
         <p>
-            Copyright (C) 2015, 2016 by Deutsches Archäologisches Institut<br>
             <br>
             This program is free software; you can redistribute it and/or
             modify it under the terms of the GNU General Public License

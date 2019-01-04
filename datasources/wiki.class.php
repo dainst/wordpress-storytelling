@@ -1,14 +1,9 @@
 <?php
 /**
- * @package 	wordpress-storytelling
+ * @package 	enhanced-storytelling
  * @subpackage	Search in Datasources | Subplugin: Wikipedia
- * @link 		http://www.eagle-network.eu/stories/
+ * @link 		https://github.com/dainst/wordpress-storytelling
  * @author 		Philipp Franck
- * 
- * 
- * 
- *  
- * 
  */
 namespace esa_datasource {
 	class wiki extends abstract_datasource {

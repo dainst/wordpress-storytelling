@@ -1,6 +1,6 @@
 <?php
 /**
- * @package 	wordpress-storytelling
+ * @package 	enhanced-storytelling
  * @subpackage	Search in Datasources | Subplugin: finds.org.uk
  * @link 		https://finds.org.uk/
  * @author 		Philipp Franck
