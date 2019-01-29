@@ -43,9 +43,11 @@ function wp_ajax_esa_get_overview_map() {
                     '<span class=\"esa_inmap_popup\">',
                     if (
                         count(post.ID) > 1,
-                        concat('<ul>',
-                            group_concat('<li><a href=\"?=', post.ID ,'\">', post.post_title, '</a>' separator ''),
-                        '</ul>'),
+                        concat(
+                          '<ul>',
+                          group_concat('<li><a href=\"?=', post.ID ,'\">', post.post_title, '</a></li>' separator ''),
+                          '</ul>'
+                        ),
                         concat(
                           '<a href=\"?p=', post.ID, '\">', '<h1>', post.post_title, '</h1><p class=\"excerpt\">', 
                           if (
@@ -53,7 +55,7 @@ function wp_ajax_esa_get_overview_map() {
                             '',
                             post.post_excerpt
                           ), 
-                          '</p>', '</a>'
+                          '</p></a>'
                         )
                     ),
                     '</span>'
