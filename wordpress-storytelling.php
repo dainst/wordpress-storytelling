@@ -42,6 +42,21 @@ define('ESA_DIR', '/' . basename(dirname(__FILE__)));
 define('ESA_PATH', plugin_dir_path(__FILE__));
 define('ESA_FILE', __FILE__);
 define('ESA_NAME', basename(dirname(__FILE__)));
+define('ESA_BASE', plugin_basename(__FILE__));
+
+
+/**
+ * ******************************************* Check PHP version
+ */
+if (version_compare(phpversion(), '7', '<')) {
+    add_filter("plugin_action_links_" . ESA_BASE, function($actions, $plugin_file) {
+        $actions["version_hint"] = "<span style='color:red'>This Plugin cannot be used with PHP version below 7. You have: " . phpversion() . "</span>";
+        return $actions;
+    }, 10, 2);
+    error_log("Enhanced Storytelling Plugin cannot be used with PHP version below 7. You have: " . phpversion());
+    return;
+}
+
 
 /**
  * ******************************************* require classes
