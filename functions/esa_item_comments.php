@@ -17,6 +17,14 @@ add_filter('wp_insert_post_data', function($data) {
     return $data;
 });
 
+
+add_action('wp_insert_comment', function($fields) {
+    if (isset($_POST['esa_return_to'])) {
+        wp_redirect($_POST['esa_return_to']);
+        exit;
+    }
+},1000, 10);
+
 function esa_get_module_scripts_comments() {
 
     if (!esa_get_settings('modules', 'comments', 'activate')) {
@@ -66,9 +74,18 @@ function esa_get_module_content_comments($esa_item) {
 
 
     echo "<div class='esa-item-comments-form $form_visibility'>";
-    comment_form(array(
-        "must_log_in" => false
-    ), $wrapper->ID);
+
+    $comment_form_args = array();
+    $comment_form_args["must_log_in"] = false;
+
+    global $post;
+    if ($post->post_type != "esa_item_wrapper") {
+        $the_permalink = get_permalink($post);
+        $comment_form_args["comment_notes_after"] = "<input type='hidden' name='esa_return_to' value='$the_permalink'>";
+    }
+
+    comment_form($comment_form_args, $wrapper->ID);
+
     echo "</div>";
 
     echo "</span>";
