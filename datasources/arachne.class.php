@@ -73,7 +73,7 @@ namespace esa_datasource {
             return $this->api_search_url($query) . '&offset=' . $offset;
 		}
 
-		function parse_result_set($response) {
+		function parse_result_set($response) : array {
 			$response = json_decode($response);
 			$this->results = array();
 			$entities = isset($response->entities) ? $response->entities : array();
