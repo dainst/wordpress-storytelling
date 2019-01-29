@@ -23,39 +23,39 @@ namespace esa_datasource {
 		
 		public $pagination = true;
 
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$query = urlencode($query);
 			return "https://gazetteer.dainst.org/search.json?q={$query}&limit={$this->items_per_page}";
 		}
 
-        function api_search_url_next($query, $params = array()) {
+        function api_search_url_next($query, $params = array()) : string {
             $this->page += 1;
             return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
         }
 
-        function api_search_url_prev($query, $params = array()) {
+        function api_search_url_prev($query, $params = array()) : string {
             $this->page -= 1;
             return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
         }
 
-        function api_search_url_first($query, $params = array()) {
+        function api_search_url_first($query, $params = array()) : string {
             $this->page = 1;
             return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
         }
 
-        function api_search_url_last($query, $params = array()) {
+        function api_search_url_last($query, $params = array()) : string {
             $this->page = $this->pages;
             return $this->api_search_url($query) . '&offset=' . (($this->page - 1 ) * $this->items_per_page);
         }
 
 			
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			$query = urlencode($id);
 			return "https://gazetteer.dainst.org/search.json?q=%7B%22bool%22:%7B%22must%22:%5B%20%7B%20%22match%22:%20%7B%20%22_id%22:%20$id%20%7D%7D%5D%7D%7D&type=extended";
 			//return "http://gazetteer.dainst.org/doc/$id.json";
 		}
 
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			$query = urlencode($id);
 			return "https://gazetteer.dainst.org/app/#!/show/$id";
 		}
@@ -74,7 +74,7 @@ namespace esa_datasource {
 			
 
 			
-		function parse_result_set($response) {
+		function parse_result_set($response) : array{
 			$response = $this->_json_decode($response);
 
             $this->pages = 1 + (int) ($response->total / $this->items_per_page);
@@ -146,7 +146,7 @@ namespace esa_datasource {
 			return $this->results;
 		}
 
-		function parse_result($response) {
+		function parse_result($response) : \esa_item{
 			// if always return a whole set
 			$res = $this->parse_result_set($response);
 			return $res[0];

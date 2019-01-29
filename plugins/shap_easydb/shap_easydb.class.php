@@ -75,13 +75,13 @@ namespace esa_datasource {
 
 
         // id is _objecttype + "|" + id
-        function api_single_url($id, $params = array()) {
+        function api_single_url($id, $params = array()) : string {
             $this->get_easy_db_session_token();
             list($object_type, $object_id) = explode("|", $id);
             return "{$this->_easydb_url}/api/v1/db/$object_type/_all_fields/global_object_id/$object_id@local?token={$this->_session_token}";
         }
 
-        function api_record_url($id, $params = array()) {
+        function api_record_url($id, $params = array()) : string {
             list($object_type, $object_id) = explode("|", $id);
             return "{$this->_easydb_url}/lists/$object_type/$object_id";
         }
@@ -137,7 +137,7 @@ namespace esa_datasource {
             return $this->api_search_url($query, $params);
         }
 
-        function parse_result_set($response) {
+        function parse_result_set($response) : array {
             $response = json_decode($response);
             $this->results = array();
             foreach ($response->objects as $item) {
@@ -174,7 +174,7 @@ namespace esa_datasource {
         }
 
 
-        function parse_result($response) {
+        function parse_result($response) : \esa_item{
 
             $json_response = $this->_json_decode($response);
             $system_object_id = $json_response[0]->_system_object_id;

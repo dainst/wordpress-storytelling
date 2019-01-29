@@ -31,7 +31,7 @@ namespace esa_datasource {
 		public $eagle_store_data_path;
 		
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 
 			//  identify eagle id
 			if (substr_count($query, '::') == 2) {
@@ -43,7 +43,7 @@ namespace esa_datasource {
 			return "http://search.eagle.research-infrastructures.eu/solr/EMF-index-cleaned/select?rows={$this->_hits_per_page}&wt=json&q=$query" . $this->_api_params_url_part($params);
 		}
 			
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			//dnetresourceidentifier:UAH\:\:92b78b60f9d00a0ac34898be97d15188\:\:01f8fcf400938969ace9675f86365c2c\:\:visual
 			$id = str_replace(':', '\:', $id);
 			//$id = rawurlencode($id);
@@ -51,7 +51,7 @@ namespace esa_datasource {
 		}
 
 		
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			return "";
 		}
 			
@@ -237,7 +237,7 @@ namespace esa_datasource {
 		 * Render results
 		 * @see \esa_datasource\abstract_datasource::parse_result_set()
 		 */
-		function parse_result_set($response) {
+		function parse_result_set($response) : array {
 			$response = json_decode($response);
 			
 			
@@ -292,7 +292,7 @@ namespace esa_datasource {
 			return $this->results;
 		}
 
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 			// if always return a whole set
 			$res = $this->parse_result_set($response);
 			return $res[0];

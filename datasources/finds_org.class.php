@@ -28,12 +28,12 @@ namespace esa_datasource {
 		public $force_curl = true;
 		
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$query = rawurlencode($query);
 			return "https://finds.org.uk/database/search/results/q/$query/format/json";
 		}
 
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			return "https://finds.org.uk/database/search/results/q?id=570344&format=json";
 			/*
 			 * Why not going directly to the artifact like below page but using the serach?
@@ -43,7 +43,7 @@ namespace esa_datasource {
 			 */ 
 		}
 
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			return "https://finds.org.uk/database/artefacts/record/id/$id";
 		}
 			
@@ -151,7 +151,7 @@ namespace esa_datasource {
 			return implode(', ', array_unique($r));
 		}
 		
-		function parse_result_set($response) {
+		function parse_result_set($response) : array{
 			
 			$response = json_decode($response);
 			
@@ -167,7 +167,7 @@ namespace esa_datasource {
 			return $this->results;
 		}
 		
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 			$a = $this->parse_result_set($response);
 			return array_pop($a); // there will be only one because we're seaching for ujnique id
 			

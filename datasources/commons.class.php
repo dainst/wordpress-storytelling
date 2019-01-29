@@ -25,17 +25,17 @@ namespace esa_datasource {
 		private $_hits_per_page = 9;
 
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$offset = $this->_hits_per_page * ($this->page - 1);
 			$query = urlencode($query);
 			return "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mime|mediatype|extmetadata&iiurlwidth=150&generator=search&gsrsearch=$query&gsrnamespace=6&gsrlimit={$this->_hits_per_page}&gsroffset={$offset}";
 		}
 			
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			return "https://commons.wikimedia.org/w/api.php?action=query&prop=imageinfo&format=json&iiprop=url|size|mediatype|extmetadata|mime&iiurlwidth=150&pageids=$id";
 		}
 		
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			return  "https://commons.wikimedia.org/wiki/?curid=$id";
 		}
 			
@@ -75,7 +75,7 @@ namespace esa_datasource {
 			return $this->api_search_url($query, $params);
 		}
 		*/
-		function parse_result_set($response) {
+		function parse_result_set($response) : array {
 
 			$response = json_decode($response);
 			$this->results = array();
@@ -177,7 +177,7 @@ namespace esa_datasource {
 		}
 		
 		
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 			// if always return a whole set
 			$res = $this->parse_result_set($response);
 			return $res[0];

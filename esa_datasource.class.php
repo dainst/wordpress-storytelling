@@ -131,17 +131,18 @@ namespace esa_datasource {
 		function search_form_params($post) {
 			return "";
 		}
-		
-		
-		/**
-		 * 
-		 * Search given Data Source for Query
-		 * 
-		 * This is a generic function, it can be overwritten in some implementations
-		 * 
-		 * 
-		 * @return true or false depending to success;
-		 */
+
+
+        /**
+         *
+         * Search given Data Source for Query
+         *
+         * This is a generic function, it can be overwritten in some implementations
+         *
+         *
+         * @param null $query
+         * @return true or false depending to success;
+         */
 		function search($query = null) {
 			try {
 				$query = (isset($_POST['esa_ds_query'])) ? $_POST['esa_ds_query'] : $query;
@@ -185,7 +186,7 @@ namespace esa_datasource {
 						echo is_object($queryurl) ? print_r($queryurl, 1) : $queryurl;
 					}
 
-					$this->parse_result_set($this->_generic_api_call($queryurl));
+                    $this->results = $this->parse_result_set($this->_generic_api_call($queryurl));
 				
 				}
 
@@ -193,7 +194,6 @@ namespace esa_datasource {
 			} catch (\Exception $e) {
 				$this->error($e->getMessage());
 			}
-			
 			
 			return (!count($this->errors));
 		}
@@ -239,26 +239,26 @@ namespace esa_datasource {
 			
 			return $response;
 		}
+
+
+        /**
+         *
+         * This functions parses a result from a api and brings it in the needed form
+         * it HAS to be implemented in every data source class
+         *
+         * @param array|object $result
+         *
+         * @return array
+         */
+		abstract function parse_result_set($result) : array;
 		
+		abstract function parse_result($result) : \esa_item;
 		
-		/**
-		 * 
-		 * This functions parses a result from a api and brings it in the needed form
-		 * it HAS to be implemented in every data source class
-		 * 
-		 * @param unknown $result
-		 * 
-		 * @param implementation may use 2nd parameter $params = array()
-		 */
-		abstract function parse_result_set($result);
-		
-		abstract function parse_result($result);
-		
-		abstract function api_single_url($id, $params = array());
+		abstract function api_single_url($id, $params = array()) : string;
 		
 		abstract function api_search_url($query, $params = array());
 		
-		abstract function api_record_url($id, $params = array());
+		abstract function api_record_url($id, $params = array()) : string;
 		
 		
 		/**
@@ -315,6 +315,9 @@ namespace esa_datasource {
 					$result->html();
 				}
 			}
+			if (!count($this->results)) {
+			    echo "<div class='notice inline notice-warning notice-alt'><p>No results found</p></div>";
+            }
 			echo "</div><div style='clear:both'></div>";
 		}
 		

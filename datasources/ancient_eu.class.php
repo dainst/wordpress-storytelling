@@ -46,7 +46,7 @@ namespace esa_datasource {
 			'Book Review'
 		);
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$query = str_replace(' ', ' AND ', $query);
 			//$query = str_replace(' ', '+AND+', $query);
 			$query = str_replace(':', '\:', $query);
@@ -54,7 +54,7 @@ namespace esa_datasource {
 			return "http://www.ancient.eu/api/search.php?query=$query&limit=12"  . $this->_api_params_url_part($params);
 		}
 			
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			if (isset($params['pasted_url'])) {
 				switch ($params['regex_id']) {
 					case 'entry': 
@@ -75,7 +75,7 @@ namespace esa_datasource {
 			return "http://www.ancient.eu/api/search.php?query=id:$id";
 		}
 		
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			$x = explode('-', $id);
 			$x = array_pop($x);
 			return "http://www.ancient.eu/article/$x";
@@ -133,7 +133,7 @@ namespace esa_datasource {
 		 * The result rendering
 		 * 
 		 */
-		function parse_result_set($response) {
+		function parse_result_set($response) : array {
 
 
 			
@@ -168,7 +168,7 @@ namespace esa_datasource {
 			return $this->results;
 		}
 
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 			// if always return a whole set
 			$res = $this->parse_result_set($response);
 			return $res[0];

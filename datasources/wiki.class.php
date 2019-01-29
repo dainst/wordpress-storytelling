@@ -22,20 +22,20 @@ namespace esa_datasource {
 		);
 				
 		//public $apiurl = "https://en.wikipedia.org/w/api.php?action=query&format=json&list=allimages&titles=%s";
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$query = urlencode($query);
 			$offset = $this->_hits_per_page * ($this->page - 1);
 			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&generator=search&redirects=&gsrsearch=$query&gsrwhat=text&exlimit=max&pilimit=max&gsrlimit={$this->_hits_per_page}&gsroffset={$offset}";
 		}                                                                          
 		
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			$id = $this->real_id($id);
 			$id = (strpos($id, '%')) ? $id : urlencode($id);
 			return "https://{$this->params['lang']}.wikipedia.org/w/api.php?action=query&prop=extracts|pageimages|info&format=json&inprop=url&exintro=&exsectionformat=plain&piprop=thumbnail|name|original&pithumbsize=150&redirects=&titles=$id";
 
 		}
 
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			$id = $this->real_id($id);
 			return "https://{$this->params['lang']}.wikipedia.org/?curid=$id";
 		}
@@ -85,7 +85,7 @@ namespace esa_datasource {
 		
 
 		
-		function parse_result_set($response, $subquery = false) {
+		function parse_result_set($response, $subquery = false) : array {
 
 			$this->results = array();
 			
@@ -141,7 +141,7 @@ namespace esa_datasource {
 			return new \esa_item('wiki', $id, $data->render(), $page->fullurl, $data->title);
 		}
 		
-		function parse_result($response) {
+		function parse_result($response) : \esa_item{
 			$response = json_decode($response);
 			
 			if ($this->debug) {echo "<br><textarea>", print_r($response), "</textarea>";}

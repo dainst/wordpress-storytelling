@@ -37,15 +37,15 @@ namespace esa_datasource {
 
 		}
 
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			return "https://arachne.dainst.org/data/search?q={$query}&limit={$this->_items_per_page}";
 		}
 
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			return "https://arachne.dainst.org/data/entity/{$id}";
 		}
 
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			return "https://arachne.dainst.org/entity/{$id}";
 		}
 
@@ -88,7 +88,7 @@ namespace esa_datasource {
 			
 			return $this->results;
 		}
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
             $response = json_decode($response);
             return $this->_parse_entity($response);
 		}

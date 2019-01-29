@@ -54,12 +54,12 @@ namespace esa_datasource {
 				'dare' 		=>	'http://dare.ht.lu.se/places/%%%',
 		);
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$query = urlencode($query);
 			return "http://pelagios.org/peripleo/search?query=$query*" . $this->_api_params_url_part($params);
 		}
 		
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			// is pasted url!
 			if (isset($params['pasted_url'])) {
 				$url = (isset($this->url_parser_reverse[$params['regex_id']])) ?
@@ -72,7 +72,7 @@ namespace esa_datasource {
 			//return "http://pleiades.stoa.org/places/$id/json";
 		}
 
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			$chunks = explode('/', $id);
 			$type = array_pop($chunks);
 			if ($type == 'places') {
@@ -123,7 +123,7 @@ namespace esa_datasource {
 		}
 		
 		
-		function parse_result_set($response) {
+		function parse_result_set($response) : array {
 			$response = json_decode($response);
 			
 			$this->pages = round($response->total / $response->limit);
@@ -135,7 +135,7 @@ namespace esa_datasource {
 			return $this->results;
 		}
 
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 			$response = json_decode($response);
 			return $this->_render_item($response);
 		}

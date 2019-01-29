@@ -67,7 +67,7 @@ namespace esa_datasource {
 		public $id_is_url = true;
 		
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			//http://edh-www.adw.uni-heidelberg.de/edh/inschrift/HD000015.xml
 			if ($this->_ckeck_url($query)) {
 				return $query;
@@ -75,22 +75,22 @@ namespace esa_datasource {
 			return "";
 		}
 			
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			if ($this->_ckeck_url($id)) {
 				return $id;
 			}
 			return "";
 		}
 		
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			return $id;
 		}
 			
-		function parse_result_set($response) {
+		function parse_result_set($response) : array {
 			return array($this->parse_result($response[0]));
 		}
 		
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 
 			$c = \epidocConverter::create($response, $this->settings['epidoc']['mode'], $this->settings['epidoc']['settings']);
 			$epi = $c->convert(true);

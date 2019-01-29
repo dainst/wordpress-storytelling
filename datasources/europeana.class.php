@@ -20,12 +20,12 @@ namespace esa_datasource {
 		
 		public $url_parser = '#https?\:\/\/(www\.)?europeana\.eu\/portal\/record(.*)\.html.*#';
 		
-		function api_search_url($query, $params = array()) {
+		function api_search_url($query, $params = array()) : string {
 			$query = urlencode($query);
 			return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=1&rows={$this->_hits_per_page}&profile=standard" . $this->_api_params_url_part($params);
 		}
 		
-		function api_single_url($id, $params = array()) {
+		function api_single_url($id, $params = array()) : string {
 			return "http://www.europeana.eu/api/v2/record{$id}.json?wskey=ydRg6Ujho&profile=standard";
 		}
 		
@@ -56,12 +56,11 @@ namespace esa_datasource {
 			return "http://www.europeana.eu/api/v2/search.json?wskey=ydRg6Ujho&query=$query&start=$last&rows={$this->_hits_per_page}&profile=standard" . $this->_api_params_url_part($params);
 		}
 		
-		function api_record_url($id, $params = array()) {
+		function api_record_url($id, $params = array()) : string {
 			return "http://www.europeana.eu/portal/record$id.html";
 		}
 		
 
-		
 		private function _api_params_url_part($params) {
 			$return = '';
 			if (isset($params['type'])) {
@@ -73,7 +72,7 @@ namespace esa_datasource {
 			return $return;
 		}
 		
-		function parse_result_set($response) {
+		function parse_result_set($response) : array{
 			$response = json_decode($response);
 			
 			if (!$response->success) {
@@ -97,7 +96,7 @@ namespace esa_datasource {
 			return $this->results;
 		}
 
-		function parse_result($response) {
+		function parse_result($response) : \esa_item {
 			$response = json_decode($response);
 			
 			if (!$response->success) {
