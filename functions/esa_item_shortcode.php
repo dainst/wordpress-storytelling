@@ -57,11 +57,7 @@ function esa_shortcode($atts, $context) {
     $content = $item->html(true);
 
     if (!is_admin()) {
-        foreach(esa_get_modules() as $mod) {
-            if (function_exists("esa_get_module_content_$mod")) {
-                $content .= call_user_func("esa_get_module_content_$mod", $item);
-            }
-        }
+        $content = apply_filters("esa_get_module_content", $content, $item);
     }
 
     return $content;
@@ -147,13 +143,7 @@ add_action('save_post', function($post_id) {
             foreach($shortcodes as $shortcode) {
                 if ($shortcode[2] == 'esa') {
                     $atts = shortcode_parse_atts($shortcode[3]);
-                    foreach(esa_get_modules() as $mod) {
-                        $func_name = "esa_get_module_store_shortcode_action_$mod";
-                        if (function_exists($func_name)) {
-                            call_user_func($func_name, $post, $atts);
-                        }
-                    }
-
+                    do_action("esa_get_module_store_shortcode", $post, $atts);
                 }
             }
         }

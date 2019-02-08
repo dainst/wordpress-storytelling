@@ -96,17 +96,17 @@ add_action('widgets_init', function(){
     register_widget('esa_map_widget');
 });
 
-function esa_get_module_scripts_map() {
+add_action("esa_get_module_scripts", function() {
     wp_register_style('leaflet', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.css');
     wp_register_style('leaflet-markercluster', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css', array('leaflet'));
     wp_register_style('leaflet-markercluster-default', 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css', array('leaflet', 'leaflet-markercluster'));
     wp_enqueue_style('leaflet');
     wp_enqueue_style('leaflet-markercluster');
     wp_enqueue_style('leaflet-markercluster-default');
-}
+});
 
-function esa_get_module_settings_map() {
-    return array(
+add_filter("esa_get_module_settings", function($settings) {
+    $settings["map"] = array(
         'label' => "Overview map of embedded content",
         'info' => "Add a Map to your page here: <a href='widgets.php'>" . __('Widgets') . "</a>",
         'children' => array(
@@ -118,8 +118,5 @@ function esa_get_module_settings_map() {
             ),
         )
     );
-}
-
-function esa_get_module_content_map() {
-
-}
+    return $settings;
+});

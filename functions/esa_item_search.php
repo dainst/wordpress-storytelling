@@ -54,8 +54,8 @@ add_filter('posts_search', function($sql, $query) {
 
 }, 10, 2);
 
-function esa_get_module_settings_search() {
-    return array(
+add_filter("esa_get_module_settings", function($settings) {
+    $settings["search"] = array(
         'label' => 'Include Esa-Items to search',
         'info' => '',
         'children' => array(
@@ -66,17 +66,10 @@ function esa_get_module_settings_search() {
             )
         )
     );
-}
+    return $settings;
+});
 
-function esa_get_module_content_search() {
-    // nothing, but function must exist
-}
-
-function esa_get_module_scripts_search() {
-    // nothing, but function must exist
-}
-
-function esa_get_module_store_shortcode_action_search($post, $atts) {
+add_action("esa_get_module_store_shortcode", function($post, $atts) {
     global $wpdb;
     $wpdb->insert(
         $wpdb->prefix . 'esa_item_to_post',
@@ -86,4 +79,4 @@ function esa_get_module_store_shortcode_action_search($post, $atts) {
             "esa_item_id" => $atts['id']
         )
     );
-}
+}, 10, 2);

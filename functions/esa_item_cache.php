@@ -14,17 +14,8 @@
  *
  */
 
-function esa_get_module_content_cache() {
-    // nothing, but function must exist
-}
-
-function esa_get_module_scripts_cache() {
-    // nothing, but function must exist
-}
-
-
-function esa_get_module_settings_cache() {
-    return array(
+add_filter("esa_get_module_settings", function($settings) {
+    $settings["cache"] = array(
         'label' => 'Use Cache for Esa-Items',
         'info' => '',
         'children' => array(
@@ -35,7 +26,8 @@ function esa_get_module_settings_cache() {
             )
         )
     );
-}
+    return $settings;
+});
 
 
 add_action('admin_action_esa_flush_cache', function() {

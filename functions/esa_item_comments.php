@@ -23,9 +23,9 @@ add_action('wp_insert_comment', function($fields) {
         wp_redirect($_POST['esa_return_to']);
         exit;
     }
-},1000, 10);
+}, 1000, 10);
 
-function esa_get_module_scripts_comments() {
+add_action("esa_get_module_scripts", function() {
 
     if (!esa_get_settings('modules', 'comments', 'activate')) {
         return;
@@ -46,9 +46,9 @@ function esa_get_module_scripts_comments() {
         "tab_form_open" => esa_get_settings('modules', 'comments', 'tab_form_open'),
     ));
     wp_add_inline_script('esa_item_comments.js', "var ajaxurl = '" . admin_url('admin-ajax.php') . "';", "before");
-}
+});
 
-function esa_get_module_content_comments($esa_item) {
+add_filter("esa_get_module_content", function($content, $esa_item) {
 
     $wrapper = esa_get_wrapper($esa_item);
 
@@ -90,11 +90,11 @@ function esa_get_module_content_comments($esa_item) {
 
     echo "</span>";
 
-    return ob_get_clean();
-}
+    return $content . ob_get_clean();
+}, 20, 2);
 
-function esa_get_module_settings_comments() {
-    return array(
+add_filter("esa_get_module_settings", function($settings) {
+    $settings["comments"] = array(
         'label' => "Comments on Esa-Items",
         'info' => "More Settings on Comments see <a href='options-writing.php'>" . __('Settings') . ' > ' . __('Writing')  . "</a>",
         'children' => array(
@@ -126,7 +126,8 @@ function esa_get_module_settings_comments() {
             )
         )
     );
-}
+    return $settings;
+});
 
 
 function esa_comment_list() {
@@ -177,8 +178,8 @@ function esa_comment_list() {
     wp_die();
 }
 
-function esa_get_module_store_shortcode_action_comments($post, $attrs) {
+add_action("esa_get_module_store_shortcode", function($post, $attrs) {
     $item = new esa_item($attrs['source'], $attrs['id']);
     $item->html(true);
     esa_get_wrapper($item);
-}
+}, 10, 2);

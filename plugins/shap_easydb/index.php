@@ -11,8 +11,10 @@ add_filter('esa_get_modules', function($modules) {
     return $modules;
 });
 
-function esa_get_module_settings_shap_easydb() {
-    return array(
+
+
+add_filter("esa_get_module_settings", function($settings) {
+    $settings["shap_easydb"] = array(
         'label' => "Connection to the Easy-DB of the SHAP project",
         'info' => "",
         'children' => array(
@@ -39,4 +41,5 @@ function esa_get_module_settings_shap_easydb() {
             )
         )
     );
-}
+    return $settings;
+});

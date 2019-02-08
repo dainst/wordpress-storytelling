@@ -10,8 +10,8 @@ $esa_settings = array(
 
 add_action('init', function() {
     global $esa_settings;
+    $esa_settings['modules'] = apply_filters("esa_get_module_settings", array());
     foreach (esa_get_modules(true) as $modNr => $mod) {
-        $esa_settings['modules'][$mod] = call_user_func("esa_get_module_settings_$mod"); // @ TODO use filters instead!
         load_settings($esa_settings['modules'], $mod);
     }
 });

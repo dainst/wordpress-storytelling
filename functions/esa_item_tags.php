@@ -3,7 +3,7 @@
 require_once(ABSPATH  . 'wp-admin/includes/taxonomy.php');
 require_once(ABSPATH  . 'wp-admin/includes/meta-boxes.php');
 
-function esa_get_module_scripts_tags() {
+add_action("esa_get_module_scripts", function() {
     if (!esa_get_settings('modules', 'tags', 'activate')) {
         return;
     }
@@ -60,10 +60,10 @@ function esa_get_module_scripts_tags() {
     ));
     wp_add_inline_script('tags-suggest', "var ajaxurl = '" . admin_url('admin-ajax.php') . "';", "before");
 
-}
+});
 
-function esa_get_module_settings_tags() {
-    return array(
+add_filter("esa_get_module_settings", function($settings) {
+    $settings["tags"] = array(
         'label' => "Tags on Esa-Items",
         'info' => "Manage Tags here: <a href='edit-tags.php?taxonomy=post_tag'>" . __('Posts') . " > " . __('Keywords') . "</a>",
         'children' => array(
@@ -120,7 +120,8 @@ function esa_get_module_settings_tags() {
             )
         )
     );
-}
+    return $settings;
+});
 
 add_action('init', function() {
     remove_action("wp_ajax_get-tagcloud", "wp_ajax_get_tagcloud", 1);
@@ -270,12 +271,12 @@ function esa_ajax_tag_cloud() {
     wp_ajax_get_tagcloud();
 }
 
-function esa_get_module_content_tags($esaItem) {
-    return get_esa_item_tag_box($esaItem);
-}
+add_filter("esa_get_module_content", function($content, $esaItem) {
+    return $content . get_esa_item_tag_box($esaItem);
+}, 10, 2);
 
-function esa_get_module_store_shortcode_action_tags($post, $attrs) {
+add_action("esa_get_module_store_shortcode", function($post, $attrs) {
     $item = new esa_item($attrs['source'], $attrs['id']);
     $item->html(true);
     esa_get_wrapper($item);
-}
+}, 10, 2);

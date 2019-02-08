@@ -25,11 +25,7 @@ add_action('wp_enqueue_scripts', function() {
 
         wp_localize_script('esa_item.js', 'esa', array('ajax_url' => admin_url('admin-ajax.php')));
 
-        foreach(esa_get_modules() as $mod) {
-            if (function_exists("esa_get_module_scripts_$mod")) { // @ TODO use actions instead
-                call_user_func("esa_get_module_scripts_$mod");
-            }
-        }
+        do_action("esa_get_module_scripts");
 
     }
 });
