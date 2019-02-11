@@ -1,0 +1,1215 @@
+[
+{
+  "bilder": {
+    "_id": 64263,
+    "_version": 5,
+    "anbieter_id": {
+      "_system_object_id": 825,
+      "_global_object_id": "825@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "person": {
+        "_id": 2,
+        "_version": 1
+      },
+      "_objecttype": "person",
+      "_mask": "name__all_fields",
+      "_uuid": "e95b4a8c-389f-4200-ba18-9523c12d657c",
+      "_sets": [],
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "Syrian Heritage Archive Project, 2013-2017",
+            "en-US": "Syrian Heritage Archive Project, 2013-2017",
+            "ar": "Syrian Heritage Archive Project, 2013-2017"
+          },
+          "html": {
+            "de-DE": "Syrian Heritage Archive Project, 2013-2017",
+            "en-US": "Syrian Heritage Archive Project, 2013-2017",
+            "ar": "Syrian Heritage Archive Project, 2013-2017"
+          }
+        }
+      },
+      "_format": "standard"
+    },
+    "anweisungen": {
+      "de-DE": "Literature: /HiRes is available upon request",
+      "en-US": "Literature: /HiRes is available upon request",
+      "es-ES": "Literature: /HiRes is available upon request",
+      "it-IT": "Literature: /HiRes is available upon request",
+      "ka-GE": "Literature: /HiRes is available upon request",
+      "fr-FR": "Literature: /HiRes is available upon request",
+      "ja-Jpan": "Literature: /HiRes is available upon request",
+      "ja-Latn": "Literature: /HiRes is available upon request",
+      "ja-Hani": "Literature: /HiRes is available upon request",
+      "ja-Hira": "Literature: /HiRes is available upon request",
+      "ja-Kana": "Literature: /HiRes is available upon request",
+      "ko-Kore": "Literature: /HiRes is available upon request",
+      "ko-Latn": "Literature: /HiRes is available upon request",
+      "ko-Hani": "Literature: /HiRes is available upon request",
+      "ko-Hang": "Literature: /HiRes is available upon request",
+      "zh-Hans": "Literature: /HiRes is available upon request",
+      "zh-Hant": "Literature: /HiRes is available upon request",
+      "zh-Latn": "Literature: /HiRes is available upon request",
+      "ar": "Literature: /HiRes is available upon request",
+      "be": "Literature: /HiRes is available upon request",
+      "bn": "Literature: /HiRes is available upon request",
+      "ch": "Literature: /HiRes is available upon request",
+      "fa": "Literature: /HiRes is available upon request",
+      "gu": "Literature: /HiRes is available upon request",
+      "hi": "Literature: /HiRes is available upon request",
+      "kn": "Literature: /HiRes is available upon request",
+      "la": "Literature: /HiRes is available upon request",
+      "mr": "Literature: /HiRes is available upon request",
+      "rn": "Literature: /HiRes is available upon request",
+      "sa": "Literature: /HiRes is available upon request",
+      "sw": "Literature: /HiRes is available upon request",
+      "ta": "Literature: /HiRes is available upon request",
+      "te": "Literature: /HiRes is available upon request",
+      "ur": "Literature: /HiRes is available upon request",
+      "zu": "Literature: /HiRes is available upon request",
+      "grc": "Literature: /HiRes is available upon request",
+      "egy": "Literature: /HiRes is available upon request",
+      "gmh": "Literature: /HiRes is available upon request",
+      "syr": "Literature: /HiRes is available upon request",
+      "ine": "Literature: /HiRes is available upon request",
+      "und": "Literature: /HiRes is available upon request"
+    },
+    "art_der_vorlage_id": {
+      "_system_object_id": 83,
+      "_global_object_id": "83@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "art_der_vorlage": {
+        "_id": 7,
+        "_id_parent": null,
+        "_version": 1
+      },
+      "_objecttype": "art_der_vorlage",
+      "_mask": "art_der_vorlage__all_fields",
+      "_has_children": false,
+      "_uuid": "0da31aa3-5217-40f3-8c3b-db4663a8aa61",
+      "_sets": [],
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "fotografien",
+            "en-US": "fotografien",
+            "ar": "fotografien"
+          },
+          "html": {
+            "de-DE": "fotografien",
+            "en-US": "fotografien",
+            "ar": "fotografien"
+          }
+        }
+      },
+      "_level": 1,
+      "_path": [
+        {
+          "_global_object_id": "83@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 83,
+          "_objecttype": "art_der_vorlage",
+          "art_der_vorlage": {
+            "_id": 7,
+            "_id_parent": null,
+            "_version": 1
+          },
+          "_uuid": "0da31aa3-5217-40f3-8c3b-db4663a8aa61",
+          "_has_children": false,
+          "_mask": "art_der_vorlage__all_fields",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "fotografien",
+                "en-US": "fotografien",
+                "ar": "fotografien"
+              },
+              "text": {
+                "de-DE": "fotografien",
+                "en-US": "fotografien",
+                "ar": "fotografien"
+              }
+            }
+          },
+          "_format": "standard"
+        }
+      ],
+      "_format": "standard"
+    },
+    "art_der_vorlage_id2_old": {
+      "_system_object_id": 78,
+      "_global_object_id": "78@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "art_der_vorlage": {
+        "_id": 2,
+        "_id_parent": null,
+        "_version": 2
+      },
+      "_objecttype": "art_der_vorlage",
+      "_mask": "art_der_vorlage__all_fields",
+      "_has_children": true,
+      "_uuid": "975a4ff3-aa38-4b4f-9411-bc179833702d",
+      "_sets": [],
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "Fotografie",
+            "en-US": "Photography",
+            "ar": "تصوير فوتوغرافي"
+          },
+          "html": {
+            "de-DE": "Fotografie",
+            "en-US": "Photography",
+            "ar": "تصوير فوتوغرافي"
+          }
+        }
+      },
+      "_level": 1,
+      "_path": [
+        {
+          "_global_object_id": "78@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 78,
+          "_objecttype": "art_der_vorlage",
+          "art_der_vorlage": {
+            "_id": 2,
+            "_id_parent": null,
+            "_version": 2
+          },
+          "_uuid": "975a4ff3-aa38-4b4f-9411-bc179833702d",
+          "_has_children": true,
+          "_mask": "art_der_vorlage__all_fields",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Fotografie",
+                "en-US": "Photography",
+                "ar": "تصوير فوتوغرافي"
+              },
+              "text": {
+                "de-DE": "Fotografie",
+                "en-US": "Photography",
+                "ar": "تصوير فوتوغرافي"
+              }
+            }
+          },
+          "_format": "standard"
+        }
+      ],
+      "_format": "standard"
+    },
+    "art_des_motivs_id_old": {
+      "_system_object_id": 181,
+      "_global_object_id": "181@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "_mask": "art_des_motivs__all_fields",
+      "art_des_motivs": {
+        "_id": 28,
+        "_id_parent": 2,
+        "_version": 2
+      },
+      "_objecttype": "art_des_motivs",
+      "_has_children": true,
+      "_uuid": "40813a2c-7239-40c0-8ee7-eb1e241ae85b",
+      "_sets": [],
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "Building",
+            "en-US": "Building",
+            "ar": "Building"
+          },
+          "html": {
+            "de-DE": "Building",
+            "en-US": "Building",
+            "ar": "Building"
+          }
+        }
+      },
+      "_level": 2,
+      "_path": [
+        {
+          "_uuid": "8f4206fe-1230-4cd5-9417-506017f13568",
+          "_has_children": true,
+          "_mask": "art_des_motivs__all_fields",
+          "_global_object_id": "155@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 155,
+          "art_des_motivs": {
+            "_id": 2,
+            "_id_parent": null,
+            "_version": 1
+          },
+          "_objecttype": "art_des_motivs",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Archeology & built environment",
+                "en-US": "Archeology & built environment",
+                "ar": "Archeology & built environment"
+              },
+              "text": {
+                "de-DE": "Archeology & built environment",
+                "en-US": "Archeology & built environment",
+                "ar": "Archeology & built environment"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_uuid": "40813a2c-7239-40c0-8ee7-eb1e241ae85b",
+          "_has_children": true,
+          "_mask": "art_des_motivs__all_fields",
+          "_global_object_id": "181@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 181,
+          "art_des_motivs": {
+            "_id": 28,
+            "_id_parent": 2,
+            "_version": 2
+          },
+          "_objecttype": "art_des_motivs",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Building",
+                "en-US": "Building",
+                "ar": "Building"
+              },
+              "text": {
+                "de-DE": "Building",
+                "en-US": "Building",
+                "ar": "Building"
+              }
+            }
+          },
+          "_format": "standard"
+        }
+      ],
+      "_format": "standard"
+    },
+    "bearbeitungsstatus_id": {
+      "_system_object_id": 412,
+      "_global_object_id": "412@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "_sets": [],
+      "bearbeitungsstatus": {
+        "_id": 4,
+        "_version": 1
+      },
+      "_objecttype": "bearbeitungsstatus",
+      "_mask": "bearbeitungsstatus__all_fields",
+      "_uuid": "ae121283-00ef-4ee0-a03c-74625313c38a",
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "in Bearbeitung",
+            "en-US": "in Bearbeitung",
+            "ar": "in Bearbeitung"
+          },
+          "html": {
+            "de-DE": "in Bearbeitung",
+            "en-US": "in Bearbeitung",
+            "ar": "in Bearbeitung"
+          }
+        }
+      },
+      "_format": "standard"
+    },
+    "copyright_vermerk": "© 2017 Rami Alafandi (CC-BY-NC-ND)",
+    "ersteller_der_vorlage_id_old": {
+      "_system_object_id": 1115,
+      "_global_object_id": "1115@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "person": {
+        "_id": 292,
+        "_version": 1
+      },
+      "_objecttype": "person",
+      "_mask": "name__all_fields",
+      "_uuid": "8400192a-9f9e-4820-816d-3d03e0ed91d6",
+      "_sets": [],
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "Rami M Alafandi",
+            "en-US": "Rami M Alafandi",
+            "ar": "Rami M Alafandi"
+          },
+          "html": {
+            "de-DE": "Rami M Alafandi",
+            "en-US": "Rami M Alafandi",
+            "ar": "Rami M Alafandi"
+          }
+        }
+      },
+      "_format": "standard"
+    },
+    "markiert": false,
+    "nutzungsbedingungen": "This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.",
+    "original_datum": {
+      "value": "2007-01-01",
+      "_from": "2007-01-01T00:00:00Z",
+      "_to": "2007-01-01T23:59:59Z"
+    },
+    "ort_des_motivs_id": {
+      "_system_object_id": 79618,
+      "_global_object_id": "79618@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+      "_tags": [],
+      "_sets": [],
+      "ortsthesaurus": {
+        "_id": 1616,
+        "_id_parent": 1471,
+        "_version": 1
+      },
+      "_objecttype": "ortsthesaurus",
+      "_mask": "ortsthesaurus__std",
+      "_has_children": false,
+      "_uuid": "16de4c81-9893-44b1-94d5-e5fed1bc52e2",
+      "_standard": {
+        "1": {
+          "text": {
+            "de-DE": "Bab Antakiya",
+            "en-US": "Bab Antakiya",
+            "ar": "Bab Antakiya"
+          },
+          "html": {
+            "de-DE": "Bab Antakiya",
+            "en-US": "Bab Antakiya",
+            "ar": "Bab Antakiya"
+          }
+        }
+      },
+      "_level": 9,
+      "_path": [
+        {
+          "_global_object_id": "78003@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 78003,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 1,
+            "_id_parent": null,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "d636aed4-90d2-4eca-b3f2-aadf89e2653b",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Syria",
+                "en-US": "Syria",
+                "ar": "Syria"
+              },
+              "text": {
+                "de-DE": "Syria",
+                "en-US": "Syria",
+                "ar": "Syria"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "78025@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 78025,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 23,
+            "_id_parent": 1,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "98aee4ed-5f7d-4bb2-9200-f9045d26da9d",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Muhafazat Aleppo",
+                "en-US": "Muhafazat Aleppo",
+                "ar": "Muhafazat Aleppo"
+              },
+              "text": {
+                "de-DE": "Muhafazat Aleppo",
+                "en-US": "Muhafazat Aleppo",
+                "ar": "Muhafazat Aleppo"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "78096@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 78096,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 94,
+            "_id_parent": 23,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "599055fc-d5e6-4b1c-beef-a7ccc8d517f1",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Mintaqat Jabal Samʿan",
+                "en-US": "Mintaqat Jabal Samʿan",
+                "ar": "Mintaqat Jabal Samʿan"
+              },
+              "text": {
+                "de-DE": "Mintaqat Jabal Samʿan",
+                "en-US": "Mintaqat Jabal Samʿan",
+                "ar": "Mintaqat Jabal Samʿan"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "78242@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 78242,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 240,
+            "_id_parent": 94,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "e906e952-dd3e-4935-b5c7-b35a4c328ec9",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Nahiyat Markaz Jabal Samʿan",
+                "en-US": "Nahiyat Markaz Jabal Samʿan",
+                "ar": "Nahiyat Markaz Jabal Samʿan"
+              },
+              "text": {
+                "de-DE": "Nahiyat Markaz Jabal Samʿan",
+                "en-US": "Nahiyat Markaz Jabal Samʿan",
+                "ar": "Nahiyat Markaz Jabal Samʿan"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "78464@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 78464,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 462,
+            "_id_parent": 240,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "5414b782-b113-4e6c-a886-3a6c3dc541fb",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Aleppo",
+                "en-US": "Aleppo",
+                "ar": "Aleppo"
+              },
+              "text": {
+                "de-DE": "Aleppo",
+                "en-US": "Aleppo",
+                "ar": "Aleppo"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "79018@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 79018,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 1016,
+            "_id_parent": 462,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "dfca115a-b3e2-438f-a241-e994a4236d12",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Madinat Halab al-Qadima",
+                "en-US": "Madinat Halab al-Qadima",
+                "ar": "Madinat Halab al-Qadima"
+              },
+              "text": {
+                "de-DE": "Madinat Halab al-Qadima",
+                "en-US": "Madinat Halab al-Qadima",
+                "ar": "Madinat Halab al-Qadima"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "79260@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 79260,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 1258,
+            "_id_parent": 1016,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "843535df-c577-4a29-9352-b03a929efdd4",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Halab Dakhil as-Sur",
+                "en-US": "Halab Dakhil as-Sur",
+                "ar": "Halab Dakhil as-Sur"
+              },
+              "text": {
+                "de-DE": "Halab Dakhil as-Sur",
+                "en-US": "Halab Dakhil as-Sur",
+                "ar": "Halab Dakhil as-Sur"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "79473@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 79473,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 1471,
+            "_id_parent": 1258,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": true,
+          "_uuid": "838e580a-38af-44f9-abe8-0045416ecabe",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Sur Halab",
+                "en-US": "Sur Halab",
+                "ar": "Sur Halab"
+              },
+              "text": {
+                "de-DE": "Sur Halab",
+                "en-US": "Sur Halab",
+                "ar": "Sur Halab"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        {
+          "_global_object_id": "79618@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "_system_object_id": 79618,
+          "_tags": [],
+          "_mask": "ortsthesaurus__std",
+          "ortsthesaurus": {
+            "_id": 1616,
+            "_id_parent": 1471,
+            "_version": 1
+          },
+          "_sets": [],
+          "_objecttype": "ortsthesaurus",
+          "_has_children": false,
+          "_uuid": "16de4c81-9893-44b1-94d5-e5fed1bc52e2",
+          "_standard": {
+            "1": {
+              "html": {
+                "de-DE": "Bab Antakiya",
+                "en-US": "Bab Antakiya",
+                "ar": "Bab Antakiya"
+              },
+              "text": {
+                "de-DE": "Bab Antakiya",
+                "en-US": "Bab Antakiya",
+                "ar": "Bab Antakiya"
+              }
+            }
+          },
+          "_format": "standard"
+        }
+      ],
+      "_format": "standard"
+    },
+    "quelle_old": "Rami M Alafandi",
+    "verfasser_der_beschreibung": "Syrian Heritage Archive Project, 2017, Germany",
+    "easydb4_reference": "bilder:65252",
+    "easydb4_insert_time": {
+      "value": "2018-07-06T12:31:31+02:00",
+      "_from": "2018-07-06T12:31:31+02:00",
+      "_to": "2018-07-06T12:31:31+02:00"
+    },
+    "easydb4_insert_user": "michael.herrmann",
+    "easydb4_owner": "user_michael.herrmann",
+    "easydb4_update_time": {
+      "value": "2018-08-11T23:49:34+02:00",
+      "_from": "2018-08-11T23:49:34+02:00",
+      "_to": "2018-08-11T23:49:34+02:00"
+    },
+    "easydb4_update_user": "admin",
+    "bild": [
+      {
+        "_id": 156066,
+        "preferred": true,
+        "date_uploaded": "2018-12-17T15:23:07Z",
+        "date_inserted": "2018-12-17T15:23:15Z",
+        "filesize": 9458200,
+        "class": "image",
+        "extension": "tif",
+        "class_extension": "image.tif",
+        "original_filepath": "ra-i-02-01-14-04_SYRHER.tif",
+        "original_filename": "ra-i-02-01-14-04_SYRHER.tif",
+        "original_filename_basename": "ra-i-02-01-14-04_SYRHER",
+        "technical_metadata": {
+          "camera_scanner": "DC-2320",
+          "width": 2048,
+          "height": 1536,
+          "max_dimension": 2048,
+          "dpi": 96,
+          "orientation": 1,
+          "format": "landscape",
+          "aspect_ratio": 1.3333333333333333,
+          "colordepth": 24,
+          "colorspace": "rgb"
+        },
+        "versions": {
+          "original": {
+            "class": "image",
+            "url": "http://esx-189.gbv.de/eas/partitions-inline/1/0/156000/156066/43bdf85f33562f39b8ff8ae425ab503fcb38a1d9/image/tiff",
+            "width": 2048,
+            "status": "done",
+            "has_more_jobs": false,
+            "height": 1536,
+            "filesize": 9458200,
+            "aspect_ratio": 1.3329999446868896,
+            "extension": "tif",
+            "date_created": "2007-01-01T00:00:00Z",
+            "dpi": 96,
+            "compiled": "tif image, 2048 x 1536 @ 24 bit, 9.02 MB",
+            "download_url": "http://esx-189.gbv.de/eas/partitions/1/0/156000/156066/43bdf85f33562f39b8ff8ae425ab503fcb38a1d9/image/tiff/ra-i-02-01-14-04_SYRHER.tif",
+            "_download_allowed": true
+          },
+          "preview": {
+            "class": "image",
+            "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/156000/156066/2cbc97a2db0271705e0f67425eea024b49b2baa3/image/png",
+            "width": 1000,
+            "status": "done",
+            "has_more_jobs": false,
+            "height": 750,
+            "filesize": 1315024,
+            "aspect_ratio": 1.3329999446868896,
+            "extension": "png",
+            "dpi": 95,
+            "zoom_url": "http://esx-189.gbv.de/eas/zoomer/156066/68418dcb6ea608743bb2db39e0541228?instance=easydb5",
+            "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/156000/156066/2cbc97a2db0271705e0f67425eea024b49b2baa3/image/png/ra-i-02-01-14-04_SYRHER-preview.png",
+            "_download_allowed": true
+          },
+          "small": {
+            "class": "image",
+            "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/156000/156066/d5724366c49fc58fa5289fb53e8696daf286f182/image/png",
+            "width": 333,
+            "status": "done",
+            "has_more_jobs": false,
+            "height": 250,
+            "filesize": 154331,
+            "aspect_ratio": 1.3320000171661377,
+            "extension": "png",
+            "dpi": 95,
+            "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/156000/156066/d5724366c49fc58fa5289fb53e8696daf286f182/image/png/ra-i-02-01-14-04_SYRHER-small.png",
+            "_download_allowed": true
+          },
+          "huge": {
+            "class": "image",
+            "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/156000/156066/e0c94b122786eab7909676b8eb00d08dec9cb907/image/png",
+            "width": 2000,
+            "status": "done",
+            "has_more_jobs": false,
+            "height": 1500,
+            "filesize": 4326054,
+            "aspect_ratio": 1.3329999446868896,
+            "extension": "png",
+            "dpi": 95,
+            "zoom_url": "http://esx-189.gbv.de/eas/zoomer/156066/4bc98d14e453f85024e6208a4a843225?instance=easydb5",
+            "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/156000/156066/e0c94b122786eab7909676b8eb00d08dec9cb907/image/png/ra-i-02-01-14-04_SYRHER-huge.png",
+            "_download_allowed": true
+          },
+          "full": {
+            "class": "image",
+            "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/156000/156066/56b1f5d16a1ee1087d4728d797f33fd2bef34d69/image/png",
+            "width": 2048,
+            "status": "done",
+            "has_more_jobs": false,
+            "height": 1536,
+            "filesize": 4431294,
+            "aspect_ratio": 1.3329999446868896,
+            "extension": "png",
+            "dpi": 95,
+            "zoom_url": "http://esx-189.gbv.de/eas/zoomer/156066/81972438eccd6171b8bd696fade2c0cb?instance=easydb5",
+            "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/156000/156066/56b1f5d16a1ee1087d4728d797f33fd2bef34d69/image/png/ra-i-02-01-14-04_SYRHER-full.png",
+            "_download_allowed": true
+          }
+        },
+        "eas_parent_id": null,
+        "status": "done",
+        "pages_allowed": false,
+        "compiled": "tif image, 2048 x 1536 @ 24 bit, 9.02 MB",
+        "date_created": "2007-01-01T00:00:00Z"
+      }
+    ],
+    "_nested:bilder__schlagwort": [
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1361,
+          "_global_object_id": "1361@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 12,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "2deb8301-711a-492b-92f3-168037632bed",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Architecture",
+                "en-US": "Architecture",
+                "ar": "Architecture"
+              },
+              "html": {
+                "de-DE": "Architecture",
+                "en-US": "Architecture",
+                "ar": "Architecture"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_2075:138780"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1630,
+          "_global_object_id": "1630@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 281,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "87839d3d-4ff7-4647-b297-48dfff16168d",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Bab",
+                "en-US": "Bab",
+                "ar": "Bab"
+              },
+              "html": {
+                "de-DE": "Bab",
+                "en-US": "Bab",
+                "ar": "Bab"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_2075:138781"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1379,
+          "_global_object_id": "1379@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 30,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "89eee9e8-be7b-4096-a500-6d1ac567a215",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Building",
+                "en-US": "Building",
+                "ar": "Building"
+              },
+              "html": {
+                "de-DE": "Building",
+                "en-US": "Building",
+                "ar": "Building"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_2075:138782"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1646,
+          "_global_object_id": "1646@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 297,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "16278f7d-fc0a-4e27-96f2-af0e29ffef2a",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "City Gate",
+                "en-US": "City Gate",
+                "ar": "City Gate"
+              },
+              "html": {
+                "de-DE": "City Gate",
+                "en-US": "City Gate",
+                "ar": "City Gate"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_2075:138783"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1352,
+          "_global_object_id": "1352@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 3,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "056b09f1-000c-4436-8b10-0c8a80cebff2",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Photography",
+                "en-US": "Photography",
+                "ar": "Photography"
+              },
+              "html": {
+                "de-DE": "Photography",
+                "en-US": "Photography",
+                "ar": "Photography"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_2075:138784"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1361,
+          "_global_object_id": "1361@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 12,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "2deb8301-711a-492b-92f3-168037632bed",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Architecture",
+                "en-US": "Architecture",
+                "ar": "Architecture"
+              },
+              "html": {
+                "de-DE": "Architecture",
+                "en-US": "Architecture",
+                "ar": "Architecture"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_1694:138780"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1630,
+          "_global_object_id": "1630@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 281,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "87839d3d-4ff7-4647-b297-48dfff16168d",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Bab",
+                "en-US": "Bab",
+                "ar": "Bab"
+              },
+              "html": {
+                "de-DE": "Bab",
+                "en-US": "Bab",
+                "ar": "Bab"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_1694:138781"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1379,
+          "_global_object_id": "1379@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 30,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "89eee9e8-be7b-4096-a500-6d1ac567a215",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Building",
+                "en-US": "Building",
+                "ar": "Building"
+              },
+              "html": {
+                "de-DE": "Building",
+                "en-US": "Building",
+                "ar": "Building"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_1694:138782"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1646,
+          "_global_object_id": "1646@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 297,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "16278f7d-fc0a-4e27-96f2-af0e29ffef2a",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "City Gate",
+                "en-US": "City Gate",
+                "ar": "City Gate"
+              },
+              "html": {
+                "de-DE": "City Gate",
+                "en-US": "City Gate",
+                "ar": "City Gate"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_1694:138783"
+      },
+      {
+        "lk_schlagwort_id": {
+          "_system_object_id": 1352,
+          "_global_object_id": "1352@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+          "schlagwort": {
+            "_id": 3,
+            "_version": 1
+          },
+          "_objecttype": "schlagwort",
+          "_mask": "schlagwort__all_fields",
+          "_uuid": "056b09f1-000c-4436-8b10-0c8a80cebff2",
+          "_sets": [],
+          "_standard": {
+            "1": {
+              "text": {
+                "de-DE": "Photography",
+                "en-US": "Photography",
+                "ar": "Photography"
+              },
+              "html": {
+                "de-DE": "Photography",
+                "en-US": "Photography",
+                "ar": "Photography"
+              }
+            }
+          },
+          "_format": "standard"
+        },
+        "easydb4_reference": "bild__schlagwort_1694:138784"
+      }
+    ],
+    "_pool": {
+      "_basetype": "pool",
+      "pool": {
+        "_id": 26,
+        "_id_parent": 1,
+        "name": {
+          "de-DE": "Sammlung Afandi (Rami al-)",
+          "en-US": "Collection Afandi (Rami al-)"
+        }
+      },
+      "_path": [
+        {
+          "_basetype": "pool",
+          "pool": {
+            "_id": 1,
+            "name": {
+              "de-DE": "Alle Pools",
+              "en-US": "All pools"
+            }
+          }
+        },
+        {
+          "_basetype": "pool",
+          "pool": {
+            "_id": 26,
+            "_id_parent": 1,
+            "name": {
+              "de-DE": "Sammlung Afandi (Rami al-)",
+              "en-US": "Collection Afandi (Rami al-)"
+            }
+          }
+        }
+      ],
+      "_set_spec": "pool:1:26"
+    }
+  },
+  "_mask": "_all_fields",
+  "_objecttype": "bilder",
+  "_schema_version": 64,
+  "_system_object_id": 66214,
+  "_global_object_id": "66214@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+  "_uuid": "3f6d775a-6c38-4e19-a9fc-e85123516f31",
+  "_current_version": true,
+  "_sets": [
+    "objecttype:bilder",
+    "pool:1:26"
+  ],
+  "_collections": [],
+  "_tags": [
+    {
+      "_id": 4
+    },
+    {
+      "_id": 16
+    },
+    {
+      "_id": 19
+    }
+  ],
+  "_changelog": [
+    {
+      "time": "2018-12-17T11:27:49Z",
+      "operation": "INSERT",
+      "batch_id": 713,
+      "version": 1,
+      "schema_version": 57,
+      "user": {
+        "_basetype": "user",
+        "user": {
+          "_generated_displayname": "Root",
+          "type": "system",
+          "_id": 1,
+          "frontend_language": "en-US",
+          "login": "root",
+          "_version": 80
+        },
+        "_emails": []
+      },
+      "groups": [
+        1,
+        2
+      ],
+      "current_version": false
+    },
+    {
+      "time": "2018-12-17T15:23:15Z",
+      "operation": "UPDATE",
+      "batch_id": 1242,
+      "version": 2,
+      "schema_version": 57,
+      "user": {
+        "_basetype": "user",
+        "user": {
+          "_generated_displayname": "Root",
+          "type": "system",
+          "_id": 1,
+          "frontend_language": "en-US",
+          "login": "root",
+          "_version": 80
+        },
+        "_emails": []
+      },
+      "groups": [
+        1,
+        2
+      ],
+      "current_version": true
+    }
+  ],
+  "_published": [],
+  "_published_count": 0,
+  "_standard": {
+    "1": {
+      "text": {
+        "de-DE": "Literature: /HiRes is available upon request",
+        "en-US": "Literature: /HiRes is available upon request",
+        "ar": "Literature: /HiRes is available upon request"
+      },
+      "html": {
+        "de-DE": "Literature: /HiRes is available upon request",
+        "en-US": "Literature: /HiRes is available upon request",
+        "ar": "Literature: /HiRes is available upon request"
+      }
+    }
+  },
+  "_last_modified": "2018-12-17T15:23:15Z",
+  "_format": "full",
+  "_generated_rights": {
+    "write": {},
+    "delete": {},
+    "acl": {},
+    "change_owner": {},
+    "unlink": {}
+  }
+}
+]
