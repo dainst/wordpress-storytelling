@@ -27,14 +27,20 @@ class esa_item {
 
 	public $classes = array(); // additional classes of this item
 	public $css = array(); // additional css of this item
+
+    private $_rawdata = array(); // selected datafields to be kept als raw data.
 	
-	public function __construct($source, $id, $html = '', $url = '', $title = '', $classes = array(), $css = array(), $latitude = null, $longitude = null) {
+	public function __construct($source, $id, $html = '', $url = '', $title = '', $classes = array(), $css = array(), $latitude = null, $longitude = null, $rawdata = array()) {
 		$this->id = $id;
 		$this->source = $source;
-		$this->html = $html;	
-		$this->classes = $classes;
-		$this->css = $css;
-		$this->title = $title;
+        $this->html = $html;
+        $this->classes = $classes;
+        $this->css = $css;
+        $this->title = $title;
+
+		if (is_array($rawdata)) {
+		    $this->importRawData($rawdata);
+        }
 
 		if ($latitude and $longitude) {
 			$this->latitude  = $latitude;
@@ -48,8 +54,7 @@ class esa_item {
 				$this->classes[] = 'esa_item_invalid_url';
 			} 
 		}
-		
-		
+
 	}
 	
 	/**
@@ -121,7 +126,7 @@ class esa_item {
 		// check: is data already in cache?
 		global $wpdb;
 		$enable_cache = function_exists('esa_get_settings') ? !!esa_get_settings('modules', 'cache', 'activate') : true;
-		$expiring_time = "2 week";
+		$expiring_time = "2 week"; // TODO in settings plz
 		$cached = $wpdb->get_row("select *, timestamp < date_sub(now(), interval $expiring_time) as expired from {$wpdb->prefix}esa_item_cache where id='{$this->id}' and source='{$this->source}';");
 		if ($enable_cache and $cached) {
 			//echo "restored from cache ({$cached->expired})";
@@ -131,6 +136,7 @@ class esa_item {
             $this->title = $cached->title;
 			$this->latitude = $cached->latitude;
 			$this->longitude = $cached->longitude;
+            $this->importRawData($this->_query_rawdata($cached));
 			if (!$cached->expired) {
 				return;
 			}
@@ -145,6 +151,7 @@ class esa_item {
 			$this->title = $generated->title;
 			$this->latitude = $generated->latitude;
 			$this->longitude = $generated->longitude;
+            $this->importRawData($generated->getRawdata());
 			if ($enable_cache) {
                 $this->store($cached);
             }
@@ -160,8 +167,7 @@ class esa_item {
 	function store($cached = false) {
 		global $wpdb;
 		$wpdb->hide_errors();
-		//echo "storing...";
-		//die(" lat is {$cached->latitude}");
+
 		if ($cached) {
 			$proceed = $wpdb->update(
 				$wpdb->prefix . 'esa_item_cache',
@@ -195,28 +201,98 @@ class esa_item {
 				)
 			);
 		}
-			
-		
-		if($proceed) {
-			$this->classes[] = 'esa_item_stored';
-			//echo "..successfull";
-			return true;
-		} else {
-			$this->_error('insertion impossible!');
-			$this->_error($wpdb->last_error);
-			//$this->_error(strlen($this->id));
-			$this->_error('<textarea>' . print_r($wpdb->last_query,1) . '</textarea>'); 
- 
-			return false;
-		}
+
+		if ($proceed) {
+            $proceed = $this->storeData($cached);
+        }
+
+        if(!$proceed) {
+            die($proceed?"ja":"nein");
+            $this->_error("Insertion impossible!\n{$wpdb->last_error}\n<textarea>" . print_r($wpdb->last_query,1) . '</textarea>');
+
+            return false;
+        }
+
+        $this->classes[] = 'esa_item_stored';
+        return true;
 
 	}
 	
 	private function _error($error) {
 		$this->errors[] = $error;
-		$this->html = "<div class='error'>Some Errors: <ul><li>" . implode('</li><li>', $this->errors) . "</li></ul></div>";
+		$this->html = "Some Errors: <div class='error'>" . implode("</div><div class='error'>", $this->errors) . "</div>";
 	}
-	
+
+	public function importRawData(array $data) {
+
+	    $valid = true;
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                $valid = false;
+                $this->_error("Data: Value of '$key' must be an array but is " . gettype($value));
+            } else {
+                foreach ($value as $lang => $v) {
+                    if (!is_array($v)) {
+                        $valid = false;
+                        $this->_error("Data: Value of '$key'->'$lang' must be an array but is " . gettype($v));
+                    }
+                }
+            }
+
+            if ($valid) {
+                $this->_rawdata = $data;
+            }
+        }
+    }
+
+    public function getRawdata() : array {
+	    return $this->_rawdata;
+    }
+
+    function storeData($cached = false) {
+        global $wpdb;
+        //$wpdb->hide_errors();
+
+        $proceed = $wpdb->delete(
+            $wpdb->prefix . 'esa_item_data_cache',
+            array(
+                "source" => $this->source,
+                "id" => $this->id
+            )
+        );
+
+        foreach ($this->_rawdata as $key => $val) {
+
+            foreach ($val as $lang => $values) {
+
+                foreach ($values as $value) {
+
+
+
+                    $proceed = ($proceed and $wpdb->insert(
+                        $wpdb->prefix . 'esa_item_data_cache',
+                        array(
+                            'language' => stripslashes($lang),
+                            'key' => stripslashes($key),
+                            'value' => stripslashes($value),
+                            "source" => $this->source,
+                            "id" => $this->id
+                        )
+                    ));
+
+                }
+            }
+        }
+
+        return $proceed;
+    }
+
+    private function _query_rawdata($cached) {
+	    global $wpdb;
+	    //$cached_data = $wpdb->query("")
+        return array();
+    }
 }
 
 ?>

@@ -40,6 +40,9 @@ register_activation_hook(ESA_FILE, function() {
 
     dbDelta($sql);
 
+    // run sub-plugins
+    do_action("esa_install");
+
     // default options
     add_option('esa_datasources',  json_encode(array("idai", "wiki", "commons", "pelagios")));
 

@@ -8,6 +8,7 @@ namespace esa_item {
 		public $table = array();
 		public $text = array();
 		public $tableAsTree = false;
+        public $_data = array();
 
 		function addTable($key, $value) {
 			if (isset($this->table[$key])) {
@@ -82,6 +83,26 @@ namespace esa_item {
 				
 			return $html;
 		}
+
+		function put(string $key, string $value, string $lang = "") {
+            $this->_data[$key] = $this->_data[$key] ?? array();
+		    $this->_data[$key][$lang] = $this->_data[$key][$lang] ?? array();
+            $this->_data[$key][$lang][] = $value;
+        }
+
+        /**
+         * @param string $key
+         * @param array $langToValArray expexts:
+         * "key": {
+         *  "de": "haus",
+         *  "en": "house",
+         * }
+         */
+        function putMultilang(string $key, array $langToValArray) {
+            $this->_data[$key] = $this->_data[$key] ?? array();
+            $tmp = array_map(function($v) {return array($v);}, $langToValArray);
+            $this->_data[$key] = array_merge($tmp, $this->_data[$key]);
+        }
 		
 		private function _render_table($table = false, $level = 0) {
 		    $table = $table ? $table : $this->table;

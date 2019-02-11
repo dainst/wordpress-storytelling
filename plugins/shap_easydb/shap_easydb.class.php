@@ -181,14 +181,54 @@ namespace esa_datasource {
             $object_type = $json_response[0]->_objecttype;
             $object = $json_response[0]->{$object_type};
             $id = "$object_type|$system_object_id";
-            $lat = isset($object->latitude) ? $object->latitude : null;
-            $lon = isset($object->longitude) ? $object->longitude : null;
 
             $data = new \esa_item\data();
 
+            if ($object_type == "bilder") {
+                $this->_parse_bilder($object, $data);
+            } else {
+                $this->_parse_generic($object_type, $object, $data);
+            }
+
+            $lat = isset($object->latitude) ? $object->latitude : null;
+            $lon = isset($object->longitude) ? $object->longitude : null;
+
+            if (isset($object->bild) and isset($object->bild[0]->versions)) {
+
+                $data->title = $object->titel;
+
+                $data->addImages(array('url' => $object->bild[0]->versions->preview->url, 'fullres' => $object->bild[0]->versions->full->url));
+            }
+
+            return new \esa_item("shap_easydb", $id, esa_debug($data->_data), $this->api_record_url($id), $data->title, array(), array(), $lat, $lon, $data->_data);
+        }
+
+        function _parse_bilder($o, \esa_item\data $data) {
+            $blocks = array(
+                "Vorlage" => "art_der_vorlage_id",
+                "Status" => "bearbeitungsstatus_id",
+                "Motiv" => "art_des_motivs_id_old",
+                "Ort" => "ort_des_motivs_id"
+            );
+
+            foreach ($blocks as $bname => $block) {
+                $this->_getDetail($data, $bname, $o->$block);
+            }
+
+        }
+
+        function _getDetail($data, $name, $block, $field = "_standard") {
+            $one = 1;
+            if (isset($block->$field) and isset($block->$field->$one)) {
+                $data->putMultilang($name . "P", (array) $block->$field->$one->text);
+            }
+        }
+
+        function _parse_generic(string $object_type, $object, \esa_item\data $data) {
             if (isset($object->name)) {
                 $data->title = $object->name;
             }
+
 
             $data->addTable("Typ", $object_type);
             $data->addTable("ID", $object->_id);
@@ -216,18 +256,13 @@ namespace esa_datasource {
             foreach ($fields_to_add as $field_to_add) {
                 if (isset($object->{$field_to_add})) {
                     $data->addTable(ucwords($field_to_add), $object->{$field_to_add});
+                    //$data->put();
                 }
             }
 
-            if (isset($object->bild) and isset($object->bild[0]->versions)) {
 
-                $data->title = $object->titel;
-
-                $data->addImages(array('url' => $object->bild[0]->versions->preview->url, 'fullres' => $object->bild[0]->versions->full->url));
-            }
-
-            return new \esa_item("shap_easydb", $id, $data->render(), $this->api_record_url($id), $data->title, array(), array(), $lat, $lon);
         }
+
 
         function stylesheet() {
             return array(

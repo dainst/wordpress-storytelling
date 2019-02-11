@@ -206,7 +206,7 @@ namespace esa_datasource {
          *
          * @param $id - unique identifier
          *
-         * @return array of result, wich has to be parsed by $this->parse_result
+         * @return \esa_item
          * @throws \Exception
          */
 		function get($id) {
