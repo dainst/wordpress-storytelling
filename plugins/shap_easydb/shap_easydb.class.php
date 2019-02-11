@@ -215,12 +215,17 @@ namespace esa_datasource {
                 $this->_getDetail($data, $bname, $o->$block);
             }
 
+            $n = "_nested:bilder__schlagwort";
+            foreach ($o->$n as $keyword) {
+                $this->_getDetail($data, "keyword", $keyword->lk_schlagwort_id);
+            }
+
         }
 
         function _getDetail($data, $name, $block, $field = "_standard") {
             $one = 1;
             if (isset($block->$field) and isset($block->$field->$one)) {
-                $data->putMultilang($name . "P", (array) $block->$field->$one->text);
+                $data->putMultilang($name, (array) $block->$field->$one->text);
             }
         }
 

@@ -207,9 +207,7 @@ class esa_item {
         }
 
         if(!$proceed) {
-            die($proceed?"ja":"nein");
             $this->_error("Insertion impossible!\n{$wpdb->last_error}\n<textarea>" . print_r($wpdb->last_query,1) . '</textarea>');
-
             return false;
         }
 
@@ -252,23 +250,25 @@ class esa_item {
 
     function storeData($cached = false) {
         global $wpdb;
-        //$wpdb->hide_errors();
+        $wpdb->hide_errors();
 
-        $proceed = $wpdb->delete(
+        $proceed = (false !== $wpdb->delete(
             $wpdb->prefix . 'esa_item_data_cache',
             array(
                 "source" => $this->source,
                 "id" => $this->id
             )
-        );
+        ));
+
+        if (!$proceed) {
+            return false;
+        }
 
         foreach ($this->_rawdata as $key => $val) {
 
             foreach ($val as $lang => $values) {
 
                 foreach ($values as $value) {
-
-
 
                     $proceed = ($proceed and $wpdb->insert(
                         $wpdb->prefix . 'esa_item_data_cache',

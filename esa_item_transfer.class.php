@@ -93,15 +93,15 @@ namespace esa_item {
         /**
          * @param string $key
          * @param array $langToValArray expexts:
-         * "key": {
+         * {
          *  "de": "haus",
          *  "en": "house",
          * }
          */
         function putMultilang(string $key, array $langToValArray) {
-            $this->_data[$key] = $this->_data[$key] ?? array();
-            $tmp = array_map(function($v) {return array($v);}, $langToValArray);
-            $this->_data[$key] = array_merge($tmp, $this->_data[$key]);
+            foreach ($langToValArray as $lang => $value) {
+                $this->put($key, $value, $lang);
+            }
         }
 		
 		private function _render_table($table = false, $level = 0) {
