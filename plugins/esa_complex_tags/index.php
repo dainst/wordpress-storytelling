@@ -29,7 +29,7 @@ function esa_add_complex_tag(string $termName, int $parent = 0) : array {
 }
 
 
-add_action("esa_get_wrapper", function(\esa_item $esaItem, $wrapper) {
+add_action("esa_get_wrapper", function(\esa_item $esaItem, \WP_Post $wrapper) {
 
     $terms = array();
 
@@ -37,21 +37,35 @@ add_action("esa_get_wrapper", function(\esa_item $esaItem, $wrapper) {
         foreach ($esaItem->getRawdata() as $key => $languages) {
             foreach ($languages as $language => $values) {
                 $langTerm = esa_add_complex_tag($language);
+                $terms[] = $langTerm['term_id'];
                 $keyTerm = esa_add_complex_tag($key, $langTerm['term_id']);
+                $terms[] = $keyTerm['term_id'];
 
                 foreach ($values as $value) {
-                    $terms[] = esa_add_complex_tag($value, $keyTerm['term_id']);
+                    $terms[] = esa_add_complex_tag($value, $keyTerm['term_id'])['term_id'];
                 }
 
             }
         }
 
-        die(esa_debug($terms));
+        $set = wp_set_post_terms($wrapper->ID, $terms, "esa_complex_tags", false);
+
+        if ($set instanceof WP_Error) {
+            throw new Exception($set->get_error_message());
+        }
+
+        if ($set === false) {
+            throw new Exception('$post_id evaluates as false');
+        }
+
+        if(!is_array($set)) {
+            throw new Exception("Error:" . esa_debug($set));
+        }
+
+
     } catch (Exception $e) {
-
-        die($e->getMessage());
+        die("<div class='error'>" . $e->getMessage() . "</div>");
     }
-
 
 }, 10, 2);
 
