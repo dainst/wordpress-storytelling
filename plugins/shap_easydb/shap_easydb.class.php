@@ -194,9 +194,13 @@ namespace esa_datasource {
                 $this->_parse_generic($object_type, $object, $data);
             }
 
-            $lat = isset($object->latitude) ? $object->latitude : null;
-            $lon = isset($object->longitude) ? $object->longitude : null;
+            $lat = null;
+            $lon = null;
 
+            // place
+            list($lat, $lon) = $this->_parsePlace($object, $data);
+
+            // image
             if (isset($object->bild) and isset($object->bild[0]->versions)) {
 
                 $data->title = $object->titel;
@@ -246,6 +250,39 @@ namespace esa_datasource {
             if (isset($block->$field) and isset($block->$field->$one)) {
                 $data->putMultilang($name, (array) $block->$field->$one->text);
             }
+        }
+
+        function _parsePlace($o, \esa_item\data $data) : array {
+
+            if (!isset($o->ort_des_motivs_id)) {
+                echo "1";
+                return array(null, null);
+            }
+
+            $soid = $o->ort_des_motivs_id->_system_object_id;
+
+            $place = json_decode($this->_fetch_external_data($this->api_single_url("ortsthesaurus|$soid")));
+
+            $place = $place[0];
+
+            if (!isset($place) or !isset($place->ortsthesaurus) or !isset($place->ortsthesaurus->gazetteer_id)) {
+                die(esa_debug($place));
+                return array(null, null);
+            }
+
+            $gazId = $place->ortsthesaurus->gazetteer_id;
+
+            foreach ($gazId->otherNames as $name) {
+                $data->put("Ort", $name->title, "??");
+            }
+
+            if (!isset($gazId->position)) {
+                echo "3";
+                return array(null, null);
+            }
+
+            return array($gazId->position->lat, $gazId->position->lng);
+
         }
 
         function _parse_generic(string $object_type, $object, \esa_item\data $data) {

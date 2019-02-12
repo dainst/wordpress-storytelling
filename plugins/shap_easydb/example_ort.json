@@ -1,0 +1,436 @@
+[
+  {
+    "ortsthesaurus": {
+      "_id": 1616,
+      "_id_parent": 1471,
+      "_version": 1,
+      "lk_ortsthesaurus_typ": {
+        "_global_object_id": "68@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "Location",
+              "en-US": "Location",
+              "ar": "Location"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Location</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Location</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Location</span></span>"
+            }
+          }
+        },
+        "ortsthesaurus_typ": {
+          "_id": 2,
+          "_version": 1
+        },
+        "_system_object_id": 68,
+        "_objecttype": "ortsthesaurus_typ",
+        "_mask": "ortsthesaurus_typ__all_fields",
+        "_uuid": "e22cbab5-2939-41f5-9922-fdb52e28d727",
+        "_sets": [],
+        "_format": "standard"
+      },
+      "gazetteer_id": {
+        "gazId": "2320106",
+        "displayName": "Bab Antakiya",
+        "otherNames": [
+          {
+            "title": "Bāb Anṭākiya"
+          },
+          {
+            "title": "باب أنطاكية"
+          }
+        ],
+        "_fulltext": {
+          "text": [
+            "Bāb Anṭākiya",
+            "باب أنطاكية",
+            "Bab Antakiya"
+          ],
+          "string": "2320106"
+        },
+        "_standard": {
+          "text": "Bab Antakiya"
+        },
+        "position": {
+          "lng": 37.151749,
+          "lat": 36.19898
+        }
+      },
+      "immobilie_castrade": "wall-gates",
+      "immobilie_number": "syrher-03",
+      "latitude": "36.19898",
+      "longitude": "37.151749",
+      "name": "Bab Antakiya",
+      "weiterenamen": "Bāb Anṭākiya\nباب أنطاكية",
+      "easydb4_reference": "ortsthesaurus:810",
+      "easydb4_update_time": {
+        "value": "2018-08-11T23:32:49+02:00",
+        "_from": "2018-08-11T23:32:49+02:00",
+        "_to": "2018-08-11T23:32:49+02:00"
+      },
+      "easydb4_update_user": "admin",
+      "_nested:ortsthesaurus__gebaeudetyp": [
+        {
+          "lk_gebaeudetyp_id": {
+            "_system_object_id": 651,
+            "_global_object_id": "651@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_objecttype": "gebaeudetyp",
+            "_mask": "gebaeudetyp__all_fields",
+            "_uuid": "f02278a5-7aa4-4606-a9e1-73a3feeee560",
+            "gebaeudetyp": {
+              "_id": 13,
+              "_id_parent": null,
+              "_version": 1
+            },
+            "_has_children": false,
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "building-institution",
+                  "en-US": "building-institution",
+                  "ar": "building-institution"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">building-institution</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">building-institution</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">building-institution</span></span>"
+                }
+              }
+            },
+            "_level": 1,
+            "_path": [
+              {
+                "_global_object_id": "651@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 651,
+                "_objecttype": "gebaeudetyp",
+                "_has_children": false,
+                "_uuid": "f02278a5-7aa4-4606-a9e1-73a3feeee560",
+                "_mask": "gebaeudetyp__all_fields",
+                "gebaeudetyp": {
+                  "_id": 13,
+                  "_id_parent": null,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">building-institution</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">building-institution</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">building-institution</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "building-institution",
+                      "en-US": "building-institution",
+                      "ar": "building-institution"
+                    }
+                  }
+                },
+                "_format": "standard"
+              }
+            ],
+            "_format": "standard"
+          }
+        }
+      ]
+    },
+    "_mask": "_all_fields",
+    "_objecttype": "ortsthesaurus",
+    "_schema_version": 64,
+    "_system_object_id": 79618,
+    "_global_object_id": "79618@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+    "_uuid": "16de4c81-9893-44b1-94d5-e5fed1bc52e2",
+    "_has_children": false,
+    "_current_version": true,
+    "_sets": [
+      "objecttype:ortsthesaurus"
+    ],
+    "_tags": [],
+    "_changelog": [
+      {
+        "time": "2018-12-17T11:36:23Z",
+        "operation": "INSERT",
+        "batch_id": 852,
+        "version": 1,
+        "schema_version": 57,
+        "user": {
+          "_basetype": "user",
+          "user": {
+            "_generated_displayname": "Root",
+            "type": "system",
+            "_id": 1,
+            "frontend_language": "en-US",
+            "login": "root",
+            "_version": 81
+          },
+          "_emails": []
+        },
+        "groups": [
+          1,
+          2
+        ],
+        "current_version": true
+      }
+    ],
+    "_published": [],
+    "_published_count": 0,
+    "_standard": {
+      "1": {
+        "text": {
+          "de-DE": "#79618"
+        },
+        "html": {
+          "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#79618</span></span>"
+        }
+      }
+    },
+    "_last_modified": "2018-12-17T11:36:23Z",
+    "_level": 9,
+    "_path": [
+      {
+        "_system_object_id": 78003,
+        "_global_object_id": "78003@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 1,
+          "_id_parent": null,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "d636aed4-90d2-4eca-b3f2-aadf89e2653b",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#78003</span></span>"
+            },
+            "text": {
+              "de-DE": "#78003"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 78025,
+        "_global_object_id": "78025@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 23,
+          "_id_parent": 1,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "98aee4ed-5f7d-4bb2-9200-f9045d26da9d",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#78025</span></span>"
+            },
+            "text": {
+              "de-DE": "#78025"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 78096,
+        "_global_object_id": "78096@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 94,
+          "_id_parent": 23,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "599055fc-d5e6-4b1c-beef-a7ccc8d517f1",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#78096</span></span>"
+            },
+            "text": {
+              "de-DE": "#78096"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 78242,
+        "_global_object_id": "78242@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 240,
+          "_id_parent": 94,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "e906e952-dd3e-4935-b5c7-b35a4c328ec9",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#78242</span></span>"
+            },
+            "text": {
+              "de-DE": "#78242"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 78464,
+        "_global_object_id": "78464@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 462,
+          "_id_parent": 240,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "5414b782-b113-4e6c-a886-3a6c3dc541fb",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#78464</span></span>"
+            },
+            "text": {
+              "de-DE": "#78464"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 79018,
+        "_global_object_id": "79018@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 1016,
+          "_id_parent": 462,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "dfca115a-b3e2-438f-a241-e994a4236d12",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#79018</span></span>"
+            },
+            "text": {
+              "de-DE": "#79018"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 79260,
+        "_global_object_id": "79260@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 1258,
+          "_id_parent": 1016,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "843535df-c577-4a29-9352-b03a929efdd4",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#79260</span></span>"
+            },
+            "text": {
+              "de-DE": "#79260"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 79473,
+        "_global_object_id": "79473@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 1471,
+          "_id_parent": 1258,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": true,
+        "_uuid": "838e580a-38af-44f9-abe8-0045416ecabe",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#79473</span></span>"
+            },
+            "text": {
+              "de-DE": "#79473"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      {
+        "_system_object_id": 79618,
+        "_global_object_id": "79618@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 1616,
+          "_id_parent": 1471,
+          "_version": 1
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "_all_fields",
+        "_tags": [],
+        "_has_children": false,
+        "_uuid": "16de4c81-9893-44b1-94d5-e5fed1bc52e2",
+        "_standard": {
+          "1": {
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">#79618</span></span>"
+            },
+            "text": {
+              "de-DE": "#79618"
+            }
+          }
+        },
+        "_format": "standard"
+      }
+    ],
+    "_format": "full",
+    "_generated_rights": {
+      "write": {},
+      "delete": {},
+      "acl": {},
+      "change_owner": {}
+    }
+  }
+]
