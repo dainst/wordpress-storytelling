@@ -49,9 +49,6 @@ namespace esa_datasource {
             if ($this->_session_token) {
                 return $this->_session_token;
             }
-            if (!$this->_easydb_url or !$this->_easydb_pass or !$this->_easydb_user) {
-                throw new \Exception('Easy-DB: credentials missing.');
-            }
             try {
                 $resp = json_decode($this->_fetch_external_data("{$this->_easydb_url}/api/v1/session"));
                 if (!isset($resp->token)) {
@@ -62,8 +59,15 @@ namespace esa_datasource {
                 throw new \Exception('Easy-DB: create session failed: ' . $this->parse_error_response($e));
             }
             try {
+
+                if (!$this->_easydb_url or !$this->_easydb_pass or !$this->_easydb_user) {
+                    $credentials = "method=anonymous";
+                } else {
+                    $credentials = "login={$this->_easydb_user}&password={$this->_easydb_pass}";
+                }
+
                 $this->_fetch_external_data((object) array(
-                    "url" => "{$this->_easydb_url}/api/v1/session/authenticate?token={$this->_session_token}&login={$this->_easydb_user}&password={$this->_easydb_pass}",
+                    "url" => "{$this->_easydb_url}/api/v1/session/authenticate?token={$this->_session_token}&$credentials",
                     "method" => "post"
                 ));
             } catch (\Exception $e) {

@@ -16,7 +16,7 @@ add_filter('esa_get_modules', function($modules) {
 add_filter("esa_get_module_settings", function($settings) {
     $settings["shap_easydb"] = array(
         'label' => "Connection to the Easy-DB of the SHAP project",
-        'info' => "",
+        'info' => "Leave out username and password to use anonymous",
         'children' => array(
             // is the comment feature active
             'activate' => array(
