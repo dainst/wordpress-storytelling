@@ -31,12 +31,14 @@ function esa_add_complex_tag(string $termName, int $parent = 0) : array {
 
 add_action("esa_get_wrapper", function(\esa_item $esaItem, \WP_Post $wrapper) {
 
+    // TODO only if none are allready stored!
+
     $terms = array();
 
     try {
         foreach ($esaItem->getRawdata() as $key => $languages) {
             foreach ($languages as $language => $values) {
-                $langTerm = esa_add_complex_tag($language);
+                $langTerm = esa_add_complex_tag(($language === "") ? "#" : $language);
                 $terms[] = $langTerm['term_id'];
                 $keyTerm = esa_add_complex_tag($key, $langTerm['term_id']);
                 $terms[] = $keyTerm['term_id'];

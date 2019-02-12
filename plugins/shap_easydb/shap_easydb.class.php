@@ -219,10 +219,25 @@ namespace esa_datasource {
                 $this->_getDetail($data, $bname, $o->$block);
             }
 
+            // keywords
             $n = "_nested:bilder__schlagwort";
             foreach ($o->$n as $keyword) {
                 $this->_getDetail($data, "keyword", $keyword->lk_schlagwort_id);
             }
+
+
+            if (isset($o->bild) and count($o->bild)) {
+
+                // date
+                if (isset($o->bild[0]->date_created)) {
+                    $year = date("Y", strtotime($o->bild[0]->date_created));
+                    $decade = substr($year, 0, 3) . "0s";
+                    $data->put("decade_creation", $decade);
+                }
+
+            }
+
+
 
         }
 
