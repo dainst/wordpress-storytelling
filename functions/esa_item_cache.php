@@ -34,19 +34,12 @@ add_action('admin_action_esa_flush_cache', function() {
     global $wpdb;
 
     $sql = "truncate {$wpdb->prefix}esa_item_cache;";
-
     $wpdb->query($sql);
 
-    if (isset($_POST['wrappers'])) {
-        $allposts= get_posts(array('post_type' => 'esa_item_wrapper', 'numberposts' => -1));
-        foreach ($allposts as $eachpost) {
-            wp_delete_post($eachpost->ID, true);
-        }
-    }
+    do_action("esa_flush_cache", isset($_POST['wrappers']));
 
     wp_redirect($_SERVER['HTTP_REFERER']);
     exit();
-
 });
 
 add_action('admin_action_esa_refresh_cache', function() {

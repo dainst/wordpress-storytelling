@@ -103,6 +103,10 @@ namespace esa_item {
                 $this->put($key, $value, $lang);
             }
         }
+
+        function get() : array {
+            return $this->_data;
+        }
 		
 		private function _render_table($table = false, $level = 0) {
 		    $table = $table ? $table : $this->table;
@@ -172,7 +176,7 @@ namespace esa_item {
 		 *		'text'=> (string)  $text
 		 *	));
 		 * 
-		 * @param unknown $data
+		 * @param array $data
 		 */
 		public function __construct($data) {
 			foreach ($data as $att => $val) {

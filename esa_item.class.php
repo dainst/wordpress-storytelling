@@ -119,7 +119,7 @@ class esa_item {
 	private function _generator() {
 
 		if (!$this->source or !$this->id) {
-            $this->_error("Error: id ($this->id) or source ($this->source) missing!");
+            $this->error("Error: id ($this->id) or source ($this->source) missing!");
 			return;
 		}
 		
@@ -156,7 +156,7 @@ class esa_item {
                 $this->store($cached);
             }
 		} catch (Exception $e) {
-			$this->_error($e->getMessage());
+			$this->error($e->getMessage());
 		}
 
 	}
@@ -207,7 +207,7 @@ class esa_item {
         }
 
         if(!$proceed) {
-            $this->_error("Insertion impossible!\n{$wpdb->last_error}\n<textarea>" . print_r($wpdb->last_query,1) . '</textarea>');
+            $this->error("Insertion impossible!\n{$wpdb->last_error}\n<textarea>" . print_r($wpdb->last_query,1) . '</textarea>');
             return false;
         }
 
@@ -216,7 +216,7 @@ class esa_item {
 
 	}
 	
-	private function _error($error) {
+	public function error($error) {
 		$this->errors[] = $error;
 		$this->html = "Some Errors: <div class='error'>" . implode("</div><div class='error'>", $this->errors) . "</div>";
 	}
@@ -228,12 +228,12 @@ class esa_item {
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
                 $valid = false;
-                $this->_error("Data: Value of '$key' must be an array but is " . gettype($value));
+                $this->error("Data: Value of '$key' must be an array but is " . gettype($value));
             } else {
                 foreach ($value as $lang => $v) {
                     if (!is_array($v)) {
                         $valid = false;
-                        $this->_error("Data: Value of '$key'->'$lang' must be an array but is " . gettype($v));
+                        $this->error("Data: Value of '$key'->'$lang' must be an array but is " . gettype($v));
                     }
                 }
             }
@@ -290,8 +290,14 @@ class esa_item {
 
     private function _query_rawdata($cached) {
 	    global $wpdb;
-	    //$cached_data = $wpdb->query("")
-        return array();
+	    $cached_data = $wpdb->get_results("select * from {$wpdb->prefix}esa_item_data_cache where id='{$this->id}' and source='{$this->source}';");
+        //die(esa_debug($cached_data));
+        $data = new \esa_item\data();
+        foreach ($cached_data as $item) {
+            $data->put($item->key, $item->value, $item->language);
+        }
+
+        return $data->get();
     }
 }
 

@@ -107,7 +107,7 @@ function esa_get_wrapper($esaItem) {
         }
     }
 
-
+    do_action("esa_get_wrapper", $esaItem, $wrapper);
 
     return $wrapper;
 }
@@ -116,3 +116,12 @@ function esa_clean_string($string) {
     $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
     return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 }
+
+add_action("esa_flush_cache", function($wrappers) {
+    if ($wrappers) {
+        $allposts = get_posts(array('post_type' => 'esa_item_wrapper', 'numberposts' => -1));
+        foreach ($allposts as $eachpost) {
+            wp_delete_post($eachpost->ID, true);
+        }
+    }
+}, 5, 1);

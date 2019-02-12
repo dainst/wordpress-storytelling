@@ -22,7 +22,8 @@ add_action("esa_install", function() {
     dbDelta($sql);
 });
 
-
-function esa_store_data() {
-
-}
+add_action("esa_flush_cache", function($wrappers) {
+    global $wpdb;
+    $sql = "truncate {$wpdb->prefix}esa_item_cache;";
+    $wpdb->query($sql);
+}, 10, 1);
