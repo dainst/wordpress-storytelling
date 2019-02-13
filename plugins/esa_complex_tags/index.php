@@ -4,7 +4,7 @@ add_action('init', function() {
         'esa_complex_tags',
         'esa_item_wrapper',
         array(
-            'label'                 => __('Tags'),
+            'label'                 => 'metatags',
             'rewrite'               => array('slug' => 'data'),
             'hierarchical'          => true,
             'show_ui'               => true,

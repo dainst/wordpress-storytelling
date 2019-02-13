@@ -3,6 +3,8 @@
 
 namespace esa_datasource {
 
+    use esa_item\image;
+
     class shap_easydb extends abstract_datasource {
 
         public $title = 'SHAP - EasyDB'; // Label / Title of the Datasource
@@ -15,7 +17,7 @@ namespace esa_datasource {
 
         public $force_curl = true;
 
-        private $_session_token; // TODO cache!
+        private $_session_token;
 
         private $_easydb_url = "";
         private $_easydb_user = "";
@@ -24,7 +26,7 @@ namespace esa_datasource {
         private $_items_per_page = 12;
 
         function construct() {
-            $this->_easydb_url = esa_get_settings('modules', 'shap_easydb', 'easyurl');
+            $this->_easydb_url  = esa_get_settings('modules', 'shap_easydb', 'easyurl');
             $this->_easydb_user = esa_get_settings('modules', 'shap_easydb', 'easyuser');
             $this->_easydb_pass = esa_get_settings('modules', 'shap_easydb', 'easypass');
         }
@@ -76,21 +78,17 @@ namespace esa_datasource {
             return $this->_session_token;
         }
 
-
-
-        // id is _objecttype + "|" + id
-        function api_single_url($id, $params = array()) : string {
+        function api_single_url($object_id, $params = array()) : string {
             $this->get_easy_db_session_token();
-            list($object_type, $object_id) = explode("|", $id);
+            return "{$this->_easydb_url}/api/v1/db/bilder/bilder__all_fields/global_object_id/$object_id@local?token={$this->_session_token}";
+        }
 
-            $mask = ($object_type == "ortsthesaurus") ? "ortsthesaurus__l" : "bilder__all_fields";
-
-            return "{$this->_easydb_url}/api/v1/db/$object_type/$mask/global_object_id/$object_id@local?token={$this->_session_token}";
+        function api_place_url($object_id) {
+            return "{$this->_easydb_url}/api/v1/db/ortsthesaurus/ortsthesaurus__l/global_object_id/$object_id@local?token={$this->_session_token}";
         }
 
         function api_record_url($id, $params = array()) : string {
-            list($object_type, $object_id) = explode("|", $id);
-            return "{$this->_easydb_url}/lists/$object_type/$object_id";
+            return "{$this->_easydb_url}/lists/bilder/id";
         }
 
         function api_search_url($query, $params = array()) {
@@ -151,7 +149,7 @@ namespace esa_datasource {
             $this->results = array();
             foreach ($response->objects as $item) {
                 $type = $item->_objecttype;
-                $this->results[] = $this->parse_result($this->_fetch_external_data($this->api_single_url("$type|{$item->_system_object_id}")));
+                $this->results[] = $this->parse_result($this->_fetch_external_data($this->api_single_url($item->_system_object_id)));
             }
 
             $this->pages = (int) ($response->count / $this->_items_per_page) + 1;
@@ -166,14 +164,13 @@ namespace esa_datasource {
             $system_object_id = $json_response[0]->_system_object_id;
             $object_type = $json_response[0]->_objecttype;
             $object = $json_response[0]->{$object_type};
-            $id = "$object_type|$system_object_id";
 
             $data = new \esa_item\data();
 
-            $data->title = $id;
+            $data->title = "Image #" . $system_object_id;
 
             if ($object_type !== "bilder") {
-                return new \esa_item("shap_easydb", $id, "not in bilder: $object_type", $this->api_record_url($id), "error");
+                return new \esa_item("shap_easydb", $system_object_id, "not in bilder: $object_type", $this->api_record_url($system_object_id), "error");
             }
 
             $this->_parse_title($object, $data);
@@ -181,17 +178,37 @@ namespace esa_datasource {
             $this->_parse_nested($object, $data);
             $this->_parse_date($object, $data);
             $this->_parse_pool($object, $data);
+            $this->_parse_tags($json_response[0], $data);
 
             list($lat, $lon) = $this->_parse_place($object, $data);
 
 
-            // image
+            // images
             if (isset($object->bild) and isset($object->bild[0]->versions)) {
-                $data->addImages(array('url' => $object->bild[0]->versions->preview->url, 'fullres' => $object->bild[0]->versions->full->url));
+
+                $image = array();
+                $image['url']   = $object->bild[0]->versions->small->url;
+
+                $versions = array_filter((array) $object->bild[0]->versions, function($v) {
+                    return  ($v->status !== "failed") && (!$v->_not_allowed);
+                });
+
+                if (isset($versions->full)) {
+                    $image['fullres']   = $versions->full->url;
+                } else if (isset($versions->original)) {
+                    $image['fullres']   = $versions->original->url;
+                }
+                $image['title'] = $object->bild[0]->original_filename;
+
+                $image = new \esa_item\image($image);
             }
 
-            return new \esa_item("shap_easydb", $id, esa_debug($data->_data), $this->api_record_url($id), $data->title, array(), array(), $lat, $lon, $data->_data);
+            $html = $image->render() . "<div class='esa_shap_subtext'>{$object->copyright_vermerk}</div>";
+
+            return new \esa_item("shap_easydb", $system_object_id, $html, $this->api_record_url($system_object_id), $data->title, array(), array(), $lat, $lon, $data->_data);
         }
+
+
 
         function _parse_title($o, \esa_item\data $data) {
             if (isset($o->ueberschrift)) {
@@ -279,7 +296,7 @@ namespace esa_datasource {
 
             $soid = $o->ort_des_motivs_id->_system_object_id;
 
-            $place = json_decode($this->_fetch_external_data($this->api_single_url("ortsthesaurus|$soid")));
+            $place = json_decode($this->_fetch_external_data($this->api_place_url("$soid")));
 
             $place = $place[0];
 
@@ -301,10 +318,29 @@ namespace esa_datasource {
 
         }
 
+        function _parse_tags($o, \esa_item\data $data) {
+            $import_tags = array(
+                31  => "article_image",
+                4   => "aleppo access",
+                16  => "in process",
+                19  => "accessible",
+                25  => "destroyed"
+            );
+
+            $used_tags = array_map(function($t) {return $t->_id;}, $o->_tags);
+
+            foreach ($used_tags as $tag) {
+                if (isset($import_tags[$tag])) {
+                    $data->put("tag", $import_tags[$tag]);
+                }
+            }
+
+        }
+
         function stylesheet() {
             return array(
-                'name' => get_class($this),
-                'css' => ''
+                'file' => plugins_url(ESA_DIR . '/plugins/shap_easydb/esa_shap.css'),
+                'name' => "shap"
             );
         }
 

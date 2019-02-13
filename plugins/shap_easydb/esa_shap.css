@@ -1,0 +1,12 @@
+.esa_shap_subtext {
+    background: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    width: 100%;
+    bottom: 0;;
+    text-align: right;
+    font-size: 70%
+}
+
+.esa_item.esa_item_shap_easydb .esa_item_inner {
+    padding: 0
+}

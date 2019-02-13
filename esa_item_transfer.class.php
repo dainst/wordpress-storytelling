@@ -210,7 +210,7 @@ namespace esa_item {
 					$image_b = "<img class='esa_item_fullres' src='' data-fullsize='$drurl' alt='{$this->title}' />";
 					$id = md5($drlink);
 					$image_b = ($this->fullres or ($this->type == 'DRAWING')) ? "<span class='esa_thickbox' id='esa_tb_$id'>$image_b</span>" : $image_b;
-					$html = $image_a . $image_b; 
+					$html = $image_a . $image_b;
 				break;
 				
 				case 'AUDIO': 

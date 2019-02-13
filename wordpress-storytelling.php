@@ -86,6 +86,7 @@ require_once('functions/esa_item_tags.php');
 require_once('functions/esa_item_comments.php');
 require_once('functions/esa_item_cache.php');
 require_once('functions/esa_edit_post.php');
+require_once('functions/esa_item_display_settings.php');
 
 require_once('functions/esa_page_info.php');
 require_once('functions/esa_page_cache_all.php');

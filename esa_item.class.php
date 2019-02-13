@@ -80,8 +80,13 @@ class esa_item {
 			}
 			$css_string .= "'";
 		}
+
+
+		if (!esa_get_settings("modules", "esa_item_display_settings", "dont_collapse_esa_items")) {
+		    $classes .= " esa_item_collapsed";
+        }
 		
-		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_collapsed esa_item_{$this->source} $classes' $css_string>";
+		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source} $classes' $css_string>";
 		
 		echo "<div class='esa_item_tools'>";
 		
@@ -218,7 +223,8 @@ class esa_item {
 	
 	public function error($error) {
 		$this->errors[] = $error;
-		$this->html = "Some Errors: <div class='error'>" . implode("</div><div class='error'>", $this->errors) . "</div>";
+		$stack = debug_backtrace();
+		$this->html = "Some Errors: <div class='error'>" . implode("</div><div class='error'>", $this->errors) . "</div>" . esa_debug($stack);
 	}
 
 	public function importRawData(array $data) {

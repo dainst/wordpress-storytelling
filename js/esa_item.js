@@ -99,13 +99,18 @@
             if (!is_in_editor) {
                 $(this_esa_item).on('click', '.esa_item_media_box', function() {
                     var thickboxObj = $(this).find('.esa_thickbox');
+
                     var thickboxId = thickboxObj.attr('id');
                     if (!thickboxObj) {
                         return;
                     }
                     var fullsizeObj = $(this).find('.esa_item_fullres');
                     var fullsize = fullsizeObj.data('fullsize');
+
                     function esa_tb() {
+                        if (!thickboxId) {
+                            return;
+                        }
                         var width = Math.min($(window).width() - 55, fullsizeObj.get(0).naturalWidth);
                         var height = Math.min($(window).height() - 55, fullsizeObj.get(0).naturalHeight);
                         var title = $(this_esa_item).find('h4').text();

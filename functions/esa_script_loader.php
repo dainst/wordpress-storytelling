@@ -82,7 +82,6 @@ function esa_register_special_styles() {
             wp_enqueue_style('esa_item_' . $cssInfo['name'], $cssInfo['file']);
         }
 
-
     }
 
     wp_add_inline_style('esa_item', implode('\n', $css));
