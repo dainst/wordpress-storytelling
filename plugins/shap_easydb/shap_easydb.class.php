@@ -15,7 +15,7 @@ namespace esa_datasource {
 
         public $force_curl = true;
 
-        private $_session_token;
+        private $_session_token; // TODO cache!
 
         private $_easydb_url = "";
         private $_easydb_user = "";
@@ -82,7 +82,10 @@ namespace esa_datasource {
         function api_single_url($id, $params = array()) : string {
             $this->get_easy_db_session_token();
             list($object_type, $object_id) = explode("|", $id);
-            return "{$this->_easydb_url}/api/v1/db/$object_type/_all_fields/global_object_id/$object_id@local?token={$this->_session_token}";
+
+            $mask = ($object_type == "ortsthesaurus") ? "ortsthesaurus__l" : "bilder__all_fields";
+
+            return "{$this->_easydb_url}/api/v1/db/$object_type/$mask/global_object_id/$object_id@local?token={$this->_session_token}";
         }
 
         function api_record_url($id, $params = array()) : string {
@@ -103,7 +106,9 @@ namespace esa_datasource {
                         "phrase"=> true
                     )
                 ),
-                "limit" => $this->_items_per_page
+                "limit" => $this->_items_per_page,
+                "objecttypes" => array("bilder"),
+	            "generate_rights" => false
             );
 
             if (isset($params['offset'])) {
