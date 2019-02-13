@@ -1,0 +1,1855 @@
+[
+  {
+    "bilder": {
+      "_id": 2044,
+      "_version": 7,
+      "anbieter_id": {
+        "_system_object_id": 825,
+        "_global_object_id": "825@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "person": {
+          "_id": 2,
+          "_version": 1
+        },
+        "_objecttype": "person",
+        "_mask": "name__all_fields",
+        "_uuid": "e95b4a8c-389f-4200-ba18-9523c12d657c",
+        "_sets": [],
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "Syrian Heritage Archive Project, 2013-2017",
+              "en-US": "Syrian Heritage Archive Project, 2013-2017",
+              "ar": "Syrian Heritage Archive Project, 2013-2017"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syrian Heritage Archive Project, 2013-2017</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syrian Heritage Archive Project, 2013-2017</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syrian Heritage Archive Project, 2013-2017</span></span>"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      "anweisungen": {
+        "de-DE": "Literature: /HiRes is available upon request",
+        "en-US": "Literature: /HiRes is available upon request",
+        "ar": "Literature: /HiRes is available upon request"
+      },
+      "art_der_vorlage_id": {
+        "_system_object_id": 83,
+        "_global_object_id": "83@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "art_der_vorlage": {
+          "_id": 7,
+          "_id_parent": null,
+          "_version": 1
+        },
+        "_objecttype": "art_der_vorlage",
+        "_mask": "art_der_vorlage__all_fields",
+        "_has_children": false,
+        "_uuid": "0da31aa3-5217-40f3-8c3b-db4663a8aa61",
+        "_sets": [],
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "fotografien",
+              "en-US": "fotografien",
+              "ar": "fotografien"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">fotografien</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">fotografien</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">fotografien</span></span>"
+            }
+          }
+        },
+        "_level": 1,
+        "_path": [
+          {
+            "_global_object_id": "83@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 83,
+            "_objecttype": "art_der_vorlage",
+            "art_der_vorlage": {
+              "_id": 7,
+              "_id_parent": null,
+              "_version": 1
+            },
+            "_uuid": "0da31aa3-5217-40f3-8c3b-db4663a8aa61",
+            "_has_children": false,
+            "_mask": "art_der_vorlage__all_fields",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">fotografien</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">fotografien</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">fotografien</span></span>"
+                },
+                "text": {
+                  "de-DE": "fotografien",
+                  "en-US": "fotografien",
+                  "ar": "fotografien"
+                }
+              }
+            },
+            "_format": "standard"
+          }
+        ],
+        "_format": "standard"
+      },
+      "art_der_vorlage_id2_old": {
+        "_system_object_id": 78,
+        "_global_object_id": "78@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "art_der_vorlage": {
+          "_id": 2,
+          "_id_parent": null,
+          "_version": 2
+        },
+        "_objecttype": "art_der_vorlage",
+        "_mask": "art_der_vorlage__all_fields",
+        "_has_children": true,
+        "_uuid": "975a4ff3-aa38-4b4f-9411-bc179833702d",
+        "_sets": [],
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "Fotografie",
+              "en-US": "Photography",
+              "ar": "تصوير فوتوغرافي"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Fotografie</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Photography</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#x62A;&#x635;&#x648;&#x64A;&#x631; &#x641;&#x648;&#x62A;&#x648;&#x63A;&#x631;&#x627;&#x641;&#x64A;</span></span>"
+            }
+          }
+        },
+        "_level": 1,
+        "_path": [
+          {
+            "_global_object_id": "78@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 78,
+            "_objecttype": "art_der_vorlage",
+            "art_der_vorlage": {
+              "_id": 2,
+              "_id_parent": null,
+              "_version": 2
+            },
+            "_uuid": "975a4ff3-aa38-4b4f-9411-bc179833702d",
+            "_has_children": true,
+            "_mask": "art_der_vorlage__all_fields",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Fotografie</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Photography</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#x62A;&#x635;&#x648;&#x64A;&#x631; &#x641;&#x648;&#x62A;&#x648;&#x63A;&#x631;&#x627;&#x641;&#x64A;</span></span>"
+                },
+                "text": {
+                  "de-DE": "Fotografie",
+                  "en-US": "Photography",
+                  "ar": "تصوير فوتوغرافي"
+                }
+              }
+            },
+            "_format": "standard"
+          }
+        ],
+        "_format": "standard"
+      },
+      "art_des_motivs_id_old": {
+        "_system_object_id": 292,
+        "_global_object_id": "292@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_mask": "art_des_motivs__all_fields",
+        "art_des_motivs": {
+          "_id": 139,
+          "_id_parent": 92,
+          "_version": 3
+        },
+        "_objecttype": "art_des_motivs",
+        "_has_children": false,
+        "_uuid": "952abea6-fcba-4428-82d5-8cc9591bf73f",
+        "_sets": [],
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "Madrasa",
+              "en-US": "Madrasa",
+              "ar": "Madrasa"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Madrasa</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Madrasa</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Madrasa</span></span>"
+            }
+          }
+        },
+        "_level": 4,
+        "_path": [
+          {
+            "_uuid": "8f4206fe-1230-4cd5-9417-506017f13568",
+            "_has_children": true,
+            "_mask": "art_des_motivs__all_fields",
+            "_global_object_id": "155@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 155,
+            "art_des_motivs": {
+              "_id": 2,
+              "_id_parent": null,
+              "_version": 1
+            },
+            "_objecttype": "art_des_motivs",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Archeology &amp; built environment</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Archeology &amp; built environment</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Archeology &amp; built environment</span></span>"
+                },
+                "text": {
+                  "de-DE": "Archeology & built environment",
+                  "en-US": "Archeology & built environment",
+                  "ar": "Archeology & built environment"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_uuid": "40813a2c-7239-40c0-8ee7-eb1e241ae85b",
+            "_has_children": true,
+            "_mask": "art_des_motivs__all_fields",
+            "_global_object_id": "181@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 181,
+            "art_des_motivs": {
+              "_id": 28,
+              "_id_parent": 2,
+              "_version": 2
+            },
+            "_objecttype": "art_des_motivs",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Building</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Building</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Building</span></span>"
+                },
+                "text": {
+                  "de-DE": "Building",
+                  "en-US": "Building",
+                  "ar": "Building"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_uuid": "e1c74115-2478-41f6-a489-d642310d3062",
+            "_has_children": true,
+            "_mask": "art_des_motivs__all_fields",
+            "_global_object_id": "245@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 245,
+            "art_des_motivs": {
+              "_id": 92,
+              "_id_parent": 28,
+              "_version": 1
+            },
+            "_objecttype": "art_des_motivs",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Religious building</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Religious building</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Religious building</span></span>"
+                },
+                "text": {
+                  "de-DE": "Religious building",
+                  "en-US": "Religious building",
+                  "ar": "Religious building"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_uuid": "952abea6-fcba-4428-82d5-8cc9591bf73f",
+            "_has_children": false,
+            "_mask": "art_des_motivs__all_fields",
+            "_global_object_id": "292@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 292,
+            "art_des_motivs": {
+              "_id": 139,
+              "_id_parent": 92,
+              "_version": 3
+            },
+            "_objecttype": "art_des_motivs",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Madrasa</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Madrasa</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Madrasa</span></span>"
+                },
+                "text": {
+                  "de-DE": "Madrasa",
+                  "en-US": "Madrasa",
+                  "ar": "Madrasa"
+                }
+              }
+            },
+            "_format": "standard"
+          }
+        ],
+        "_format": "standard"
+      },
+      "bearbeitungsstatus_id": {
+        "_system_object_id": 409,
+        "_global_object_id": "409@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_sets": [],
+        "bearbeitungsstatus": {
+          "_id": 1,
+          "_version": 1
+        },
+        "_objecttype": "bearbeitungsstatus",
+        "_mask": "bearbeitungsstatus__all_fields",
+        "_uuid": "2902fea3-5a8a-421f-b37a-09d7c59a294c",
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "§In process",
+              "en-US": "§In process",
+              "ar": "§In process"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;In process</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;In process</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;In process</span></span>"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      "beschreibung": "General view of a mosuqe with its minaret",
+      "copyright_vermerk": "© 2013, Museum für Islamische Kunst, Staatliche Museen zu Berlin - Stiftung Preußischer Kulturbesitz  (CC-BY-NC-SA)",
+      "datum_digitalisierung": {
+        "value": "2013-12-10",
+        "_from": "2013-12-10T00:00:00Z",
+        "_to": "2013-12-10T23:59:59Z"
+      },
+      "ersteller_der_vorlage_id_old": {
+        "_system_object_id": 830,
+        "_global_object_id": "830@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "person": {
+          "_id": 7,
+          "_version": 1
+        },
+        "_objecttype": "person",
+        "_mask": "name__all_fields",
+        "_uuid": "30f5fad2-41f3-4df2-8aec-c2b01edfe99b",
+        "_sets": [],
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "Eugen Wirth",
+              "en-US": "Eugen Wirth",
+              "ar": "Eugen Wirth"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Eugen Wirth</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Eugen Wirth</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Eugen Wirth</span></span>"
+            }
+          }
+        },
+        "_format": "standard"
+      },
+      "markiert": false,
+      "nutzungsbedingungen": "This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.",
+      "original_datum": {
+        "value": "1961-01-01",
+        "_from": "1961-01-01T00:00:00Z",
+        "_to": "1961-01-01T23:59:59Z"
+      },
+      "ort_des_motivs_id": {
+        "_system_object_id": 79420,
+        "_global_object_id": "79420@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+        "_tags": [],
+        "_sets": [],
+        "ortsthesaurus": {
+          "_id": 1418,
+          "_id_parent": 1272,
+          "_version": 3
+        },
+        "_objecttype": "ortsthesaurus",
+        "_mask": "ortsthesaurus__std",
+        "_has_children": true,
+        "_uuid": "3274d515-384c-4d14-9317-3ec824556778",
+        "_standard": {
+          "1": {
+            "text": {
+              "de-DE": "Jamiʿ as-Sultaniyya",
+              "en-US": "Jamiʿ as-Sultaniyya",
+              "ar": "Jamiʿ as-Sultaniyya"
+            },
+            "html": {
+              "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>",
+              "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>",
+              "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>"
+            }
+          }
+        },
+        "_level": 8,
+        "_path": [
+          {
+            "_global_object_id": "78003@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 78003,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 1,
+              "_id_parent": null,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "d636aed4-90d2-4eca-b3f2-aadf89e2653b",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syria</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syria</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syria</span></span>"
+                },
+                "text": {
+                  "de-DE": "Syria",
+                  "en-US": "Syria",
+                  "ar": "Syria"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "78025@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 78025,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 23,
+              "_id_parent": 1,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "98aee4ed-5f7d-4bb2-9200-f9045d26da9d",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Muhafazat Aleppo</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Muhafazat Aleppo</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Muhafazat Aleppo</span></span>"
+                },
+                "text": {
+                  "de-DE": "Muhafazat Aleppo",
+                  "en-US": "Muhafazat Aleppo",
+                  "ar": "Muhafazat Aleppo"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "78096@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 78096,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 94,
+              "_id_parent": 23,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "599055fc-d5e6-4b1c-beef-a7ccc8d517f1",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Mintaqat Jabal Sam&#x2BF;an</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Mintaqat Jabal Sam&#x2BF;an</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Mintaqat Jabal Sam&#x2BF;an</span></span>"
+                },
+                "text": {
+                  "de-DE": "Mintaqat Jabal Samʿan",
+                  "en-US": "Mintaqat Jabal Samʿan",
+                  "ar": "Mintaqat Jabal Samʿan"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "78242@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 78242,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 240,
+              "_id_parent": 94,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "e906e952-dd3e-4935-b5c7-b35a4c328ec9",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Nahiyat Markaz Jabal Sam&#x2BF;an</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Nahiyat Markaz Jabal Sam&#x2BF;an</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Nahiyat Markaz Jabal Sam&#x2BF;an</span></span>"
+                },
+                "text": {
+                  "de-DE": "Nahiyat Markaz Jabal Samʿan",
+                  "en-US": "Nahiyat Markaz Jabal Samʿan",
+                  "ar": "Nahiyat Markaz Jabal Samʿan"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "78464@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 78464,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 462,
+              "_id_parent": 240,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "5414b782-b113-4e6c-a886-3a6c3dc541fb",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Aleppo</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Aleppo</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Aleppo</span></span>"
+                },
+                "text": {
+                  "de-DE": "Aleppo",
+                  "en-US": "Aleppo",
+                  "ar": "Aleppo"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "79065@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 79065,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 1063,
+              "_id_parent": 462,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "8b311f2b-b960-4584-8485-59320f4cfe9b",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara</span></span>"
+                },
+                "text": {
+                  "de-DE": "al-Mintaqa al-Hadiyata ʿAshara",
+                  "en-US": "al-Mintaqa al-Hadiyata ʿAshara",
+                  "ar": "al-Mintaqa al-Hadiyata ʿAshara"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "79274@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 79274,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 1272,
+              "_id_parent": 1063,
+              "_version": 1
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "372d252c-7b2a-46bc-a145-35ab89a5cef9",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara-6-2</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara-6-2</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara-6-2</span></span>"
+                },
+                "text": {
+                  "de-DE": "al-Mintaqa al-Hadiyata ʿAshara-6-2",
+                  "en-US": "al-Mintaqa al-Hadiyata ʿAshara-6-2",
+                  "ar": "al-Mintaqa al-Hadiyata ʿAshara-6-2"
+                }
+              }
+            },
+            "_format": "standard"
+          },
+          {
+            "_global_object_id": "79420@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_system_object_id": 79420,
+            "_tags": [],
+            "_mask": "ortsthesaurus__std",
+            "ortsthesaurus": {
+              "_id": 1418,
+              "_id_parent": 1272,
+              "_version": 3
+            },
+            "_sets": [],
+            "_objecttype": "ortsthesaurus",
+            "_has_children": true,
+            "_uuid": "3274d515-384c-4d14-9317-3ec824556778",
+            "_standard": {
+              "1": {
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>"
+                },
+                "text": {
+                  "de-DE": "Jamiʿ as-Sultaniyya",
+                  "en-US": "Jamiʿ as-Sultaniyya",
+                  "ar": "Jamiʿ as-Sultaniyya"
+                }
+              }
+            },
+            "_format": "standard"
+          }
+        ],
+        "_format": "standard"
+      },
+      "quelle_old": "Museum für Islamische Kunst, Berlin, SMB-SPK",
+      "ueberschrift": "Mosque",
+      "verfasser_der_beschreibung": "Syrian Heritage Archive Project, 2015, Germany",
+      "easydb4_reference": "bilder:2815",
+      "easydb4_insert_time": {
+        "value": "2015-12-07T10:37:00+01:00",
+        "_from": "2015-12-07T10:37:00+01:00",
+        "_to": "2015-12-07T10:37:00+01:00"
+      },
+      "easydb4_insert_user": "autoadmin",
+      "easydb4_owner": "user_autoadmin",
+      "easydb4_update_time": {
+        "value": "2018-09-25T14:25:11+02:00",
+        "_from": "2018-09-25T14:25:11+02:00",
+        "_to": "2018-09-25T14:25:11+02:00"
+      },
+      "easydb4_update_user": "admin",
+      "bild": [
+        {
+          "_id": 119550,
+          "preferred": true,
+          "date_uploaded": "2018-12-17T11:49:30Z",
+          "date_inserted": "2019-02-08T13:18:30Z",
+          "filesize": 54045066,
+          "class": "image",
+          "extension": "tif",
+          "class_extension": "image.tif",
+          "original_filepath": "ew-d-06-01-05_SYRHER.tif",
+          "original_filename": "ew-d-06-01-05_SYRHER.tif",
+          "original_filename_basename": "ew-d-06-01-05_SYRHER",
+          "technical_metadata": {
+            "camera_scanner": "www.scansam.com",
+            "width": 5257,
+            "format": "landscape",
+            "height": 3425,
+            "max_dimension": 5257,
+            "dpi": 300,
+            "aspect_ratio": 1.5348905109489051,
+            "colordepth": 24,
+            "colorspace": "rgb",
+            "colorprofile": "sRGB IEC61966-2.1"
+          },
+          "versions": {
+            "original": {
+              "class": "image",
+              "url": "http://esx-189.gbv.de/eas/partitions-inline/1/0/119000/119550/9b2e4662ec5d97fb932fd6558615d2e0a7f5a195/image/tiff",
+              "width": 5257,
+              "status": "done",
+              "has_more_jobs": false,
+              "height": 3425,
+              "filesize": 54045066,
+              "aspect_ratio": 1.534000039100647,
+              "extension": "tif",
+              "date_created": "2013-12-10T11:11:33Z",
+              "dpi": 300,
+              "compiled": "tif image, 5257 x 3425 @ 24 bit, 51.54 MB",
+              "download_url": "http://esx-189.gbv.de/eas/partitions/1/0/119000/119550/9b2e4662ec5d97fb932fd6558615d2e0a7f5a195/image/tiff/ew-d-06-01-05_SYRHER.tif",
+              "_download_allowed": true
+            },
+            "preview": {
+              "class": "image",
+              "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/119000/119550/e17fff3994e115795358cba396ce86c88476cf19/image/png",
+              "width": 1000,
+              "status": "done",
+              "has_more_jobs": false,
+              "height": 652,
+              "filesize": 1212791,
+              "aspect_ratio": 1.5329999923706055,
+              "extension": "png",
+              "dpi": 299,
+              "zoom_url": "http://esx-189.gbv.de/eas/zoomer/119550/d79bbd3492aa56614b09555d4643eaf3?instance=easydb5",
+              "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/119000/119550/e17fff3994e115795358cba396ce86c88476cf19/image/png/ew-d-06-01-05_SYRHER-preview.png",
+              "_download_allowed": true
+            },
+            "small": {
+              "class": "image",
+              "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/119000/119550/e91b734af47c67c23f9704f78ad11eabeee70392/image/png",
+              "width": 384,
+              "status": "done",
+              "has_more_jobs": false,
+              "height": 250,
+              "filesize": 171450,
+              "aspect_ratio": 1.5360000133514404,
+              "extension": "png",
+              "dpi": 299,
+              "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/119000/119550/e91b734af47c67c23f9704f78ad11eabeee70392/image/png/ew-d-06-01-05_SYRHER-small.png",
+              "_download_allowed": true
+            },
+            "full": {
+              "class": "image",
+              "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/119000/119550/4fb9a3a42ac8b048f7a4add03c8fd87141817846/image/png",
+              "width": 5257,
+              "status": "done",
+              "has_more_jobs": false,
+              "height": 3425,
+              "filesize": 32645545,
+              "aspect_ratio": 1.534000039100647,
+              "extension": "png",
+              "dpi": 299,
+              "zoom_url": "http://esx-189.gbv.de/eas/zoomer/119550/5c54e5305d33eb75ec14553c1b0a9d93?instance=easydb5",
+              "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/119000/119550/4fb9a3a42ac8b048f7a4add03c8fd87141817846/image/png/ew-d-06-01-05_SYRHER-full.png",
+              "_download_allowed": true
+            },
+            "huge": {
+              "class": "image",
+              "url": "http://esx-189.gbv.de/eas/partitions-inline/2/0/119000/119550/8d7655152ebc2c9941e8e731e55940526bd61f6f/image/png",
+              "width": 2000,
+              "status": "done",
+              "has_more_jobs": false,
+              "height": 1303,
+              "filesize": 4803696,
+              "aspect_ratio": 1.534000039100647,
+              "extension": "png",
+              "dpi": 299,
+              "zoom_url": "http://esx-189.gbv.de/eas/zoomer/119550/f9f9ed32b0d5cfc78c99890dca50aaaf?instance=easydb5",
+              "download_url": "http://esx-189.gbv.de/eas/partitions/2/0/119000/119550/8d7655152ebc2c9941e8e731e55940526bd61f6f/image/png/ew-d-06-01-05_SYRHER-huge.png",
+              "_download_allowed": true
+            }
+          },
+          "eas_parent_id": null,
+          "status": "done",
+          "pages_allowed": false,
+          "compiled": "tif image, 5257 x 3425 @ 24 bit, 51.54 MB",
+          "date_created": "2013-12-10T11:11:33Z"
+        }
+      ],
+      "_nested:bilder__element": [
+        {
+          "lk_element_id": {
+            "_system_object_id": 520,
+            "_global_object_id": "520@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "element": {
+              "_id": 23,
+              "_id_parent": 9,
+              "_version": 1
+            },
+            "_objecttype": "element",
+            "_mask": "element__all_fields",
+            "_has_children": false,
+            "_uuid": "a9a91b08-7d18-4b9c-876c-1265ef6c5a5f",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "Minaret",
+                  "en-US": "Minaret",
+                  "ar": "Minaret"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Minaret</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Minaret</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Minaret</span></span>"
+                }
+              }
+            },
+            "_level": 3,
+            "_path": [
+              {
+                "_global_object_id": "498@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 498,
+                "element": {
+                  "_id": 1,
+                  "_id_parent": null,
+                  "_version": 4
+                },
+                "_objecttype": "element",
+                "_uuid": "8a5cb8b2-db79-4701-9338-24a145f4145a",
+                "_has_children": true,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Building unit&gt;</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Building unit&gt;</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Building unit&gt;</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "<Building unit>",
+                      "en-US": "<Building unit>",
+                      "ar": "<Building unit>"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "506@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 506,
+                "element": {
+                  "_id": 9,
+                  "_id_parent": 1,
+                  "_version": 1
+                },
+                "_objecttype": "element",
+                "_uuid": "b61d1356-d979-4dc8-a24a-60a1fcb301ea",
+                "_has_children": true,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Tower</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Tower</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Tower</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Tower",
+                      "en-US": "Tower",
+                      "ar": "Tower"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "520@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 520,
+                "element": {
+                  "_id": 23,
+                  "_id_parent": 9,
+                  "_version": 1
+                },
+                "_objecttype": "element",
+                "_uuid": "a9a91b08-7d18-4b9c-876c-1265ef6c5a5f",
+                "_has_children": false,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Minaret</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Minaret</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Minaret</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Minaret",
+                      "en-US": "Minaret",
+                      "ar": "Minaret"
+                    }
+                  }
+                },
+                "_format": "standard"
+              }
+            ],
+            "_format": "standard"
+          }
+        },
+        {
+          "lk_element_id": {
+            "_system_object_id": 608,
+            "_global_object_id": "608@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "element": {
+              "_id": 111,
+              "_id_parent": 82,
+              "_version": 1
+            },
+            "_objecttype": "element",
+            "_mask": "element__all_fields",
+            "_has_children": false,
+            "_uuid": "6bc38ac9-f6b3-4d18-b13f-67782555872e",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "Front façade",
+                  "en-US": "Front façade",
+                  "ar": "Front façade"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Front fa&#xE7;ade</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Front fa&#xE7;ade</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Front fa&#xE7;ade</span></span>"
+                }
+              }
+            },
+            "_level": 5,
+            "_path": [
+              {
+                "_global_object_id": "499@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 499,
+                "element": {
+                  "_id": 2,
+                  "_id_parent": null,
+                  "_version": 2
+                },
+                "_objecttype": "element",
+                "_uuid": "ab9f99b8-c138-42d2-8c44-43abaeac92d6",
+                "_has_children": true,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Structural element&gt;</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Structural element&gt;</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Structural element&gt;</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "<Structural element>",
+                      "en-US": "<Structural element>",
+                      "ar": "<Structural element>"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "511@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 511,
+                "element": {
+                  "_id": 14,
+                  "_id_parent": 2,
+                  "_version": 4
+                },
+                "_objecttype": "element",
+                "_uuid": "5b3fc5d3-15f8-4e6c-b134-ae3338516e72",
+                "_has_children": true,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Enclosing structural element</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Enclosing structural element</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Enclosing structural element</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Enclosing structural element",
+                      "en-US": "Enclosing structural element",
+                      "ar": "Enclosing structural element"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "524@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 524,
+                "element": {
+                  "_id": 27,
+                  "_id_parent": 14,
+                  "_version": 1
+                },
+                "_objecttype": "element",
+                "_uuid": "b830b1bb-1d6b-4d10-a685-84ca6934f6e5",
+                "_has_children": true,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Wall</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Wall</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Wall</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Wall",
+                      "en-US": "Wall",
+                      "ar": "Wall"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "579@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 579,
+                "element": {
+                  "_id": 82,
+                  "_id_parent": 27,
+                  "_version": 1
+                },
+                "_objecttype": "element",
+                "_uuid": "7f188a3d-c449-4ce1-8bce-3b44cbe516fb",
+                "_has_children": true,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Exterior wall</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Exterior wall</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Exterior wall</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Exterior wall",
+                      "en-US": "Exterior wall",
+                      "ar": "Exterior wall"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "608@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 608,
+                "element": {
+                  "_id": 111,
+                  "_id_parent": 82,
+                  "_version": 1
+                },
+                "_objecttype": "element",
+                "_uuid": "6bc38ac9-f6b3-4d18-b13f-67782555872e",
+                "_has_children": false,
+                "_mask": "element__all_fields",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Front fa&#xE7;ade</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Front fa&#xE7;ade</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Front fa&#xE7;ade</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Front façade",
+                      "en-US": "Front façade",
+                      "ar": "Front façade"
+                    }
+                  }
+                },
+                "_format": "standard"
+              }
+            ],
+            "_format": "standard"
+          }
+        }
+      ],
+      "_nested:bilder__ortsthesaurus": [
+        {
+          "lk_erstellungsphase_id": {
+            "_system_object_id": 79947,
+            "_global_object_id": "79947@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_tags": [],
+            "_sets": [],
+            "ortsthesaurus": {
+              "_id": 1669,
+              "_id_parent": 1418,
+              "_version": 4
+            },
+            "_objecttype": "ortsthesaurus",
+            "_mask": "ortsthesaurus__std",
+            "_has_children": false,
+            "_uuid": "df2c40da-61c3-493d-9655-465c8b731123",
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "Ayyubid foundation",
+                  "en-US": "Ayyubid foundation",
+                  "ar": "Ayyubid foundation"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Ayyubid foundation</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Ayyubid foundation</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Ayyubid foundation</span></span>"
+                }
+              }
+            },
+            "_level": 9,
+            "_path": [
+              {
+                "_global_object_id": "78003@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 78003,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 1,
+                  "_id_parent": null,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "d636aed4-90d2-4eca-b3f2-aadf89e2653b",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syria</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syria</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Syria</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Syria",
+                      "en-US": "Syria",
+                      "ar": "Syria"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "78025@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 78025,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 23,
+                  "_id_parent": 1,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "98aee4ed-5f7d-4bb2-9200-f9045d26da9d",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Muhafazat Aleppo</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Muhafazat Aleppo</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Muhafazat Aleppo</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Muhafazat Aleppo",
+                      "en-US": "Muhafazat Aleppo",
+                      "ar": "Muhafazat Aleppo"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "78096@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 78096,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 94,
+                  "_id_parent": 23,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "599055fc-d5e6-4b1c-beef-a7ccc8d517f1",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Mintaqat Jabal Sam&#x2BF;an</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Mintaqat Jabal Sam&#x2BF;an</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Mintaqat Jabal Sam&#x2BF;an</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Mintaqat Jabal Samʿan",
+                      "en-US": "Mintaqat Jabal Samʿan",
+                      "ar": "Mintaqat Jabal Samʿan"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "78242@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 78242,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 240,
+                  "_id_parent": 94,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "e906e952-dd3e-4935-b5c7-b35a4c328ec9",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Nahiyat Markaz Jabal Sam&#x2BF;an</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Nahiyat Markaz Jabal Sam&#x2BF;an</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Nahiyat Markaz Jabal Sam&#x2BF;an</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Nahiyat Markaz Jabal Samʿan",
+                      "en-US": "Nahiyat Markaz Jabal Samʿan",
+                      "ar": "Nahiyat Markaz Jabal Samʿan"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "78464@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 78464,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 462,
+                  "_id_parent": 240,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "5414b782-b113-4e6c-a886-3a6c3dc541fb",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Aleppo</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Aleppo</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Aleppo</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Aleppo",
+                      "en-US": "Aleppo",
+                      "ar": "Aleppo"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "79065@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 79065,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 1063,
+                  "_id_parent": 462,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "8b311f2b-b960-4584-8485-59320f4cfe9b",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "al-Mintaqa al-Hadiyata ʿAshara",
+                      "en-US": "al-Mintaqa al-Hadiyata ʿAshara",
+                      "ar": "al-Mintaqa al-Hadiyata ʿAshara"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "79274@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 79274,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 1272,
+                  "_id_parent": 1063,
+                  "_version": 1
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "372d252c-7b2a-46bc-a145-35ab89a5cef9",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara-6-2</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara-6-2</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">al-Mintaqa al-Hadiyata &#x2BF;Ashara-6-2</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "al-Mintaqa al-Hadiyata ʿAshara-6-2",
+                      "en-US": "al-Mintaqa al-Hadiyata ʿAshara-6-2",
+                      "ar": "al-Mintaqa al-Hadiyata ʿAshara-6-2"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "79420@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 79420,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 1418,
+                  "_id_parent": 1272,
+                  "_version": 3
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": true,
+                "_uuid": "3274d515-384c-4d14-9317-3ec824556778",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Jami&#x2BF; as-Sultaniyya</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Jamiʿ as-Sultaniyya",
+                      "en-US": "Jamiʿ as-Sultaniyya",
+                      "ar": "Jamiʿ as-Sultaniyya"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "79947@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 79947,
+                "_tags": [],
+                "_mask": "ortsthesaurus__std",
+                "ortsthesaurus": {
+                  "_id": 1669,
+                  "_id_parent": 1418,
+                  "_version": 4
+                },
+                "_sets": [],
+                "_objecttype": "ortsthesaurus",
+                "_has_children": false,
+                "_uuid": "df2c40da-61c3-493d-9655-465c8b731123",
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Ayyubid foundation</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Ayyubid foundation</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Ayyubid foundation</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Ayyubid foundation",
+                      "en-US": "Ayyubid foundation",
+                      "ar": "Ayyubid foundation"
+                    }
+                  }
+                },
+                "_format": "standard"
+              }
+            ],
+            "_format": "standard"
+          }
+        }
+      ],
+      "_nested:bilder__stilmerkmal": [
+        {
+          "lk_stilmerkmal_id": {
+            "_system_object_id": 1784,
+            "_global_object_id": "1784@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "_sets": [],
+            "_uuid": "7017a5ae-c49d-461a-94b6-7beb947bf998",
+            "stilmerkmal": {
+              "_id": 2,
+              "_id_parent": null,
+              "_version": 1
+            },
+            "_objecttype": "stilmerkmal",
+            "_mask": "stilmerkmal__all_fields",
+            "_has_children": false,
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "§Ayyubid",
+                  "en-US": "§Ayyubid",
+                  "ar": "§Ayyubid"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;Ayyubid</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;Ayyubid</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;Ayyubid</span></span>"
+                }
+              }
+            },
+            "_level": 1,
+            "_path": [
+              {
+                "_global_object_id": "1784@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 1784,
+                "stilmerkmal": {
+                  "_id": 2,
+                  "_id_parent": null,
+                  "_version": 1
+                },
+                "_uuid": "7017a5ae-c49d-461a-94b6-7beb947bf998",
+                "_sets": [],
+                "_mask": "stilmerkmal__all_fields",
+                "_objecttype": "stilmerkmal",
+                "_has_children": false,
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;Ayyubid</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;Ayyubid</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&#xA7;Ayyubid</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "§Ayyubid",
+                      "en-US": "§Ayyubid",
+                      "ar": "§Ayyubid"
+                    }
+                  }
+                },
+                "_format": "standard"
+              }
+            ],
+            "_format": "standard"
+          }
+        }
+      ],
+      "_nested:bilder__teilelement": [
+        {
+          "lk_teilelement_id": {
+            "_system_object_id": 1907,
+            "_global_object_id": "1907@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "teilelement": {
+              "_id": 66,
+              "_id_parent": 16,
+              "_version": 1
+            },
+            "_objecttype": "teilelement",
+            "_mask": "teilelement__all_fields",
+            "_has_children": true,
+            "_uuid": "6164da5b-da9a-4989-813b-64d2d4b36466",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "Entrances",
+                  "en-US": "Entrances",
+                  "ar": "Entrances"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Entrances</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Entrances</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Entrances</span></span>"
+                }
+              }
+            },
+            "_level": 3,
+            "_path": [
+              {
+                "_global_object_id": "1842@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 1842,
+                "teilelement": {
+                  "_id": 1,
+                  "_id_parent": null,
+                  "_version": 1
+                },
+                "_uuid": "0f617b65-f88a-4790-9721-bb86a0560f31",
+                "_has_children": true,
+                "_mask": "teilelement__all_fields",
+                "_objecttype": "teilelement",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Architectural sub-element&gt;</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Architectural sub-element&gt;</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Architectural sub-element&gt;</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "<Architectural sub-element>",
+                      "en-US": "<Architectural sub-element>",
+                      "ar": "<Architectural sub-element>"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "1857@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 1857,
+                "teilelement": {
+                  "_id": 16,
+                  "_id_parent": 1,
+                  "_version": 1
+                },
+                "_uuid": "4c6cd647-5933-4946-996e-b27c56b41a63",
+                "_has_children": true,
+                "_mask": "teilelement__all_fields",
+                "_objecttype": "teilelement",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Opening element&gt;</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Opening element&gt;</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">&lt;Opening element&gt;</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "<Opening element>",
+                      "en-US": "<Opening element>",
+                      "ar": "<Opening element>"
+                    }
+                  }
+                },
+                "_format": "standard"
+              },
+              {
+                "_global_object_id": "1907@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+                "_system_object_id": 1907,
+                "teilelement": {
+                  "_id": 66,
+                  "_id_parent": 16,
+                  "_version": 1
+                },
+                "_uuid": "6164da5b-da9a-4989-813b-64d2d4b36466",
+                "_has_children": true,
+                "_mask": "teilelement__all_fields",
+                "_objecttype": "teilelement",
+                "_sets": [],
+                "_standard": {
+                  "1": {
+                    "html": {
+                      "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Entrances</span></span>",
+                      "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Entrances</span></span>",
+                      "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Entrances</span></span>"
+                    },
+                    "text": {
+                      "de-DE": "Entrances",
+                      "en-US": "Entrances",
+                      "ar": "Entrances"
+                    }
+                  }
+                },
+                "_format": "standard"
+              }
+            ],
+            "_format": "standard"
+          }
+        }
+      ],
+      "_nested:bilder__schlagwort": [
+        {
+          "lk_schlagwort_id": {
+            "_system_object_id": 1361,
+            "_global_object_id": "1361@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "schlagwort": {
+              "_id": 12,
+              "_version": 1
+            },
+            "_objecttype": "schlagwort",
+            "_mask": "schlagwort__all_fields",
+            "_uuid": "2deb8301-711a-492b-92f3-168037632bed",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "Architecture",
+                  "en-US": "Architecture",
+                  "ar": "Architecture"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Architecture</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Architecture</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Architecture</span></span>"
+                }
+              }
+            },
+            "_format": "standard"
+          }
+        },
+        {
+          "lk_schlagwort_id": {
+            "_system_object_id": 1361,
+            "_global_object_id": "1361@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+            "schlagwort": {
+              "_id": 12,
+              "_version": 1
+            },
+            "_objecttype": "schlagwort",
+            "_mask": "schlagwort__all_fields",
+            "_uuid": "2deb8301-711a-492b-92f3-168037632bed",
+            "_sets": [],
+            "_standard": {
+              "1": {
+                "text": {
+                  "de-DE": "Architecture",
+                  "en-US": "Architecture",
+                  "ar": "Architecture"
+                },
+                "html": {
+                  "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Architecture</span></span>",
+                  "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Architecture</span></span>",
+                  "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Architecture</span></span>"
+                }
+              }
+            },
+            "_format": "standard"
+          }
+        }
+      ],
+      "_pool": {
+        "_basetype": "pool",
+        "pool": {
+          "_id": 3,
+          "_id_parent": 1,
+          "name": {
+            "de-DE": "Sammlung Wirth (Eugen)",
+            "en-US": "Collection Wirth (Eugen)"
+          }
+        },
+        "_path": [
+          {
+            "_basetype": "pool",
+            "pool": {
+              "_id": 1,
+              "name": {
+                "de-DE": "Alle Pools",
+                "en-US": "All pools"
+              }
+            }
+          },
+          {
+            "_basetype": "pool",
+            "pool": {
+              "_id": 3,
+              "_id_parent": 1,
+              "name": {
+                "de-DE": "Sammlung Wirth (Eugen)",
+                "en-US": "Collection Wirth (Eugen)"
+              }
+            }
+          }
+        ],
+        "_set_spec": "pool:1:3"
+      }
+    },
+    "_mask": "_all_fields",
+    "_objecttype": "bilder",
+    "_schema_version": 64,
+    "_system_object_id": 3995,
+    "_global_object_id": "3995@d01ea5cd-c6fa-4ac5-b20c-c40009fa669f",
+    "_uuid": "7e0f88b3-af38-4e45-9659-83e78cb3257a",
+    "_current_version": true,
+    "_sets": [
+      "collection:1:55:92:134",
+      "objecttype:bilder",
+      "pool:1:3"
+    ],
+    "_collections": [
+      {
+        "_id": 134
+      }
+    ],
+    "_tags": [
+      {
+        "_id": 4
+      },
+      {
+        "_id": 16
+      },
+      {
+        "_id": 19
+      }
+    ],
+    "_changelog": [
+      {
+        "time": "2018-12-17T09:44:36Z",
+        "operation": "INSERT",
+        "batch_id": 91,
+        "version": 1,
+        "schema_version": 57,
+        "user": {
+          "_basetype": "user",
+          "user": {
+            "_generated_displayname": "Root",
+            "type": "system",
+            "_id": 1,
+            "frontend_language": "de-DE",
+            "login": "root",
+            "_version": 82
+          },
+          "_emails": []
+        },
+        "groups": [
+          2,
+          1
+        ],
+        "current_version": false
+      },
+      {
+        "time": "2018-12-17T11:49:41Z",
+        "operation": "UPDATE",
+        "batch_id": 874,
+        "version": 2,
+        "schema_version": 57,
+        "user": {
+          "_basetype": "user",
+          "user": {
+            "_generated_displayname": "Root",
+            "type": "system",
+            "_id": 1,
+            "frontend_language": "de-DE",
+            "login": "root",
+            "_version": 82
+          },
+          "_emails": []
+        },
+        "groups": [
+          2,
+          1
+        ],
+        "current_version": false
+      },
+      {
+        "time": "2019-02-08T09:33:58Z",
+        "operation": "UPDATE",
+        "batch_id": 3297,
+        "version": 5,
+        "schema_version": 64,
+        "comment": "<Edited with the group editor mode>",
+        "user": {
+          "_basetype": "user",
+          "user": {
+            "_generated_displayname": "Rami Alafandi",
+            "type": "easydb",
+            "_id": 32,
+            "frontend_language": "en-US",
+            "login": "rafandi",
+            "_version": 68
+          },
+          "_emails": []
+        },
+        "groups": [
+          1,
+          2,
+          4,
+          17,
+          19
+        ],
+        "current_version": false
+      },
+      {
+        "time": "2019-02-08T09:41:40Z",
+        "operation": "UPDATE",
+        "batch_id": 3299,
+        "version": 6,
+        "schema_version": 64,
+        "user": {
+          "_basetype": "user",
+          "user": {
+            "_generated_displayname": "Rami Alafandi",
+            "type": "easydb",
+            "_id": 32,
+            "frontend_language": "en-US",
+            "login": "rafandi",
+            "_version": 68
+          },
+          "_emails": []
+        },
+        "groups": [
+          1,
+          4,
+          17,
+          19,
+          2
+        ],
+        "current_version": false
+      },
+      {
+        "time": "2019-02-08T13:18:30Z",
+        "operation": "UPDATE",
+        "batch_id": 3369,
+        "version": 7,
+        "schema_version": 64,
+        "comment": "<Edited with the group editor mode>",
+        "user": {
+          "_basetype": "user",
+          "user": {
+            "_generated_displayname": "Rami Alafandi",
+            "type": "easydb",
+            "_id": 32,
+            "frontend_language": "en-US",
+            "login": "rafandi",
+            "_version": 68
+          },
+          "_emails": []
+        },
+        "groups": [
+          4,
+          1,
+          2,
+          19,
+          17
+        ],
+        "current_version": true
+      }
+    ],
+    "_published": [],
+    "_published_count": 0,
+    "_standard": {
+      "1": {
+        "text": {
+          "de-DE": "Literature: /HiRes is available upon request",
+          "en-US": "Literature: /HiRes is available upon request",
+          "ar": "Literature: /HiRes is available upon request"
+        },
+        "html": {
+          "de-DE": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Literature: /HiRes is available upon request</span></span>",
+          "en-US": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Literature: /HiRes is available upon request</span></span>",
+          "ar": "<span class=\"ez-output-1\"><span class=\"ez-design-normal ez-format-comma\">Literature: /HiRes is available upon request</span></span>"
+        }
+      }
+    },
+    "_last_modified": "2019-02-08T13:18:30Z",
+    "_format": "full",
+    "_generated_rights": {
+      "write": {},
+      "delete": {},
+      "acl": {},
+      "change_owner": {},
+      "unlink": {}
+    }
+  }
+]

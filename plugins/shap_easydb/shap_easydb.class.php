@@ -155,29 +155,6 @@ namespace esa_datasource {
             return $this->results;
         }
 
-        function parse_field($field) {
-            $lang = "de-DE";
-            if (!isset($field->_standard)) {
-                return "";
-            }
-            $one = "1";
-            if (!isset($field->_standard->{$one})) {
-                return "";
-            }
-            if (!isset($field->_standard->{$one}->text)) {
-                return "";
-            }
-            if (!isset($field->_standard->{$one}->text->{$lang})) {
-                $lang = get_object_vars($field->_standard->{$one}->text)[0];
-            }
-            return $field->_standard->{$one}->text->{$lang};
-        }
-
-        function parse_field_name($field_name) {
-            return ucwords(str_replace(array("_id", "_"), array("", " "), $field_name));
-        }
-
-
         function parse_result($response) : \esa_item{
 
             $json_response = $this->_json_decode($response);
@@ -198,6 +175,7 @@ namespace esa_datasource {
             $this->_parse_blocks($object, $data);
             $this->_parse_nested($object, $data);
             $this->_parse_date($object, $data);
+            $this->_parse_pool($object, $data);
 
             list($lat, $lon) = $this->_parse_place($object, $data);
 
@@ -219,6 +197,16 @@ namespace esa_datasource {
                 $data->title = $o->beschreibung;
             }
         }
+
+        function _parse_pool($o, \esa_item\data $data) {
+            if ($o->_pool->pool->_id == 1) {
+                return;
+            }
+
+            $data->putMultilang("pool", (array) $o->_pool->pool->name);
+
+        }
+
 
         function _parse_nested($o, \esa_item\data $data) {
 
@@ -252,13 +240,13 @@ namespace esa_datasource {
 
         function _parse_blocks($o, \esa_item\data $data) {
             $blocks = array(
-                "Vorlage" => "art_der_vorlage_id",
-                "Status" => "bearbeitungsstatus_id",
-                "Motiv" => "art_des_motivs_id_old",
-                "Ort" => "ort_des_motivs_id",
-                "Anbieter" => "anbieter_id",
-                "Ersteller" => "ersteller_der_vorlage_id_old",
-                "Material" => "material_der_vorlage_id"
+                "template"  => "art_der_vorlage_id",
+                "state"     => "bearbeitungsstatus_id",
+                "motive"    => "art_des_motivs_id_old",
+                "place"     => "ort_des_motivs_id",
+                "provider"  => "anbieter_id",
+                "creator"   => "ersteller_der_vorlage_id_old",
+                "material"  => "material_der_vorlage_id"
             );
 
             foreach ($blocks as $bname => $block) {
@@ -291,14 +279,13 @@ namespace esa_datasource {
             $place = $place[0];
 
             if (!isset($place) or !isset($place->ortsthesaurus) or !isset($place->ortsthesaurus->gazetteer_id)) {
-                die(esa_debug($place));
                 return array(null, null);
             }
 
             $gazId = $place->ortsthesaurus->gazetteer_id;
 
             foreach ($gazId->otherNames as $name) {
-                $data->put("Ort", $name->title, "#");
+                $data->put("place", $name->title, "#");
             }
 
             if (!isset($gazId->position)) {
@@ -308,46 +295,6 @@ namespace esa_datasource {
             return array($gazId->position->lat, $gazId->position->lng);
 
         }
-
-        function _parse_generic(string $object_type, $object, \esa_item\data $data) {
-            if (isset($object->name)) {
-                $data->title = $object->name;
-            }
-
-
-            $data->addTable("Typ", $object_type);
-            $data->addTable("ID", $object->_id);
-
-            $fields_to_parse = array(
-                'anbieter_id',
-                'art_der_vorlage_id',
-                'art_des_motivs_id',
-                'bearbeitungsstatus_id',
-                'ersteller_der_vorlage_id',
-                'material_der_vorlage_id',
-                'ort_des_motivs_id'
-            );
-            foreach ($fields_to_parse as $field_to_parse) {
-                if (isset($object->{$field_to_parse})) {
-                    $data->addTable($this->parse_field_name($field_to_parse), $this->parse_field($object->{$field_to_parse}));
-                }
-            }
-            $fields_to_add = array(
-                'anweisungen',
-                'nutzungsbedingungen',
-                'quelle',
-                'verfasser_der_beschreibung'
-            );
-            foreach ($fields_to_add as $field_to_add) {
-                if (isset($object->{$field_to_add})) {
-                    $data->addTable(ucwords($field_to_add), $object->{$field_to_add});
-                    //$data->put();
-                }
-            }
-
-
-        }
-
 
         function stylesheet() {
             return array(
