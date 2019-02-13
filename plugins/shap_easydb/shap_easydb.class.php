@@ -188,74 +188,99 @@ namespace esa_datasource {
 
             $data = new \esa_item\data();
 
-            if ($object_type == "bilder") {
-                $this->_parse_bilder($object, $data);
-            } else {
-                $this->_parse_generic($object_type, $object, $data);
+            $data->title = $id;
+
+            if ($object_type !== "bilder") {
+                return new \esa_item("shap_easydb", $id, "not in bilder: $object_type", $this->api_record_url($id), "error");
             }
 
-            $lat = null;
-            $lon = null;
+            $this->_parse_title($object, $data);
+            $this->_parse_blocks($object, $data);
+            $this->_parse_nested($object, $data);
+            $this->_parse_date($object, $data);
 
-            // place
-            list($lat, $lon) = $this->_parsePlace($object, $data);
+            list($lat, $lon) = $this->_parse_place($object, $data);
+
 
             // image
             if (isset($object->bild) and isset($object->bild[0]->versions)) {
-
-                $data->title = $object->titel;
-
                 $data->addImages(array('url' => $object->bild[0]->versions->preview->url, 'fullres' => $object->bild[0]->versions->full->url));
             }
 
             return new \esa_item("shap_easydb", $id, esa_debug($data->_data), $this->api_record_url($id), $data->title, array(), array(), $lat, $lon, $data->_data);
         }
 
-        function _parse_bilder($o, \esa_item\data $data) {
+        function _parse_title($o, \esa_item\data $data) {
+            if (isset($o->ueberschrift)) {
+                $data->title = $o->ueberschrift;
+            } else if (isset($o->titel)) {
+                $data->title = $o->titel;
+            } else if (isset($o->beschreibung)) {
+                $data->title = $o->beschreibung;
+            }
+        }
+
+        function _parse_nested($o, \esa_item\data $data) {
+
+            $to_parse = array(
+                "keyword"   =>  "schlagwort",
+                "element"   =>  "element",
+                "style"     =>  "stilmerkmal",
+                "tech"      =>  "technik",
+                "material"  =>  "material",
+            ); // skipped: teilelement, literatur
+
+            foreach ($to_parse as $tag_type => $name) {
+                $n = "_nested:bilder__$name";
+                $a = "lk_{$name}_id";
+                foreach ($o->$n as $keyword) {
+                    $this->_get_detail($data, $tag_type, $keyword->$a);
+                }
+            }
+
+        }
+
+        function _parse_date($o, \esa_item\data $data) {
+            if (isset($o->original_datum)) {
+                $data->put("decade", $this->_get_decade($o->original_datum->_from));
+            } else if (isset($o->bild[0]->date_created)) {
+                if (isset($o->bild) and count($o->bild)) {
+                    $data->put("decade", $this->_get_decade($o->bild[0]->date_created));
+                }
+            }
+        }
+
+        function _parse_blocks($o, \esa_item\data $data) {
             $blocks = array(
                 "Vorlage" => "art_der_vorlage_id",
                 "Status" => "bearbeitungsstatus_id",
                 "Motiv" => "art_des_motivs_id_old",
-                "Ort" => "ort_des_motivs_id"
+                "Ort" => "ort_des_motivs_id",
+                "Anbieter" => "anbieter_id",
+                "Ersteller" => "ersteller_der_vorlage_id_old",
+                "Material" => "material_der_vorlage_id"
             );
 
             foreach ($blocks as $bname => $block) {
-                $this->_getDetail($data, $bname, $o->$block);
+                $this->_get_detail($data, $bname, $o->$block);
             }
-
-            // keywords
-            $n = "_nested:bilder__schlagwort";
-            foreach ($o->$n as $keyword) {
-                $this->_getDetail($data, "keyword", $keyword->lk_schlagwort_id);
-            }
-
-
-            if (isset($o->bild) and count($o->bild)) {
-
-                // date
-                if (isset($o->bild[0]->date_created)) {
-                    $year = date("Y", strtotime($o->bild[0]->date_created));
-                    $decade = substr($year, 0, 3) . "0s";
-                    $data->put("decade_creation", $decade);
-                }
-
-            }
-
-
-
         }
 
-        function _getDetail($data, $name, $block, $field = "_standard") {
+        function _get_decade(string $datestring) {
+            $year = date("Y", strtotime($datestring));
+            return substr($year, 0, 3) . "0s";
+        }
+
+        function _get_detail($data, $name, $block, $field = "_standard") {
             $one = 1;
             if (isset($block->$field) and isset($block->$field->$one)) {
                 $data->putMultilang($name, (array) $block->$field->$one->text);
             }
         }
 
-        function _parsePlace($o, \esa_item\data $data) : array {
+        function _parse_place($o, \esa_item\data $data) : array {
 
             if (!isset($o->ort_des_motivs_id)) {
-                echo "1";
                 return array(null, null);
             }
 
@@ -273,11 +298,10 @@ namespace esa_datasource {
             $gazId = $place->ortsthesaurus->gazetteer_id;
 
             foreach ($gazId->otherNames as $name) {
-                $data->put("Ort", $name->title, "??");
+                $data->put("Ort", $name->title, "#");
             }
 
             if (!isset($gazId->position)) {
-                echo "3";
                 return array(null, null);
             }
 

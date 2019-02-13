@@ -14,11 +14,12 @@ add_action('init', function() {
     );
 });
 
-function esa_add_complex_tag(string $termName, int $parent = 0) : array {
+function esa_add_complex_tag(string $termName, array $params = array()) : array {
+    $parent = isset($params['parent']) ? $params['parent'] : 0;
     $term = term_exists($termName, "esa_complex_tags", $parent);
 
     if (!$term) {
-        $term = wp_insert_term($termName, "esa_complex_tags", array("parent" => $parent));
+        $term = wp_insert_term($termName, "esa_complex_tags", $params);
     }
 
     if ($term instanceof WP_Error) {
@@ -31,6 +32,7 @@ function esa_add_complex_tag(string $termName, int $parent = 0) : array {
 
 add_action("esa_get_wrapper", function(\esa_item $esaItem, \WP_Post $wrapper) {
 
+
     // TODO only if none are allready stored!
 
     $terms = array();
@@ -38,13 +40,23 @@ add_action("esa_get_wrapper", function(\esa_item $esaItem, \WP_Post $wrapper) {
     try {
         foreach ($esaItem->getRawdata() as $key => $languages) {
             foreach ($languages as $language => $values) {
-                $langTerm = esa_add_complex_tag(($language === "") ? "#" : $language);
-                $terms[] = $langTerm['term_id'];
-                $keyTerm = esa_add_complex_tag($key, $langTerm['term_id']);
+
+                $keyTerm = esa_add_complex_tag($key);
                 $terms[] = $keyTerm['term_id'];
 
                 foreach ($values as $value) {
-                    $terms[] = esa_add_complex_tag($value, $keyTerm['term_id'])['term_id'];
+
+                    $params = array();
+
+                    if (!in_array($language, array("", "#", "?", "??", null))) {
+                        $params["description"] = $language;
+                    }
+
+                    $params["parent"] = $keyTerm['term_id'];
+
+                    $terms[] = esa_add_complex_tag($value, $params)['term_id'];
+
+                    // TODO alias_of ... but need other stored structure (wich is not a problem)
                 }
 
             }
