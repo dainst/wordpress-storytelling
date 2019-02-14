@@ -110,7 +110,7 @@ function esa_get_wrapper($esaItem) {
     }
 
     if ($wrapper == null) {
-        echo esa_debug($wrapper);
+        echo esa_debug($esaItem->title);
         die(esa_debug($a));
     }
 
