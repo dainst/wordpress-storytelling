@@ -145,6 +145,12 @@ body.logged-in .esa_item_tools a.esa_item_tools_write {
     opacity: 1
 }
 
+.esa_item_no_collapse .esa_item_tools a.esa_item_tools_expand:before,
+.esa_item_no_collapse .esa_item_tools a.esa_item_tools_expand:after,
+.esa_item_no_collapse .esa_item_tools a.esa_item_tools_expand {
+    display: none
+}
+
 
 .esa_item_tooltip {
     padding-left: 0.4em;
