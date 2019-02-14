@@ -205,9 +205,9 @@ namespace esa_item {
 				case 'BITMAP':
 				case 'IMAGE':
 					$drurl = ($this->fullres) ? $this->fullres : $this->url;
-					$encurl = $drurl;
+					$fsurl = (!esa_get_settings("modules", "esa_item_display_settings", "dont_collapse_esa_items")) ? "" : $drurl;
 					$image_a = "<div class='esa_item_main_image' style='background-image:url(\"{$this->url}\")' title='{$this->title}'>&nbsp;</div>";
-					$image_b = "<img class='esa_item_fullres' src='' data-fullsize='$drurl' alt='{$this->title}' />";
+					$image_b = "<img class='esa_item_fullres' src='$fsurl' data-fullsize='$drurl' alt='{$this->title}' />";
 					$id = md5($drlink);
 					$image_b = ($this->fullres or ($this->type == 'DRAWING')) ? "<span class='esa_thickbox' id='esa_tb_$id'>$image_b</span>" : $image_b;
 					$html = $image_a . $image_b;

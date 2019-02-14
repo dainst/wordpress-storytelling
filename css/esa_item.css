@@ -179,9 +179,12 @@ body.logged-in .esa_item_tools a.esa_item_tools_write {
     background-image: url('../images/arrow-down.png');
 }
 
-
 .esa_item:hover .esa_item_tools {
     display: block
+}
+
+.esa_item.esa_item_no_collapse:hover .esa_item_resizebar {
+    display: none;
 }
 
 /* esa_item style */

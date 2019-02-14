@@ -84,6 +84,8 @@ class esa_item {
 
 		if (!esa_get_settings("modules", "esa_item_display_settings", "dont_collapse_esa_items")) {
 		    $classes .= " esa_item_collapsed";
+        } else {
+            $classes .= " esa_item_no_collapse esa_item_media_size_1";
         }
 		
 		echo "<div data-id='{$this->id}' data-source='{$this->source}' class='esa_item esa_item_{$this->source} $classes' $css_string>";

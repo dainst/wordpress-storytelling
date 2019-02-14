@@ -24,22 +24,31 @@
             
             //console.log('init', this_esa_item);
 
+            var collapsible = jQuery(this_esa_item).hasClass('esa_item_no_collapse');
+
             $(this_esa_item).on('mouseenter', function() {
                 jQuery(this_esa_item).find('.esa_item_tools').fadeIn('slow');
-                jQuery(this_esa_item).find('.esa_item_resizebar').fadeIn('slow');
+                if (!collapsible) {
+                    jQuery(this_esa_item).find('.esa_item_resizebar').fadeIn('slow');
+                }
             });
 
             $(this_esa_item).on('mouseleave', function() {
                 jQuery(this_esa_item).find('.esa_item_tools').fadeOut('slow');
-                jQuery(this_esa_item).find('.esa_item_resizebar').fadeOut('slow');
+                if (!collapsible) {
+                    jQuery(this_esa_item).find('.esa_item_resizebar').fadeOut('slow');
+                }
             });
 
 
             $(this_esa_item).on('click', '.esa_item_resizebar, .esa_item_tools_expand', function() {
+
+                if (!collapsible) {
+                    return;
+                }
+
                 var thisItem = $(this_esa_item);
                 thisItem.toggleClass('esa_item_collapsed');
-
-
 
                 // on Expand
 
