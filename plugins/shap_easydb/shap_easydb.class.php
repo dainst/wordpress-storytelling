@@ -148,7 +148,6 @@ namespace esa_datasource {
             $response = json_decode($response);
             $this->results = array();
             foreach ($response->objects as $item) {
-                $type = $item->_objecttype;
                 $this->results[] = $this->parse_result($this->_fetch_external_data($this->api_single_url($item->_system_object_id)));
             }
 
@@ -182,7 +181,6 @@ namespace esa_datasource {
 
             list($lat, $lon) = $this->_parse_place($object, $data);
 
-
             // images
             if (isset($object->bild) and isset($object->bild[0]->versions)) {
 
@@ -203,7 +201,14 @@ namespace esa_datasource {
                 $image = new \esa_item\image($image);
             }
 
-            $html = $image->render() . "<div class='esa_shap_subtext'>{$object->copyright_vermerk}</div>";
+            $html = $image->render();
+
+            if (isset($object->copyright_vermerk) and is_string($object->copyright_vermerk)) {
+                $html .= "<div class='esa_shap_subtext'>{$object->copyright_vermerk}</div>";
+            } else if (isset($object->copyright_vermerk) and is_object($object->copyright_vermerk)) {
+                $en = "en-US";
+                $html .= "<div class='esa_shap_subtext'>{$object->copyright_vermerk->$en}</div>";
+            }
 
             return new \esa_item("shap_easydb", $system_object_id, $html, $this->api_record_url($system_object_id), $data->title, array(), array(), $lat, $lon, $data->_data);
         }
@@ -315,7 +320,6 @@ namespace esa_datasource {
             }
 
             return array($gazId->position->lat, $gazId->position->lng);
-
         }
 
         function _parse_tags($o, \esa_item\data $data) {

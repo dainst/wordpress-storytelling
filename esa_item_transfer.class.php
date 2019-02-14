@@ -242,7 +242,7 @@ namespace esa_item {
 				break;
 
 			}
-				
+
 			return "<div class='esa_item_media_box $class'>$html $text</div>";
 		}
 	
