@@ -38,6 +38,22 @@ add_filter('posts_search', function($sql, $query) {
         $where = "\n\t esai.searchindex like '%{$wp_query->query['s']}%'";
         $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where) and {$wpdb->prefix}posts.post_type in ($post_types)) or (1 = 1 $sql))";
     }
+
+    if (isset($wp_query->query['x1']) and isset($wp_query->query['x2']) and isset($wp_query->query['y1']) and isset($wp_query->query['y2'])) {
+        $x1 = min(180, max(0, floatval($wp_query->query['x1'])));
+        $y1 = min(90, max(-90, floatval($wp_query->query['y1'])));
+        $x2 = min(180, max(0, floatval($wp_query->query['x2'])));
+        $y2 = min(90, max(-90, floatval($wp_query->query['y2'])));
+
+        if (($x1 < $x2) or ($y1 < $y2)){
+            $x1 ^= $x2;
+            $y1 ^= $y2;
+        }
+
+        $where = "\n\t (esai.longitude <= $x1) and (esai.longitude >= $x2) and (esai.latitude <= $y1) and (esai.latitude >= $y2) ";
+        $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where) and {$wpdb->prefix}posts.post_type in ($post_types)) or (1 = 1 $sql))";
+    }
+
     if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])
         and $wp_query->query['esa_item_source'] and $wp_query->query['esa_item_id']) {
             $story = true;

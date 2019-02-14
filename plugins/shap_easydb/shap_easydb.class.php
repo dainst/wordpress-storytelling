@@ -96,22 +96,26 @@ namespace esa_datasource {
             $this->get_easy_db_session_token();
 
             $search = array(
-                "search" => array(
+                "limit" => $this->_items_per_page,
+                "objecttypes" => array("bilder"),
+	            "generate_rights" => false
+            );
+
+            if (!in_array($query, array("", "*"))) {
+                $search["search"] = array(
                     array(
                         "type" => "match",
                         "mode" => "token",
                         "string"=> $query,
                         "phrase"=> true
                     )
-                ),
-                "limit" => $this->_items_per_page,
-                "objecttypes" => array("bilder"),
-	            "generate_rights" => false
-            );
+                );
+            }
 
             if (isset($params['offset'])) {
                 $search['offset'] = $params['offset'];
             }
+
 
             return (object) array(
                 'method' => 'post',

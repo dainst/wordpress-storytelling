@@ -10,10 +10,73 @@
  * the map will be filled per ajax
  *
  */
+
+
+
 function esa_item_map($display='both') {
     if (esa_get_settings('modules', 'map', 'activate')) {
         echo "<div class='esa_items_overview_map' data-display='$display'>&nbsp;</div>";
     }
+}
+
+
+function esa_map_query() {
+
+    global $wpdb;
+
+    $sql = "
+            select
+                esa_item.latitude,
+                esa_item.longitude,
+                
+                post.ID = '$post_id' as selected
+                
+            from
+                {$wpdb->prefix}esa_item_cache as esa_item
+                left join {$wpdb->prefix}esa_item_to_post as i2p on (i2p.esa_item_source =  esa_item.source and i2p.esa_item_id =  esa_item.id)
+                left join {$wpdb->prefix}posts as post on (post.ID = i2p.post_id)
+            
+            where
+                post.post_status = 'publish' and
+                esa_item.latitude is not null and
+                esa_item.latitude != 0  and
+                esa_item.longitude is not null and
+                esa_item.longitude != 0 and
+                post.post_type in (esa_item_wrapper)
+                
+            group by 
+                longitude, 
+                latitude
+            ";
+
+
+
+    $result = $wpdb->get_results($sql);
+
+    echo json_encode($result);
+}
+
+
+
+function esa_map($post, $basemapLayer = "osm") {
+
+    // TODO check if wrapper is enabled
+
+    if ($post->post_type !== "esa_item_wrapper") {
+        echo "Error: wrong post type";
+    }
+
+    $item = esa_get_item_by_wrapper($post);
+
+    $img = new \esa_item\image(array(
+        "type"      => "MAP",
+        "marker"    =>  array($item->latitude, $item->longitude),
+        "layer"     =>  $basemapLayer
+    ));
+
+    $tmp = new \esa_item("", "", $img->render());
+
+    echo $tmp->html();
 }
 
 function wp_ajax_esa_get_overview_map() {

@@ -144,17 +144,14 @@
                     var mapId = $(mapDiv).attr('id');
                     var lat   = parseFloat($(mapDiv).data('latitude'));
                     var long  = parseFloat($(mapDiv).data('longitude'));
-
+                    var mapType = $(mapDiv).data('layer') || "osm";
                     var shape  = $(mapDiv).data('shape');
 
                     window.leaflet_document = $(mapDiv).context.ownerDocument;
-                    //console.log(window.leaflet_document);
 
                     var map = this_esa_item.map = L.map(mapId).setView([lat, long], 13);
 
-                    L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-                    }).addTo(map);
+                    L.tileLayer(esa_map_layers[mapType].url, esa_map_layers[mapType].opts).addTo(map);
 
                     if (typeof shape !== "undefined") {
                         //console.log(shape);

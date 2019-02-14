@@ -87,7 +87,7 @@ function esa_get_wrapper($esaItem) {
     if (!count($wrappers)) {
         $wrapper = get_post(wp_insert_post(array(
             'post_name' => $id,
-            'post_title' => $esaItem->title ? $esaItem->title : '',
+            'post_title' => $esaItem->title ? $esaItem->title : '(untitled)',
             'post_type' => 'esa_item_wrapper',
             'post_status' => 'publish',
             'post_excerpt' => "[esa source=\"{$esaItem->source}\" id=\"{$esaItem->id}\"]"
@@ -100,16 +100,38 @@ function esa_get_wrapper($esaItem) {
                 "esa_item_id" => $esaItem->id
             )
         );
+        $a = "eins[$id]";
     } else {
         $wrapper = array_pop($wrappers);
         foreach ($wrappers as $item) {
             wp_delete_post($item->ID);
         }
+        $a = "zwei";
+    }
+
+    if ($wrapper == null) {
+        echo esa_debug($wrapper);
+        die(esa_debug($a));
     }
 
     do_action("esa_get_wrapper", $esaItem, $wrapper);
 
     return $wrapper;
+}
+
+function esa_get_item_by_wrapper(\WP_Post $wrapper) : \esa_item {
+    if ($wrapper->post_type !== "esa_item_wrapper") {
+        echo "Error: wrong post type";
+    }
+
+    $cut = trim($wrapper->post_excerpt, "][");
+    $atts = shortcode_parse_atts($cut);
+
+    $item = new \esa_item($atts["source"], $atts["id"]);
+
+    $item->html(true); // to load data
+
+    return $item;
 }
 
 function esa_clean_string($string) {

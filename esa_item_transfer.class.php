@@ -167,6 +167,8 @@ namespace esa_item {
 		public $mime = '';
 		public $title = '';
 		public $text = '';
+		public $marker = array();
+		public $layer = null;
 	
 		/**
 		 * create like
@@ -231,7 +233,8 @@ namespace esa_item {
 				case 'MAP':			
 					$shape = ($this->shape) ? "data-shape='" . json_encode($this->shape) .  "'" : '';
 					$id = (isset($this->id)) ? $this->id : md5(implode('|', array($this->shape, $this->marker[0], $this->marker[1])));
-					$html = "<div class='esa_item_map' id='esa_item_map-{$id}' data-latitude='{$this->marker[0]}' data-longitude='{$this->marker[1]}' $shape>&nbsp;</div>";		
+					$layer = ($this->layer) ? "data-layer='{$this->layer}'" : "";
+					$html = "<div class='esa_item_map' id='esa_item_map-{$id}' data-latitude='{$this->marker[0]}' data-longitude='{$this->marker[1]}' $shape $layer>&nbsp;</div>";
 				break;
 				
 				case 'SKETCHFAB':
