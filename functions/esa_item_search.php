@@ -39,19 +39,22 @@ add_filter('posts_search', function($sql, $query) {
         $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where) and {$wpdb->prefix}posts.post_type in ($post_types)) or (1 = 1 $sql))";
     }
 
-    if (isset($wp_query->query['x1']) and isset($wp_query->query['x2']) and isset($wp_query->query['y1']) and isset($wp_query->query['y2'])) {
-        $x1 = min(180, max(0, floatval($wp_query->query['x1'])));
-        $y1 = min(90, max(-90, floatval($wp_query->query['y1'])));
-        $x2 = min(180, max(0, floatval($wp_query->query['x2'])));
-        $y2 = min(90, max(-90, floatval($wp_query->query['y2'])));
+//    die(esa_debug($wp_query));
 
-        if (($x1 < $x2) or ($y1 < $y2)){
-            $x1 ^= $x2;
-            $y1 ^= $y2;
+    if (isset($wp_query->query_vars['x1']) and isset($wp_query->query_vars['x2']) and isset($wp_query->query_vars['y1']) and isset($wp_query->query_vars['y2'])) {
+        $x1 = min(180, max(-180, floatval($wp_query->query_vars['x1'])));
+        $y1 = min(90, max(-90, floatval($wp_query->query_vars['y1'])));
+        $x2 = min(180, max(-180, floatval($wp_query->query_vars['x2'])));
+        $y2 = min(90, max(-90, floatval($wp_query->query_vars['y2'])));
+
+        if (($x1 > $x2) or ($y1 > $y2)){
+            list($x1, $y1, $x2, $y2) = array($x2, $y2, $x1, $y1);
+
         }
 
-        $where = "\n\t (esai.longitude <= $x1) and (esai.longitude >= $x2) and (esai.latitude <= $y1) and (esai.latitude >= $y2) ";
-        $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where) and {$wpdb->prefix}posts.post_type in ($post_types)) or (1 = 1 $sql))";
+        $where = "\n\t (esai.longitude >= $x1) and (esai.longitude <= $x2) and (esai.latitude >= $y1) and (esai.latitude <= $y2) ";
+        $sqlr = "AND (({$wpdb->prefix}posts.ID in ($sqst $where) and {$wpdb->prefix}posts.post_type in ($post_types)) and (1 = 1 $sql))";
+        $story = true;
     }
 
     if (isset($wp_query->query['esa_item_source']) and isset($wp_query->query['esa_item_id'])
@@ -63,6 +66,7 @@ add_filter('posts_search', function($sql, $query) {
 
     if ((isset($wp_query->query['post_type']) and !in_array($wp_query->query['post_type'], esa_get_post_types()))
         or (!$sql and !$story)) {
+        die(esa_debug("!!!!"));
             return $sql;
     }
 

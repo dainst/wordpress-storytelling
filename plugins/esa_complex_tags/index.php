@@ -84,7 +84,6 @@ add_action("esa_get_wrapper", function(\esa_item $esaItem, \WP_Post $wrapper) {
 }, 10, 2);
 
 add_action("esa_flush_cache", function($wrappers) {
-    global $wpdb;
     if ($wrappers) {
         $terms = get_terms(array('taxonomy' => 'esa_complex_tags', 'hide_empty' => false));
         foreach ($terms as $value) {
@@ -92,3 +91,20 @@ add_action("esa_flush_cache", function($wrappers) {
         }
     }
 }, 20, 1);
+
+//add_filter('get_terms_args', function ($args, $taxonomies) {
+//
+//    if (array('esa_complex_tags') != $taxonomies) {
+//        return $args;
+//    }
+//
+//    //die(esa_debug($args));
+//
+//
+//
+//
+//
+//
+//    // We can now return out terms
+//    return $pieces;
+//}, 11, 3);
