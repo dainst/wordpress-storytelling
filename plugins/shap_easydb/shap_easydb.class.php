@@ -195,12 +195,13 @@ namespace esa_datasource {
                     return  ($v->status !== "failed") && (!$v->_not_allowed);
                 });
 
-                if (isset($versions->full)) {
+                if (isset($versions['full'])) {
                     $image['fullres']   = $versions->full->url;
-                } else if (isset($versions->original)) {
+                } else if (isset($versions['original'])) {
                     $image['fullres']   = $versions->original->url;
                 }
                 $image['title'] = $object->bild[0]->original_filename;
+
 
                 $image = new \esa_item\image($image);
             }
@@ -220,12 +221,13 @@ namespace esa_datasource {
 
 
         function _parse_title($o, \esa_item\data $data) {
+            $en = "en-US";
             if (isset($o->ueberschrift)) {
-                $data->title = $o->ueberschrift;
+                $data->title = $o->ueberschrift->$en;
             } else if (isset($o->titel)) {
-                $data->title = $o->titel;
+                $data->title = $o->titel->$en;
             } else if (isset($o->beschreibung)) {
-                $data->title = $o->beschreibung;
+                $data->title = $o->beschreibung->$en;
             }
         }
 
@@ -235,9 +237,7 @@ namespace esa_datasource {
             }
 
             $data->putMultilang("pool", (array) $o->_pool->pool->name);
-
         }
-
 
         function _parse_nested($o, \esa_item\data $data) {
 
@@ -256,7 +256,6 @@ namespace esa_datasource {
                     $this->_get_detail($data, $tag_type, $keyword->$a);
                 }
             }
-
         }
 
         function _parse_date($o, \esa_item\data $data) {
